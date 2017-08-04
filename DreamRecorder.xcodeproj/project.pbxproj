@@ -13,6 +13,7 @@
 		5AD09F151F34686A007BCA09 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5AD09F141F34686A007BCA09 /* Assets.xcassets */; };
 		5AD09F181F34686A007BCA09 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5AD09F161F34686A007BCA09 /* LaunchScreen.storyboard */; };
 		5AD09F231F34686B007BCA09 /* DreamRecorderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AD09F221F34686B007BCA09 /* DreamRecorderTests.swift */; };
+		F01F9B278627D96E045DE02E /* Pods_DreamRecorder.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D397857D16523815AF771D51 /* Pods_DreamRecorder.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -36,6 +37,9 @@
 		5AD09F1E1F34686B007BCA09 /* DreamRecorderTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DreamRecorderTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		5AD09F221F34686B007BCA09 /* DreamRecorderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DreamRecorderTests.swift; sourceTree = "<group>"; };
 		5AD09F241F34686B007BCA09 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		71592AFC9695CAD77FC7E788 /* Pods-DreamRecorder.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DreamRecorder.release.xcconfig"; path = "Pods/Target Support Files/Pods-DreamRecorder/Pods-DreamRecorder.release.xcconfig"; sourceTree = "<group>"; };
+		C82E4CE7279A775BF2E77C04 /* Pods-DreamRecorder.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DreamRecorder.debug.xcconfig"; path = "Pods/Target Support Files/Pods-DreamRecorder/Pods-DreamRecorder.debug.xcconfig"; sourceTree = "<group>"; };
+		D397857D16523815AF771D51 /* Pods_DreamRecorder.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_DreamRecorder.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -43,6 +47,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F01F9B278627D96E045DE02E /* Pods_DreamRecorder.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -62,6 +67,8 @@
 				5AD09F0C1F34686A007BCA09 /* DreamRecorder */,
 				5AD09F211F34686B007BCA09 /* DreamRecorderTests */,
 				5AD09F0B1F34686A007BCA09 /* Products */,
+				CB80B8DA6118D174232A6860 /* Pods */,
+				A880799EB79B5024841366AA /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -96,6 +103,23 @@
 			path = DreamRecorderTests;
 			sourceTree = "<group>";
 		};
+		A880799EB79B5024841366AA /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				D397857D16523815AF771D51 /* Pods_DreamRecorder.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		CB80B8DA6118D174232A6860 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				C82E4CE7279A775BF2E77C04 /* Pods-DreamRecorder.debug.xcconfig */,
+				71592AFC9695CAD77FC7E788 /* Pods-DreamRecorder.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -103,9 +127,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 5AD09F271F34686B007BCA09 /* Build configuration list for PBXNativeTarget "DreamRecorder" */;
 			buildPhases = (
+				A1FC61453D0FB84D7849518E /* [CP] Check Pods Manifest.lock */,
 				5AD09F061F34686A007BCA09 /* Sources */,
 				5AD09F071F34686A007BCA09 /* Frameworks */,
 				5AD09F081F34686A007BCA09 /* Resources */,
+				8FBA6B8FB24B6C9B9340D555 /* [CP] Embed Pods Frameworks */,
+				226EDFE7D96E6465ABD85C8B /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -195,6 +222,54 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		226EDFE7D96E6465ABD85C8B /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-DreamRecorder/Pods-DreamRecorder-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		8FBA6B8FB24B6C9B9340D555 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-DreamRecorder/Pods-DreamRecorder-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		A1FC61453D0FB84D7849518E /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		5AD09F061F34686A007BCA09 /* Sources */ = {
@@ -339,6 +414,7 @@
 		};
 		5AD09F281F34686B007BCA09 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = C82E4CE7279A775BF2E77C04 /* Pods-DreamRecorder.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = 8Y7YWW7H68;
@@ -352,6 +428,7 @@
 		};
 		5AD09F291F34686B007BCA09 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 71592AFC9695CAD77FC7E788 /* Pods-DreamRecorder.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = 8Y7YWW7H68;

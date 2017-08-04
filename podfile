@@ -1,0 +1,5 @@
+use_frameworks!
+
+target 'DreamRecorder' do
+    pod 'SQLite.swift', '~> 0.11.3'
+    end
