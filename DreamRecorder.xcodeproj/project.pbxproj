@@ -420,7 +420,7 @@
 				DEVELOPMENT_TEAM = 8Y7YWW7H68;
 				INFOPLIST_FILE = DreamRecorder/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.boostCamp.ios.DreamRecorder;
+				PRODUCT_BUNDLE_IDENTIFIER = boostcamp.minho;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 3.0;
 			};
@@ -434,7 +434,7 @@
 				DEVELOPMENT_TEAM = 8Y7YWW7H68;
 				INFOPLIST_FILE = DreamRecorder/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.boostCamp.ios.DreamRecorder;
+				PRODUCT_BUNDLE_IDENTIFIER = boostcamp.minho;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 3.0;
 			};
@@ -489,6 +489,7 @@
 				5AD09F291F34686B007BCA09 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		5AD09F2A1F34686B007BCA09 /* Build configuration list for PBXNativeTarget "DreamRecorderTests" */ = {
 			isa = XCConfigurationList;
@@ -497,6 +498,7 @@
 				5AD09F2C1F34686B007BCA09 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
