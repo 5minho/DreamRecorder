@@ -420,7 +420,7 @@
 				DEVELOPMENT_TEAM = 8Y7YWW7H68;
 				INFOPLIST_FILE = DreamRecorder/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = boostcamp.minho;
+				PRODUCT_BUNDLE_IDENTIFIER = com.boostCamp.ios.DreamRecorder;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 3.0;
 			};
@@ -434,7 +434,7 @@
 				DEVELOPMENT_TEAM = 8Y7YWW7H68;
 				INFOPLIST_FILE = DreamRecorder/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = boostcamp.minho;
+				PRODUCT_BUNDLE_IDENTIFIER = com.boostCamp.ios.DreamRecorder;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 3.0;
 			};
