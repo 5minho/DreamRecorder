@@ -8,12 +8,14 @@
 
 /* Begin PBXBuildFile section */
 		5A57FEB41F36F53D00339898 /* Dream.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A57FEB31F36F53C00339898 /* Dream.swift */; };
+		5A5CCE441F3858BA008D18C2 /* SpeechDreamViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5A5CCE431F3858BA008D18C2 /* SpeechDreamViewController.storyboard */; };
+		5A5CCE461F385A04008D18C2 /* DetailDreamViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5A5CCE451F385A04008D18C2 /* DetailDreamViewController.storyboard */; };
 		5AD09F0E1F34686A007BCA09 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AD09F0D1F34686A007BCA09 /* AppDelegate.swift */; };
 		5AD09F101F34686A007BCA09 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AD09F0F1F34686A007BCA09 /* ViewController.swift */; };
 		5AD09F131F34686A007BCA09 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5AD09F111F34686A007BCA09 /* Main.storyboard */; };
 		5AD09F151F34686A007BCA09 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5AD09F141F34686A007BCA09 /* Assets.xcassets */; };
 		5AD09F181F34686A007BCA09 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5AD09F161F34686A007BCA09 /* LaunchScreen.storyboard */; };
-		5AD09F231F34686B007BCA09 /* DreamRecorderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AD09F221F34686B007BCA09 /* DreamRecorderTests.swift */; };
+		5AD8F7071F386198005311F8 /* DreamRecorderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AD8F7061F386198005311F8 /* DreamRecorderTests.swift */; };
 		A52F26181F3837740036FA90 /* Alarm.swift in Sources */ = {isa = PBXBuildFile; fileRef = A52F26171F3837740036FA90 /* Alarm.swift */; };
 		A52F261B1F38437B0036FA90 /* AlarmListViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A52F26191F38437B0036FA90 /* AlarmListViewController.storyboard */; };
 		A52F261D1F3843950036FA90 /* DreamListViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A52F261C1F3843950036FA90 /* DreamListViewController.storyboard */; };
@@ -21,7 +23,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		5AD09F1F1F34686B007BCA09 /* PBXContainerItemProxy */ = {
+		5AD8F7091F386198005311F8 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 5AD09F021F34686A007BCA09 /* Project object */;
 			proxyType = 1;
@@ -32,6 +34,8 @@
 
 /* Begin PBXFileReference section */
 		5A57FEB31F36F53C00339898 /* Dream.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Dream.swift; sourceTree = "<group>"; };
+		5A5CCE431F3858BA008D18C2 /* SpeechDreamViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = SpeechDreamViewController.storyboard; sourceTree = "<group>"; };
+		5A5CCE451F385A04008D18C2 /* DetailDreamViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = DetailDreamViewController.storyboard; sourceTree = "<group>"; };
 		5AD09F0A1F34686A007BCA09 /* DreamRecorder.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DreamRecorder.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5AD09F0D1F34686A007BCA09 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		5AD09F0F1F34686A007BCA09 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -39,9 +43,9 @@
 		5AD09F141F34686A007BCA09 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		5AD09F171F34686A007BCA09 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		5AD09F191F34686A007BCA09 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		5AD09F1E1F34686B007BCA09 /* DreamRecorderTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DreamRecorderTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		5AD09F221F34686B007BCA09 /* DreamRecorderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DreamRecorderTests.swift; sourceTree = "<group>"; };
-		5AD09F241F34686B007BCA09 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		5AD8F7041F386198005311F8 /* DreamRecorderTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DreamRecorderTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		5AD8F7061F386198005311F8 /* DreamRecorderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DreamRecorderTests.swift; sourceTree = "<group>"; };
+		5AD8F7081F386198005311F8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		71592AFC9695CAD77FC7E788 /* Pods-DreamRecorder.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DreamRecorder.release.xcconfig"; path = "Pods/Target Support Files/Pods-DreamRecorder/Pods-DreamRecorder.release.xcconfig"; sourceTree = "<group>"; };
 		A52F26171F3837740036FA90 /* Alarm.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Alarm.swift; sourceTree = "<group>"; };
 		A52F261A1F38437B0036FA90 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/AlarmListViewController.storyboard; sourceTree = "<group>"; };
@@ -59,7 +63,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		5AD09F1B1F34686B007BCA09 /* Frameworks */ = {
+		5AD8F7011F386198005311F8 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -73,7 +77,7 @@
 			isa = PBXGroup;
 			children = (
 				5AD09F0C1F34686A007BCA09 /* DreamRecorder */,
-				5AD09F211F34686B007BCA09 /* DreamRecorderTests */,
+				5AD8F7051F386198005311F8 /* DreamRecorderTests */,
 				5AD09F0B1F34686A007BCA09 /* Products */,
 				CB80B8DA6118D174232A6860 /* Pods */,
 				A880799EB79B5024841366AA /* Frameworks */,
@@ -84,7 +88,7 @@
 			isa = PBXGroup;
 			children = (
 				5AD09F0A1F34686A007BCA09 /* DreamRecorder.app */,
-				5AD09F1E1F34686B007BCA09 /* DreamRecorderTests.xctest */,
+				5AD8F7041F386198005311F8 /* DreamRecorderTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -104,11 +108,11 @@
 			path = DreamRecorder;
 			sourceTree = "<group>";
 		};
-		5AD09F211F34686B007BCA09 /* DreamRecorderTests */ = {
+		5AD8F7051F386198005311F8 /* DreamRecorderTests */ = {
 			isa = PBXGroup;
 			children = (
-				5AD09F221F34686B007BCA09 /* DreamRecorderTests.swift */,
-				5AD09F241F34686B007BCA09 /* Info.plist */,
+				5AD8F7061F386198005311F8 /* DreamRecorderTests.swift */,
+				5AD8F7081F386198005311F8 /* Info.plist */,
 			);
 			path = DreamRecorderTests;
 			sourceTree = "<group>";
@@ -127,6 +131,8 @@
 			isa = PBXGroup;
 			children = (
 				A52F261C1F3843950036FA90 /* DreamListViewController.storyboard */,
+				5A5CCE431F3858BA008D18C2 /* SpeechDreamViewController.storyboard */,
+				5A5CCE451F385A04008D18C2 /* DetailDreamViewController.storyboard */,
 			);
 			name = dream;
 			sourceTree = "<group>";
@@ -179,22 +185,22 @@
 			productReference = 5AD09F0A1F34686A007BCA09 /* DreamRecorder.app */;
 			productType = "com.apple.product-type.application";
 		};
-		5AD09F1D1F34686B007BCA09 /* DreamRecorderTests */ = {
+		5AD8F7031F386198005311F8 /* DreamRecorderTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 5AD09F2A1F34686B007BCA09 /* Build configuration list for PBXNativeTarget "DreamRecorderTests" */;
+			buildConfigurationList = 5AD8F70B1F386198005311F8 /* Build configuration list for PBXNativeTarget "DreamRecorderTests" */;
 			buildPhases = (
-				5AD09F1A1F34686B007BCA09 /* Sources */,
-				5AD09F1B1F34686B007BCA09 /* Frameworks */,
-				5AD09F1C1F34686B007BCA09 /* Resources */,
+				5AD8F7001F386198005311F8 /* Sources */,
+				5AD8F7011F386198005311F8 /* Frameworks */,
+				5AD8F7021F386198005311F8 /* Resources */,
 			);
 			buildRules = (
 			);
 			dependencies = (
-				5AD09F201F34686B007BCA09 /* PBXTargetDependency */,
+				5AD8F70A1F386198005311F8 /* PBXTargetDependency */,
 			);
 			name = DreamRecorderTests;
 			productName = DreamRecorderTests;
-			productReference = 5AD09F1E1F34686B007BCA09 /* DreamRecorderTests.xctest */;
+			productReference = 5AD8F7041F386198005311F8 /* DreamRecorderTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 /* End PBXNativeTarget section */
@@ -212,7 +218,7 @@
 						DevelopmentTeam = 8Y7YWW7H68;
 						ProvisioningStyle = Automatic;
 					};
-					5AD09F1D1F34686B007BCA09 = {
+					5AD8F7031F386198005311F8 = {
 						CreatedOnToolsVersion = 8.3.3;
 						DevelopmentTeam = 8Y7YWW7H68;
 						ProvisioningStyle = Automatic;
@@ -234,7 +240,7 @@
 			projectRoot = "";
 			targets = (
 				5AD09F091F34686A007BCA09 /* DreamRecorder */,
-				5AD09F1D1F34686B007BCA09 /* DreamRecorderTests */,
+				5AD8F7031F386198005311F8 /* DreamRecorderTests */,
 			);
 		};
 /* End PBXProject section */
@@ -249,10 +255,12 @@
 				5AD09F151F34686A007BCA09 /* Assets.xcassets in Resources */,
 				5AD09F131F34686A007BCA09 /* Main.storyboard in Resources */,
 				A52F261D1F3843950036FA90 /* DreamListViewController.storyboard in Resources */,
+				5A5CCE441F3858BA008D18C2 /* SpeechDreamViewController.storyboard in Resources */,
+				5A5CCE461F385A04008D18C2 /* DetailDreamViewController.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		5AD09F1C1F34686B007BCA09 /* Resources */ = {
+		5AD8F7021F386198005311F8 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -321,21 +329,21 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		5AD09F1A1F34686B007BCA09 /* Sources */ = {
+		5AD8F7001F386198005311F8 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				5AD09F231F34686B007BCA09 /* DreamRecorderTests.swift in Sources */,
+				5AD8F7071F386198005311F8 /* DreamRecorderTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		5AD09F201F34686B007BCA09 /* PBXTargetDependency */ = {
+		5AD8F70A1F386198005311F8 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 5AD09F091F34686A007BCA09 /* DreamRecorder */;
-			targetProxy = 5AD09F1F1F34686B007BCA09 /* PBXContainerItemProxy */;
+			targetProxy = 5AD8F7091F386198005311F8 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -488,10 +496,9 @@
 			};
 			name = Release;
 		};
-		5AD09F2B1F34686B007BCA09 /* Debug */ = {
+		5AD8F70C1F386198005311F8 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				DEVELOPMENT_TEAM = 8Y7YWW7H68;
 				INFOPLIST_FILE = DreamRecorderTests/Info.plist;
@@ -503,10 +510,9 @@
 			};
 			name = Debug;
 		};
-		5AD09F2C1F34686B007BCA09 /* Release */ = {
+		5AD8F70D1F386198005311F8 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				DEVELOPMENT_TEAM = 8Y7YWW7H68;
 				INFOPLIST_FILE = DreamRecorderTests/Info.plist;
@@ -539,14 +545,13 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		5AD09F2A1F34686B007BCA09 /* Build configuration list for PBXNativeTarget "DreamRecorderTests" */ = {
+		5AD8F70B1F386198005311F8 /* Build configuration list for PBXNativeTarget "DreamRecorderTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				5AD09F2B1F34686B007BCA09 /* Debug */,
-				5AD09F2C1F34686B007BCA09 /* Release */,
+				5AD8F70C1F386198005311F8 /* Debug */,
+				5AD8F70D1F386198005311F8 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
