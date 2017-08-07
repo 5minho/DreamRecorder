@@ -9,5 +9,9 @@
 import Foundation
 
 class Alarm {
+    var id : String
     
+    init(id : String) {
+        self.id = id
+    }
 }
