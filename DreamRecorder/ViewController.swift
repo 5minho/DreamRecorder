@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import SQLite
 
 class ViewController: UIViewController {
     override func viewDidLoad() {
