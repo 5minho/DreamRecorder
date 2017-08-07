@@ -1,11 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12121" systemVersion="16G29" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="ZiX-wj-kNe">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12121" systemVersion="16G29" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="aiH-hA-LjY">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
     <dependencies>
+        <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12089"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--Item 2-->
+        <!--View Controller-->
         <scene sceneID="dz4-fE-MlL">
             <objects>
                 <viewController id="ZiX-wj-kNe" sceneMemberID="viewController">
@@ -14,17 +18,35 @@
                         <viewControllerLayoutGuide type="bottom" id="0nu-51-5ZA"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="FDI-g8-zbs">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
-                    <tabBarItem key="tabBarItem" title="Item 2" id="Rpg-0p-zRX"/>
+                    <navigationItem key="navigationItem" id="PVO-FU-TPJ"/>
                     <simulatedTabBarMetrics key="simulatedBottomBarMetrics"/>
-                    <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4_7.fullscreen"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="sTc-qm-qxT" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="366" y="278"/>
+            <point key="canvasLocation" x="1304.8" y="277.51124437781112"/>
+        </scene>
+        <!--Item 2-->
+        <scene sceneID="j6a-Wn-8RF">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="aiH-hA-LjY" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="Item 2" id="Rpg-0p-zRX"/>
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="99K-Lm-2kQ">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="ZiX-wj-kNe" kind="relationship" relationship="rootViewController" id="MW4-By-Jof"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="6pG-eQ-zJf" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="365.60000000000002" y="277.51124437781112"/>
         </scene>
     </scenes>
 </document>
