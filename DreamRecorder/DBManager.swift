@@ -47,6 +47,7 @@ class DBManager: NSObject, DBManagerable {
     }()
     
     func clearTable(){
+        
         let table = Table("alarms")
         try! db.run(table.drop())
     }

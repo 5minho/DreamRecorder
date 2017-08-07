@@ -28,7 +28,6 @@ class AlarmDataStore: NSObject {
             t.column(AlarmTable.Column.id, primaryKey: true)
             t.column(AlarmTable.Column.name)
         })
-        
         switch tableResult {
         case .success:
             print("Table Created")
@@ -51,7 +50,7 @@ class AlarmDataStore: NSObject {
     }
     
     func insertAlarm(alarm: Alarm){
-        let insert = AlarmTable.table.insert(AlarmTable.Column.name <- alarm.id, AlarmTable.Column.name <- alarm.name)
+        let insert = AlarmTable.table.insert(AlarmTable.Column.name <- alarm.id, AlarmTable.Column.name <- AlarmTable.Column.name)
         
         let result = manager.insertRow(insert: insert)
         
