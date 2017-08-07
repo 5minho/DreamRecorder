@@ -46,12 +46,6 @@ class DBManager: NSObject, DBManagerable {
         return db
     }()
     
-    func clearTable(){
-        
-        let table = Table("alarms")
-        try! db.run(table.drop())
-    }
-    
     func selectAll(query: QueryType) -> RowsResult {
         do {
             let rows = try db.prepare(query)
