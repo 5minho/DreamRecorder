@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import SQLite
 
 struct Dream {
     var id : String
@@ -21,4 +22,14 @@ struct Dream {
         self.content = content
         self.createdDate = createdDate
     }
+}
+
+func shouldConnectSQLite() -> Bool {
+    let path = NSSearchPathForDirectoriesInDomains(
+        .documentDirectory, .userDomainMask, true
+        ).first!
+    
+    let db = try? Connection("\(path)/db.sqlite3")
+    
+    return db != nil
 }
