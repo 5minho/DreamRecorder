@@ -15,6 +15,8 @@
 		5AD09F181F34686A007BCA09 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5AD09F161F34686A007BCA09 /* LaunchScreen.storyboard */; };
 		5AD09F231F34686B007BCA09 /* DreamRecorderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AD09F221F34686B007BCA09 /* DreamRecorderTests.swift */; };
 		A52F26181F3837740036FA90 /* Alarm.swift in Sources */ = {isa = PBXBuildFile; fileRef = A52F26171F3837740036FA90 /* Alarm.swift */; };
+		A52F261B1F38437B0036FA90 /* AlarmListViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A52F26191F38437B0036FA90 /* AlarmListViewController.storyboard */; };
+		A52F261D1F3843950036FA90 /* DreamListViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A52F261C1F3843950036FA90 /* DreamListViewController.storyboard */; };
 		F01F9B278627D96E045DE02E /* Pods_DreamRecorder.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D397857D16523815AF771D51 /* Pods_DreamRecorder.framework */; };
 /* End PBXBuildFile section */
 
@@ -42,6 +44,8 @@
 		5AD09F241F34686B007BCA09 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		71592AFC9695CAD77FC7E788 /* Pods-DreamRecorder.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DreamRecorder.release.xcconfig"; path = "Pods/Target Support Files/Pods-DreamRecorder/Pods-DreamRecorder.release.xcconfig"; sourceTree = "<group>"; };
 		A52F26171F3837740036FA90 /* Alarm.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Alarm.swift; sourceTree = "<group>"; };
+		A52F261A1F38437B0036FA90 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/AlarmListViewController.storyboard; sourceTree = "<group>"; };
+		A52F261C1F3843950036FA90 /* DreamListViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = DreamListViewController.storyboard; sourceTree = "<group>"; };
 		C82E4CE7279A775BF2E77C04 /* Pods-DreamRecorder.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DreamRecorder.debug.xcconfig"; path = "Pods/Target Support Files/Pods-DreamRecorder/Pods-DreamRecorder.debug.xcconfig"; sourceTree = "<group>"; };
 		D397857D16523815AF771D51 /* Pods_DreamRecorder.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_DreamRecorder.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -92,7 +96,7 @@
 				5A57FEB31F36F53C00339898 /* Dream.swift */,
 				A52F26171F3837740036FA90 /* Alarm.swift */,
 				5AD09F0F1F34686A007BCA09 /* ViewController.swift */,
-				5AD09F111F34686A007BCA09 /* Main.storyboard */,
+				A52F261E1F38439C0036FA90 /* storyboard */,
 				5AD09F141F34686A007BCA09 /* Assets.xcassets */,
 				5AD09F161F34686A007BCA09 /* LaunchScreen.storyboard */,
 				5AD09F191F34686A007BCA09 /* Info.plist */,
@@ -107,6 +111,32 @@
 				5AD09F241F34686B007BCA09 /* Info.plist */,
 			);
 			path = DreamRecorderTests;
+			sourceTree = "<group>";
+		};
+		A52F261E1F38439C0036FA90 /* storyboard */ = {
+			isa = PBXGroup;
+			children = (
+				5AD09F111F34686A007BCA09 /* Main.storyboard */,
+				A52F261F1F3843AB0036FA90 /* dream */,
+				A52F26201F3843AE0036FA90 /* alarm */,
+			);
+			name = storyboard;
+			sourceTree = "<group>";
+		};
+		A52F261F1F3843AB0036FA90 /* dream */ = {
+			isa = PBXGroup;
+			children = (
+				A52F261C1F3843950036FA90 /* DreamListViewController.storyboard */,
+			);
+			name = dream;
+			sourceTree = "<group>";
+		};
+		A52F26201F3843AE0036FA90 /* alarm */ = {
+			isa = PBXGroup;
+			children = (
+				A52F26191F38437B0036FA90 /* AlarmListViewController.storyboard */,
+			);
+			name = alarm;
 			sourceTree = "<group>";
 		};
 		A880799EB79B5024841366AA /* Frameworks */ = {
@@ -215,8 +245,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				5AD09F181F34686A007BCA09 /* LaunchScreen.storyboard in Resources */,
+				A52F261B1F38437B0036FA90 /* AlarmListViewController.storyboard in Resources */,
 				5AD09F151F34686A007BCA09 /* Assets.xcassets in Resources */,
 				5AD09F131F34686A007BCA09 /* Main.storyboard in Resources */,
+				A52F261D1F3843950036FA90 /* DreamListViewController.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -322,6 +354,14 @@
 				5AD09F171F34686A007BCA09 /* Base */,
 			);
 			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+		A52F26191F38437B0036FA90 /* AlarmListViewController.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				A52F261A1F38437B0036FA90 /* Base */,
+			);
+			name = AlarmListViewController.storyboard;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
