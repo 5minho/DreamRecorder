@@ -10,8 +10,10 @@ import Foundation
 
 class Alarm {
     var id : String
+    var date: Date
     
-    init(id : String) {
+    init(id : String, date: Date) {
         self.id = id
+        self.date = date
     }
 }
