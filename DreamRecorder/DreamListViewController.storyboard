@@ -6,6 +6,7 @@
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12089"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -32,42 +33,47 @@
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="89.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="title" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Dzb-xd-eer">
-                                                    <rect key="frame" x="8" y="34" width="67" height="21"/>
-                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                    <nil key="textColor"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="month" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="57B-m9-fy0">
-                                                    <rect key="frame" x="278" y="57" width="89" height="24"/>
-                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="20"/>
-                                                    <nil key="textColor"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="content" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pk5-KA-0yK">
-                                                    <rect key="frame" x="98" y="28" width="179" height="33"/>
-                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                    <nil key="textColor"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="date" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Bup-9g-gyP">
-                                                    <rect key="frame" x="278" y="15" width="89" height="29"/>
-                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="day" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Bup-9g-gyP">
+                                                    <rect key="frame" x="37" y="14" width="41" height="30"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="25"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="month" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="57B-m9-fy0">
+                                                    <rect key="frame" x="37" y="49.5" width="52" height="21.5"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="18"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="time" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PdC-Hg-SbE">
+                                                    <rect key="frame" x="114" y="14" width="25" height="14.5"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="title" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Dzb-xd-eer">
+                                                    <rect key="frame" x="114" y="47" width="33.5" height="24"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
                                             </subviews>
+                                            <constraints>
+                                                <constraint firstItem="Bup-9g-gyP" firstAttribute="leading" secondItem="mwP-0g-9s1" secondAttribute="leadingMargin" constant="29" id="ChW-ka-IZL"/>
+                                                <constraint firstItem="57B-m9-fy0" firstAttribute="leading" secondItem="Bup-9g-gyP" secondAttribute="leading" id="M0T-b3-NLU"/>
+                                                <constraint firstAttribute="bottomMargin" secondItem="57B-m9-fy0" secondAttribute="bottom" constant="10.5" id="Nh3-1r-Y47"/>
+                                                <constraint firstItem="Dzb-xd-eer" firstAttribute="bottom" secondItem="57B-m9-fy0" secondAttribute="bottom" id="PgT-wS-V4a"/>
+                                                <constraint firstItem="PdC-Hg-SbE" firstAttribute="leading" secondItem="Bup-9g-gyP" secondAttribute="trailing" constant="36" id="Rq0-oA-j8s"/>
+                                                <constraint firstItem="PdC-Hg-SbE" firstAttribute="top" secondItem="Bup-9g-gyP" secondAttribute="top" id="UKq-xd-OXc"/>
+                                                <constraint firstItem="Bup-9g-gyP" firstAttribute="top" secondItem="mwP-0g-9s1" secondAttribute="topMargin" constant="6" id="coo-9D-wfc"/>
+                                                <constraint firstItem="PdC-Hg-SbE" firstAttribute="leading" secondItem="Dzb-xd-eer" secondAttribute="leading" id="xLn-ND-cSR"/>
+                                            </constraints>
                                         </tableViewCellContentView>
-                                        <color key="backgroundColor" red="0.80000001190000003" green="0.40000000600000002" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                         <connections>
-                                            <outlet property="contentLabel" destination="pk5-KA-0yK" id="63Q-tZ-FYm"/>
-                                            <outlet property="dateLabel" destination="Bup-9g-gyP" id="fFb-5w-sTj"/>
-                                            <outlet property="monthLabel" destination="57B-m9-fy0" id="DMO-0X-jIS"/>
-                                            <outlet property="titleLabel" destination="Dzb-xd-eer" id="S5K-EI-MpY"/>
+                                            <outlet property="dayLabel" destination="Bup-9g-gyP" id="6j2-3U-LxM"/>
+                                            <outlet property="monthLabel" destination="57B-m9-fy0" id="YuS-wP-LTy"/>
+                                            <outlet property="timeLabel" destination="PdC-Hg-SbE" id="zPX-XR-M5S"/>
+                                            <outlet property="titleLabel" destination="Dzb-xd-eer" id="aCu-s9-6fA"/>
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>
@@ -75,22 +81,22 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="svF-iu-tFS">
                                 <rect key="frame" x="0.0" y="64" width="375" height="125"/>
                                 <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Good morning!" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6Ya-Qf-XgN">
-                                        <rect key="frame" x="8" y="0.0" width="168" height="53"/>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="wassup!!!" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6Ya-Qf-XgN">
+                                        <rect key="frame" x="28" y="5" width="168" height="53"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="25"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="day of week" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4nM-Su-MhO">
-                                        <rect key="frame" x="8" y="51" width="92" height="21"/>
+                                        <rect key="frame" x="28" y="57" width="92" height="21"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="달, 일, 년" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1vF-rO-8vw">
-                                        <rect key="frame" x="8" y="74" width="70" height="40"/>
+                                        <rect key="frame" x="28" y="79" width="266" height="40"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <nil key="textColor"/>
@@ -120,10 +126,9 @@
                     <simulatedTabBarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
                         <outlet property="detailTodayLabel" destination="1vF-rO-8vw" id="kWN-xr-yT2"/>
-                        <outlet property="headerView" destination="svF-iu-tFS" id="RdQ-vK-Wt4"/>
                         <outlet property="messageLabel" destination="6Ya-Qf-XgN" id="8bd-Wq-O4n"/>
                         <outlet property="tableView" destination="tIO-hr-KgU" id="AvL-TY-fRe"/>
-                        <outlet property="todayLabel" destination="4nM-Su-MhO" id="VwM-ht-Ev1"/>
+                        <outlet property="weekDayLabel" destination="4nM-Su-MhO" id="Oac-CY-WWE"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="sTc-qm-qxT" userLabel="First Responder" sceneMemberID="firstResponder"/>
