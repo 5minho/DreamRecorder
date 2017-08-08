@@ -33,6 +33,11 @@ class DreamListViewController : UIViewController {
         detailTodayLabel.text = dateParser.detail(from: today)
     }
 
+    @IBAction func addDream(_ sender: UIBarButtonItem) {
+        if let speechDreamViewController = SpeechDreamViewController.storyboardInstance() {
+            navigationController?.pushViewController(speechDreamViewController, animated: true)
+        }
+    }
 }
 
 extension DreamListViewController : UITableViewDelegate, UITableViewDataSource {

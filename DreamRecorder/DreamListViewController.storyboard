@@ -121,7 +121,11 @@
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="PVO-FU-TPJ">
-                        <barButtonItem key="rightBarButtonItem" systemItem="add" id="pLP-HH-jyp"/>
+                        <barButtonItem key="rightBarButtonItem" systemItem="add" id="pLP-HH-jyp">
+                            <connections>
+                                <action selector="addDream:" destination="ZiX-wj-kNe" id="79b-ne-V8f"/>
+                            </connections>
+                        </barButtonItem>
                     </navigationItem>
                     <simulatedTabBarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
