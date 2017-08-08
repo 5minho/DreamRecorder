@@ -16,7 +16,7 @@ struct Dream {
     var createdDate : Date
     var modifiedDate : Date?
     
-    init(id: String, title : String, content : String, createdDate : Date, modifiedDate : Date? = nil) {
+    init(id: String, title : String? = nil, content : String? = nil, createdDate : Date, modifiedDate : Date? = nil) {
         self.id = id
         self.title = title
         self.content = content
@@ -24,12 +24,8 @@ struct Dream {
     }
 }
 
-func shouldConnectSQLite() -> Bool {
-    let path = NSSearchPathForDirectoriesInDomains(
-        .documentDirectory, .userDomainMask, true
-        ).first!
-    
-    let db = try? Connection("\(path)/db.sqlite3")
-    
-    return db != nil
+extension Dream : Equatable {
+    static func ==(lhs : Dream, rhs : Dream) -> Bool {
+        return lhs.id == rhs.id
+    }
 }
