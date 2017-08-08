@@ -46,6 +46,7 @@ class DBManager: NSObject, DBManagerable {
         return db
     }()
     
+    // Select
     func selectAll(query: QueryType) -> RowsResult {
         do {
             let rows = try db.prepare(query)
@@ -56,6 +57,17 @@ class DBManager: NSObject, DBManagerable {
         }
     }
     
+    // Filter
+    func filterRow(query: QueryType) -> RowsResult {
+        do {
+            let rows = try db.prepare(query)
+            return .success(rows)
+        } catch {
+            return .failure(.transactionError)
+        }
+    }
+    
+    // Create Table
     func createTable(statement: String) -> TableResult {
         do {
             try self.db.run(statement)
@@ -66,7 +78,7 @@ class DBManager: NSObject, DBManagerable {
         }
     }
     
-    
+    // Insert, Update, Delete Row
     func insertRow(insert: Insert) -> RowResult {
         do {
             let rowID = try self.db.run(insert)

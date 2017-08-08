@@ -69,25 +69,6 @@ class AlarmDataStore: NSObject {
     // this alarms array is varaible that is loaded from database to memory and application will access this array for data
     var alarms: [Alarm] = []
     
-    override init() {
-        let rowsResult = manager.selectAll(query: AlarmTable.table)
-        
-        switch rowsResult {
-        case let .success(rows):
-            for alarm in rows {
-                let alarmLoaded = Alarm(id: alarm[AlarmTable.Column.id],
-                                     name: alarm[AlarmTable.Column.name],
-                                     date: alarm[AlarmTable.Column.date],
-                                     weekday: alarm.get(AlarmTable.Column.weekday),
-                                     isActive: alarm.get(AlarmTable.Column.isActive),
-                                     isSnooze: alarm.get(AlarmTable.Column.isSnooze))
-                self.alarms.append(alarmLoaded)
-            }
-        case let .failure(error):
-            print(error)
-        }
-    }
-    
     func createTable(){
         let tableResult = self.manager.createTable(statement: AlarmTable.table.create { (t) in
             t.column(AlarmTable.Column.id, primaryKey: true)
@@ -97,6 +78,7 @@ class AlarmDataStore: NSObject {
             t.column(AlarmTable.Column.isActive)
             t.column(AlarmTable.Column.isSnooze)
         })
+        
         switch tableResult {
         case .success:
             print("Success: create table")
@@ -105,15 +87,29 @@ class AlarmDataStore: NSObject {
         }
     }
     
-    private func selectAll(){
+    func reloadAlarms(){
+        self.alarms = self.selectAll()
+    }
+    
+    private func selectAll() -> [Alarm] {
         let rowsResult = manager.selectAll(query: AlarmTable.table)
         switch rowsResult {
         case let .success(rows):
+            var newAlarms: [Alarm] = []
             for alarm in rows {
-                print("Success: select all \(alarm[AlarmTable.Column.name]))")
+                let alarmLoaded = Alarm(id: alarm[AlarmTable.Column.id],
+                                        name: alarm[AlarmTable.Column.name],
+                                        date: alarm[AlarmTable.Column.date],
+                                        weekday: alarm.get(AlarmTable.Column.weekday),
+                                        isActive: alarm.get(AlarmTable.Column.isActive),
+                                        isSnooze: alarm.get(AlarmTable.Column.isSnooze))
+                newAlarms.append(alarmLoaded)
             }
+            print("Success: select all \(rows.underestimatedCount))")
+            return newAlarms
         case let .failure(error):
             print(error)
+            return []
         }
         
     }
@@ -136,7 +132,30 @@ class AlarmDataStore: NSObject {
         }
     }
     
+    func updateAlarm(alarm: Alarm) {
+        let updateRow = AlarmTable.table.filter(AlarmTable.Column.id == alarm.id)
+        let result = self.manager.updateRow(update: updateRow.update(AlarmTable.Column.id <- alarm.id,
+                                                                     AlarmTable.Column.name <- alarm.name,
+                                                                     AlarmTable.Column.date <- alarm.date,
+                                                                     AlarmTable.Column.weekday <- alarm.weekday,
+                                                                     AlarmTable.Column.isActive <- alarm.isActive,
+                                                                     AlarmTable.Column.isSnooze <- alarm.isSnooze))
+        switch result {
+        case .success:
+            print("Success: update row \(alarm.id)")
+        case let .failure(error):
+            print("error: \(error)")
+        }
+    }
+    
     func deleteAlarm(alarm: Alarm) {
-        
+        let deleteRow = AlarmTable.table.filter(AlarmTable.Column.id == alarm.id)
+        let result = self.manager.deleteRow(delete: deleteRow.delete())
+        switch result {
+        case .success:
+            print("Success: delete row \(alarm.id)")
+        case let .failure(error):
+            print("error: \(error)")
+        }
     }
 }
