@@ -31,10 +31,12 @@ class DreamListViewController : UIViewController {
         let today = Date()
         weekDayLabel.text = dateParser.dayOfWeek(from: today)
         detailTodayLabel.text = dateParser.detail(from: today)
+        tableView.reloadData()
     }
 
     @IBAction func addDream(_ sender: UIBarButtonItem) {
         if let addDreamNavigationController = AddDreamNavigationController.storyboardInstance() {
+            addDreamNavigationController.dreamDataStore = self.dreamDataStore
             present(addDreamNavigationController, animated: true, completion: nil)
         }
     }
@@ -59,6 +61,15 @@ extension DreamListViewController : UITableViewDelegate, UITableViewDataSource {
     }
     
     // MARK: - Table view delegate
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        if let detailDreamViewController = DetailDreamViewController.storyboardInstance() {
+            detailDreamViewController.dream = dreamDataStore.dreams[indexPath.row]
+            detailDreamViewController.dreamDataStore = dreamDataStore
+            navigationController?.pushViewController(detailDreamViewController, animated: true)
+        }
+    }
+    
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 75
     }

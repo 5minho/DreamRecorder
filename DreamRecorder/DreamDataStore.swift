@@ -22,7 +22,7 @@ extension Date {
     }
 }
 
-let SQLDateFormatter: DateFormatter = {
+let sqlDateFormatter: DateFormatter = {
     let formatter = DateFormatter()
     formatter.dateStyle = .medium
     formatter.timeStyle = .medium
@@ -98,9 +98,30 @@ class DreamDataStore {
         
         switch result {
         case .success(_):
-            self.dreams.append(dream)
+            self.dreams.insert(dream, at: 0)
         default:
             print("default")
+        }
+    }
+    
+    func updateAlarm(dream: Dream) {
+        let updateRow = DreamTable.table.filter(DreamTable.Column.id == dream.id)
+        let result = self.dbManager.updateRow(update: updateRow.update(
+            DreamTable.Column.id <- dream.id,
+            DreamTable.Column.title <- dream.title,
+            DreamTable.Column.content <- dream.content,
+            DreamTable.Column.createdDate <- dream.createdDate,
+            DreamTable.Column.modifiedDate <- dream.modifiedDate
+            )
+        )
+        
+        switch result {
+            
+        case .success:
+            print("Success: update row \(dream.id)")
+        case let .failure(error):
+            print("error: \(error)")
+            
         }
     }
     
