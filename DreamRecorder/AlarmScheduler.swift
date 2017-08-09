@@ -10,15 +10,6 @@ import Foundation
 import UserNotifications
 import UIKit
 
-extension NSObject {
-    static func classNameToString() -> String {
-        return String(reflecting: type(of: self)).components(separatedBy: ".").last!
-    }
-    func classNameToString() -> String {
-        return String(reflecting: type(of: self)).components(separatedBy: ".").last!
-    }
-}
-
 class AlarmScheduler {
     
     private struct Identifier {
