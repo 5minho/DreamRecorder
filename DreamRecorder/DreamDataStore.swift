@@ -12,13 +12,13 @@ import SQLite
 
 extension Date {
     static var declaredDatatype: String {
-        return String.declaredDatatype
+        return Int.declaredDatatype
     }
-    static func fromDatatypeValue(stringValue: String) -> Date {
-        return SQLDateFormatter.date(from: stringValue)!
+    static func fromDatatypeValue(intValue: Int) -> Date {
+        return self.init(timeIntervalSince1970: TimeInterval(intValue))
     }
-    var datatypeValue: String {
-        return SQLDateFormatter.string(from: self)
+    var datatypeValue: Int {
+        return Int(timeIntervalSince1970)
     }
 }
 
@@ -64,7 +64,7 @@ class DreamDataStore {
     }
     
     func selectAll() {
-        let rowsResult = dbManager.selectAll(query: DreamTable.table)
+        let rowsResult = dbManager.selectAll(query: DreamTable.table.order(DreamTable.Column.createdDate.desc))
         switch rowsResult {
         case let .success(rows):
             rows.forEach({
@@ -73,6 +73,7 @@ class DreamDataStore {
                 let content = $0.get(DreamTable.Column.content)
                 let createdDate = $0.get(DreamTable.Column.createdDate)
                 let modifiedDate = $0.get(DreamTable.Column.modifiedDate)
+                print(title! + " " + content!)
                 let dream = Dream(id: id, title: title, content: content, createdDate: createdDate, modifiedDate: modifiedDate)
                 if self.dreams.index(of: dream) == nil {
                     dreams.append(dream)
@@ -82,6 +83,7 @@ class DreamDataStore {
             print(error)
         }
     }
+
     
     func insert(dream: Dream) {
         let insert = DreamTable.table.insert (
@@ -95,8 +97,8 @@ class DreamDataStore {
         let result = dbManager.insertRow(insert: insert)
         
         switch result {
-        case let .success(rowID):
-            print(rowID)
+        case .success(_):
+            self.dreams.append(dream)
         default:
             print("default")
         }
