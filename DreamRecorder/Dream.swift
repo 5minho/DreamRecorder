@@ -9,7 +9,7 @@
 import Foundation
 import SQLite
 
-struct Dream {
+class Dream {
     var id : String
     var title : String?
     var content : String?
