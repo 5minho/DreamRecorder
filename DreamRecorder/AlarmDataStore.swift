@@ -36,18 +36,6 @@ extension Bool {
     }
 }
 
-extension Date {
-    static var declaredDatatype: String {
-        return Int.declaredDatatype
-    }
-    static func fromDatatypeValue(intValue: Int) -> Date {
-        return self.init(timeIntervalSince1970: TimeInterval(intValue))
-    }
-    var datatypeValue: Int {
-        return Int(timeIntervalSince1970)
-    }
-}
-
 class AlarmDataStore: NSObject {
     
     // this structure configure alarm table at sqlite db

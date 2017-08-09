@@ -13,6 +13,5 @@ class DreamListCell : UITableViewCell {
     @IBOutlet weak var monthLabel: UILabel!
     @IBOutlet weak var timeLabel: UILabel!
     @IBOutlet weak var titleLabel: UILabel!
-    
 }
 
