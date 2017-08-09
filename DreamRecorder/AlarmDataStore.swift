@@ -149,8 +149,8 @@ class AlarmDataStore: NSObject {
     }
     
     func deleteAlarm(alarm: Alarm) {
-        let deleteRow = AlarmTable.table.filter(AlarmTable.Column.id == alarm.id)
-        let result = self.manager.deleteRow(delete: deleteRow.delete())
+        let deletingRow = AlarmTable.table.filter(AlarmTable.Column.id == alarm.id)
+        let result = self.manager.deleteRow(delete: deletingRow.delete())
         switch result {
         case .success:
             print("Success: delete row \(alarm.id)")
