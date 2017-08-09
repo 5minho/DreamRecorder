@@ -13,4 +13,6 @@ class AddDreamNavigationController : UINavigationController{
         let storyboard = UIStoryboard(name: String(describing: self), bundle: nil)
         return storyboard.instantiateInitialViewController() as? AddDreamNavigationController
     }
+    
+    var dreamDataStore : DreamDataStore?
 }

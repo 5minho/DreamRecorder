@@ -72,6 +72,7 @@
                             </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <gestureRecognizers/>
                         <constraints>
                             <constraint firstItem="aLA-w5-KVG" firstAttribute="top" secondItem="i2q-OP-9fO" secondAttribute="bottom" constant="35" id="5CB-yX-mN9"/>
                             <constraint firstItem="ldo-vi-Cgp" firstAttribute="leading" secondItem="vV8-aY-6tN" secondAttribute="leadingMargin" constant="90" id="5bv-5i-ned"/>
@@ -84,6 +85,9 @@
                             <constraint firstItem="VhR-U7-15x" firstAttribute="trailing" secondItem="ldo-vi-Cgp" secondAttribute="trailing" id="l8q-f9-P7O"/>
                             <constraint firstItem="ldo-vi-Cgp" firstAttribute="top" secondItem="aLA-w5-KVG" secondAttribute="bottom" constant="20" id="xHc-0Y-K8Z"/>
                         </constraints>
+                        <connections>
+                            <outletCollection property="gestureRecognizers" destination="Y4L-8D-IX3" appends="YES" id="Xtx-Xo-IlQ"/>
+                        </connections>
                     </view>
                     <navigationItem key="navigationItem" id="XfA-GT-HEP">
                         <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="eo5-uN-fpO">
@@ -108,6 +112,11 @@
                         <action selector="recognitionButtonPressed:" destination="tgh-FV-AFi" id="S6C-co-OGJ"/>
                     </connections>
                 </pongPressGestureRecognizer>
+                <tapGestureRecognizer id="Y4L-8D-IX3">
+                    <connections>
+                        <action selector="recognitionViewTapped:" destination="tgh-FV-AFi" id="Usi-7Q-LEz"/>
+                    </connections>
+                </tapGestureRecognizer>
             </objects>
             <point key="canvasLocation" x="1140" y="-46.326836581709152"/>
         </scene>
