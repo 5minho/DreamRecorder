@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12121" systemVersion="16G29" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="6kN-8s-01i">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12089"/>
+        <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--View Controller-->
+        <scene sceneID="Zal-nH-ZXw">
+            <objects>
+                <viewController id="GpH-P8-EBW" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="VmK-5N-9uT"/>
+                        <viewControllerLayoutGuide type="bottom" id="xet-n2-Isc"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="jOs-VX-iAp">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="top" translatesAutoresizingMaskIntoConstraints="NO" id="cXF-6K-1OS">
+                                <rect key="frame" x="0.0" y="64" width="375" height="603"/>
+                                <subviews>
+                                    <datePicker contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" datePickerMode="dateAndTime" minuteInterval="1" translatesAutoresizingMaskIntoConstraints="NO" id="Zec-tR-xfr">
+                                        <rect key="frame" x="0.0" y="0.0" width="320" height="472.5"/>
+                                        <date key="date" timeIntervalSinceReferenceDate="523947852.188941">
+                                            <!--2017-08-09 05:04:12 +0000-->
+                                        </date>
+                                    </datePicker>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jVU-xd-AAi">
+                                        <rect key="frame" x="0.0" y="472.5" width="42" height="20.5"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <stackView opaque="NO" contentMode="scaleToFill" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="UW5-Mm-sHS">
+                                        <rect key="frame" x="0.0" y="493" width="375" height="110"/>
+                                        <subviews>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="1000" text="Repeat" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wWa-El-Emd">
+                                                <rect key="frame" x="0.0" y="0.0" width="112.5" height="110"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                <nil key="textColor"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                            <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="IJj-1I-YMj" customClass="MultipleButton" customModule="DreamRecorder" customModuleProvider="target">
+                                                <rect key="frame" x="120.5" y="0.0" width="254.5" height="110"/>
+                                                <userDefinedRuntimeAttributes>
+                                                    <userDefinedRuntimeAttribute type="number" keyPath="numberOfButton">
+                                                        <integer key="value" value="7"/>
+                                                    </userDefinedRuntimeAttribute>
+                                                    <userDefinedRuntimeAttribute type="color" keyPath="buttonBackgroundColor">
+                                                        <color key="value" red="0.15686275059999999" green="0.40000000600000002" blue="0.74901962280000001" alpha="1" colorSpace="calibratedRGB"/>
+                                                    </userDefinedRuntimeAttribute>
+                                                </userDefinedRuntimeAttributes>
+                                            </stackView>
+                                        </subviews>
+                                        <constraints>
+                                            <constraint firstItem="wWa-El-Emd" firstAttribute="width" secondItem="UW5-Mm-sHS" secondAttribute="width" multiplier="3:10" id="kOY-Ou-FXf"/>
+                                        </constraints>
+                                    </stackView>
+                                </subviews>
+                            </stackView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="trailing" secondItem="cXF-6K-1OS" secondAttribute="trailing" id="KL8-J7-gwV"/>
+                            <constraint firstItem="cXF-6K-1OS" firstAttribute="top" secondItem="VmK-5N-9uT" secondAttribute="bottom" id="Oh0-lm-Ijh"/>
+                            <constraint firstItem="cXF-6K-1OS" firstAttribute="leading" secondItem="jOs-VX-iAp" secondAttribute="leading" id="aqt-Jv-PBJ"/>
+                            <constraint firstItem="xet-n2-Isc" firstAttribute="top" secondItem="cXF-6K-1OS" secondAttribute="bottom" id="mpL-Kf-wIU"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" id="QPF-bs-MYB"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Zi0-it-0ME" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="666.39999999999998" y="-506.89655172413796"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="JA1-4v-U79">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="6kN-8s-01i" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="Zee-vl-cq9">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="GpH-P8-EBW" kind="relationship" relationship="rootViewController" id="RJW-i8-vPx"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="U7A-Kb-aaU" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-272.80000000000001" y="-506.89655172413796"/>
+        </scene>
+    </scenes>
+</document>
