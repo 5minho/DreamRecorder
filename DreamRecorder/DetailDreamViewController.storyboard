@@ -1,7 +1,107 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11134" systemVersion="15F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12121" systemVersion="16G29" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="BWd-f5-Fdy">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11106"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12089"/>
+        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+        <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
-    <scenes/>
+    <scenes>
+        <!--Detail Dream View Controller-->
+        <scene sceneID="zUM-Pe-HDg">
+            <objects>
+                <viewController id="BWd-f5-Fdy" customClass="DetailDreamViewController" customModule="DreamRecorder" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="0Zd-0v-53T"/>
+                        <viewControllerLayoutGuide type="bottom" id="IZB-XS-mfx"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="9j8-sv-VN3">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="top" spacing="15" translatesAutoresizingMaskIntoConstraints="NO" id="8XH-Z7-BgR">
+                                <rect key="frame" x="16" y="70" width="343" height="400"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="751" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SMF-A5-3dQ">
+                                        <rect key="frame" x="0.0" y="0.0" width="39" height="24"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <textField opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" verticalHuggingPriority="252" verticalCompressionResistancePriority="751" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="2Q6-Xz-lst">
+                                        <rect key="frame" x="0.0" y="39" width="343" height="21"/>
+                                        <nil key="textColor"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <textInputTraits key="textInputTraits"/>
+                                    </textField>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="751" text="Content" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uBE-dW-HLF">
+                                        <rect key="frame" x="0.0" y="75" width="72" height="24"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="751" text="Feb 21, 2017 7:30 AM" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4iM-NK-Gr4">
+                                        <rect key="frame" x="0.0" y="114" width="148" height="18"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <textView clipsSubviews="YES" multipleTouchEnabled="YES" userInteractionEnabled="NO" contentMode="scaleToFill" verticalHuggingPriority="249" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="5ZK-aH-EjF">
+                                        <rect key="frame" x="0.0" y="147" width="343" height="253"/>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                                    </textView>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstAttribute="trailing" secondItem="5ZK-aH-EjF" secondAttribute="trailing" id="6C9-UO-eWW"/>
+                                    <constraint firstAttribute="trailing" secondItem="2Q6-Xz-lst" secondAttribute="trailing" id="QMC-om-D2f"/>
+                                    <constraint firstItem="5ZK-aH-EjF" firstAttribute="leading" secondItem="8XH-Z7-BgR" secondAttribute="leading" id="jRW-kr-Z7q"/>
+                                </constraints>
+                            </stackView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="VHE-Ay-Vec">
+                                <rect key="frame" x="98" y="490" width="179" height="30"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" secondItem="VHE-Ay-Vec" secondAttribute="height" multiplier="179:30" id="IKt-K5-jAJ"/>
+                                </constraints>
+                                <state key="normal" title="Delete"/>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <gestureRecognizers/>
+                        <constraints>
+                            <constraint firstItem="VHE-Ay-Vec" firstAttribute="top" secondItem="8XH-Z7-BgR" secondAttribute="bottom" constant="20" id="2aT-UA-1Vj"/>
+                            <constraint firstItem="8XH-Z7-BgR" firstAttribute="height" secondItem="9j8-sv-VN3" secondAttribute="height" multiplier="0.6" id="6oT-pd-HHB"/>
+                            <constraint firstItem="8XH-Z7-BgR" firstAttribute="leading" secondItem="9j8-sv-VN3" secondAttribute="leadingMargin" id="IKR-Ks-0gd"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="VHE-Ay-Vec" secondAttribute="trailing" constant="82" id="VHB-gg-xhz"/>
+                            <constraint firstItem="8XH-Z7-BgR" firstAttribute="top" secondItem="0Zd-0v-53T" secondAttribute="bottom" constant="50" id="c8V-gw-YKM"/>
+                            <constraint firstItem="8XH-Z7-BgR" firstAttribute="trailing" secondItem="9j8-sv-VN3" secondAttribute="trailingMargin" id="e8X-Ra-AIa"/>
+                            <constraint firstItem="VHE-Ay-Vec" firstAttribute="leading" secondItem="9j8-sv-VN3" secondAttribute="leadingMargin" constant="82" id="kIb-Jr-t1t"/>
+                        </constraints>
+                        <connections>
+                            <outletCollection property="gestureRecognizers" destination="6jw-fJ-nBB" appends="YES" id="vJr-oL-OXL"/>
+                        </connections>
+                    </view>
+                    <connections>
+                        <outlet property="contentTextView" destination="5ZK-aH-EjF" id="hRY-tK-L32"/>
+                        <outlet property="createdDateLabel" destination="4iM-NK-Gr4" id="DOf-ey-yLK"/>
+                        <outlet property="deleteButton" destination="VHE-Ay-Vec" id="vi5-xg-lfV"/>
+                        <outlet property="titleField" destination="2Q6-Xz-lst" id="5QF-dr-CO3"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="enK-DB-jkX" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <tapGestureRecognizer id="6jw-fJ-nBB">
+                    <connections>
+                        <action selector="backgroundTapped:" destination="BWd-f5-Fdy" id="F88-7Z-yM7"/>
+                    </connections>
+                </tapGestureRecognizer>
+            </objects>
+            <point key="canvasLocation" x="-121" y="121"/>
+        </scene>
+    </scenes>
 </document>

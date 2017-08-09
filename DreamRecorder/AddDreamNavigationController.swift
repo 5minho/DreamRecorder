@@ -14,5 +14,5 @@ class AddDreamNavigationController : UINavigationController{
         return storyboard.instantiateInitialViewController() as? AddDreamNavigationController
     }
     
-    var dreamDataStore : DreamDataStore?
+    weak var dreamDataStore : DreamDataStore?
 }
