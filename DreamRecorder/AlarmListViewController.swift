@@ -18,6 +18,10 @@ class AlarmListViewController: UIViewController {
     }
     
     func rightBarButtonDidTap(sender: UIBarButtonItem) {
+        
+        guard let alarmAddViewController = AlarmAddViewController.storyboardInstance() else { return }
+        self.present(alarmAddViewController, animated: true, completion: nil)
+        
         let alarm = Alarm(id: UUID().uuidString, name: "NewAlarm", date: Date().addingTimeInterval(60), weekday: .tue, isActive: true, isSnooze: true)
         self.store.insertAlarm(alarm: alarm)
         self.store.reloadAlarms()

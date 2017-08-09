@@ -8,7 +8,13 @@
 
 import UIKit
 
-class AlarmAddViewController: UIViewController {
+protocol AlarmOneViewable: NSObjectProtocol {
+    var alarm: Alarm? { get set }
+}
+
+class AlarmAddViewController: UIViewController, AlarmOneViewable {
+    
+    var alarm: Alarm?
     
     class func storyboardInstance() -> AlarmAddViewController? {
         let storyboard = UIStoryboard(name: String(describing: self), bundle: nil)
@@ -16,11 +22,15 @@ class AlarmAddViewController: UIViewController {
     }
     
     func leftBarButtonDidTap(sender: UIBarButtonItem) {
-        
+        self.dismiss(animated: true, completion: nil)
     }
     
     func rightBarButtonDidTap(sender: UIBarButtonItem) {
         
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        self.alarm = Alarm()
     }
     
     override func viewDidLoad() {
@@ -31,6 +41,5 @@ class AlarmAddViewController: UIViewController {
         
         let rightBarButton = UIBarButtonItem(title: "Open", style: .done, target: self, action: #selector(self.rightBarButtonDidTap(sender:)))
         self.navigationItem.setRightBarButton(rightBarButton, animated: true)
-
     }
 }

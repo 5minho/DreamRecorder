@@ -41,4 +41,18 @@ class Alarm {
         self.isActive = isActive
         self.isSnooze = isSnooze
     }
+    
+    init?() {
+        var dateComponents = DateComponents()
+        dateComponents.hour = 8
+        dateComponents.minute = 0
+        guard let date = Calendar.current.date(from: dateComponents) else { return nil }
+        
+        self.id = UUID().uuidString
+        self.name = "Alarm"
+        self.date = date
+        self.weekday = .none
+        self.isActive = true
+        self.isSnooze = true
+    }
 }
