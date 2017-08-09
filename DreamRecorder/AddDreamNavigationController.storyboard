@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12121" systemVersion="16G29" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="GjN-v5-YKJ">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12089"/>
+        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--Add Dream Navigation Controller-->
+        <scene sceneID="sNj-8K-hF2">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="GjN-v5-YKJ" customClass="AddDreamNavigationController" customModule="DreamRecorder" customModuleProvider="target" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="Lp1-cX-hFw">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="tgh-FV-AFi" kind="relationship" relationship="rootViewController" id="8hK-48-HJi"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="VxB-YP-6Lh" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="200.80000000000001" y="-46.326836581709152"/>
+        </scene>
+        <!--Speech Dream View Controller-->
+        <scene sceneID="sRg-Uk-qgl">
+            <objects>
+                <viewController storyboardIdentifier="UIViewController-5jc-K2-B68" id="tgh-FV-AFi" customClass="SpeechDreamViewController" customModule="DreamRecorder" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="i2q-OP-9fO"/>
+                        <viewControllerLayoutGuide type="bottom" id="eTY-qy-oGA"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="vV8-aY-6tN">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ldo-vi-Cgp">
+                                <rect key="frame" x="106" y="389" width="163" height="161"/>
+                                <color key="backgroundColor" red="1" green="0.72612406920000006" blue="0.30297375650000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <gestureRecognizers/>
+                                <constraints>
+                                    <constraint firstAttribute="width" secondItem="ldo-vi-Cgp" secondAttribute="height" multiplier="81:80" id="fvr-zZ-d6z"/>
+                                </constraints>
+                                <state key="normal" title="Record">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <outletCollection property="gestureRecognizers" destination="G1i-hj-yDP" appends="YES" id="Wwx-St-iGi"/>
+                                </connections>
+                            </button>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="aLA-w5-KVG">
+                                <rect key="frame" x="16" y="99" width="343" height="270"/>
+                                <color key="backgroundColor" red="1" green="0.86412025429999995" blue="0.57533309590000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="270" id="VJY-x8-eAf"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                            </textView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VhR-U7-15x">
+                                <rect key="frame" x="106" y="573" width="163" height="30"/>
+                                <color key="backgroundColor" red="0.92336606979370117" green="0.75567172588123632" blue="0.11309645430591021" alpha="0.5" colorSpace="custom" customColorSpace="sRGB"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="aLA-w5-KVG" firstAttribute="top" secondItem="i2q-OP-9fO" secondAttribute="bottom" constant="35" id="5CB-yX-mN9"/>
+                            <constraint firstItem="ldo-vi-Cgp" firstAttribute="leading" secondItem="vV8-aY-6tN" secondAttribute="leadingMargin" constant="90" id="5bv-5i-ned"/>
+                            <constraint firstItem="VhR-U7-15x" firstAttribute="leading" secondItem="ldo-vi-Cgp" secondAttribute="leading" id="6zG-cE-1id"/>
+                            <constraint firstItem="aLA-w5-KVG" firstAttribute="trailing" secondItem="vV8-aY-6tN" secondAttribute="trailingMargin" id="9I8-Pq-UVY"/>
+                            <constraint firstItem="VhR-U7-15x" firstAttribute="top" secondItem="ldo-vi-Cgp" secondAttribute="bottom" constant="23" id="HHg-aF-COy"/>
+                            <constraint firstItem="eTY-qy-oGA" firstAttribute="top" secondItem="VhR-U7-15x" secondAttribute="bottom" constant="64" id="Xsn-en-ANg"/>
+                            <constraint firstItem="aLA-w5-KVG" firstAttribute="leading" secondItem="vV8-aY-6tN" secondAttribute="leadingMargin" id="cha-fO-57h"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="ldo-vi-Cgp" secondAttribute="trailing" constant="90" id="kRH-Uh-YJ4"/>
+                            <constraint firstItem="VhR-U7-15x" firstAttribute="trailing" secondItem="ldo-vi-Cgp" secondAttribute="trailing" id="l8q-f9-P7O"/>
+                            <constraint firstItem="ldo-vi-Cgp" firstAttribute="top" secondItem="aLA-w5-KVG" secondAttribute="bottom" constant="20" id="xHc-0Y-K8Z"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" id="XfA-GT-HEP">
+                        <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="eo5-uN-fpO">
+                            <connections>
+                                <action selector="cancelRecord:" destination="tgh-FV-AFi" id="lC7-Nv-RYD"/>
+                            </connections>
+                        </barButtonItem>
+                        <barButtonItem key="rightBarButtonItem" systemItem="done" id="nCl-FE-2kW">
+                            <connections>
+                                <action selector="doneRecordDream:" destination="tgh-FV-AFi" id="jzw-E7-53h"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                    <connections>
+                        <outlet property="contentField" destination="aLA-w5-KVG" id="FoJ-va-xOA"/>
+                        <outlet property="recongnitionStateLabel" destination="VhR-U7-15x" id="jhA-jD-OhM"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Dbe-DH-mYk" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <pongPressGestureRecognizer allowableMovement="10" minimumPressDuration="0.5" id="G1i-hj-yDP">
+                    <connections>
+                        <action selector="recognitionButtonPressed:" destination="tgh-FV-AFi" id="S6C-co-OGJ"/>
+                    </connections>
+                </pongPressGestureRecognizer>
+            </objects>
+            <point key="canvasLocation" x="1140" y="-46.326836581709152"/>
+        </scene>
+    </scenes>
+</document>

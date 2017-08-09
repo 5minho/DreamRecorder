@@ -34,8 +34,8 @@ class DreamListViewController : UIViewController {
     }
 
     @IBAction func addDream(_ sender: UIBarButtonItem) {
-        if let speechDreamViewController = SpeechDreamViewController.storyboardInstance() {
-            navigationController?.pushViewController(speechDreamViewController, animated: true)
+        if let addDreamNavigationController = AddDreamNavigationController.storyboardInstance() {
+            present(addDreamNavigationController, animated: true, completion: nil)
         }
     }
 }
