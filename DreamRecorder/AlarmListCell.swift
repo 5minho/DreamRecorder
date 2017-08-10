@@ -6,4 +6,49 @@
 //  Copyright © 2017년 BoostCamp. All rights reserved.
 //
 
-import Foundation
+import UIKit
+
+protocol AlarmListCellDelegate: NSObjectProtocol {
+    func alarmListCell(_: AlarmListCell, activeSwitchValueChanged sender: UISwitch)
+}
+
+class AlarmListCell: UITableViewCell {
+    
+    @IBOutlet weak var timeLabel: UILabel!
+    @IBOutlet weak var weekdayButton: MultiButton!
+    @IBOutlet weak var nameLabel: UILabel!
+    
+    weak var delegate: AlarmListCellDelegate?
+    
+    override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
+//        self.setupWeekdayButton()
+        self.setupAccessoryView()
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+//        self.setupWeekdayButton()
+        self.setupAccessoryView()
+    }
+    
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        self.setupWeekdayButton()
+    }
+    
+    private func setupWeekdayButton(){
+        self.weekdayButton.setTitles(titles: Calendar.current.shortWeekdaySymbols)
+        self.weekdayButton.distribution = .fillEqually
+    }
+    
+    private func setupAccessoryView() {
+        let activeSwitch = UISwitch()
+        activeSwitch.addTarget(self, action: #selector(self.activeSwitchValueChanged(sender:)), for: .valueChanged)
+        self.accessoryView = activeSwitch
+    }
+    
+    @objc private func activeSwitchValueChanged(sender: UISwitch) {
+        self.delegate?.alarmListCell(self, activeSwitchValueChanged: sender)
+    }
+}
