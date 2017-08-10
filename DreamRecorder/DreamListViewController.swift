@@ -21,6 +21,7 @@ class DreamListViewController : UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         tableView.delegate = self
         tableView.dataSource = self
         dreamDataStore.selectAll()

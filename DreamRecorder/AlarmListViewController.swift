@@ -13,19 +13,22 @@ class AlarmListViewController: UIViewController {
     @IBOutlet weak var tableView: UITableView!
     let store = AlarmDataStore()
     
+    lazy var alarmAddViewController: AlarmAddViewController? = {
+        return AlarmAddViewController.storyboardInstance()
+    }()
+    
     func leftBarButtonDidTap(sender: UIBarButtonItem) {
         self.tableView.setEditing(!self.tableView.isEditing, animated: true)
     }
     
     func rightBarButtonDidTap(sender: UIBarButtonItem) {
+        guard let alarmAddViewController = self.alarmAddViewController else { return }
+        let navigationController = UINavigationController(rootViewController: alarmAddViewController)
         
-        guard let alarmAddViewController = AlarmAddViewController.storyboardInstance() else { return }
-        self.present(alarmAddViewController, animated: true, completion: nil)
+        alarmAddViewController.delegate = self
+        alarmAddViewController.alarm = Alarm()
         
-        let alarm = Alarm(id: UUID().uuidString, name: "NewAlarm", date: Date().addingTimeInterval(60), weekday: .tue, isActive: true, isSnooze: true)
-        self.store.insertAlarm(alarm: alarm)
-        self.store.reloadAlarms()
-        self.tableView.reloadData()
+        self.present(navigationController, animated: true, completion: nil)
     }
     
     override func viewDidLoad() {
@@ -34,17 +37,18 @@ class AlarmListViewController: UIViewController {
         self.tableView.delegate = self
         self.tableView.dataSource = self
         
+        self.tableView.estimatedRowHeight = 90
+        self.tableView.tableFooterView = UIView(frame: .zero)
+        
         let leftBarButton = UIBarButtonItem(title: "Edit", style: .plain, target: self, action: #selector(self.leftBarButtonDidTap(sender:)))
         self.navigationItem.setLeftBarButton(leftBarButton, animated: true)
         
-        let rightBarButton = UIBarButtonItem(title: "+", style: .done, target: self, action: #selector(self.rightBarButtonDidTap(sender:)))
+        let rightBarButton = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(self.rightBarButtonDidTap(sender:)))
+        
         self.navigationItem.setRightBarButton(rightBarButton, animated: true)
         
         self.store.createTable()
         self.store.reloadAlarms()
-        let alarmScheduler = AlarmScheduler()
-        let alarm = Alarm(id: "hello", name: "NewAlarm", date: Date().addingTimeInterval(60), weekday: .weekdays, isActive: true, isSnooze: true)
-        alarmScheduler.addNotification(with: alarm)
     }
 }
 
@@ -60,9 +64,16 @@ extension AlarmListViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "UITableViewCell", for: indexPath)
-        cell.textLabel?.text = self.store.alarms[indexPath.row].name
-        return cell
+        if let cell = tableView.dequeueReusableCell(withIdentifier: "AlarmListCell",
+                                                    for: indexPath) as? AlarmListCell {
+            cell.timeLabel.text = DateParser().time(from: self.store.alarms[indexPath.row].date)
+            cell.nameLabel.text = self.store.alarms[indexPath.row].name
+            cell.weekdayButton.setSelection(options: self.store.alarms[indexPath.row].weekday)
+//            cell.weekdayButton.setButtonsEnabled(to: false)
+            return cell
+        } else {
+            return AlarmListCell(style: .default, reuseIdentifier: "AlarmListCell")
+        }
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -78,5 +89,12 @@ extension AlarmListViewController: UITableViewDelegate, UITableViewDataSource {
             tableView.deleteRows(at: [deletingRow], with: .automatic)
         }
     }
+}
 
+extension AlarmListViewController: AlarmAddViewControllerDelegate {
+    func alarmAddViewController(_: AlarmAddViewController, didSaveNewAlarm alarm: Alarm) {
+        self.store.alarms.append(alarm)
+        self.store.insertAlarm(alarm: alarm)
+        self.tableView.reloadData()
+    }
 }
