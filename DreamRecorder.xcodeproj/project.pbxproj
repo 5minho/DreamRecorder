@@ -26,6 +26,7 @@
 		5AD8F70F1F389F93005311F8 /* DBManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AD8F70E1F389F93005311F8 /* DBManager.swift */; };
 		5AD8F7111F389F9A005311F8 /* AlarmDataStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AD8F7101F389F9A005311F8 /* AlarmDataStore.swift */; };
 		5AD8F7131F389FC3005311F8 /* DreamDataStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AD8F7121F389FC3005311F8 /* DreamDataStore.swift */; };
+		5ADFCE9E1F3C401D00CAD2F2 /* DetailDreamViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5ADFCE9D1F3C401D00CAD2F2 /* DetailDreamViewController.swift */; };
 		A52F26181F3837740036FA90 /* Alarm.swift in Sources */ = {isa = PBXBuildFile; fileRef = A52F26171F3837740036FA90 /* Alarm.swift */; };
 		A52F261B1F38437B0036FA90 /* AlarmListViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A52F26191F38437B0036FA90 /* AlarmListViewController.storyboard */; };
 		A52F261D1F3843950036FA90 /* DreamListViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A52F261C1F3843950036FA90 /* DreamListViewController.storyboard */; };
@@ -79,6 +80,7 @@
 		5AD8F70E1F389F93005311F8 /* DBManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DBManager.swift; sourceTree = "<group>"; };
 		5AD8F7101F389F9A005311F8 /* AlarmDataStore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AlarmDataStore.swift; sourceTree = "<group>"; };
 		5AD8F7121F389FC3005311F8 /* DreamDataStore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DreamDataStore.swift; sourceTree = "<group>"; };
+		5ADFCE9D1F3C401D00CAD2F2 /* DetailDreamViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailDreamViewController.swift; sourceTree = "<group>"; };
 		71592AFC9695CAD77FC7E788 /* Pods-DreamRecorder.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DreamRecorder.release.xcconfig"; path = "Pods/Target Support Files/Pods-DreamRecorder/Pods-DreamRecorder.release.xcconfig"; sourceTree = "<group>"; };
 		A52F26171F3837740036FA90 /* Alarm.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Alarm.swift; sourceTree = "<group>"; };
 		A52F261A1F38437B0036FA90 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/AlarmListViewController.storyboard; sourceTree = "<group>"; };
@@ -136,6 +138,7 @@
 				A52F26171F3837740036FA90 /* Alarm.swift */,
 				5AD8F7121F389FC3005311F8 /* DreamDataStore.swift */,
 				5AB5F51F1F38FF0800863F77 /* DreamListViewController.swift */,
+				5ADFCE9D1F3C401D00CAD2F2 /* DetailDreamViewController.swift */,
 				5ACA00C51F39C58C0077AF73 /* SpeechDreamViewController.swift */,
 				5ACA00E01F39D7BA0077AF73 /* DateParser.swift */,
 				5A9BEBD71F3AF3580054EA6D /* AddDreamNavigationController.swift */,
@@ -367,6 +370,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				5AD8F70F1F389F93005311F8 /* DBManager.swift in Sources */,
+				5ADFCE9E1F3C401D00CAD2F2 /* DetailDreamViewController.swift in Sources */,
 				5AD8F7111F389F9A005311F8 /* AlarmDataStore.swift in Sources */,
 				5AB5F5201F38FF0900863F77 /* DreamListViewController.swift in Sources */,
 				5A9BEBD81F3AF3580054EA6D /* AddDreamNavigationController.swift in Sources */,
