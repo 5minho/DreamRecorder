@@ -101,7 +101,8 @@ class AlarmScheduler {
                 
                 for weekday in 0 ... 6 {
                     if alarm.weekday.contains(WeekdayOptions(rawValue: 1 << weekday)) {
-                        dateComponents.weekday = weekday
+                        // Discuss
+                        dateComponents.weekday = weekday + 1    // Calendar.Component.weekday start index at 1 (1 ~ 7)
                         let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponents, repeats: true)
                         triggers.append(trigger)
                     }
@@ -189,7 +190,7 @@ class AlarmScheduler {
                 if alarm.weekday.contains(WeekdayOptions(rawValue: 1 << weekday)) {
                     notification.userInfo = ["identifier": "\(alarm.id)\(weekday)"]
                     notification.repeatInterval = NSCalendar.Unit.weekOfYear
-                    dateComponents.weekday = weekday
+                    dateComponents.weekday = weekday + 1    // Calendar.Component.weekday start index at 1 (1 ~ 7)
                     notification.fireDate = fireDate
                     UIApplication.shared.scheduleLocalNotification(notification)
                 }
