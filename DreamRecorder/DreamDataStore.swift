@@ -9,26 +9,6 @@
 import Foundation
 import SQLite
 
-
-extension Date {
-    static var declaredDatatype: String {
-        return Int.declaredDatatype
-    }
-    static func fromDatatypeValue(intValue: Int) -> Date {
-        return self.init(timeIntervalSince1970: TimeInterval(intValue))
-    }
-    var datatypeValue: Int {
-        return Int(timeIntervalSince1970)
-    }
-}
-
-let sqlDateFormatter: DateFormatter = {
-    let formatter = DateFormatter()
-    formatter.dateStyle = .medium
-    formatter.timeStyle = .medium
-    return formatter
-}()
-
 class DreamDataStore {
     var dreams : [Dream] = []
     var dbManager = DBManager.shared
