@@ -12,6 +12,7 @@ class AlarmListViewController: UIViewController {
     
     @IBOutlet weak var tableView: UITableView!
     let store = AlarmDataStore()
+    let scheduler = AlarmScheduler()
     
     lazy var alarmAddViewController: AlarmAddViewController? = {
         return AlarmAddViewController.storyboardInstance()
@@ -22,6 +23,8 @@ class AlarmListViewController: UIViewController {
     }
     
     func rightBarButtonDidTap(sender: UIBarButtonItem) {
+        self.tableView.setEditing(false, animated: true)
+        
         guard let alarmAddViewController = self.alarmAddViewController else { return }
         let navigationController = UINavigationController(rootViewController: alarmAddViewController)
         
@@ -95,13 +98,22 @@ extension AlarmListViewController: UITableViewDelegate, UITableViewDataSource {
 }
 extension AlarmListViewController: AlarmListCellDelegate{
     func alarmListCell(cell : AlarmListCell, activeSwitchValueChanged sender: UISwitch) {
-        print(self.store.alarms[sender.tag])
+        guard sender.tag < self.store.alarms.count else { return }
+        
+        let updatedAlarm = self.store.alarms[sender.tag]
+        if sender.isOn {
+            self.scheduler.addNotification(with: updatedAlarm)
+        } else {
+            self.scheduler.deleteNotification(with: updatedAlarm)
+        }
     }
 }
 extension AlarmListViewController: AlarmAddViewControllerDelegate {
     func alarmAddViewController(_: AlarmAddViewController, didSaveNewAlarm alarm: Alarm) {
         self.store.alarms.append(alarm)
         self.store.insertAlarm(alarm: alarm)
-        self.tableView.reloadData()
+        self.scheduler.addNotification(with: alarm)
+        
+        self.tableView.reloadSections(IndexSet(integersIn: 0...0), with: .automatic)
     }
 }
