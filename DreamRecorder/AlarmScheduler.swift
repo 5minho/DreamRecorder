@@ -29,6 +29,14 @@ class AlarmScheduler {
         }
     }
     
+    func removeAllNotifications() {
+        if #available(iOS 10.0, *) {
+            UNUserNotificationCenter.current().removeAllPendingNotificationRequests()
+        } else {
+            // Fallback on earlier versions
+        }
+    }
+    
     func getNotifications() {
         if #available(iOS 10.0, *) {
             UNUserNotificationCenter.current().getPendingNotificationRequests { (requests) in

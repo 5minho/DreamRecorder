@@ -4,15 +4,15 @@
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
-        <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12089"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
         <!--Alarm List View Controller-->
         <scene sceneID="u5b-63-o8B">
             <objects>
-                <viewController id="Zuo-nK-AGm" customClass="AlarmListViewController" customModule="DreamRecorder" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController automaticallyAdjustsScrollViewInsets="NO" id="Zuo-nK-AGm" customClass="AlarmListViewController" customModule="DreamRecorder" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="h5a-OZ-5cY"/>
                         <viewControllerLayoutGuide type="bottom" id="uOv-5f-oou"/>
@@ -25,22 +25,58 @@
                                 <rect key="frame" x="0.0" y="64" width="375" height="554"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="UITableViewCell" textLabel="fMu-HW-DSA" style="IBUITableViewCellStyleDefault" id="R5T-WR-r5t">
-                                        <rect key="frame" x="0.0" y="28" width="375" height="44"/>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="AlarmListCell" rowHeight="90" id="R5T-WR-r5t" customClass="AlarmListCell" customModule="DreamRecorder" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="28" width="375" height="90"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="R5T-WR-r5t" id="XfW-9m-8wK">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="89.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="fMu-HW-DSA">
-                                                    <rect key="frame" x="15" y="0.0" width="345" height="43.5"/>
-                                                    <autoresizingMask key="autoresizingMask"/>
+                                                <stackView opaque="NO" contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="9BY-cI-xgB" customClass="MultiButton" customModule="DreamRecorder" customModuleProvider="target">
+                                                    <rect key="frame" x="16" y="57.5" width="210" height="16"/>
+                                                    <userDefinedRuntimeAttributes>
+                                                        <userDefinedRuntimeAttribute type="number" keyPath="numberOfButton">
+                                                            <integer key="value" value="7"/>
+                                                        </userDefinedRuntimeAttribute>
+                                                        <userDefinedRuntimeAttribute type="color" keyPath="buttonBackgroundColor">
+                                                            <color key="value" red="0.93145161870000004" green="0.94080692529999999" blue="0.95069193839999999" alpha="1" colorSpace="calibratedRGB"/>
+                                                        </userDefinedRuntimeAttribute>
+                                                        <userDefinedRuntimeAttribute type="color" keyPath="buttonTitleColor">
+                                                            <color key="value" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                                        </userDefinedRuntimeAttribute>
+                                                        <userDefinedRuntimeAttribute type="color" keyPath="buttonTitleColorHighlighted">
+                                                            <color key="value" red="0.9098039269" green="0.4784313738" blue="0.64313727620000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                        </userDefinedRuntimeAttribute>
+                                                    </userDefinedRuntimeAttributes>
+                                                </stackView>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="249" text="07:30 pm" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VpK-Bd-UfZ">
+                                                    <rect key="frame" x="16" y="16" width="118" height="33.5"/>
+                                                    <fontDescription key="fontDescription" style="UICTFontTextStyleTitle1"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bBv-Jt-2tc">
+                                                    <rect key="frame" x="333.5" y="34.5" width="33.5" height="20.5"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                             </subviews>
+                                            <constraints>
+                                                <constraint firstItem="VpK-Bd-UfZ" firstAttribute="top" secondItem="XfW-9m-8wK" secondAttribute="topMargin" constant="8" id="QIN-pp-2tj"/>
+                                                <constraint firstItem="9BY-cI-xgB" firstAttribute="leading" secondItem="VpK-Bd-UfZ" secondAttribute="leading" id="S7g-K5-e4A"/>
+                                                <constraint firstAttribute="bottomMargin" secondItem="9BY-cI-xgB" secondAttribute="bottom" constant="8" id="Ssa-HS-eaN"/>
+                                                <constraint firstItem="bBv-Jt-2tc" firstAttribute="centerY" secondItem="XfW-9m-8wK" secondAttribute="centerY" id="ggi-o7-T8h"/>
+                                                <constraint firstItem="VpK-Bd-UfZ" firstAttribute="leading" secondItem="XfW-9m-8wK" secondAttribute="leadingMargin" constant="8" id="llN-Dx-dCq"/>
+                                                <constraint firstItem="9BY-cI-xgB" firstAttribute="top" secondItem="VpK-Bd-UfZ" secondAttribute="bottom" constant="8" id="nXG-pk-rRb"/>
+                                                <constraint firstAttribute="trailingMargin" secondItem="bBv-Jt-2tc" secondAttribute="trailing" id="rfU-ML-gJ4"/>
+                                            </constraints>
                                         </tableViewCellContentView>
+                                        <connections>
+                                            <outlet property="nameLabel" destination="bBv-Jt-2tc" id="rod-zO-zgT"/>
+                                            <outlet property="timeLabel" destination="VpK-Bd-UfZ" id="c16-c5-21C"/>
+                                            <outlet property="weekdayButton" destination="9BY-cI-xgB" id="xUX-fD-nAU"/>
+                                        </connections>
                                     </tableViewCell>
                                 </prototypes>
                             </tableView>
