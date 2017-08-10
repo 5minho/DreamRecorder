@@ -19,9 +19,9 @@ struct DateParser {
                 return nil
         }
         if hour > 12 {
-            return "\(hour - 12):" + String(format: "%02d", minute) + " PM"
+            return "\(String(format: "%02d", hour - 12)):\(String(format: "%02d", minute)) PM"
         }
-        return "\(hour):\(minute) AM"
+        return "\(String(format: "%02d", hour)):\(String(format: "%02d", minute)) AM"
     }
     
     func day(from date: Date) -> String? {
