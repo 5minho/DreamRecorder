@@ -15,6 +15,8 @@ protocol MultipleButtonDelegate: NSObjectProtocol {
 @IBDesignable
 class MultipleButton: UIStackView {
     
+    // MARK: Properties.
+    // IBInspectable Vriables.
     @IBInspectable var numberOfButton: Int = 2 {
         didSet {
             self.setupButtons()
@@ -37,15 +39,16 @@ class MultipleButton: UIStackView {
     @IBInspectable var buttonTitleColorHighlighted: UIColor = UIColor.gray {
         didSet {
             for button in self.buttons {
-                button.setTitleColor(buttonTitleColor, for: .highlighted)
+                button.setTitleColor(buttonTitleColorHighlighted, for: .highlighted)
             }
         }
     }
     
+    // Properties.
     var delegate: MultipleButtonDelegate?
-    var buttons: [UIButton] = []
+    private var buttons: [UIButton] = []
     
-    //
+    // MARK: Initializer.
     override init(frame: CGRect) {
         super.init(frame: frame)
         self.setupButtons()
@@ -56,6 +59,7 @@ class MultipleButton: UIStackView {
         self.setupButtons()
     }
     
+    // MARK: Private Functions.
     private func setupButtons(){
         
         for button in self.buttons {
@@ -77,6 +81,14 @@ class MultipleButton: UIStackView {
     
     @objc private func buttonDidTouchUpInside(sender: UIButton) {
         self.delegate?.multipleButton(self, didTapButtonAt: sender.tag)
+    }
+    
+    // MARK: Public functions.
+    func setTitles(titles: String...){
+        guard titles.count == self.buttons.count else { return }
+        for (index, title) in titles.enumerated() {
+            self.buttons[index].setTitle(title, for: .normal)
+        }
     }
     
 }
