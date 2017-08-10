@@ -33,7 +33,13 @@ class Alarm {
     var isActive: Bool
     var isSnooze: Bool
     
-    init(id : String, name: String, date: Date, weekday: WeekdayOptions, isActive: Bool, isSnooze: Bool) {
+    init(id : String = UUID().uuidString,
+         name: String = "Alarm",
+         date: Date = Date(),
+         weekday: WeekdayOptions = .none,
+         isActive: Bool = true,
+         isSnooze: Bool = true) {
+        
         self.id = id
         self.name = name
         self.date = date
