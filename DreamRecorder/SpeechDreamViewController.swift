@@ -25,6 +25,11 @@ class SpeechDreamViewController : UIViewController {
         super.init(coder: aDecoder)
         self.speechRecognizer.delegate = self
     }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        speechRecognizer.cancel()
+    }
 
     @IBAction func recognitionButtonPressed(_ sender: UILongPressGestureRecognizer) {
         if sender.state == .began {
