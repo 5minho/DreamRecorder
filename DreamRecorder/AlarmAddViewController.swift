@@ -31,6 +31,7 @@ class AlarmAddViewController: UIViewController {
     
     func rightBarButtonDidTap(sender: UIBarButtonItem) {
         guard let newAlarm = self.alarm else { return }
+        newAlarm.isActive = true
         self.delegate?.alarmAddViewController(self, didSaveNewAlarm: newAlarm)
         self.dismiss(animated: true, completion: nil)
     }
