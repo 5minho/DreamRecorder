@@ -9,7 +9,7 @@
 import UIKit
 
 protocol AlarmListCellDelegate: NSObjectProtocol {
-    func alarmListCell(_: AlarmListCell, activeSwitchValueChanged sender: UISwitch)
+    func alarmListCell(cell: AlarmListCell, activeSwitchValueChanged sender: UISwitch)
 }
 
 class AlarmListCell: UITableViewCell {
@@ -17,6 +17,7 @@ class AlarmListCell: UITableViewCell {
     @IBOutlet weak var timeLabel: UILabel!
     @IBOutlet weak var weekdayButton: MultiButton!
     @IBOutlet weak var nameLabel: UILabel!
+    var activeSwitch: UISwitch!
     
     weak var delegate: AlarmListCellDelegate?
     
@@ -43,12 +44,12 @@ class AlarmListCell: UITableViewCell {
     }
     
     private func setupAccessoryView() {
-        let activeSwitch = UISwitch()
+        self.activeSwitch = UISwitch()
         activeSwitch.addTarget(self, action: #selector(self.activeSwitchValueChanged(sender:)), for: .valueChanged)
         self.accessoryView = activeSwitch
     }
     
     @objc private func activeSwitchValueChanged(sender: UISwitch) {
-        self.delegate?.alarmListCell(self, activeSwitchValueChanged: sender)
+        self.delegate?.alarmListCell(cell: self, activeSwitchValueChanged: sender)
     }
 }

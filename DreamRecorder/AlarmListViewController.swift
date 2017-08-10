@@ -69,6 +69,9 @@ extension AlarmListViewController: UITableViewDelegate, UITableViewDataSource {
             cell.timeLabel.text = DateParser().time(from: self.store.alarms[indexPath.row].date)
             cell.nameLabel.text = self.store.alarms[indexPath.row].name
             cell.weekdayButton.setSelection(options: self.store.alarms[indexPath.row].weekday)
+            cell.activeSwitch.isOn = self.store.alarms[indexPath.row].isActive
+            cell.activeSwitch.tag = indexPath.row
+            cell.delegate = self
 //            cell.weekdayButton.setButtonsEnabled(to: false)
             return cell
         } else {
@@ -90,7 +93,11 @@ extension AlarmListViewController: UITableViewDelegate, UITableViewDataSource {
         }
     }
 }
-
+extension AlarmListViewController: AlarmListCellDelegate{
+    func alarmListCell(cell : AlarmListCell, activeSwitchValueChanged sender: UISwitch) {
+        print(self.store.alarms[sender.tag])
+    }
+}
 extension AlarmListViewController: AlarmAddViewControllerDelegate {
     func alarmAddViewController(_: AlarmAddViewController, didSaveNewAlarm alarm: Alarm) {
         self.store.alarms.append(alarm)
