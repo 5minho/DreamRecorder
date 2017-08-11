@@ -10,7 +10,12 @@ import Foundation
 import SQLite
 
 class DreamDataStore {
-    var dreams : [Dream] = []
+    var dreams : [Dream] = [] {
+        didSet {
+            dreams.sort(by: >)
+        }
+    }
+    
     var dbManager = DBManager.shared
     
     private struct DreamTable {
@@ -46,6 +51,7 @@ class DreamDataStore {
     func selectAll() {
         let rowsResult = dbManager.selectAll(query: DreamTable.table.order(DreamTable.Column.createdDate.desc))
         switch rowsResult {
+            
         case let .success(rows):
             rows.forEach({
                 let id = $0.get(DreamTable.Column.id)
@@ -59,6 +65,7 @@ class DreamDataStore {
                     dreams.append(dream)
                 }
             })
+            
         case let .failure(error):
             print(error)
         }
@@ -78,7 +85,7 @@ class DreamDataStore {
         
         switch result {
         case .success(_):
-            self.dreams.insert(dream, at: 0)
+            self.dreams.append(dream)
         default:
             print("default")
         }
@@ -96,7 +103,6 @@ class DreamDataStore {
         )
         
         switch result {
-            
         case .success:
             print("Success: update row \(dream.id)")
         case let .failure(error):

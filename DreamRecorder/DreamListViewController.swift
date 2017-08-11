@@ -15,16 +15,17 @@ class DreamListViewController : UIViewController {
     @IBOutlet weak var weekDayLabel: UILabel!
     @IBOutlet weak var detailTodayLabel: UILabel!
     
-    var dreamDataStore = DreamDataStore()
+    var dreamDataStore : DreamDataStore!
     
     fileprivate var dateParser = DateParser()
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        let mainTabBarController = self.tabBarController as? MainTabBarViewController
+        dreamDataStore = mainTabBarController?.dreamDataStore
         
         tableView.delegate = self
         tableView.dataSource = self
-        dreamDataStore.selectAll()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -32,7 +33,7 @@ class DreamListViewController : UIViewController {
         let today = Date()
         weekDayLabel.text = dateParser.dayOfWeek(from: today)
         detailTodayLabel.text = dateParser.detail(from: today)
-        tableView.reloadData()
+        tableView.reloadSections(IndexSet(integersIn:0...0), with: .automatic)
     }
 
     @IBAction func addDream(_ sender: UIBarButtonItem) {

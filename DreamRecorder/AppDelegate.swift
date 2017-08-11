@@ -13,7 +13,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
 
-
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
         
@@ -21,6 +20,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             guard let notifications = UIApplication.shared.scheduledLocalNotifications else { return true }
             // from LocalNotification to UNNotification. 
         }
+        
+        let dreamDataStore = DreamDataStore()
+        dreamDataStore.selectAll()
+        let mainTabBarController = window?.rootViewController as? MainTabBarViewController
+        mainTabBarController?.dreamDataStore = dreamDataStore
         
         return true
     }

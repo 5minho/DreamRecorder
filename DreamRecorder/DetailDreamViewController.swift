@@ -35,6 +35,7 @@ class DetailDreamViewController : UIViewController {
     
     weak var dreamDataStore : DreamDataStore?
     weak var dream : Dream?
+    
     override func viewDidLoad() {
         
         super.viewDidLoad()

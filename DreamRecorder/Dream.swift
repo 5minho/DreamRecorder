@@ -28,4 +28,8 @@ extension Dream : Equatable {
     static func ==(lhs : Dream, rhs : Dream) -> Bool {
         return lhs.id == rhs.id
     }
+    
+    static func > (lhs : Dream, rhs : Dream) -> Bool {
+        return lhs.createdDate > rhs.createdDate
+    }
 }
