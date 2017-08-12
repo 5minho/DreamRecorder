@@ -98,32 +98,25 @@ extension AlarmEditViewController: UITableViewDataSource, UITableViewDelegate {
         
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "AlarmDetailCell", for: indexPath) as? AlarmDetailCell else { return UITableViewCell() }
         guard let style = AlarmDetailCellStyle(rawValue: indexPath.row) else { return UITableViewCell() }
-        guard let newAlarm = self.alarm else { return UITableViewCell() }
+        guard let editingAlarm = self.editingAlarm else { return UITableViewCell() }
         
-        cell._cellStyle = style
+        cell.cellStyle = style
+        cell.delegate = self
+        
         if indexPath.row == AlarmDetailCellStyle.repeat.rawValue {
-            cell.delegate = self
-            cell.textLabel?.text = String(describing: AlarmDetailCellStyle.repeat)
-            cell.detailTextLabel?.text = nil
-            return cell
+            if let weekdayButtonsAccessoryView = cell.weekdayButtonAccessoryView {
+                weekdayButtonsAccessoryView.setSelection(options: editingAlarm.weekday)
+            }
         } else if indexPath.row == AlarmDetailCellStyle.label.rawValue {
-            cell.delegate = self
-            cell.textLabel?.text = String(describing: AlarmDetailCellStyle.label)
-            cell.detailTextLabel?.text = newAlarm.name
-            return cell
+            cell.detailTextLabel?.text = editingAlarm.name
         } else if indexPath.row == AlarmDetailCellStyle.sound.rawValue {
-            cell.delegate = self
-            cell.textLabel?.text = String(describing: AlarmDetailCellStyle.sound)
             cell.detailTextLabel?.text = "Default"
-            return cell
         } else if indexPath.row == AlarmDetailCellStyle.snooze.rawValue {
-            cell.delegate = self
-            cell.textLabel?.text = String(describing: AlarmDetailCellStyle.snooze)
-            cell.detailTextLabel?.text = nil
-            return cell
-        } else {
-            return UITableViewCell()
+            if let switchAccessoryView = cell.switchAccessoryView {
+                switchAccessoryView.isOn = editingAlarm.isSnooze
+            }
         }
+        return cell
     }
     
     // Delegate.
