@@ -59,14 +59,19 @@ class AlarmScheduler {
                         removeIdnentifiers.append(request.identifier)
                     }
                     UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: removeIdnentifiers)
-                    print("Notification \(removeIdnentifiers.count) is removed")
                 }
+                print("Notification \(removeIdnentifiers.count) is removed")
             }
             UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: [alarm.id])
         } else {
             // Fallback on earlier versions
             self.removeNotificationFallback(with: alarm)
         }
+    }
+    
+    func updateNotification(with alarm: Alarm) {
+        self.deleteNotification(with: alarm)
+        self.addNotification(with: alarm)
     }
     
     func addNotification(with alarm: Alarm){
@@ -90,11 +95,13 @@ class AlarmScheduler {
                 let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponents, repeats: false)
                 let request = UNNotificationRequest(identifier: identifier, content: content, trigger: trigger)
                 UNUserNotificationCenter.current().add(request, withCompletionHandler: nil)
+                print("Notification \(identifier) is created no repeat")
                 
             case WeekdayOptions.all:    // Repeat Every Weekday.
                 let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponents, repeats: true)
                 let request = UNNotificationRequest(identifier: identifier, content: content, trigger: trigger)
                 UNUserNotificationCenter.current().add(request, withCompletionHandler: nil)
+                print("Notification \(identifier) is created (every weekday)")
 
             default:                    // Repeat Each Weekday.
                 var triggers: [UNCalendarNotificationTrigger] = []
@@ -111,6 +118,7 @@ class AlarmScheduler {
                 for (index, trigger) in triggers.enumerated() {
                     let request = UNNotificationRequest(identifier: "\(identifier)\(index)", content: content, trigger: trigger)
                     UNUserNotificationCenter.current().add(request, withCompletionHandler: nil)
+                    print("Notification \(identifier) is created (\(Calendar.current.weekdaySymbols[trigger.dateComponents.weekday! - 1]))")
                 }
             }
         } else {
