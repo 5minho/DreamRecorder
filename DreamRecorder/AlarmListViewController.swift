@@ -12,7 +12,7 @@ class AlarmListViewController: UIViewController {
     
     @IBOutlet weak var tableView: UITableView!
     let store = AlarmDataStore()
-    let scheduler = AlarmScheduler()
+    lazy var scheduler = AlarmScheduler()
     
     lazy var alarmAddViewController: AlarmAddViewController? = {
         return AlarmAddViewController.storyboardInstance()
