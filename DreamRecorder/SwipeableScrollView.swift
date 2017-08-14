@@ -9,6 +9,23 @@
 import UIKit
 
 class SwipeableScrollView: UIScrollView {
+    
+    weak var customDelegate = UIResponder()
+    
+    
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        self.customDelegate?.touchesBegan(touches, with: event)
+        
+    }
+    
+    override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
+        self.customDelegate?.touchesMoved(touches, with: event)
+    }
+    
+    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
+        self.customDelegate?.touchesEnded(touches, with: event)
+    }
+    
 
     /*
     // Only override draw() if you perform custom drawing.
