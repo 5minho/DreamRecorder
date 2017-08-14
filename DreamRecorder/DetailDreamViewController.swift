@@ -33,8 +33,8 @@ class DetailDreamViewController : UIViewController {
     
     private var isFirstShown: Bool = true
     
-    weak var dreamDataStore : DreamDataStore?
-    weak var dream : Dream?
+    var dreamDataStore : DreamDataStore?
+    var dream : Dream?
     
     override func viewDidLoad() {
         
@@ -72,6 +72,7 @@ class DetailDreamViewController : UIViewController {
     }
     
     @objc private func touchUpDoneBarButtonItem(_ sender : UIBarButtonItem) {
+        
         view.endEditing(true)
         self.dream?.title = titleField.text ?? ""
         self.dream?.content = contentTextView.text ?? ""
@@ -79,9 +80,10 @@ class DetailDreamViewController : UIViewController {
         guard let dream = self.dream else {
             return
         }
-        dreamDataStore?.updateAlarm(dream: dream)
+        dreamDataStore?.update(dream: dream)
         self.mode = .read
         navigationController?.popViewController(animated: true)
+        
     }
     
     private func adjustViewMode(){
