@@ -24,33 +24,35 @@ protocol AlarmDetailCellDelegate: NSObjectProtocol {
 class AlarmDetailCell: UITableViewCell {
     
     var delegate: AlarmDetailCellDelegate?
-    
-    @IBInspectable var cellStyle: Int = 1 {
-        didSet {
-            guard let style = AlarmDetailCellStyle(rawValue: cellStyle) else { return }
-            self._cellStyle = style
+    var weekdayButtonAccessoryView: MultiButton? {
+        get {
+            guard let weekdayButtonAccessoryView = self.accessoryView as? MultiButton else { return nil }
+            return weekdayButtonAccessoryView
         }
     }
-    var _cellStyle: AlarmDetailCellStyle = .repeat {
+    var switchAccessoryView: UISwitch? {
+        get {
+            guard let switchAccessoryView = self.accessoryView as? UISwitch else { return nil }
+            return switchAccessoryView
+        }
+    }
+    
+    var cellStyle: AlarmDetailCellStyle = .label {
         didSet {
+            self.updateLabels()
             self.setupAccessoryView()
         }
     }
     
-    override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
-        super.init(style: style, reuseIdentifier: reuseIdentifier)
-        self.setupAccessoryView()
+    private func updateLabels(){
+        self.textLabel?.text = String(describing: self.cellStyle).localizedCapitalized
+        self.detailTextLabel?.text = nil
     }
     
-    required init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
-        self.setupAccessoryView()
-    }
-    
-    func setupAccessoryView(){
+    private func setupAccessoryView(){
         self.accessoryView = nil
         
-        switch _cellStyle {
+        switch cellStyle {
         case .repeat:
             let multiButton = MultiButton(frame: CGRect(x: 0, y: 0, width: 200, height: 50))
             multiButton.delegate = self

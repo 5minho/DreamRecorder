@@ -10,7 +10,7 @@ import Foundation
 import SQLite
 
 class AlarmDataStore: NSObject {
-    
+
     // this structure configure alarm table at sqlite db
     private struct AlarmTable {
         static let table = Table("alarms")
@@ -31,7 +31,7 @@ class AlarmDataStore: NSObject {
     var alarms: [Alarm] = []
     
     func createTable(){
-        let tableResult = self.manager.createTable(statement: AlarmTable.table.create { (t) in
+        let tableResult = self.manager.createTable(statement: AlarmTable.table.create(ifNotExists: true) { (t) in
             t.column(AlarmTable.Column.id, primaryKey: true)
             t.column(AlarmTable.Column.name)
             t.column(AlarmTable.Column.date)

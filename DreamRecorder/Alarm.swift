@@ -25,7 +25,7 @@ struct WeekdayOptions: OptionSet {
     static let all: WeekdayOptions = [.mon, .tue, .wed, .thu, .fri, .sat, .sun]
 }
 
-class Alarm {
+class Alarm: NSObject, NSCopying {
     var id : String
     var name: String
     var date: Date
@@ -33,7 +33,13 @@ class Alarm {
     var isActive: Bool
     var isSnooze: Bool
     
-    init(id : String, name: String, date: Date, weekday: WeekdayOptions, isActive: Bool, isSnooze: Bool) {
+    init(id : String = UUID().uuidString,
+         name: String = "Alarm",
+         date: Date = Date(),
+         weekday: WeekdayOptions = .none,
+         isActive: Bool = true,
+         isSnooze: Bool = true) {
+        
         self.id = id
         self.name = name
         self.date = date
@@ -42,17 +48,12 @@ class Alarm {
         self.isSnooze = isSnooze
     }
     
-    init?() {
-        var dateComponents = DateComponents()
-        dateComponents.hour = 8
-        dateComponents.minute = 0
-        guard let date = Calendar.current.date(from: dateComponents) else { return nil }
-        
-        self.id = UUID().uuidString
-        self.name = "Alarm"
-        self.date = date
-        self.weekday = .none
-        self.isActive = true
-        self.isSnooze = true
+    public static func ==(lhs: Alarm, rhs: Alarm) -> Bool {
+        return (lhs.id == rhs.id)
+    }
+    
+    func copy(with zone: NSZone? = nil) -> Any {
+        let copiedAlarm = Alarm(id: id, name: name, date: date, weekday: weekday, isActive: isActive, isSnooze: isSnooze)
+        return copiedAlarm
     }
 }

@@ -16,7 +16,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
         
+        let bool = UserDefaults.standard.bool(forKey: "THEME")
+        print(bool)
+
+//        UserDefaults.standard.setValue(true, forKey: "THEME")
+        
         if #available(iOS 10.0, *) {
+            UNUserNotificationCenter.current().delegate = self
             guard let notifications = UIApplication.shared.scheduledLocalNotifications else { return true }
             // from LocalNotification to UNNotification. 
         }
@@ -52,5 +58,36 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
 
+}
+
+import UserNotifications
+
+extension AppDelegate: UNUserNotificationCenterDelegate {
+    // Handle LocalNotification.
+    func application(_ application: UIApplication, didReceive notification: UILocalNotification) {
+        print("Local - didReceive")
+        print(notification.category)
+    }
+    
+    func application(_ application: UIApplication, handleActionWithIdentifier identifier: String?, for notification: UILocalNotification, completionHandler: @escaping () -> Void) {
+        print("Local - actionHandler")
+    }
+    
+    func application(_ application: UIApplication, handleActionWithIdentifier identifier: String?, for notification: UILocalNotification, withResponseInfo responseInfo: [AnyHashable : Any], completionHandler: @escaping () -> Void) {
+        print("Local - completionHandler")
+    }
+
+    // Handle UserNotification.
+    @available(iOS 10.0, *)
+    func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
+        print("User - present")
+    }
+    
+    @available(iOS 10.0, *)
+    func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
+        print("User - response")
+        completionHandler()
+    }
+    
 }
 

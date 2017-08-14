@@ -12,6 +12,7 @@ class AlarmListViewController: UIViewController {
     
     @IBOutlet weak var tableView: UITableView!
     let store = AlarmDataStore()
+    lazy var scheduler = AlarmScheduler()
     
     lazy var alarmAddViewController: AlarmAddViewController? = {
         return AlarmAddViewController.storyboardInstance()
@@ -38,6 +39,7 @@ class AlarmListViewController: UIViewController {
         self.tableView.dataSource = self
         
         self.tableView.estimatedRowHeight = 90
+        self.tableView.allowsSelectionDuringEditing = true
         self.tableView.tableFooterView = UIView(frame: .zero)
         
         let leftBarButton = UIBarButtonItem(title: "Edit", style: .plain, target: self, action: #selector(self.leftBarButtonDidTap(sender:)))
@@ -49,6 +51,12 @@ class AlarmListViewController: UIViewController {
         
         self.store.createTable()
         self.store.reloadAlarms()
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        
+        self.tableView.setEditing(false, animated: true)
     }
 }
 
@@ -80,8 +88,17 @@ extension AlarmListViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let alarmScheduler = AlarmScheduler()
-        alarmScheduler.getNotifications()
+//        let alarmScheduler = AlarmScheduler()
+//        alarmScheduler.getNotifications()
+        if self.tableView.isEditing {
+            guard let alarmEditViewController = AlarmEditViewController.storyboardInstance() else { return }
+            alarmEditViewController.alarm = self.store.alarms[indexPath.row]
+            alarmEditViewController.delegate = self
+            let navigationController = UINavigationController(rootViewController: alarmEditViewController)
+            self.present(navigationController, animated: true, completion: nil)
+        } else {
+            print("editing")
+        }
     }
     
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
@@ -92,16 +109,35 @@ extension AlarmListViewController: UITableViewDelegate, UITableViewDataSource {
             tableView.deleteRows(at: [deletingRow], with: .automatic)
         }
     }
+    
 }
 extension AlarmListViewController: AlarmListCellDelegate{
     func alarmListCell(cell : AlarmListCell, activeSwitchValueChanged sender: UISwitch) {
-        print(self.store.alarms[sender.tag])
+        guard sender.tag < self.store.alarms.count else { return }
+        
+        let updatedAlarm = self.store.alarms[sender.tag]
+        if sender.isOn {
+            self.scheduler.addNotification(with: updatedAlarm)
+        } else {
+            self.scheduler.deleteNotification(with: updatedAlarm)
+        }
     }
 }
-extension AlarmListViewController: AlarmAddViewControllerDelegate {
+extension AlarmListViewController: AlarmAddViewControllerDelegate, AlarmEditViewControllerDelegate {
+    // Add Controller Delegate.
     func alarmAddViewController(_: AlarmAddViewController, didSaveNewAlarm alarm: Alarm) {
         self.store.alarms.append(alarm)
         self.store.insertAlarm(alarm: alarm)
-        self.tableView.reloadData()
+        self.scheduler.addNotification(with: alarm)
+        
+        self.tableView.reloadSections(IndexSet(integersIn: 0...0), with: .automatic)
+    }
+    // Edit Controller Delegate.
+    func alarmEditViewController(_ controller: AlarmEditViewController, didSaveEditedAlarm alarm: Alarm) {
+        self.store.updateAlarm(alarm: alarm)
+        
+        guard let row = self.store.alarms.index(of: alarm) else { return }
+        let indexPath = IndexPath(row: row, section: 0)
+        self.tableView.reloadRows(at: [indexPath], with: .automatic)
     }
 }

@@ -1,27 +1,30 @@
 //
-//  AlarmAddViewController.swift
+//  AlarmEditViewController.swift
 //  DreamRecorder
 //
-//  Created by JU HO YOON on 2017. 8. 9..
+//  Created by JU HO YOON on 2017. 8. 11..
 //  Copyright © 2017년 BoostCamp. All rights reserved.
 //
 
 import UIKit
 
-protocol AlarmAddViewControllerDelegate: NSObjectProtocol {
-    func alarmAddViewController(_: AlarmAddViewController, didSaveNewAlarm alarm: Alarm)
+protocol AlarmEditViewControllerDelegate: NSObjectProtocol {
+    func alarmEditViewController(_ controller: AlarmEditViewController, didSaveEditedAlarm alarm: Alarm)
 }
 
-class AlarmAddViewController: UIViewController {
+class AlarmEditViewController: UIViewController {
     
-    // MARK: Properties.
-    // SubViews.
     @IBOutlet weak var tableView: UITableView!
     var datePicker: UIDatePicker!
     
     // Model and Delegate.
-    var alarm: Alarm?
-    weak var delegate: AlarmAddViewControllerDelegate?
+    var alarm: Alarm? {
+        didSet {
+            self.editingAlarm = self.alarm?.copy() as? Alarm
+        }
+    }
+    var editingAlarm: Alarm?
+    weak var delegate: AlarmEditViewControllerDelegate?
     
     // MARK: Functions.
     // Actions.
@@ -30,17 +33,22 @@ class AlarmAddViewController: UIViewController {
     }
     
     func rightBarButtonDidTap(sender: UIBarButtonItem) {
-        guard let newAlarm = self.alarm else { return }
-        newAlarm.isActive = true
+        guard let editedAlarm = self.editingAlarm else { return }
+        guard let originalAlarm = self.alarm else { return }
+        
+        originalAlarm.date = editedAlarm.date
+        originalAlarm.name = editedAlarm.name
+        originalAlarm.weekday = editedAlarm.weekday
+        originalAlarm.isSnooze = editedAlarm.isSnooze
         self.dismiss(animated: true, completion: {
             [unowned self] in
-            self.delegate?.alarmAddViewController(self, didSaveNewAlarm: newAlarm)
+            self.delegate?.alarmEditViewController(self, didSaveEditedAlarm: originalAlarm)
         })
     }
     
     func datePickerDidChangeValue(sender: UIDatePicker) {
-        guard let newAlarm = self.alarm else { return }
-        newAlarm.date = sender.date
+        guard let editingAlarm = self.editingAlarm else { return }
+        editingAlarm.date = sender.date
     }
     
     // MARK: View LifeCycle.
@@ -76,7 +84,7 @@ class AlarmAddViewController: UIViewController {
 }
 
 // MARK: TableView DataSourcem Delegate.
-extension AlarmAddViewController: UITableViewDataSource, UITableViewDelegate {
+extension AlarmEditViewController: UITableViewDataSource, UITableViewDelegate {
     // DataSource.
     func numberOfSections(in tableView: UITableView) -> Int {
         return 1
@@ -90,26 +98,25 @@ extension AlarmAddViewController: UITableViewDataSource, UITableViewDelegate {
         
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "AlarmDetailCell", for: indexPath) as? AlarmDetailCell else { return UITableViewCell() }
         guard let style = AlarmDetailCellStyle(rawValue: indexPath.row) else { return UITableViewCell() }
-        guard let newAlarm = self.alarm else { return UITableViewCell() }
+        guard let editingAlarm = self.editingAlarm else { return UITableViewCell() }
         
         cell.cellStyle = style
         cell.delegate = self
         
         if indexPath.row == AlarmDetailCellStyle.repeat.rawValue {
             if let weekdayButtonsAccessoryView = cell.weekdayButtonAccessoryView {
-                weekdayButtonsAccessoryView.setSelection(options: newAlarm.weekday)
+                weekdayButtonsAccessoryView.setSelection(options: editingAlarm.weekday)
             }
         } else if indexPath.row == AlarmDetailCellStyle.label.rawValue {
-            cell.detailTextLabel?.text = newAlarm.name
+            cell.detailTextLabel?.text = editingAlarm.name
         } else if indexPath.row == AlarmDetailCellStyle.sound.rawValue {
             cell.detailTextLabel?.text = "Default"
         } else if indexPath.row == AlarmDetailCellStyle.snooze.rawValue {
             if let switchAccessoryView = cell.switchAccessoryView {
-                switchAccessoryView.isOn = newAlarm.isSnooze
+                switchAccessoryView.isOn = editingAlarm.isSnooze
             }
         }
         return cell
-
     }
     
     // Delegate.
@@ -123,15 +130,13 @@ extension AlarmAddViewController: UITableViewDataSource, UITableViewDelegate {
                 [unowned self] (textField) in
                 textField.text = self.alarm?.name
             })
+            let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
             let doneAction = UIAlertAction(title: "Done", style: .default, handler: {
                 [unowned self, unowned tableView] (action) in
-                guard let editingAlarm = self.alarm else { return }
                 guard let text = alertController.textFields?.first?.text else { return }
+                self.editingAlarm?.name = text
                 tableView.cellForRow(at: indexPath)?.detailTextLabel?.text = text
-                editingAlarm.name = text
             })
-            
-            let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
             alertController.addAction(doneAction)
             alertController.addAction(cancelAction)
             self.present(alertController, animated: true, completion: nil)
@@ -148,9 +153,9 @@ extension AlarmAddViewController: UITableViewDataSource, UITableViewDelegate {
 }
 
 // MARK: AccessoryView Actions.
-extension AlarmAddViewController: AlarmDetailCellDelegate {
+extension AlarmEditViewController: AlarmDetailCellDelegate {
     func alarmDetailCell(_: AlarmDetailCell, repeatButtonDidTouchUp button: UIButton, at index: Int) {
-        guard let editingAlarm = self.alarm else { return }
+        guard let editingAlarm = self.editingAlarm else { return }
         let weekday = WeekdayOptions(rawValue: 1 << index)
         if button.isSelected {
             editingAlarm.weekday.insert(weekday)
@@ -158,16 +163,16 @@ extension AlarmAddViewController: AlarmDetailCellDelegate {
             editingAlarm.weekday.remove(weekday)
         }
     }
-
+    
     func alarmDetailCell(_: AlarmDetailCell, snoozeSwitchValueChanged sender: UISwitch) {
-        guard let editingAlarm = self.alarm else { return }
+        guard let editingAlarm = self.editingAlarm else { return }
         editingAlarm.isSnooze = sender.isOn
     }
 }
 
-extension AlarmAddViewController {
-    class func storyboardInstance() -> AlarmAddViewController? {
+extension AlarmEditViewController {
+    class func storyboardInstance() -> AlarmEditViewController? {
         let storyboard = UIStoryboard(name: String(describing: self), bundle: nil)
-        return storyboard.instantiateInitialViewController() as? AlarmAddViewController
+        return storyboard.instantiateInitialViewController() as? AlarmEditViewController
     }
 }
