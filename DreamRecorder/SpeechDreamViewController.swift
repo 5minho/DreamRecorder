@@ -17,18 +17,17 @@ class SpeechDreamViewController : UIViewController {
     fileprivate let speechRecognizer : NSKRecognizer
     fileprivate var previousText : String = ""
     fileprivate var defaultText : String = ""
-    @IBOutlet weak var recordButton: UIButton!
+    @IBOutlet weak var recordButton: RecordButton!
     
     override func viewDidLoad() {
+        
         super.viewDidLoad()
         
         let contentFieldLayer = self.contentField.layer
         contentFieldLayer.borderWidth = 1
         contentFieldLayer.borderColor = UIColor.black.cgColor
         
-        recordButton.layer.borderColor = UIColor.black.cgColor
-        recordButton.layer.borderWidth = 1
-        recordButton.layer.cornerRadius = recordButton.frame.width / 2
+                
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -57,6 +56,7 @@ class SpeechDreamViewController : UIViewController {
         }
         
         let saveAction = UIAlertAction(title: "Save", style: .default) { [unowned self] action in
+            
             var title = ""
             if let inputTitle = alert.textFields?.first?.text {
                 title = inputTitle
@@ -74,11 +74,10 @@ class SpeechDreamViewController : UIViewController {
             let navigationController = self.navigationController as? AddDreamNavigationController
             navigationController?.dreamDataStore?.insert(dream: newDream)
             self.presentingViewController?.dismiss(animated: true, completion: nil)
+            
         }
         
-        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel) { [unowned self] action in
-            self.presentingViewController?.dismiss(animated: true, completion: nil)
-        }
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
         
         alert.addAction(saveAction)
         alert.addAction(cancelAction)
@@ -96,15 +95,18 @@ class SpeechDreamViewController : UIViewController {
     @IBAction func touchUpRecordButton(_ sender: UIButton) {
         
         if speechRecognizer.isRunning == false {
+            self.recordButton.recordState = .recording
             try? AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryRecord)
             try? AVAudioSession.sharedInstance().setMode(AVAudioSessionModeMeasurement)
             try? AVAudioSession.sharedInstance().setActive(true, with: .notifyOthersOnDeactivation)
             speechRecognizer.start(with: .korean)
+            self.recordButton.animate()
             return
         }
         
-        speechRecognizer.stop()
-        
+        self.recordButton.recordState = .idle
+        self.speechRecognizer.stop()
+        self.recordButton.animate()
     }
     
     
@@ -153,6 +155,7 @@ extension SpeechDreamViewController : NSKRecognizerDelegate {
     }
     
     public func recognizer(_ aRecognizer: NSKRecognizer!, didReceive aResult: NSKRecognizedResult!) {
+        
         print("Final result: \(aResult)")
         let lastResult = aResult.results.first as? String
         previousText = ""
@@ -160,6 +163,8 @@ extension SpeechDreamViewController : NSKRecognizerDelegate {
             contentField.text = defaultText + " " + result
             defaultText = contentField.text
         }
+        
         recongnitionStateLabel.text = "end recognize"
+        
     }
 }
