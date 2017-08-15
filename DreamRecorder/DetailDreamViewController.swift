@@ -8,7 +8,7 @@
 
 import UIKit
 
-class DetailDreamViewController : UIViewController {
+class DetailDreamViewController : UIViewController, DreamDeletable {
     
     static func storyboardInstance() -> DetailDreamViewController? {
         let storyboard = UIStoryboard(name: String(describing: self), bundle: nil)
@@ -26,6 +26,8 @@ class DetailDreamViewController : UIViewController {
         }
     }
     
+    weak var deleteDelegate : DreamListViewController?
+    
     @IBOutlet weak var titleField: UITextField!
     @IBOutlet weak var createdDateLabel: UILabel!
     @IBOutlet weak var contentTextView: UITextView!
@@ -33,7 +35,6 @@ class DetailDreamViewController : UIViewController {
     
     private var isFirstShown: Bool = true
     
-    var dreamDataStore : DreamDataStore?
     var dream : Dream?
     
     override func viewDidLoad() {
@@ -81,7 +82,7 @@ class DetailDreamViewController : UIViewController {
         guard let dream = self.dream else {
             return
         }
-        dreamDataStore?.update(dream: dream)
+        dreamDataStore.update(dream: dream)
         self.mode = .read
         
     }
@@ -114,4 +115,19 @@ class DetailDreamViewController : UIViewController {
             
         }
     }
+    
+    @IBAction func touchUpdeleteButton(_ sender: UIButton) {
+        
+        if let dream = self.dream {
+            
+            let alert = deleteAlert(dream: dream, complement: {
+                [unowned self] in
+                self.navigationController?.popViewController(animated: true)
+            })
+            
+            self.present(alert, animated: true, completion: nil)
+        }
+        
+    }
+    
 }

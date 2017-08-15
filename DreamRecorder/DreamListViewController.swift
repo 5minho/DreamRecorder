@@ -11,16 +11,24 @@ import UIKit
 class DreamListViewController : UIViewController {
     
     @IBOutlet weak var tableView: UITableView!
-    var dreamDataStore : DreamDataStore!
-    
+
     override func viewDidLoad() {
         
         super.viewDidLoad()
-        let mainTabBarController = self.tabBarController as? MainTabBarViewController
-        dreamDataStore = mainTabBarController?.dreamDataStore
         
         tableView.delegate = self
         tableView.dataSource = self
+        self.navigationItem.leftBarButtonItem = editButtonItem
+        
+        NotificationCenter.default.addObserver(forName: DreamDataStore.NotificationName.didDeleteDream, object: nil, queue: .main) { [unowned self] (notification) in
+            
+            let row = notification.userInfo?["index"] as? Int
+            let indexPath = IndexPath(row: row!, section: 0)
+            
+            self.tableView.deleteRows(at: [indexPath], with: .automatic)
+            
+        }
+
         
     }
     
@@ -34,19 +42,25 @@ class DreamListViewController : UIViewController {
     @IBAction func addDream(_ sender: UIBarButtonItem) {
         
         if let addDreamNavigationController = AddDreamNavigationController.storyboardInstance() {
-            addDreamNavigationController.dreamDataStore = self.dreamDataStore
             present(addDreamNavigationController, animated: true, completion: nil)
         }
         
     }
     
+    override func setEditing(_ editing: Bool, animated: Bool) {
+        
+        super.setEditing(editing, animated: animated)
+        self.tableView.setEditing(!self.tableView.isEditing, animated: true)
+        
+    }
+    
 }
 
-extension DreamListViewController : UITableViewDelegate, UITableViewDataSource {
+extension DreamListViewController : UITableViewDelegate, UITableViewDataSource, DreamDeletable {
     
     // MARK: - Table view dataSource
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return dreamDataStore.dreams.count
+        return DreamDataStore.shared.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -55,8 +69,10 @@ extension DreamListViewController : UITableViewDelegate, UITableViewDataSource {
             return UITableViewCell()
         }
         
-        cell.update(dream: dreamDataStore.dreams[indexPath.row])
-        
+        if let dream = DreamDataStore.shared.dream(index: indexPath.row) {
+            cell.update(dream: dream)
+        }
+    
         return cell
     }
     
@@ -65,35 +81,34 @@ extension DreamListViewController : UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
         if let detailDreamViewController = DetailDreamViewController.storyboardInstance() {
-            detailDreamViewController.dream = dreamDataStore.dreams[indexPath.row]
-            detailDreamViewController.dreamDataStore = dreamDataStore
+            
+            detailDreamViewController.dream = DreamDataStore.shared.dream(index: indexPath.row)
             navigationController?.pushViewController(detailDreamViewController, animated: true)
-        }
-        
-    }
-    
-    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
-        
-        if editingStyle == .delete {
-            let dream = dreamDataStore.dreams[indexPath.row]
-            let title = "Delete \(dream.title!)?"
-            let message = "Are you sure you want to delete this item?"
             
-            let alert = UIAlertController(title: title, message: message, preferredStyle: .actionSheet)
-            let cencelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
-            alert.addAction(cencelAction)
-            
-            let deleteAction = UIAlertAction(title: "Delete", style: .destructive, handler: {
-                [unowned self, tableView] (action) -> Void in
-                self.dreamDataStore.delete(dream: dream, at: indexPath.row)
-                tableView.deleteRows(at: [indexPath], with: .automatic)
-            })
-            alert.addAction(deleteAction)
-            present(alert, animated: true, completion: nil)
         }
         
     }
 
+    func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
+        
+        let deleteButton = UITableViewRowAction(style: .destructive, title: "삭제") { [unowned self] action, indexPath -> Void in
+            
+            if let dream = DreamDataStore.shared.dream(index: indexPath.row) {
+                let alert = self.deleteAlert(dream: dream, complement: nil)
+                self.present(alert, animated: true, completion: nil)
+            }
+            
+        }
+    
+        let pinButton = UITableViewRowAction(style: .normal, title: "pin") { (action, indexPath) in
+            print("pin")
+        }
+        
+        deleteButton.backgroundColor = UIColor.blue
+        pinButton.backgroundColor = UIColor.purple
+        
+        return [deleteButton, pinButton]
+    }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 80
