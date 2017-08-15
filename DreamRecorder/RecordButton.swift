@@ -15,7 +15,12 @@ class RecordButton : UIButton {
         case idle
     }
 
-    var recordState : RecordState = .idle
+    var recordState : RecordState = .idle {
+        didSet {
+            self.animate()
+        }
+    }
+    
     var beforeRadius : CGFloat = 0
     
     override func draw(_ rect: CGRect) {
@@ -29,12 +34,12 @@ class RecordButton : UIButton {
         switch recordState {
             
         case .recording:
-            UIView.animate(withDuration: 3, animations: {
+            UIView.animate(withDuration: 1, animations: {
                 self.layer.cornerRadius = self.frame.width / 2
             })
             
         case .idle:
-            UIView.animate(withDuration: 3, animations: {
+            UIView.animate(withDuration: 1, animations: {
                 self.layer.cornerRadius = self.beforeRadius
             })
             
