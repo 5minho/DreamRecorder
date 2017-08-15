@@ -42,9 +42,10 @@ class DetailDreamViewController : UIViewController {
         
         if let selectedDream = dream {
             
+            let dateParser = DateParser()
             titleField.text = selectedDream.title
             contentTextView.text = selectedDream.content
-            createdDateLabel.text = SQLDateFormatter.string(from: selectedDream.createdDate)
+            createdDateLabel.text = dateParser.detail(from: selectedDream.createdDate)
             
         }
         
@@ -82,7 +83,6 @@ class DetailDreamViewController : UIViewController {
         }
         dreamDataStore?.update(dream: dream)
         self.mode = .read
-        navigationController?.popViewController(animated: true)
         
     }
     
@@ -96,8 +96,10 @@ class DetailDreamViewController : UIViewController {
             self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .edit,
                                                                      target: self,
                                                                      action: #selector(touchUpEditBarButtonItem(_:)))
+            self.titleField.borderStyle = .none
             self.titleField.isUserInteractionEnabled = false
             self.contentTextView.isUserInteractionEnabled = false
+            self.contentTextView.layer.borderWidth = 0
             
         case .edit:
             
@@ -108,6 +110,7 @@ class DetailDreamViewController : UIViewController {
             self.titleField.borderStyle = .roundedRect
             self.titleField.isUserInteractionEnabled = true
             self.contentTextView.isUserInteractionEnabled = true
+            self.contentTextView.layer.borderWidth = 1
             
         }
     }
