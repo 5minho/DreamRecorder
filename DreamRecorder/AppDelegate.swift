@@ -19,7 +19,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let bool = UserDefaults.standard.bool(forKey: "THEME")
         print(bool)
 
-//        UserDefaults.standard.setValue(true, forKey: "THEME")
         
         if #available(iOS 10.0, *) {
             UNUserNotificationCenter.current().delegate = self
@@ -28,6 +27,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
         
         let dreamDataStore = DreamDataStore()
+        dreamDataStore.createTable()
         dreamDataStore.selectAll()
         let mainTabBarController = window?.rootViewController as? MainTabBarViewController
         mainTabBarController?.dreamDataStore = dreamDataStore

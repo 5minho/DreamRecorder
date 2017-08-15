@@ -10,6 +10,7 @@ import Foundation
 import SQLite
 
 class DreamDataStore {
+    
     var dreams : [Dream] = [] {
         didSet {
             dreams.sort(by: >)
@@ -32,7 +33,8 @@ class DreamDataStore {
     }
     
     func createTable() {
-        let createTableResult = self.dbManager.createTable(statement: DreamTable.table.create { table in
+        
+        let createTableResult = self.dbManager.createTable(statement: DreamTable.table.create(ifNotExists: true) { table in
             table.column(DreamTable.Column.id, primaryKey: true)
             table.column(DreamTable.Column.title)
             table.column(DreamTable.Column.content)
@@ -46,6 +48,7 @@ class DreamDataStore {
         case .failure(_):
             print("error")
         }
+        
     }
     
     func selectAll() {
@@ -91,7 +94,7 @@ class DreamDataStore {
         }
     }
     
-    func updateAlarm(dream: Dream) {
+    func update(dream: Dream) {
         let updateRow = DreamTable.table.filter(DreamTable.Column.id == dream.id)
         let result = self.dbManager.updateRow(update: updateRow.update(
             DreamTable.Column.id <- dream.id,
@@ -108,6 +111,19 @@ class DreamDataStore {
         case let .failure(error):
             print("error: \(error)")
             
+        }
+    }
+
+    
+    func delete(dream: Dream, at index : Int) {
+        let deletingRow = DreamTable.table.filter(DreamTable.Column.id == dream.id)
+        let result = self.dbManager.deleteRow(delete: deletingRow.delete())
+        self.dreams.remove(at: index)
+        switch result {
+        case .success:
+            print("Success: delete row \(dream.id)")
+        case let .failure(error):
+            print("error: \(error)")
         }
     }
     
