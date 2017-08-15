@@ -9,8 +9,6 @@
 import UIKit
 
 class MainTabBarViewController: UITabBarController {
-    
-    var dreamDataStore : DreamDataStore?
 
     override func viewDidLoad() {
         super.viewDidLoad()
