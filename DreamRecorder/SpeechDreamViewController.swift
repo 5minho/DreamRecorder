@@ -71,8 +71,7 @@ class SpeechDreamViewController : UIViewController {
                                  createdDate: Date(),
                                  modifiedDate: nil)
             
-            let navigationController = self.navigationController as? AddDreamNavigationController
-            navigationController?.dreamDataStore?.insert(dream: newDream)
+            DreamDataStore.shared.insert(dream: newDream)
             self.presentingViewController?.dismiss(animated: true, completion: nil)
             
         }
@@ -82,6 +81,7 @@ class SpeechDreamViewController : UIViewController {
         alert.addAction(saveAction)
         alert.addAction(cancelAction)
         present(alert, animated: true, completion: nil)
+        
     }
     
     @IBAction func cancelRecord(_ sender: UIBarButtonItem) {

@@ -26,12 +26,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             // from LocalNotification to UNNotification. 
         }
         
-        let dreamDataStore = DreamDataStore()
-        dreamDataStore.createTable()
-        dreamDataStore.selectAll()
-        let mainTabBarController = window?.rootViewController as? MainTabBarViewController
-        mainTabBarController?.dreamDataStore = dreamDataStore
-        
+        DreamDataStore.shared.createTable()
+        DreamDataStore.shared.selectAll()
         return true
     }
 
