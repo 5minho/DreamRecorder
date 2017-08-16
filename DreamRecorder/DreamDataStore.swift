@@ -10,24 +10,56 @@ import Foundation
 import SQLite
 
 class DreamDataStore {
-    var dreams : [Dream] = []
-    var dbManager = DBManager.shared
+    
+    static let shared : DreamDataStore = DreamDataStore()
+    
+    private init() {}
+    
+    struct NotificationName {
+        
+        static let didDeleteDream = Notification.Name("didDeleteDream")
+        static let didAddDream = Notification.Name("didAddDream")
+        
+    }
+    
+    private var dreams : [Dream] = [] {
+        didSet {
+            dreams.sort(by: >)
+        }
+    }
+    
+    var count : Int {
+        return dreams.count
+    }
+    
+    let dbManager = DBManager.shared
     
     private struct DreamTable {
         static let table = Table("Dreams")
         
         struct Column {
+            
             static let id = Expression<String>("id")
             static let title = Expression<String?>("title")
             static let content = Expression<String?>("content")
             static let createdDate = Expression<Date>("createdDate")
             static let modifiedDate = Expression<Date?>("modifiedDate")
+            
         }
         
     }
     
-    func createTable() {
-        let createTableResult = self.dbManager.createTable(statement: DreamTable.table.create { table in
+    func dream(at index : Int) -> Dream? {
+        guard index < self.count else {
+            return nil
+        }
+        return dreams[index]
+    }
+    
+    
+    @discardableResult func createTable() -> TableResult {
+        
+        let createTableResult = self.dbManager.createTable(statement: DreamTable.table.create(ifNotExists: true) { table in
             table.column(DreamTable.Column.id, primaryKey: true)
             table.column(DreamTable.Column.title)
             table.column(DreamTable.Column.content)
@@ -41,11 +73,16 @@ class DreamDataStore {
         case .failure(_):
             print("error")
         }
+        
+        return createTableResult
+        
     }
     
-    func selectAll() {
+    @discardableResult func selectAll() -> RowsResult {
+        
         let rowsResult = dbManager.selectAll(query: DreamTable.table.order(DreamTable.Column.createdDate.desc))
         switch rowsResult {
+            
         case let .success(rows):
             rows.forEach({
                 let id = $0.get(DreamTable.Column.id)
@@ -59,13 +96,17 @@ class DreamDataStore {
                     dreams.append(dream)
                 }
             })
+            
         case let .failure(error):
             print(error)
         }
+        
+        return rowsResult
     }
 
     
-    func insert(dream: Dream) {
+    @discardableResult func insert(dream: Dream) -> RowResult {
+        
         let insert = DreamTable.table.insert (
             DreamTable.Column.id <- dream.id,
             DreamTable.Column.title <- dream.title,
@@ -78,14 +119,18 @@ class DreamDataStore {
         
         switch result {
         case .success(_):
-            self.dreams.insert(dream, at: 0)
-        default:
+            self.dreams.append(dream)
+        case .failure(_):
             print("default")
         }
+        
+        return result
     }
     
-    func updateAlarm(dream: Dream) {
+    @discardableResult func update(dream: Dream) -> RowResult {
+        
         let updateRow = DreamTable.table.filter(DreamTable.Column.id == dream.id)
+        
         let result = self.dbManager.updateRow(update: updateRow.update(
             DreamTable.Column.id <- dream.id,
             DreamTable.Column.title <- dream.title,
@@ -96,13 +141,35 @@ class DreamDataStore {
         )
         
         switch result {
-            
         case .success:
             print("Success: update row \(dream.id)")
         case let .failure(error):
             print("error: \(error)")
-            
         }
+        
+        return result
     }
+
     
+    @discardableResult func delete(dream: Dream, at index : Int? = nil) -> RowResult {
+        
+        let deletingRow = DreamTable.table.filter(DreamTable.Column.id == dream.id)
+        let result = self.dbManager.deleteRow(delete: deletingRow.delete())
+        
+        guard let idx : Int = index ?? dreams.index(of: dream) else {
+            return result
+        }
+        self.dreams.remove(at: idx)
+        switch result {
+            
+        case .success:
+            print("Success: delete row \(dream.id)")
+            NotificationCenter.default.post(name: NotificationName.didDeleteDream, object: nil, userInfo : ["index" : idx])
+            
+        case let .failure(error):
+            print("error: \(error)")
+        }
+        
+        return result
+    }
 }

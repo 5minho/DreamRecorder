@@ -9,10 +9,10 @@
 import UIKit
 
 class AddDreamNavigationController : UINavigationController{
+    
     static func storyboardInstance() -> AddDreamNavigationController? {
         let storyboard = UIStoryboard(name: String(describing: self), bundle: nil)
         return storyboard.instantiateInitialViewController() as? AddDreamNavigationController
     }
-    
-    weak var dreamDataStore : DreamDataStore?
+
 }

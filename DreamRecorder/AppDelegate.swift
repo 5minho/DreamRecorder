@@ -18,7 +18,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
 //        let bool = UserDefaults.standard.bool(forKey: "THEME")
 
-//        UserDefaults.standard.setValue(true, forKey: "THEME")
         
         if #available(iOS 10.0, *) {
             UNUserNotificationCenter.current().delegate = self
@@ -34,6 +33,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             // from LocalNotification to UNNotification.
         }
         
+        DreamDataStore.shared.createTable()
+        DreamDataStore.shared.selectAll()
         return true
     }
 
