@@ -16,9 +16,9 @@ class AlarmScheduler {
         static let snoozeLocalNotificationCategory = "SnoozeLocalNotificationCategory"
         static let onceLocalNotificationCategory = "onceLocalNotificationCategory"
     }
+    lazy var soundManager = SoundManager()
     
     init() {
-        print("initiallize Scheduler")
         if #available(iOS 10.0, *) {
             UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound]) { (granted, error) in
                 if granted {
@@ -47,6 +47,79 @@ class AlarmScheduler {
         }
     }
     
+    func duplicateNotificationByFollowingAlarm() {
+        if #available(iOS 10.0, *) {
+            self.nextNotificationRequest { (request) in
+                
+                guard let notificationRequest = request else { return }
+                guard let alarm = AlarmDataStore.shared.alarm(withNotificationIdentifier: notificationRequest.identifier) else { return }
+                
+                // Notification Request Identifier.
+                let identifier = alarm.id
+                
+                // Notification Request Content.
+                let content = UNMutableNotificationContent()
+                content.title = "Dream Recorder"
+                content.body = alarm.name
+                content.categoryIdentifier = alarm.isSnooze ? Identifier.snoozeLocalNotificationCategory : Identifier.onceLocalNotificationCategory
+                content.sound = UNNotificationSound(named: "Old-alarm-clock-ringing.wav")
+//                content.sound = UNNotificationSound.default()
+                
+                
+                // Notification Trigger DateComponents.
+                var dateComponents = Calendar.current.dateComponents([.hour, .minute], from: alarm.date)
+                
+                for index in 0...59 {
+                    guard let currentHour = dateComponents.hour else { continue }
+                    guard let currentMinute = dateComponents.minute else { continue }
+                    let nextMiniute = currentMinute + 1
+                    let nextHour = currentHour + 1
+                    dateComponents.minute = nextMiniute < 60 ? nextMiniute : nextMiniute - 60
+                    dateComponents.hour = nextMiniute < 60 ? currentHour : currentHour + 1
+                    print(dateComponents)
+                    let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponents, repeats: false)
+                    let request = UNNotificationRequest(identifier: "\(identifier)-\(index)", content: content, trigger: trigger)
+                    UNUserNotificationCenter.current().add(request, withCompletionHandler: nil)
+                }
+                print("Notification \(identifier) is created (repeat 60 if terminated)")
+            }
+        } else {
+            // Fallback on earlier versions
+            
+            guard let notification = self.nextLocalNotification() else { return }
+            guard let fireDate = notification.fireDate else { return }
+            guard let identifier = notification.userInfo?["identifier"] as? String else { return }
+            guard let alarm = AlarmDataStore.shared.alarm(withNotificationIdentifier: identifier) else { return }
+            
+            let duplicatingNotification: UILocalNotification = UILocalNotification()
+            
+            notification.userInfo = ["identifier": "\(alarm.id)-\(0)"]
+            notification.alertBody = alarm.name
+            notification.alertAction = "Open App"
+            notification.category = alarm.isSnooze ? Identifier.snoozeLocalNotificationCategory : Identifier.onceLocalNotificationCategory
+            notification.soundName = UILocalNotificationDefaultSoundName
+            
+            //repeat every minute
+            notification.repeatInterval = .minute
+            UIApplication.shared.scheduleLocalNotification(notification)
+        }
+    }
+    
+    @available(iOS 10.0, *)
+    func nextNotificationRequest(completionHandler completion: @escaping (UNNotificationRequest?) -> Void) {
+            UNUserNotificationCenter.current().getPendingNotificationRequests(completionHandler: { (requests) in
+                let ascendingNotifications = requests.sorted(by: > )
+                completion(ascendingNotifications.first)
+                
+            })
+    }
+    
+    func nextLocalNotification() -> UILocalNotification? {
+        guard let notifications = UIApplication.shared.scheduledLocalNotifications else { return nil }
+        let ascendingNotifications = notifications.sorted(by: > )
+        return ascendingNotifications.first
+    }
+    
     // MARK: For iOS 10.x
     func removeAllNotifications() {
         if #available(iOS 10.0, *) {
@@ -56,16 +129,24 @@ class AlarmScheduler {
         }
     }
     
-    func getNotifications() {
-        if #available(iOS 10.0, *) {
-            UNUserNotificationCenter.current().getPendingNotificationRequests { (requests) in
-                for request in requests {
-                    print("\(request.identifier) \(request.trigger.debugDescription)")
-                }
-            }
-        } else {
-            // Fallback on earlier versions
+    @available(iOS 10.0, *)
+    func getDeliveredNotifications(completionHandler: @escaping ([UNNotification]) -> Swift.Void){
+//        UNUserNotificationCenter.current().getDeliveredNotifications(completionHandler: completionHandler)
+        UNUserNotificationCenter.current().getDeliveredNotifications { (notifications) in
+            completionHandler(notifications)
+            UNUserNotificationCenter.current().removeAllDeliveredNotifications()
         }
+    }
+    
+    @available(iOS 10.0, *)
+    func getPendingNotificationRequests(completion: @escaping (_ requests: [UNNotificationRequest]) -> Void) {
+        UNUserNotificationCenter.current().getPendingNotificationRequests { (requests) in
+            completion(requests)
+        }
+    }
+    
+    func getScheduledLocalNotifications() -> [UILocalNotification]? {
+        return UIApplication.shared.scheduledLocalNotifications
     }
     
     func deleteNotification(with alarm: Alarm) {
@@ -246,5 +327,4 @@ class AlarmScheduler {
             }
         }
     }
-    
 }
