@@ -13,7 +13,7 @@ class DreamDataStore {
     
     static let shared : DreamDataStore = DreamDataStore()
     
-    private init(){}
+    private init() {}
     
     struct NotificationName {
         
@@ -49,14 +49,15 @@ class DreamDataStore {
         
     }
     
-    func dream(index : Int) -> Dream? {
+    func dream(at index : Int) -> Dream? {
         guard index < self.count else {
             return nil
         }
         return dreams[index]
     }
     
-    func createTable() {
+    
+    @discardableResult func createTable() -> TableResult {
         
         let createTableResult = self.dbManager.createTable(statement: DreamTable.table.create(ifNotExists: true) { table in
             table.column(DreamTable.Column.id, primaryKey: true)
@@ -67,17 +68,17 @@ class DreamDataStore {
         })
         
         switch createTableResult {
-            
         case .success:
             print("Table Created")
         case .failure(_):
             print("error")
-            
         }
+        
+        return createTableResult
         
     }
     
-    func selectAll() {
+    @discardableResult func selectAll() -> RowsResult {
         
         let rowsResult = dbManager.selectAll(query: DreamTable.table.order(DreamTable.Column.createdDate.desc))
         switch rowsResult {
@@ -100,10 +101,11 @@ class DreamDataStore {
             print(error)
         }
         
+        return rowsResult
     }
 
     
-    func insert(dream: Dream) {
+    @discardableResult func insert(dream: Dream) -> RowResult {
         
         let insert = DreamTable.table.insert (
             DreamTable.Column.id <- dream.id,
@@ -118,12 +120,14 @@ class DreamDataStore {
         switch result {
         case .success(_):
             self.dreams.append(dream)
-        default:
+        case .failure(_):
             print("default")
         }
+        
+        return result
     }
     
-    func update(dream: Dream) {
+    @discardableResult func update(dream: Dream) -> RowResult {
         
         let updateRow = DreamTable.table.filter(DreamTable.Column.id == dream.id)
         
@@ -141,18 +145,19 @@ class DreamDataStore {
             print("Success: update row \(dream.id)")
         case let .failure(error):
             print("error: \(error)")
-            
         }
+        
+        return result
     }
 
     
-    func delete(dream: Dream, at index : Int? = nil) {
+    @discardableResult func delete(dream: Dream, at index : Int? = nil) -> RowResult {
         
         let deletingRow = DreamTable.table.filter(DreamTable.Column.id == dream.id)
         let result = self.dbManager.deleteRow(delete: deletingRow.delete())
         
         guard let idx : Int = index ?? dreams.index(of: dream) else {
-            return
+            return result
         }
         self.dreams.remove(at: idx)
         switch result {
@@ -165,8 +170,6 @@ class DreamDataStore {
             print("error: \(error)")
         }
         
+        return result
     }
-    
-    
-    
 }
