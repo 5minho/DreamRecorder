@@ -38,19 +38,18 @@ extension Bool {
 
 extension Date {
     static var declaredDatatype: String {
-        return String.declaredDatatype
+        return Int.declaredDatatype
     }
-    static func fromDatatypeValue(stringValue: String) -> Date {
-        return SQLDateFormatter.date(from: stringValue)!
+    static func fromDatatypeValue(intValue: Int) -> Date {
+        return self.init(timeIntervalSince1970: TimeInterval(intValue))
     }
-    var datatypeValue: String {
-        return SQLDateFormatter.string(from: self)
+    var datatypeValue: Int {
+        return Int(timeIntervalSince1970)
     }
 }
 
-let SQLDateFormatter: DateFormatter = {
-    let formatter = DateFormatter()
-    formatter.dateStyle = .medium
-    formatter.timeStyle = .medium
-    return formatter
-}()
+extension Date {
+    func compareByMinuteUnit(other date: Date) -> Bool {
+        return (Calendar.current.compare(self, to: date, toGranularity: .minute) == .orderedSame)
+    }
+}
