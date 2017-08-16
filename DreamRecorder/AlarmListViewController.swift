@@ -11,8 +11,10 @@ import UIKit
 class AlarmListViewController: UIViewController {
     
     @IBOutlet weak var tableView: UITableView!
-    let store = AlarmDataStore()
-    lazy var scheduler = AlarmScheduler()
+    lazy var store = AlarmDataStore.shared
+    
+    var selectedCell: UITableViewCell?
+    var selectedCellLabel: UILabel?
     
     lazy var alarmAddViewController: AlarmAddViewController? = {
         return AlarmAddViewController.storyboardInstance()
@@ -46,11 +48,19 @@ class AlarmListViewController: UIViewController {
         self.navigationItem.setLeftBarButton(leftBarButton, animated: true)
         
         let rightBarButton = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(self.rightBarButtonDidTap(sender:)))
-        
         self.navigationItem.setRightBarButton(rightBarButton, animated: true)
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(self.didChnagedAlarms), name: Notification.Name.AlarmDateStoreDidSyncAlarmAndNotification, object: nil)
         
         self.store.createTable()
         self.store.reloadAlarms()
+    }
+    
+    func didChnagedAlarms(){
+        DispatchQueue.main.async {
+            self.tableView.reloadData()
+        }
+
     }
     
     override func viewDidDisappear(_ animated: Bool) {
@@ -88,8 +98,9 @@ extension AlarmListViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-//        let alarmScheduler = AlarmScheduler()
-//        alarmScheduler.getNotifications()
+        
+        tableView.deselectRow(at: indexPath, animated: true)
+        
         if self.tableView.isEditing {
             guard let alarmEditViewController = AlarmEditViewController.storyboardInstance() else { return }
             alarmEditViewController.alarm = self.store.alarms[indexPath.row]
@@ -97,7 +108,14 @@ extension AlarmListViewController: UITableViewDelegate, UITableViewDataSource {
             let navigationController = UINavigationController(rootViewController: alarmEditViewController)
             self.present(navigationController, animated: true, completion: nil)
         } else {
-            print("editing")
+            guard let cell = tableView.cellForRow(at: indexPath) as? AlarmListCell else { return }
+            self.selectedCell = cell
+            self.selectedCellLabel = cell.timeLabel
+            
+            guard let alarmPlayViewController = AlarmPlayViewController.storyboardInstance() else { return }
+            alarmPlayViewController.presentingDelegate = self
+            alarmPlayViewController.playingAlarm = self.store.alarms[indexPath.row]
+            self.present(alarmPlayViewController, animated: true, completion: nil)
         }
     }
     
@@ -117,9 +135,9 @@ extension AlarmListViewController: AlarmListCellDelegate{
         
         let updatedAlarm = self.store.alarms[sender.tag]
         if sender.isOn {
-            self.scheduler.addNotification(with: updatedAlarm)
+            self.store.scheduler.addNotification(with: updatedAlarm)
         } else {
-            self.scheduler.deleteNotification(with: updatedAlarm)
+            self.store.scheduler.deleteNotification(with: updatedAlarm)
         }
     }
 }
@@ -128,7 +146,6 @@ extension AlarmListViewController: AlarmAddViewControllerDelegate, AlarmEditView
     func alarmAddViewController(_: AlarmAddViewController, didSaveNewAlarm alarm: Alarm) {
         self.store.alarms.append(alarm)
         self.store.insertAlarm(alarm: alarm)
-        self.scheduler.addNotification(with: alarm)
         
         self.tableView.reloadSections(IndexSet(integersIn: 0...0), with: .automatic)
     }
@@ -139,5 +156,14 @@ extension AlarmListViewController: AlarmAddViewControllerDelegate, AlarmEditView
         guard let row = self.store.alarms.index(of: alarm) else { return }
         let indexPath = IndexPath(row: row, section: 0)
         self.tableView.reloadRows(at: [indexPath], with: .automatic)
+    }
+}
+
+extension AlarmListViewController: CellExpandAnimatorPresentingDelegate {
+    var presentingView: UIView {
+        return self.selectedCell ?? self.view
+    }
+    var presentingLabel: UILabel {
+        return self.selectedCellLabel ?? UILabel()
     }
 }
