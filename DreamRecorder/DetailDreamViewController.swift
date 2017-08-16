@@ -26,8 +26,6 @@ class DetailDreamViewController : UIViewController, DreamDeletable {
         }
     }
     
-    weak var deleteDelegate : DreamListViewController?
-    
     @IBOutlet weak var titleField: UITextField!
     @IBOutlet weak var createdDateLabel: UILabel!
     @IBOutlet weak var contentTextView: UITextView!
@@ -82,7 +80,8 @@ class DetailDreamViewController : UIViewController, DreamDeletable {
         guard let dream = self.dream else {
             return
         }
-        dreamDataStore.update(dream: dream)
+        
+        DreamDataStore.shared.update(dream: dream)
         self.mode = .read
         
     }
@@ -120,8 +119,7 @@ class DetailDreamViewController : UIViewController, DreamDeletable {
         
         if let dream = self.dream {
             
-            let alert = deleteAlert(dream: dream, complement: {
-                [unowned self] in
+            let alert = deleteAlert(dream: dream, completion: {
                 self.navigationController?.popViewController(animated: true)
             })
             
