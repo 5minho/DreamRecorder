@@ -43,7 +43,6 @@ class DetailDreamViewController : UIViewController {
             
             titleField.text = selectedDream.title
             contentTextView.text = selectedDream.content
-            createdDateLabel.text = SQLDateFormatter.string(from: selectedDream.createdDate)
             
         }
         
