@@ -10,18 +10,13 @@ import UIKit
 
 protocol DreamDeletable {
     
-    var dreamDataStore : DreamDataStore {get}
-    func deleteAlert(dream: Dream, complement : (() -> Void)?) -> UIAlertController
+    func deleteAlert(dream: Dream, completion : (() -> Void)?) -> UIAlertController
     
 }
 
 extension DreamDeletable {
     
-    var dreamDataStore : DreamDataStore {
-        return DreamDataStore.shared
-    }
-    
-    func deleteAlert(dream: Dream, complement : (() -> Void)?) -> UIAlertController {
+    func deleteAlert(dream: Dream, completion : (() -> Void)?) -> UIAlertController {
         
         let title = "Delete \(dream.title!)?"
         let message = "Are you sure you want to delete this dream?"
@@ -31,8 +26,8 @@ extension DreamDeletable {
         alert.addAction(cencelAction)
         
         let deleteAction = UIAlertAction(title: "Delete", style: .destructive, handler: { (action) -> Void in
-            self.dreamDataStore.delete(dream: dream)
-            if let handler = complement {
+            DreamDataStore.shared.delete(dream: dream)
+            if let handler = completion {
                 handler()
             }
         })
