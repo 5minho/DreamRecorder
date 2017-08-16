@@ -13,23 +13,23 @@ class DreamListViewController : UIViewController {
     @IBOutlet weak var tableView: UITableView!
 
     override func viewDidLoad() {
-        
         super.viewDidLoad()
         
-        tableView.delegate = self
-        tableView.dataSource = self
+        self.tableView.delegate = self
+        self.tableView.dataSource = self
         self.navigationItem.leftBarButtonItem = editButtonItem
         
-        NotificationCenter.default.addObserver(forName: DreamDataStore.NotificationName.didDeleteDream, object: nil, queue: .main) { [unowned self] (notification) in
-            
-            let row = notification.userInfo?["index"] as? Int
-            let indexPath = IndexPath(row: row!, section: 0)
-            
-            self.tableView.deleteRows(at: [indexPath], with: .automatic)
-            
-        }
+        NotificationCenter.default.addObserver(forName: DreamDataStore.NotificationName.didDeleteDream, object: nil, queue: .main) {
+            notification in
+            if let row = notification.userInfo?["index"] as? Int {
+                self.tableView.deleteRows(at: [IndexPath(row: row, section: 0)], with: .automatic)
+            }
 
-        
+        }
+    }
+    
+    deinit {
+        NotificationCenter.default.removeObserver(self)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -69,7 +69,7 @@ extension DreamListViewController : UITableViewDelegate, UITableViewDataSource, 
             return UITableViewCell()
         }
         
-        if let dream = DreamDataStore.shared.dream(index: indexPath.row) {
+        if let dream = DreamDataStore.shared.dream(at: indexPath.row) {
             cell.update(dream: dream)
         }
     
@@ -82,19 +82,20 @@ extension DreamListViewController : UITableViewDelegate, UITableViewDataSource, 
         
         if let detailDreamViewController = DetailDreamViewController.storyboardInstance() {
             
-            detailDreamViewController.dream = DreamDataStore.shared.dream(index: indexPath.row)
+            detailDreamViewController.dream = DreamDataStore.shared.dream(at: indexPath.row)
             navigationController?.pushViewController(detailDreamViewController, animated: true)
             
         }
         
     }
 
+    // leak
     func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
         
-        let deleteButton = UITableViewRowAction(style: .destructive, title: "삭제") { [unowned self] action, indexPath -> Void in
+        let deleteButton = UITableViewRowAction(style: .destructive, title: "삭제") { action, indexPath -> Void in
             
-            if let dream = DreamDataStore.shared.dream(index: indexPath.row) {
-                let alert = self.deleteAlert(dream: dream, complement: nil)
+            if let dream = DreamDataStore.shared.dream(at: indexPath.row) {
+                let alert = self.deleteAlert(dream: dream, completion: nil)
                 self.present(alert, animated: true, completion: nil)
             }
             
