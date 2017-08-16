@@ -14,19 +14,22 @@ class RecordButton : UIButton {
         case recording
         case idle
     }
-
+    
     var recordState : RecordState = .idle {
         didSet {
             self.animate()
         }
     }
-    
-    var beforeRadius : CGFloat = 0
+
+    private var radiusAnimation : CABasicAnimation = {
+        var animation = CABasicAnimation(keyPath: "cornerRadius")
+        animation.duration = 0.4
+        return animation
+    }()
     
     override func draw(_ rect: CGRect) {
         super.draw(rect)
         self.layer.borderWidth = 1
-        beforeRadius = self.layer.cornerRadius
     }
     
     func animate() {
@@ -34,17 +37,22 @@ class RecordButton : UIButton {
         switch recordState {
             
         case .recording:
-            UIView.animate(withDuration: 1, animations: {
-                self.layer.cornerRadius = self.frame.width / 2
-            })
-            
+            self.startAnimation(to: self.frame.width / 2, from: 0)
+
         case .idle:
-            UIView.animate(withDuration: 1, animations: {
-                self.layer.cornerRadius = self.beforeRadius
-            })
-            
+            self.startAnimation(to: 0, from: self.frame.width / 2)
         }
         
+    }
+    
+    private func startAnimation(to : CGFloat, from : CGFloat) {
+        self.radiusAnimation.fromValue = from
+        self.radiusAnimation.toValue = to
+        self.layer.add(self.radiusAnimation, forKey: "cornerRadius")
+        
+        UIView.animate(withDuration: self.radiusAnimation.duration) { 
+            self.layer.cornerRadius = to
+        }
     }
 
 }
