@@ -64,6 +64,7 @@ class CellExpandAnimator: NSObject, UIViewControllerAnimatedTransitioning {
         let interactiveLabel = UILabel(frame: .zero)
         interactiveLabel.text = fromLabel.text
         interactiveLabel.font = fromLabel.font
+        interactiveLabel.textColor = fromLabel.textColor
         interactiveLabel.textAlignment = fromLabel.textAlignment
         interactiveLabel.translatesAutoresizingMaskIntoConstraints = false
         
@@ -71,7 +72,7 @@ class CellExpandAnimator: NSObject, UIViewControllerAnimatedTransitioning {
         backgroundView.backgroundColor = UIColor.clear
         
         let interactiveView = UIView(frame: fromViewInitialFrame)
-        interactiveView.backgroundColor = UIColor.white
+        interactiveView.backgroundColor = fromView.backgroundColor
         interactiveView.layer.borderColor = UIColor.lightGray.cgColor
         interactiveView.layer.borderWidth = 0.5
         interactiveView.layer.frame = interactiveView.layer.frame.insetBy(dx: -1, dy: 0)
