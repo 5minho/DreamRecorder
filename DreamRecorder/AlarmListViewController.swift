@@ -63,7 +63,6 @@ class AlarmListViewController: UIViewController, ThemeAppliable {
         
         NotificationCenter.default.addObserver(self, selector: #selector(self.didChnagedAlarms), name: Notification.Name.AlarmDateStoreDidSyncAlarmAndNotification, object: nil)
         
-        self.store.createTable()
         self.store.reloadAlarms()
     }
     

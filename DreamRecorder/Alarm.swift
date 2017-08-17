@@ -30,6 +30,7 @@ class Alarm: NSObject, NSCopying {
     var name: String
     var date: Date
     var weekday: WeekdayOptions
+    var sound: String
     var isActive: Bool
     var isSnooze: Bool
     
@@ -37,6 +38,7 @@ class Alarm: NSObject, NSCopying {
          name: String = "Alarm",
          date: Date = Date(),
          weekday: WeekdayOptions = .none,
+         sound: String = "Default",
          isActive: Bool = true,
          isSnooze: Bool = true) {
         
@@ -44,6 +46,7 @@ class Alarm: NSObject, NSCopying {
         self.name = name
         self.date = date
         self.weekday = weekday
+        self.sound = sound
         self.isActive = isActive
         self.isSnooze = isSnooze
     }
@@ -53,7 +56,7 @@ class Alarm: NSObject, NSCopying {
     }
     
     func copy(with zone: NSZone? = nil) -> Any {
-        let copiedAlarm = Alarm(id: id, name: name, date: date, weekday: weekday, isActive: isActive, isSnooze: isSnooze)
+        let copiedAlarm = Alarm(id: id, name: name, date: date, weekday: weekday, sound: sound, isActive: isActive, isSnooze: isSnooze)
         return copiedAlarm
     }
 }

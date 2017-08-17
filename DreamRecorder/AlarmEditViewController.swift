@@ -39,6 +39,7 @@ class AlarmEditViewController: UIViewController {
         originalAlarm.date = editedAlarm.date
         originalAlarm.name = editedAlarm.name
         originalAlarm.weekday = editedAlarm.weekday
+        originalAlarm.sound = editedAlarm.sound
         originalAlarm.isSnooze = editedAlarm.isSnooze
         self.dismiss(animated: true, completion: {
             [unowned self] in
@@ -111,7 +112,7 @@ extension AlarmEditViewController: UITableViewDataSource, UITableViewDelegate {
         } else if indexPath.row == AlarmDetailCellStyle.label.rawValue {
             cell.detailTextLabel?.text = editingAlarm.name
         } else if indexPath.row == AlarmDetailCellStyle.sound.rawValue {
-            cell.detailTextLabel?.text = "Default"
+            cell.detailTextLabel?.text = editingAlarm.sound
         } else if indexPath.row == AlarmDetailCellStyle.snooze.rawValue {
             if let switchAccessoryView = cell.switchAccessoryView {
                 switchAccessoryView.isOn = editingAlarm.isSnooze
@@ -142,10 +143,10 @@ extension AlarmEditViewController: UITableViewDataSource, UITableViewDelegate {
             alertController.addAction(cancelAction)
             self.present(alertController, animated: true, completion: nil)
         case AlarmDetailCellStyle.sound.rawValue:
-            let alertController = UIAlertController(title: "not supported", message: nil, preferredStyle: .alert)
-            let cancelAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
-            alertController.addAction(cancelAction)
-            self.present(alertController, animated: true, completion: nil)
+            guard let alarmSoundListViewController = AlarmSoundListViewController.storyboardInstance() else { return }
+            alarmSoundListViewController.delegate = self
+            alarmSoundListViewController.alarm = self.alarm
+            self.navigationController?.pushViewController(alarmSoundListViewController, animated: true)
         default:
             // Another cell have AccessoryView Action that is called by cell delegate.
             break
@@ -168,6 +169,13 @@ extension AlarmEditViewController: AlarmDetailCellDelegate {
     func alarmDetailCell(_: AlarmDetailCell, snoozeSwitchValueChanged sender: UISwitch) {
         guard let editingAlarm = self.editingAlarm else { return }
         editingAlarm.isSnooze = sender.isOn
+    }
+}
+
+extension AlarmEditViewController: AlarmSoundListViewControllerDelegate {
+    func alarmSoundListViewController(_ controller: AlarmSoundListViewController, didChangeSoundName: String) {
+        let soundCellIndexPath = IndexPath(row: AlarmDetailCellStyle.sound.rawValue, section: 0)
+        self.tableView.reloadRows(at: [soundCellIndexPath], with: .automatic)
     }
 }
 
