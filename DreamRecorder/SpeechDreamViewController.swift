@@ -42,7 +42,10 @@ class SpeechDreamViewController : UIViewController {
     }
     
     override func viewWillDisappear(_ animated: Bool) {
+        
         super.viewWillDisappear(animated)
+        self.inActivateRecognizer()
+        
     }
 
     
@@ -95,27 +98,40 @@ class SpeechDreamViewController : UIViewController {
     
     @IBAction func touchUpRecordButton(_ sender: UIButton) {
         
-        if speechRecognizer.isRunning == false {
-            
-            self.recordButton.recordState = .recording
-            
-            audioDispatch.async {
-                try? AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryRecord)
-            }
-            
-            speechRecognizer.start(with: .korean)
-            return
-        }
-        DispatchQueue.main.async {
-            self.recordButton.recordState = .idle
-        }
-        self.speechRecognizer.stop()
+        speechRecognizer.isRunning ? inActivateRecognizer() : activateRecognizer()
         
     }
     
+    private func activateRecognizer() {
+        
+        if speechRecognizer.isRunning == false {
+            
+            self.recordButton.recordState = .recording
+            speechRecognizer.start(with: .korean)
+            asyncSetAudioCategory(AVAudioSessionCategoryRecord)
+            
+        }
+        
+    }
     
-}
+    private func inActivateRecognizer() {
+        
+        if speechRecognizer.isRunning {
+            
+            self.recordButton.recordState = .idle
+            speechRecognizer.stop()
 
+        }
+        
+    }
+    
+    fileprivate func asyncSetAudioCategory(_ category: String) {
+        audioDispatch.async {
+            try? AVAudioSession.sharedInstance().setCategory(category)
+        }
+    }
+
+}
 
 extension SpeechDreamViewController : NSKRecognizerDelegate {
     
@@ -126,7 +142,6 @@ extension SpeechDreamViewController : NSKRecognizerDelegate {
     
     public func recognizerDidDetectEndPoint(_ aRecognizer: NSKRecognizer!) {
         print("Event occurred: End point detected")
-        recongnitionStateLabel.text = "DidDetectEndPoint"
     }
     
     func recognizer(_ aRecognizer: NSKRecognizer!, didSelectEndPointDetectType aEPDType: NSNumber!) {
@@ -136,9 +151,13 @@ extension SpeechDreamViewController : NSKRecognizerDelegate {
     public func recognizerDidEnterInactive(_ aRecognizer: NSKRecognizer!) {
         print("Event occurred: Inactive")
         
-        audioDispatch.async {
-            try? AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategorySoloAmbient)
+        if recordButton.recordState == .recording {
+            self.speechRecognizer.start(with: .korean)
+            return
         }
+        
+        asyncSetAudioCategory(AVAudioSessionCategorySoloAmbient)
+        recongnitionStateLabel.text = "end recognize"
         
     }
     
@@ -160,24 +179,19 @@ extension SpeechDreamViewController : NSKRecognizerDelegate {
     }
     
     public func recognizer(_ aRecognizer: NSKRecognizer!, didReceiveError aError: Error!) {
-        
         print("Error: \(aError)")
-        
-        //speechRecognizer.stop()
-        
     }
     
     public func recognizer(_ aRecognizer: NSKRecognizer!, didReceive aResult: NSKRecognizedResult!) {
         
         print("Final result: \(aResult)")
         let lastResult = aResult.results.first as? String
+        
         previousText = ""
         if let result = lastResult {
             contentField.text = defaultText + " " + result
             defaultText = contentField.text
         }
-        
-        recongnitionStateLabel.text = "end recognize"
         
     }
 }
