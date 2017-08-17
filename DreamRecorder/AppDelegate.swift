@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import AVFoundation
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -16,10 +17,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
         
-//        let bool = UserDefaults.standard.bool(forKey: "THEME")
 
+        let audioSession = AVAudioSession.sharedInstance()
+        do {
+            try audioSession.setCategory(AVAudioSessionCategoryPlayback, with: .duckOthers)
+            try audioSession.setActive(true)
+        } catch {
+        }
         
         if #available(iOS 10.0, *) {
+            
             UNUserNotificationCenter.current().delegate = self
             UNUserNotificationCenter.current().getPendingNotificationRequests(completionHandler: { (requests) in
                 for request in requests {
@@ -32,9 +39,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             print("Local Noti Count: \(notifications.count)")
             // from LocalNotification to UNNotification.
         }
+
         
         DreamDataStore.shared.createTable()
         DreamDataStore.shared.selectAll()
+        
+        // Apply Theme.
+        UIBarButtonItem.appearance().setTitleTextAttributes([NSForegroundColorAttributeName : UIColor.defaultButtonTitleColor], for: .normal)
+        UINavigationBar.appearance().tintColor = UIColor.white
+        
         return true
     }
 
