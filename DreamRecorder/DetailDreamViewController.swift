@@ -8,7 +8,7 @@
 
 import UIKit
 
-class DetailDreamViewController : UIViewController, DreamDeletable {
+class DetailDreamViewController : UIViewController {
     
     static func storyboardInstance() -> DetailDreamViewController? {
         let storyboard = UIStoryboard(name: String(describing: self), bundle: nil)
@@ -33,18 +33,16 @@ class DetailDreamViewController : UIViewController, DreamDeletable {
     
     private var isFirstShown: Bool = true
     
-    var dream : Dream?
-    
+    weak var dreamDataStore : DreamDataStore?
+    weak var dream : Dream?
     override func viewDidLoad() {
         
         super.viewDidLoad()
         
         if let selectedDream = dream {
             
-            let dateParser = DateParser()
             titleField.text = selectedDream.title
             contentTextView.text = selectedDream.content
-            createdDateLabel.text = dateParser.detail(from: selectedDream.createdDate)
             
         }
         
@@ -72,7 +70,6 @@ class DetailDreamViewController : UIViewController, DreamDeletable {
     }
     
     @objc private func touchUpDoneBarButtonItem(_ sender : UIBarButtonItem) {
-        
         view.endEditing(true)
         self.dream?.title = titleField.text ?? ""
         self.dream?.content = contentTextView.text ?? ""
@@ -80,10 +77,9 @@ class DetailDreamViewController : UIViewController, DreamDeletable {
         guard let dream = self.dream else {
             return
         }
-        
-        DreamDataStore.shared.update(dream: dream)
+        dreamDataStore?.updateAlarm(dream: dream)
         self.mode = .read
-        
+        navigationController?.popViewController(animated: true)
     }
     
     private func adjustViewMode(){
@@ -96,10 +92,8 @@ class DetailDreamViewController : UIViewController, DreamDeletable {
             self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .edit,
                                                                      target: self,
                                                                      action: #selector(touchUpEditBarButtonItem(_:)))
-            self.titleField.borderStyle = .none
             self.titleField.isUserInteractionEnabled = false
             self.contentTextView.isUserInteractionEnabled = false
-            self.contentTextView.layer.borderWidth = 0
             
         case .edit:
             
@@ -110,22 +104,7 @@ class DetailDreamViewController : UIViewController, DreamDeletable {
             self.titleField.borderStyle = .roundedRect
             self.titleField.isUserInteractionEnabled = true
             self.contentTextView.isUserInteractionEnabled = true
-            self.contentTextView.layer.borderWidth = 1
             
         }
     }
-    
-    @IBAction func touchUpdeleteButton(_ sender: UIButton) {
-        
-        if let dream = self.dream {
-            
-            let alert = deleteAlert(dream: dream, completion: {
-                self.navigationController?.popViewController(animated: true)
-            })
-            
-            self.present(alert, animated: true, completion: nil)
-        }
-        
-    }
-    
 }

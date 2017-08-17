@@ -5,13 +5,13 @@
 //  Created by JU HO YOON on 2017. 8. 9..
 //  Copyright © 2017년 BoostCamp. All rights reserved.
 //
+
 import Foundation
 import SQLite
 
 // MARK: Foundation
 // extension dataType to read and write at sqlite database for type suppport
 // TRICK: reading WeekdayOptions as Int invoke error, so use Int64 as Int Wrapper.
-
 extension WeekdayOptions: Value {
     static var declaredDatatype: String {
         return Int64.declaredDatatype
@@ -45,5 +45,11 @@ extension Date {
     }
     var datatypeValue: Int {
         return Int(timeIntervalSince1970)
+    }
+}
+
+extension Date {
+    func compareByMinuteUnit(other date: Date) -> Bool {
+        return (Calendar.current.compare(self, to: date, toGranularity: .minute) == .orderedSame)
     }
 }

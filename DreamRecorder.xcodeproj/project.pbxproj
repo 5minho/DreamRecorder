@@ -38,6 +38,9 @@
 		5A78D9261F42BDE400D1E679 /* MultiButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A78D9161F42BDE400D1E679 /* MultiButton.swift */; };
 		5A78D9271F42BDE400D1E679 /* SpeechDreamViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A78D9171F42BDE400D1E679 /* SpeechDreamViewController.swift */; };
 		5A78D92B1F42C29C00D1E679 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5A78D9291F42C29C00D1E679 /* Main.storyboard */; };
+		5A8508931F4521C300E2ED7F /* AlarmPlayViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A8508921F4521C300E2ED7F /* AlarmPlayViewController.swift */; };
+		5A8508951F4521CD00E2ED7F /* AlarmPlayViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5A8508941F4521CD00E2ED7F /* AlarmPlayViewController.storyboard */; };
+		5A8508971F4521E300E2ED7F /* CellExpandAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A8508961F4521E300E2ED7F /* CellExpandAnimator.swift */; };
 		5A9BEBD51F3AEA480054EA6D /* NaverSpeech.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5A9BEBD41F3AEA480054EA6D /* NaverSpeech.framework */; };
 		5A9BEBD61F3AEA480054EA6D /* NaverSpeech.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 5A9BEBD41F3AEA480054EA6D /* NaverSpeech.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		5ACA0DAC1F42DC3C00176147 /* RecordButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5ACA0DAB1F42DC3C00176147 /* RecordButton.swift */; };
@@ -103,6 +106,9 @@
 		5A78D9161F42BDE400D1E679 /* MultiButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MultiButton.swift; sourceTree = "<group>"; };
 		5A78D9171F42BDE400D1E679 /* SpeechDreamViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SpeechDreamViewController.swift; sourceTree = "<group>"; };
 		5A78D92A1F42C29C00D1E679 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		5A8508921F4521C300E2ED7F /* AlarmPlayViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AlarmPlayViewController.swift; sourceTree = "<group>"; };
+		5A8508941F4521CD00E2ED7F /* AlarmPlayViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = AlarmPlayViewController.storyboard; sourceTree = "<group>"; };
+		5A8508961F4521E300E2ED7F /* CellExpandAnimator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CellExpandAnimator.swift; sourceTree = "<group>"; };
 		5A9BEBD41F3AEA480054EA6D /* NaverSpeech.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = NaverSpeech.framework; sourceTree = "<group>"; };
 		5ACA0DAB1F42DC3C00176147 /* RecordButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RecordButton.swift; sourceTree = "<group>"; };
 		5AD09F0A1F34686A007BCA09 /* DreamRecorder.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DreamRecorder.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -144,6 +150,7 @@
 				5A78D8F11F42BDD900D1E679 /* AlarmAddViewController.swift */,
 				5A78D8F51F42BDD900D1E679 /* AlarmEditViewController.swift */,
 				5A78D9171F42BDE400D1E679 /* SpeechDreamViewController.swift */,
+				5A8508921F4521C300E2ED7F /* AlarmPlayViewController.swift */,
 				5A78D8F81F42BDD900D1E679 /* AlarmListViewController.swift */,
 				5A78D90E1F42BDE400D1E679 /* DetailDreamViewController.swift */,
 				5A78D9131F42BDE400D1E679 /* DreamListViewController.swift */,
@@ -154,6 +161,7 @@
 		5A07FE2E1F436A9200C65037 /* storyboard */ = {
 			isa = PBXGroup;
 			children = (
+				5A8508941F4521CD00E2ED7F /* AlarmPlayViewController.storyboard */,
 				5A78D8ED1F42BDD900D1E679 /* AddDreamNavigationController.storyboard */,
 				5A78D8F01F42BDD900D1E679 /* AlarmAddViewController.storyboard */,
 				5A78D8F71F42BDD900D1E679 /* AlarmListViewController.storyboard */,
@@ -178,6 +186,7 @@
 			children = (
 				5A78D8F31F42BDD900D1E679 /* AlarmDetailCell.swift */,
 				5A78D8F61F42BDD900D1E679 /* AlarmListCell.swift */,
+				5A8508961F4521E300E2ED7F /* CellExpandAnimator.swift */,
 				5A78D9161F42BDE400D1E679 /* MultiButton.swift */,
 				5A78D9111F42BDE400D1E679 /* DreamListCell.swift */,
 				5ACA0DAB1F42DC3C00176147 /* RecordButton.swift */,
@@ -356,6 +365,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5A8508951F4521CD00E2ED7F /* AlarmPlayViewController.storyboard in Resources */,
 				5A78D8FB1F42BDD900D1E679 /* AddDreamNavigationController.storyboard in Resources */,
 				5A78D92B1F42C29C00D1E679 /* Main.storyboard in Resources */,
 				5A78D9221F42BDE400D1E679 /* DreamListViewController.storyboard in Resources */,
@@ -436,6 +446,7 @@
 				5A07FE331F43893200C65037 /* DreamDeletable.swift in Sources */,
 				5A78D8FC1F42BDD900D1E679 /* AddDreamNavigationController.swift in Sources */,
 				5A78D9011F42BDD900D1E679 /* AlarmDetailCell.swift in Sources */,
+				5A8508971F4521E300E2ED7F /* CellExpandAnimator.swift in Sources */,
 				5A78D9041F42BDD900D1E679 /* AlarmListCell.swift in Sources */,
 				5A78D8FF1F42BDD900D1E679 /* AlarmAddViewController.swift in Sources */,
 				5A78D9271F42BDE400D1E679 /* SpeechDreamViewController.swift in Sources */,
@@ -449,6 +460,7 @@
 				5A78D91E1F42BDE400D1E679 /* DetailDreamViewController.swift in Sources */,
 				5A78D9031F42BDD900D1E679 /* AlarmEditViewController.swift in Sources */,
 				5A78D9081F42BDD900D1E679 /* AppDelegate.swift in Sources */,
+				5A8508931F4521C300E2ED7F /* AlarmPlayViewController.swift in Sources */,
 				5A78D9191F42BDE400D1E679 /* CocoaTouchExtension.swift in Sources */,
 				5A78D9001F42BDD900D1E679 /* AlarmDataStore.swift in Sources */,
 				5A78D91C1F42BDE400D1E679 /* DBManager.swift in Sources */,

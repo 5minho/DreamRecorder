@@ -9,8 +9,14 @@
 import Foundation
 import SQLite
 
+extension Notification.Name {
+    static let AlarmDateStoreDidSyncAlarmAndNotification = Notification.Name("AlarmDateStoreDidSyncAlarmAndNotification")
+}
+
 class AlarmDataStore: NSObject {
 
+    static let shared: AlarmDataStore = AlarmDataStore()
+    
     // this structure configure alarm table at sqlite db
     private struct AlarmTable {
         static let table = Table("alarms")
@@ -29,6 +35,7 @@ class AlarmDataStore: NSObject {
     
     // this alarms array is varaible that is loaded from database to memory and application will access this array for data
     var alarms: [Alarm] = []
+    lazy var scheduler: AlarmScheduler = AlarmScheduler()
     
     func createTable(){
         let tableResult = self.manager.createTable(statement: AlarmTable.table.create(ifNotExists: true) { (t) in
@@ -48,8 +55,75 @@ class AlarmDataStore: NSObject {
         }
     }
     
+    func alarm(withNotificationIdentifier identifier: String) -> Alarm? {
+        let alarm = self.alarms.filter { identifier.contains($0.id) }
+        return alarm.first
+    }
+    
     func reloadAlarms(){
         self.alarms = self.selectAll()
+        self.syncAlarmAndNotification()
+    }
+    
+    func syncAlarmAndNotification() {
+        if #available(iOS 10.0, *) {
+//            self.scheduler.getDeliveredNotifications(completionHandler: { (notifications) in
+//                var inActiveAlarms: [Alarm] = []
+//                for notification in notifications {
+//                    print(notification.request.identifier)
+//                    let inActiveAlarm = self.alarms.filter { $0.id == notification.request.identifier }
+//                    inActiveAlarms += inActiveAlarm
+//                    print(inActiveAlarm)
+//                }
+//                
+//                for alarm in inActiveAlarms {
+//                    alarm.isActive = false
+//                    self.updateAlarm(alarm: alarm)
+//                    self.reloadAlarms()
+//                    print(alarm)
+//                    NotificationCenter.default.post(name: didSyncAlarmAndNotification, object: nil)
+//                }
+//            })
+            self.scheduler.getPendingNotificationRequests(completion: { (requests) in
+                let inActiveAlarms = self.alarms.filter({ (alarm) -> Bool in
+                    var isDelivered = true
+                    for request in requests {
+                        let identifier = request.identifier
+                        if (identifier == alarm.id) {
+                            isDelivered = false
+                            break
+                        }
+                    }
+                    return isDelivered
+            })
+                
+            for alarm in inActiveAlarms {
+                alarm.isActive = false
+                self.updateAlarm(alarm: alarm)
+                self.reloadAlarms()
+                NotificationCenter.default.post(name: Notification.Name.AlarmDateStoreDidSyncAlarmAndNotification, object: nil)
+                }})
+        } else {
+            guard let notifications = self.scheduler.getScheduledLocalNotifications() else { return }
+            let inActiveAlarms = self.alarms.filter({ (alarm) -> Bool in
+                var isDelivered = true
+                for notification in notifications {
+                    guard let identifier = notification.userInfo?["identifier"] as? String else { continue }
+                    if (identifier == alarm.id) {
+                        isDelivered = false
+                        break
+                    }
+                }
+                return isDelivered
+            })
+            
+            for alarm in inActiveAlarms {
+                alarm.isActive = false
+                self.updateAlarm(alarm: alarm)
+                self.reloadAlarms()
+                NotificationCenter.default.post(name: Notification.Name.AlarmDateStoreDidSyncAlarmAndNotification, object: nil)
+            }
+        }
     }
     
     private func selectAll() -> [Alarm] {
@@ -72,7 +146,6 @@ class AlarmDataStore: NSObject {
             print(error)
             return []
         }
-        
     }
     
     func insertAlarm(alarm: Alarm) {
@@ -87,6 +160,7 @@ class AlarmDataStore: NSObject {
         
         switch result {
         case let .success(rowID):
+            self.scheduler.addNotification(with: alarm)
             print("Success: insert row \(rowID)")
         case let .failure(error):
             print(error)
@@ -103,6 +177,7 @@ class AlarmDataStore: NSObject {
                                                                      AlarmTable.Column.isSnooze <- alarm.isSnooze))
         switch result {
         case .success:
+            self.scheduler.updateNotification(with: alarm)
             print("Success: update row \(alarm.id)")
         case let .failure(error):
             print("error: \(error)")
@@ -114,6 +189,7 @@ class AlarmDataStore: NSObject {
         let result = self.manager.deleteRow(delete: deletingRow.delete())
         switch result {
         case .success:
+            self.scheduler.deleteNotification(with: alarm)
             print("Success: delete row \(alarm.id)")
         case let .failure(error):
             print("error: \(error)")
