@@ -57,6 +57,8 @@ class AlarmAddViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        self.applyTheme()
+        
         self.tableView.delegate = self
         self.tableView.dataSource = self
         
@@ -136,10 +138,8 @@ extension AlarmAddViewController: UITableViewDataSource, UITableViewDelegate {
             alertController.addAction(cancelAction)
             self.present(alertController, animated: true, completion: nil)
         case AlarmDetailCellStyle.sound.rawValue:
-            let alertController = UIAlertController(title: "not supported", message: nil, preferredStyle: .alert)
-            let cancelAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
-            alertController.addAction(cancelAction)
-            self.present(alertController, animated: true, completion: nil)
+            guard let alarmSoundListViewController = AlarmSoundListViewController.storyboardInstance() else { return }
+            self.navigationController?.pushViewController(alarmSoundListViewController, animated: true)
         default:
             // Another cell have AccessoryView Action that is called by cell delegate.
             break
@@ -162,6 +162,18 @@ extension AlarmAddViewController: AlarmDetailCellDelegate {
     func alarmDetailCell(_: AlarmDetailCell, snoozeSwitchValueChanged sender: UISwitch) {
         guard let editingAlarm = self.alarm else { return }
         editingAlarm.isSnooze = sender.isOn
+    }
+}
+
+extension AlarmAddViewController: ThemeAppliable {
+    var themeStyle: ThemeStyle {
+        return .alarm
+    }
+    var themeTableView: UITableView? {
+        return self.tableView
+    }
+    var themeNavigationController: UINavigationController? {
+        return self.navigationController
     }
 }
 

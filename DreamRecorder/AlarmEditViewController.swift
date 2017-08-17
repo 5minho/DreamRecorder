@@ -65,9 +65,10 @@ class AlarmEditViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        self.applyTheme()
+        
         self.tableView.delegate = self
         self.tableView.dataSource = self
-        
         self.tableView.tableFooterView = UIView(frame: .zero)
         
         self.datePicker = UIDatePicker()
@@ -167,6 +168,18 @@ extension AlarmEditViewController: AlarmDetailCellDelegate {
     func alarmDetailCell(_: AlarmDetailCell, snoozeSwitchValueChanged sender: UISwitch) {
         guard let editingAlarm = self.editingAlarm else { return }
         editingAlarm.isSnooze = sender.isOn
+    }
+}
+
+extension AlarmEditViewController: ThemeAppliable {
+    var themeStyle: ThemeStyle {
+        return .alarm
+    }
+    var themeTableView: UITableView? {
+        return self.tableView
+    }
+    var themeNavigationController: UINavigationController? {
+        return self.navigationController
     }
 }
 

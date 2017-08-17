@@ -24,7 +24,7 @@ class AlarmListCell: UITableViewCell {
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
 //        self.setupWeekdayButton()
-        self.setupAccessoryView()
+        
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -36,6 +36,21 @@ class AlarmListCell: UITableViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         self.setupWeekdayButton()
+        self.setupDreamTheme()
+    }
+    
+    func setupDreamTheme(){
+        self.backgroundColor = UIColor.alarmDefaultBackgroundColor
+        self.timeLabel.textColor = UIColor.alarmCellTitleColor
+        self.nameLabel.textColor = UIColor.alarmCellBodyColor
+        self.activeSwitch.tintColor = UIColor.alarmSwitchTintColor
+        self.activeSwitch.onTintColor = UIColor.alarmSwitchOnTintColor
+        self.weekdayButton.buttonBackgroundColor = UIColor.alarmDefaultBackgroundColor
+        self.weekdayButton.buttonTitleColor = UIColor.alarmCellBodyColor
+        self.weekdayButton.buttonTitleColorHighlighted = UIColor.white
+        
+        self.timeLabel.font = UIFont.title1
+        self.nameLabel.font = UIFont.title3
     }
     
     private func setupWeekdayButton(){

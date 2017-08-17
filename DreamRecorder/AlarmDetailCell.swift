@@ -47,17 +47,20 @@ class AlarmDetailCell: UITableViewCell {
     private func updateLabels(){
         self.textLabel?.text = String(describing: self.cellStyle).localizedCapitalized
         self.detailTextLabel?.text = nil
+        self.textLabel?.textColor = UIColor.alarmDarkText
+        self.detailTextLabel?.textColor = UIColor.alarmText
     }
     
     private func setupAccessoryView(){
         self.accessoryView = nil
+        self.backgroundColor = UIColor.alarmDefaultBackgroundColor
         
         switch cellStyle {
         case .repeat:
             let multiButton = MultiButton(frame: CGRect(x: 0, y: 0, width: 200, height: 50))
             multiButton.delegate = self
-            multiButton.buttonTitleColor = UIColor.lightGray
-            multiButton.buttonTitleColorHighlighted = UIColor.darkGray
+            multiButton.buttonTitleColor = UIColor.alarmLightText
+            multiButton.buttonTitleColorHighlighted = UIColor.white
             multiButton.setTitles(titles: Calendar.current.shortWeekdaySymbols)
             self.accessoryView = multiButton
         
@@ -70,6 +73,8 @@ class AlarmDetailCell: UITableViewCell {
         case .snooze:
             let snoozeSwitch = UISwitch()
             snoozeSwitch.addTarget(self, action: #selector(self.snoozeSwitchValueChanged(sender:)), for: .valueChanged)
+            snoozeSwitch.onTintColor = UIColor.alarmSwitchOnTintColor
+            snoozeSwitch.tintColor = UIColor.alarmSwitchTintColor
             self.accessoryView = snoozeSwitch
         }
     }
