@@ -144,9 +144,9 @@ class SoundManager {
         let alarmPlayerItem = AVPlayerItem(url: alarmSoundURL)
         
         self.queuePlayer = AVQueuePlayer(items: [silentPlayerItem, alarmPlayerItem])
-        
         self.queuePlayer?.actionAtItemEnd = .none
         self.queuePlayer?.volume = 1
+        
         
         self.queuePlayer?.play()
         
