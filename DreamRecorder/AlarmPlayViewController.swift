@@ -27,6 +27,12 @@ class AlarmPlayViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        self.view.backgroundColor = UIColor.alarmDefaultBackgroundColor
+        self.alarmTimeLabel.textColor = UIColor.alarmDarkText
+        self.leftTimeLabel.textColor = UIColor.alarmLightText
+        self.alarmTimeLabel.font = UIFont.title1
+        self.leftTimeLabel.font = UIFont.title3
+        
         self.transitioningDelegate = self
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(self.dismissByGesture(sender:)))
         self.view.addGestureRecognizer(tapGestureRecognizer)
@@ -41,6 +47,7 @@ class AlarmPlayViewController: UIViewController {
     func updateLeftTimeLabel(){
         guard let playingAlarm = playingAlarm else { return }
         let dateComponents = Calendar.current.dateComponents([.day, .hour, .minute, .second], from: Date(), to: playingAlarm.date)
+        
         self.leftTimeLabel.text = "\(dateComponents.hour!):\(dateComponents.minute!):\(dateComponents.second!)"
     }
     

@@ -8,24 +8,34 @@
 
 import UIKit
 
-class AlarmListViewController: UIViewController {
+class AlarmListViewController: UIViewController, ThemeAppliable {
     
+    // AlarmThemeAppliable
+    var themeStyle: ThemeStyle = .alarm
+    var themeTableView: UITableView? {
+        return self.tableView
+    }
+    var themeNavigationController: UINavigationController? {
+        return self.navigationController
+    }
+    
+    // IBOutlet Subviews.
     @IBOutlet weak var tableView: UITableView!
+    
+    // Properties.
     lazy var store = AlarmDataStore.shared
     
+    // CellExpandableAnimator temporary views.
     var selectedCell: UITableViewCell?
     var selectedCellLabel: UILabel?
     
-    lazy var alarmAddViewController: AlarmAddViewController? = {
-        return AlarmAddViewController.storyboardInstance()
-    }()
-    
+    // IBActions.
     func leftBarButtonDidTap(sender: UIBarButtonItem) {
         self.tableView.setEditing(!self.tableView.isEditing, animated: true)
     }
     
     func rightBarButtonDidTap(sender: UIBarButtonItem) {
-        guard let alarmAddViewController = self.alarmAddViewController else { return }
+        guard let alarmAddViewController = AlarmAddViewController.storyboardInstance() else { return }
         let navigationController = UINavigationController(rootViewController: alarmAddViewController)
         
         alarmAddViewController.delegate = self
@@ -37,12 +47,13 @@ class AlarmListViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        self.applyTheme()
+        
         self.tableView.delegate = self
         self.tableView.dataSource = self
         
         self.tableView.estimatedRowHeight = 90
         self.tableView.allowsSelectionDuringEditing = true
-        self.tableView.tableFooterView = UIView(frame: .zero)
         
         let leftBarButton = UIBarButtonItem(title: "Edit", style: .plain, target: self, action: #selector(self.leftBarButtonDidTap(sender:)))
         self.navigationItem.setLeftBarButton(leftBarButton, animated: true)
@@ -112,10 +123,32 @@ extension AlarmListViewController: UITableViewDelegate, UITableViewDataSource {
             self.selectedCell = cell
             self.selectedCellLabel = cell.timeLabel
             
-            guard let alarmPlayViewController = AlarmPlayViewController.storyboardInstance() else { return }
-            alarmPlayViewController.presentingDelegate = self
-            alarmPlayViewController.playingAlarm = self.store.alarms[indexPath.row]
-            self.present(alarmPlayViewController, animated: true, completion: nil)
+            let selectedAlarm = self.store.alarms[indexPath.row]
+            
+            if selectedAlarm.isActive == false {
+                let alertController = UIAlertController(title: "Alarm", message: "알람을 활성화 시키겠습니까?", preferredStyle: .alert)
+                let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: { (action) in
+                    alertController.dismiss(animated: true, completion: nil)
+                })
+                let okAction = UIAlertAction(title: "OK", style: .default, handler: { (action) in
+                    alertController.dismiss(animated: true, completion: nil)
+                    guard let alarmPlayViewController = AlarmPlayViewController.storyboardInstance() else { return }
+                    alarmPlayViewController.presentingDelegate = self
+                    alarmPlayViewController.playingAlarm = selectedAlarm
+                    self.present(alarmPlayViewController, animated: true, completion: nil)
+                    
+                })
+                alertController.addAction(cancelAction)
+                alertController.addAction(okAction)
+                self.present(alertController, animated: true, completion: nil)
+            } else {
+                guard let alarmPlayViewController = AlarmPlayViewController.storyboardInstance() else { return }
+                alarmPlayViewController.presentingDelegate = self
+                alarmPlayViewController.playingAlarm = selectedAlarm
+                self.present(alarmPlayViewController, animated: true, completion: nil)
+            }
+            
+            
         }
     }
     
