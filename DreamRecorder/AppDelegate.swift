@@ -17,10 +17,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Override point for customization after application launch.
         
 //        let bool = UserDefaults.standard.bool(forKey: "THEME")
-
+        // Apply Theme.
+        
+        UIBarButtonItem.appearance().setTitleTextAttributes([NSForegroundColorAttributeName : UIColor.defaultButtonTitleColor], for: .normal)
+        UINavigationBar.appearance().tintColor = UIColor.white
         
         if #available(iOS 10.0, *) {
             UNUserNotificationCenter.current().delegate = self
+            UNUserNotificationCenter.current().removeAllPendingNotificationRequests()
             UNUserNotificationCenter.current().getPendingNotificationRequests(completionHandler: { (requests) in
                 for request in requests {
                     print("\(request.identifier)")

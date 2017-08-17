@@ -14,7 +14,7 @@ class DreamListViewController : UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        self.applyTheme()
         self.tableView.delegate = self
         self.tableView.dataSource = self
         self.navigationItem.leftBarButtonItem = editButtonItem
@@ -24,8 +24,15 @@ class DreamListViewController : UIViewController {
             if let row = notification.userInfo?["index"] as? Int {
                 self.tableView.deleteRows(at: [IndexPath(row: row, section: 0)], with: .automatic)
             }
-
         }
+        
+        NotificationCenter.default.addObserver(forName: DreamDataStore.NotificationName.didAddDream, object: nil, queue: .main) {
+            notification in
+            self.tableView.insertRows(at: [IndexPath(row: 0, section: 0)], with: .automatic)
+//            self.tableView.reloadData()
+        }
+        
+        
     }
     
     deinit {
@@ -89,7 +96,7 @@ extension DreamListViewController : UITableViewDelegate, UITableViewDataSource, 
         
     }
 
-    // leak
+    // 
     func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
         
         let deleteButton = UITableViewRowAction(style: .destructive, title: "삭제") { action, indexPath -> Void in
@@ -119,4 +126,17 @@ extension DreamListViewController : UITableViewDelegate, UITableViewDataSource, 
         return 80
     }
     
+}
+
+extension DreamListViewController : ThemeAppliable {
+    var themeStyle: ThemeStyle {
+        return .dream
+    }
+    
+    var themeTableView: UITableView? {
+        return self.tableView
+    }
+    var themeNavigationController: UINavigationController? {
+        return self.navigationController
+    }
 }

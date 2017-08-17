@@ -26,7 +26,7 @@ class SpeechDreamViewController : UIViewController {
         let contentFieldLayer = self.contentField.layer
         contentFieldLayer.borderWidth = 1
         contentFieldLayer.borderColor = UIColor.black.cgColor
-                
+        self.applyTheme()
     }
     
     let audioDispatch = DispatchQueue(label: "audioSerialQueue")
@@ -44,6 +44,7 @@ class SpeechDreamViewController : UIViewController {
     override func viewWillDisappear(_ animated: Bool) {
         
         super.viewWillDisappear(animated)
+        self.view.endEditing(true)
         self.inActivateRecognizer()
         
     }
@@ -84,7 +85,7 @@ class SpeechDreamViewController : UIViewController {
         
         alert.addAction(saveAction)
         alert.addAction(cancelAction)
-        present(alert, animated: true, completion: nil)
+        present(alert, animated: true)
         
     }
     
@@ -108,7 +109,11 @@ class SpeechDreamViewController : UIViewController {
             
             self.recordButton.recordState = .recording
             speechRecognizer.start(with: .korean)
-            asyncSetAudioCategory(AVAudioSessionCategoryRecord)
+            asyncSetAudioCategory(AVAudioSessionCategoryRecord) {
+                DispatchQueue.main.async {
+                    self.recongnitionStateLabel.text = "Recognize..."
+                }
+            }
             
         }
         
@@ -125,9 +130,12 @@ class SpeechDreamViewController : UIViewController {
         
     }
     
-    fileprivate func asyncSetAudioCategory(_ category: String) {
+    fileprivate func asyncSetAudioCategory(_ category: String, completion: (() -> Void)?) {
         audioDispatch.async {
             try? AVAudioSession.sharedInstance().setCategory(category)
+        }
+        if let completeHandler = completion {
+            completeHandler()
         }
     }
 
@@ -137,7 +145,6 @@ extension SpeechDreamViewController : NSKRecognizerDelegate {
     
     public func recognizerDidEnterReady(_ aRecognizer: NSKRecognizer!) {
         print("Event occurred: Ready")
-        recongnitionStateLabel.text = "Recognizing......"
     }
     
     public func recognizerDidDetectEndPoint(_ aRecognizer: NSKRecognizer!) {
@@ -156,9 +163,12 @@ extension SpeechDreamViewController : NSKRecognizerDelegate {
             return
         }
         
-        asyncSetAudioCategory(AVAudioSessionCategorySoloAmbient)
-        recongnitionStateLabel.text = "end recognize"
-        
+        asyncSetAudioCategory(AVAudioSessionCategorySoloAmbient) {
+            DispatchQueue.main.async {
+                self.recongnitionStateLabel.text = "end recognize"
+            }
+        }
+
     }
     
     public func recognizer(_ aRecognizer: NSKRecognizer!, didRecordSpeechData aSpeechData: Data!) {
@@ -194,4 +204,20 @@ extension SpeechDreamViewController : NSKRecognizerDelegate {
         }
         
     }
+}
+
+extension SpeechDreamViewController : ThemeAppliable {
+    
+    var themeStyle: ThemeStyle {
+        return .dream
+    }
+    
+    var themeTableView: UITableView? {
+        return nil
+    }
+    
+    var themeNavigationController: UINavigationController? {
+        return self.navigationController
+    }
+    
 }

@@ -33,8 +33,8 @@ class DetailDreamViewController : UIViewController {
     
     private var isFirstShown: Bool = true
     
-    weak var dreamDataStore : DreamDataStore?
     weak var dream : Dream?
+    
     override func viewDidLoad() {
         
         super.viewDidLoad()
@@ -46,6 +46,8 @@ class DetailDreamViewController : UIViewController {
             
         }
         
+        self.applyTheme()
+        
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -55,7 +57,6 @@ class DetailDreamViewController : UIViewController {
         if self.isFirstShown {
             
             self.adjustViewMode()
-            
             self.isFirstShown = false
         }
         
@@ -70,6 +71,7 @@ class DetailDreamViewController : UIViewController {
     }
     
     @objc private func touchUpDoneBarButtonItem(_ sender : UIBarButtonItem) {
+        
         view.endEditing(true)
         self.dream?.title = titleField.text ?? ""
         self.dream?.content = contentTextView.text ?? ""
@@ -77,9 +79,9 @@ class DetailDreamViewController : UIViewController {
         guard let dream = self.dream else {
             return
         }
-        dreamDataStore?.updateAlarm(dream: dream)
+        DreamDataStore.shared.update(dream: dream)
         self.mode = .read
-        navigationController?.popViewController(animated: true)
+        
     }
     
     private func adjustViewMode(){
@@ -92,8 +94,11 @@ class DetailDreamViewController : UIViewController {
             self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .edit,
                                                                      target: self,
                                                                      action: #selector(touchUpEditBarButtonItem(_:)))
+            
+            self.titleField.layer.borderWidth = 0
             self.titleField.isUserInteractionEnabled = false
             self.contentTextView.isUserInteractionEnabled = false
+            self.contentTextView.layer.borderWidth = 0
             
         case .edit:
             
@@ -101,10 +106,40 @@ class DetailDreamViewController : UIViewController {
             self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done,
                                                                      target: self,
                                                                      action: #selector(touchUpDoneBarButtonItem(_:)))
-            self.titleField.borderStyle = .roundedRect
+            self.titleField.layer.borderWidth = 1
             self.titleField.isUserInteractionEnabled = true
             self.contentTextView.isUserInteractionEnabled = true
+            self.contentTextView.layer.borderWidth = 1
             
         }
     }
 }
+
+extension DetailDreamViewController : DreamDeletable {
+    @IBAction func touchupDeleteButton() {
+        guard let dream = self.dream else {
+            return
+        }
+        
+        let alert = self.deleteAlert(dream: dream) {
+            self.navigationController?.popViewController(animated: true)
+        }
+        
+        self.present(alert, animated: true, completion: nil)
+    }
+}
+
+extension DetailDreamViewController : ThemeAppliable {
+    var themeStyle: ThemeStyle {
+        return .dream
+    }
+    
+    var themeTableView: UITableView? {
+        return nil
+    }
+    
+    var themeNavigationController: UINavigationController? {
+        return self.navigationController
+    }
+}
+

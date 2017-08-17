@@ -15,7 +15,7 @@ enum ThemeStyle {
 
 protocol ThemeAppliable {
     var themeStyle: ThemeStyle { get }
-    
+    var view : UIView! {get}
     var themeTableView: UITableView? { get }
     var themeNavigationController: UINavigationController? { get }
     
@@ -26,6 +26,7 @@ protocol ThemeAppliable {
 extension ThemeAppliable {
     func applyTheme(){
         if themeStyle == .dream {
+            self.view.backgroundColor = UIColor.dreamDefaultBackgroundColor
             self.themeTableView?.tableFooterView = UIView(frame: .zero)
             self.themeTableView?.separatorColor = UIColor.dreamTableViewSeparatorColor
             self.themeTableView?.backgroundColor = UIColor.dreamDefaultBackgroundColor

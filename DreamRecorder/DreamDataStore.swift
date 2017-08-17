@@ -22,11 +22,7 @@ class DreamDataStore {
         
     }
     
-    private var dreams : [Dream] = [] {
-        didSet {
-            dreams.sort(by: >)
-        }
-    }
+    private var dreams : [Dream] = []
     
     var count : Int {
         return dreams.count
@@ -119,7 +115,11 @@ class DreamDataStore {
         
         switch result {
         case .success(_):
-            self.dreams.append(dream)
+//            self.dreams.append(dream)
+            self.dreams.insert(dream, at: 0)
+//            self.dreams.sort(by: >)
+            NotificationCenter.default.post(name: NotificationName.didAddDream, object: nil)
+            
         case .failure(_):
             print("default")
         }
@@ -156,14 +156,15 @@ class DreamDataStore {
         let deletingRow = DreamTable.table.filter(DreamTable.Column.id == dream.id)
         let result = self.dbManager.deleteRow(delete: deletingRow.delete())
         
-        guard let idx : Int = index ?? dreams.index(of: dream) else {
-            return result
-        }
-        self.dreams.remove(at: idx)
+        
         switch result {
             
         case .success:
             print("Success: delete row \(dream.id)")
+            guard let idx : Int = index ?? dreams.index(of: dream) else {
+                return result
+            }
+            self.dreams.remove(at: idx)
             NotificationCenter.default.post(name: NotificationName.didDeleteDream, object: nil, userInfo : ["index" : idx])
             
         case let .failure(error):

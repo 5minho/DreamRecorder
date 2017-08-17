@@ -8,10 +8,10 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--Main Tab Bar View Controller-->
+        <!--Tab Bar Controller-->
         <scene sceneID="vxw-uY-ldm">
             <objects>
-                <tabBarController id="vaX-0e-7Cd" customClass="MainTabBarViewController" customModule="DreamRecorder" customModuleProvider="target" sceneMemberID="viewController">
+                <tabBarController id="vaX-0e-7Cd" sceneMemberID="viewController">
                     <tabBar key="tabBar" contentMode="scaleToFill" id="CVr-pP-f3i">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="49"/>
                         <autoresizingMask key="autoresizingMask"/>
