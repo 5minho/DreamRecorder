@@ -7,3 +7,7 @@
 //
 
 import Foundation
+
+struct Config {
+    static let clientId = ""
+}
