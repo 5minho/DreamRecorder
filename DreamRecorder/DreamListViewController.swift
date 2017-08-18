@@ -11,17 +11,53 @@ import UIKit
 class DreamListViewController : UIViewController {
     
     @IBOutlet weak var tableView: UITableView!
+    fileprivate var searchController : UISearchController!
     
-    fileprivate var searchController = UISearchController()
     fileprivate var filteredDreams = [Dream]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        print("viewDidLoad")
+        
         self.applyTheme()
+        
         self.tableView.delegate = self
         self.tableView.dataSource = self
+        self.tableView.allowsSelectionDuringEditing = true
+        
         self.navigationItem.leftBarButtonItem = editButtonItem
+    
+        self.addObserver()
+        
+        self.setSearchViewController()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+    
+        super.viewWillAppear(animated)
+        tableView.reloadSections(IndexSet(integersIn:0...0), with: .automatic)
+        
+    }
+    
+    override func setEditing(_ editing: Bool, animated: Bool) {
+        
+        super.setEditing(editing, animated: animated)
+        self.tableView.setEditing(!self.tableView.isEditing, animated: true)
+        
+    }
+    
+    deinit {
+        NotificationCenter.default.removeObserver(self)
+    }
+
+    @IBAction func addDream(_ sender: UIBarButtonItem) {
+        
+        if let addDreamNavigationController = AddDreamNavigationController.storyboardInstance() {
+            present(addDreamNavigationController, animated: true, completion: nil)
+        }
+        
+    }
+    
+    private func addObserver() {
         
         NotificationCenter.default.addObserver(forName: DreamDataStore.NotificationName.didDeleteDream, object: nil, queue: .main) {
             notification in
@@ -34,44 +70,26 @@ class DreamListViewController : UIViewController {
             [unowned self] notification in
             self.tableView.insertRows(at: [IndexPath(row: 0, section: 0)], with: .automatic)
         }
-        self.tableView.allowsSelectionDuringEditing = true
+        
+    }
+    
+    private func setSearchViewController() {
+        
         searchController = UISearchController(searchResultsController: nil)
-        searchController.searchResultsUpdater = self
-        searchController.dimsBackgroundDuringPresentation = false
+        searchController?.searchResultsUpdater = self
+        searchController?.dimsBackgroundDuringPresentation = false
         definesPresentationContext = true
-        tableView.tableHeaderView = searchController.searchBar
-    
-    }
-    
-    override func awakeFromNib() {
-        super.awakeFromNib()
-        print("awakeFromNib")
-    }
-    
-    deinit {
-        NotificationCenter.default.removeObserver(self)
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-    
-        super.viewWillAppear(animated)
-        tableView.reloadSections(IndexSet(integersIn:0...0), with: .automatic)
+        self.tableView?.tableHeaderView = searchController?.searchBar
+        self.tableView.contentOffset =  CGPoint(x: 0, y: searchController.searchBar.frame.height)
         
     }
+    
+}
 
-    @IBAction func addDream(_ sender: UIBarButtonItem) {
-        
-        if let addDreamNavigationController = AddDreamNavigationController.storyboardInstance() {
-            present(addDreamNavigationController, animated: true, completion: nil)
-        }
-        
-    }
+extension DreamListViewController : UISearchResultsUpdating {
     
-    override func setEditing(_ editing: Bool, animated: Bool) {
-        
-        super.setEditing(editing, animated: animated)
-        self.tableView.setEditing(!self.tableView.isEditing, animated: true)
-        
+    func updateSearchResults(for searchController: UISearchController) {
+        filterContentForSearchText(searchController.searchBar.text!)
     }
     
     func searchBarIsEmpty() -> Bool {
@@ -80,20 +98,16 @@ class DreamListViewController : UIViewController {
     }
     
     func filterContentForSearchText(_ searchText: String, scope: String = "All") {
+        
         filteredDreams = DreamDataStore.shared.filter(searchText)
         tableView.reloadData()
+        
     }
     
     func isFiltering() -> Bool {
         return searchController.isActive && !searchBarIsEmpty()
     }
     
-}
-
-extension DreamListViewController : UISearchResultsUpdating {
-    func updateSearchResults(for searchController: UISearchController) {
-        filterContentForSearchText(searchController.searchBar.text!)
-    }
 }
 
 extension DreamListViewController : UITableViewDelegate, UITableViewDataSource, DreamDeletable {
