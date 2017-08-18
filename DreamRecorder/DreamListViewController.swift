@@ -11,9 +11,13 @@ import UIKit
 class DreamListViewController : UIViewController {
     
     @IBOutlet weak var tableView: UITableView!
-
+    
+    fileprivate var searchController = UISearchController()
+    fileprivate var filteredDreams = [Dream]()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        print("viewDidLoad")
         self.applyTheme()
         self.tableView.delegate = self
         self.tableView.dataSource = self
@@ -27,12 +31,21 @@ class DreamListViewController : UIViewController {
         }
         
         NotificationCenter.default.addObserver(forName: DreamDataStore.NotificationName.didAddDream, object: nil, queue: .main) {
-            notification in
+            [unowned self] notification in
             self.tableView.insertRows(at: [IndexPath(row: 0, section: 0)], with: .automatic)
-//            self.tableView.reloadData()
         }
-        
-        
+        self.tableView.allowsSelectionDuringEditing = true
+        searchController = UISearchController(searchResultsController: nil)
+        searchController.searchResultsUpdater = self
+        searchController.dimsBackgroundDuringPresentation = false
+        definesPresentationContext = true
+        tableView.tableHeaderView = searchController.searchBar
+    
+    }
+    
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        print("awakeFromNib")
     }
     
     deinit {
@@ -61,13 +74,33 @@ class DreamListViewController : UIViewController {
         
     }
     
+    func searchBarIsEmpty() -> Bool {
+        // Returns true if the text is empty or nil
+        return searchController.searchBar.text?.isEmpty ?? true
+    }
+    
+    func filterContentForSearchText(_ searchText: String, scope: String = "All") {
+        filteredDreams = DreamDataStore.shared.filter(searchText)
+        tableView.reloadData()
+    }
+    
+    func isFiltering() -> Bool {
+        return searchController.isActive && !searchBarIsEmpty()
+    }
+    
+}
+
+extension DreamListViewController : UISearchResultsUpdating {
+    func updateSearchResults(for searchController: UISearchController) {
+        filterContentForSearchText(searchController.searchBar.text!)
+    }
 }
 
 extension DreamListViewController : UITableViewDelegate, UITableViewDataSource, DreamDeletable {
     
     // MARK: - Table view dataSource
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return DreamDataStore.shared.count
+        return  self.isFiltering() ? self.filteredDreams.count : DreamDataStore.shared.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -76,10 +109,14 @@ extension DreamListViewController : UITableViewDelegate, UITableViewDataSource, 
             return UITableViewCell()
         }
         
-        if let dream = DreamDataStore.shared.dream(at: indexPath.row) {
-            cell.update(dream: dream)
+        if isFiltering() {
+            cell.update(dream: filteredDreams[indexPath.row])
+        } else {
+            if let dream = DreamDataStore.shared.dream(at: indexPath.row) {
+                cell.update(dream: dream)
+            }
         }
-    
+        
         return cell
     }
     
@@ -89,8 +126,12 @@ extension DreamListViewController : UITableViewDelegate, UITableViewDataSource, 
         
         if let detailDreamViewController = DetailDreamViewController.storyboardInstance() {
             
-            detailDreamViewController.dream = DreamDataStore.shared.dream(at: indexPath.row)
+            detailDreamViewController.dream = self.isFiltering() ? filteredDreams[indexPath.row] : DreamDataStore.shared.dream(at: indexPath.row)
             navigationController?.pushViewController(detailDreamViewController, animated: true)
+            
+            if self.tableView.isEditing {
+                detailDreamViewController.mode = .edit
+            }
             
         }
         

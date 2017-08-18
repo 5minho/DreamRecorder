@@ -173,4 +173,12 @@ class DreamDataStore {
         
         return result
     }
+    
+    func filter(_ searchText : String) -> [Dream] {
+        return self.dreams.filter ({
+            let title = $0.title?.lowercased() ?? ""
+            let content = $0.content?.lowercased() ?? ""
+            return title.contains(searchText.lowercased()) || content.contains(searchText.lowercased())
+        })
+    }
 }
