@@ -104,7 +104,7 @@ extension AlarmAddViewController: UITableViewDataSource, UITableViewDelegate {
         } else if indexPath.row == AlarmDetailCellStyle.label.rawValue {
             cell.detailTextLabel?.text = newAlarm.name
         } else if indexPath.row == AlarmDetailCellStyle.sound.rawValue {
-            cell.detailTextLabel?.text = "Default"
+            cell.detailTextLabel?.text = newAlarm.sound
         } else if indexPath.row == AlarmDetailCellStyle.snooze.rawValue {
             if let switchAccessoryView = cell.switchAccessoryView {
                 switchAccessoryView.isOn = newAlarm.isSnooze
@@ -139,6 +139,8 @@ extension AlarmAddViewController: UITableViewDataSource, UITableViewDelegate {
             self.present(alertController, animated: true, completion: nil)
         case AlarmDetailCellStyle.sound.rawValue:
             guard let alarmSoundListViewController = AlarmSoundListViewController.storyboardInstance() else { return }
+            alarmSoundListViewController.delegate = self
+            alarmSoundListViewController.alarm = self.alarm
             self.navigationController?.pushViewController(alarmSoundListViewController, animated: true)
         default:
             // Another cell have AccessoryView Action that is called by cell delegate.
@@ -162,6 +164,13 @@ extension AlarmAddViewController: AlarmDetailCellDelegate {
     func alarmDetailCell(_: AlarmDetailCell, snoozeSwitchValueChanged sender: UISwitch) {
         guard let editingAlarm = self.alarm else { return }
         editingAlarm.isSnooze = sender.isOn
+    }
+}
+
+extension AlarmAddViewController: AlarmSoundListViewControllerDelegate {
+    func alarmSoundListViewController(_ controller: AlarmSoundListViewController, didChangeSoundName: String) {
+        let soundCellIndexPath = IndexPath(row: AlarmDetailCellStyle.sound.rawValue, section: 0)
+        self.tableView.reloadRows(at: [soundCellIndexPath], with: .automatic)
     }
 }
 

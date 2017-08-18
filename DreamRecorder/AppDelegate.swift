@@ -17,6 +17,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
         
+
         // Apply Theme.
         UIBarButtonItem.appearance().setTitleTextAttributes([NSForegroundColorAttributeName : UIColor.defaultButtonTitleColor], for: .normal)
         UINavigationBar.appearance().tintColor = UIColor.white
@@ -29,7 +30,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         } catch {
         }
 
-        
         if #available(iOS 10.0, *) {
             
             UNUserNotificationCenter.current().delegate = self

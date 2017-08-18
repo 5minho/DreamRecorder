@@ -9,6 +9,13 @@
 import Foundation
 import SQLite
 
+extension Connection {
+    public var user_version: Int32 {
+        get { return Int32(try! scalar("PRAGMA user_version") as? Int64 ?? 0) }
+        set { try! run("PRAGMA user_version = \(newValue)") }
+    }
+}
+
 extension Notification.Name {
     static let AlarmDateStoreDidSyncAlarmAndNotification = Notification.Name("AlarmDateStoreDidSyncAlarmAndNotification")
 }
@@ -26,6 +33,7 @@ class AlarmDataStore: NSObject {
             static let name = Expression<String>("name")
             static let date = Expression<Date>("date")
             static let weekday = Expression<WeekdayOptions>("weekday")
+            static let sound = Expression<String>("sound")
             static let isActive = Expression<Bool>("isActive")
             static let isSnooze = Expression<Bool>("isSnooze")
         }
@@ -37,12 +45,34 @@ class AlarmDataStore: NSObject {
     var alarms: [Alarm] = []
     lazy var scheduler: AlarmScheduler = AlarmScheduler()
     
-    func createTable(){
-        let tableResult = self.manager.createTable(statement: AlarmTable.table.create(ifNotExists: true) { (t) in
+    override init() {
+        super.init()
+        AlarmDataStore.migarationIfNeeded()
+    }
+    
+    static func migarationIfNeeded(){
+        if DBManager.shared.db.user_version == 0 {
+            AlarmDataStore.createTable()
+            DBManager.shared.db.user_version = 1
+        }
+        if DBManager.shared.db.user_version == 1 {
+            do {
+                try DBManager.shared.db.run(AlarmTable.table.addColumn(AlarmTable.Column.sound, defaultValue: "Default"))
+                print("Alarm Table is Updated")
+                DBManager.shared.db.user_version = 2
+            } catch {
+                print(error)
+            }
+        }
+    }
+    
+    static func createTable(){
+        let tableResult = DBManager.shared.createTable(statement: AlarmTable.table.create(ifNotExists: true) { (t) in
             t.column(AlarmTable.Column.id, primaryKey: true)
             t.column(AlarmTable.Column.name)
             t.column(AlarmTable.Column.date)
             t.column(AlarmTable.Column.weekday)
+            t.column(AlarmTable.Column.sound)
             t.column(AlarmTable.Column.isActive)
             t.column(AlarmTable.Column.isSnooze)
         })
@@ -62,7 +92,6 @@ class AlarmDataStore: NSObject {
     
     func reloadAlarms(){
         self.alarms = self.selectAll()
-        self.syncAlarmAndNotification()
     }
     
     func syncAlarmAndNotification() {
@@ -136,6 +165,7 @@ class AlarmDataStore: NSObject {
                                         name: alarm[AlarmTable.Column.name],
                                         date: alarm[AlarmTable.Column.date],
                                         weekday: alarm.get(AlarmTable.Column.weekday),
+                                        sound: alarm.get(AlarmTable.Column.sound),
                                         isActive: alarm.get(AlarmTable.Column.isActive),
                                         isSnooze: alarm.get(AlarmTable.Column.isSnooze))
                 newAlarms.append(alarmLoaded)
@@ -153,6 +183,7 @@ class AlarmDataStore: NSObject {
                                              AlarmTable.Column.name <- alarm.name,
                                              AlarmTable.Column.date <- alarm.date,
                                              AlarmTable.Column.weekday <- alarm.weekday,
+                                             AlarmTable.Column.sound <- alarm.sound,
                                              AlarmTable.Column.isActive <- alarm.isActive,
                                              AlarmTable.Column.isSnooze <- alarm.isSnooze)
         
@@ -173,6 +204,7 @@ class AlarmDataStore: NSObject {
                                                                      AlarmTable.Column.name <- alarm.name,
                                                                      AlarmTable.Column.date <- alarm.date,
                                                                      AlarmTable.Column.weekday <- alarm.weekday,
+                                                                     AlarmTable.Column.sound <- alarm.sound,
                                                                      AlarmTable.Column.isActive <- alarm.isActive,
                                                                      AlarmTable.Column.isSnooze <- alarm.isSnooze))
         switch result {
