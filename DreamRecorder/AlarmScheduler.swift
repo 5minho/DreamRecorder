@@ -73,7 +73,7 @@ class AlarmScheduler {
                                                name: Notification.Name.AlarmDataStoreDidDeleteAlarm,
                                                object: nil)
         NotificationCenter.default.addObserver(self,
-                                               selector: #selector(self.handleSoundManagerDidPlayAlarmToEnd(sender:)),
+                                               selector: #selector(self.handleSoundManagerDidPlayAlarmToEnd),
                                                name: Notification.Name.SoundManagerDidPlayAlarmToEnd,
                                                object: nil)
         NotificationCenter.default.addObserver(self,
@@ -96,7 +96,7 @@ class AlarmScheduler {
                 UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: duplicatedRequests)
             })
             
-            // Change Alarm`s isActive if repeat of that is false
+            // update Alarm`s isActive if repeat of that is false
             UNUserNotificationCenter.current().getPendingNotificationRequests(completionHandler: { (requests) in
                 let inActiveAlarms = AlarmDataStore.shared.alarms.filter({ (alarm) -> Bool in
                     var notificationNotExist = true
@@ -115,7 +115,6 @@ class AlarmScheduler {
                     NotificationCenter.default.post(name: Notification.Name.AlarmSchedulerNotificationDidDelivered,
                                                     object: nil,
                                                     userInfo: ["alarms": inActiveAlarms])
-                    
                 }
                 
             })
@@ -150,7 +149,7 @@ class AlarmScheduler {
         }
     }
     
-    @objc private func handleSoundManagerDidPlayAlarmToEnd(sender: Notification) {
+    @objc func handleSoundManagerDidPlayAlarmToEnd() {
         if #available(iOS 10.0, *) {
             self.nextNotificationRequest { (request) in
                 guard let requestIdentifier = request?.identifier else { return }
@@ -185,7 +184,7 @@ class AlarmScheduler {
         self.postNextNotificationDateDidChangeIfNeeded(with: alarm)
     }
     
-    private func postNextNotificationDateDidChangeIfNeeded(with alarm: Alarm){
+    func postNextNotificationDateDidChangeIfNeeded(with alarm: Alarm){
         self.nextTriggerDate(completionHandler: { (date) in
             NotificationCenter.default.post(name: Notification.Name.AlarmSchedulerNextNotificationDateDidChange,
                                             object: nil,
