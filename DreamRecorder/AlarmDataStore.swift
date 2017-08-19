@@ -17,11 +17,17 @@ extension Connection {
 }
 
 extension Notification.Name {
-    static let AlarmDateStoreDidSyncAlarmAndNotification = Notification.Name("AlarmDateStoreDidSyncAlarmAndNotification")
+    // for AlarmScheduler.
+    static let AlarmDataStoreDidAddAlarm = Notification.Name("AlarmDataStoreDidAddAlarm")
+    static let AlarmDataStoreDidUpdateAlarm = Notification.Name("AlarmDataStoreDidUpdateAlarm")
+    static let AlarmDataStoreDidDeleteAlarm = Notification.Name("AlarmDataStoreDidDeleteAlarm")
+    
+    // for AlarmListViewController.
+    static let AlarmDataStoreDidChange = Notification.Name("AlarmDataStoreDidChange")
 }
 
 class AlarmDataStore: NSObject {
-
+    
     static let shared: AlarmDataStore = AlarmDataStore()
     
     // this structure configure alarm table at sqlite db
@@ -43,11 +49,50 @@ class AlarmDataStore: NSObject {
     
     // this alarms array is varaible that is loaded from database to memory and application will access this array for data
     var alarms: [Alarm] = []
-    lazy var scheduler: AlarmScheduler = AlarmScheduler()
     
     override init() {
         super.init()
         AlarmDataStore.migarationIfNeeded()
+        
+        // add observer scheduler notification.
+        NotificationCenter.default.addObserver(self, selector: #selector(self.self.updateOnceNotificationActive(sender:)), name: Notification.Name.AlarmSchedulerNotificationDidDelivered, object: nil)
+        // From resent or recevive notification.
+        NotificationCenter.default.addObserver(self, selector: #selector(self.handleApplicationWillPresentNotification(sender:)), name: Notification.Name.ApplicationWillPresentNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(self.handleApplicationDidReceiveResponse(sender:)), name: Notification.Name.ApplicationDidReceiveResponse, object: nil)
+    }
+    
+    func handleApplicationWillPresentNotification(sender: Notification) {
+        guard let identifier = sender.userInfo?["identifier"] as? String else { return }
+        guard let responsedAlarm = self.alarm(withNotificationIdentifier: identifier) else { return }
+        if responsedAlarm.weekday == .none {
+            responsedAlarm.isActive = false
+            self.updateAlarm(alarm: responsedAlarm)
+        }
+    }
+    
+    func handleApplicationDidReceiveResponse(sender: Notification) {
+        guard let identifier = sender.userInfo?["identifier"] as? String else { return }
+        guard let actionIdentifier = sender.userInfo?["actionIdentifier"] as? String else { return }
+        guard let responsedAlarm = self.alarm(withNotificationIdentifier: identifier) else { return }
+        
+        if actionIdentifier == "StopAction" {
+            if responsedAlarm.weekday == .none {
+                responsedAlarm.isActive = false
+                self.updateAlarm(alarm: responsedAlarm)
+            }
+        } else {
+            // TODO: CONTROL SNOOZE.
+        }
+    }
+    
+    @objc private func updateOnceNotificationActive(sender: Notification) {
+        guard let inActiveAlarms = sender.userInfo?["alarms"] as? [Alarm] else { return }
+        
+        for inActiveAlarm in inActiveAlarms {
+            inActiveAlarm.isActive = false
+            self.updateAlarm(alarm: inActiveAlarm)
+        }
+        NotificationCenter.default.post(name: Notification.Name.AlarmDataStoreDidUpdateAlarm, object: nil)
     }
     
     static func migarationIfNeeded(){
@@ -94,67 +139,6 @@ class AlarmDataStore: NSObject {
         self.alarms = self.selectAll()
     }
     
-    func syncAlarmAndNotification() {
-        if #available(iOS 10.0, *) {
-//            self.scheduler.getDeliveredNotifications(completionHandler: { (notifications) in
-//                var inActiveAlarms: [Alarm] = []
-//                for notification in notifications {
-//                    print(notification.request.identifier)
-//                    let inActiveAlarm = self.alarms.filter { $0.id == notification.request.identifier }
-//                    inActiveAlarms += inActiveAlarm
-//                    print(inActiveAlarm)
-//                }
-//                
-//                for alarm in inActiveAlarms {
-//                    alarm.isActive = false
-//                    self.updateAlarm(alarm: alarm)
-//                    self.reloadAlarms()
-//                    print(alarm)
-//                    NotificationCenter.default.post(name: didSyncAlarmAndNotification, object: nil)
-//                }
-//            })
-            self.scheduler.getPendingNotificationRequests(completion: { (requests) in
-                let inActiveAlarms = self.alarms.filter({ (alarm) -> Bool in
-                    var isDelivered = true
-                    for request in requests {
-                        let identifier = request.identifier
-                        if (identifier == alarm.id) {
-                            isDelivered = false
-                            break
-                        }
-                    }
-                    return isDelivered
-            })
-                
-            for alarm in inActiveAlarms {
-                alarm.isActive = false
-                self.updateAlarm(alarm: alarm)
-                self.reloadAlarms()
-                NotificationCenter.default.post(name: Notification.Name.AlarmDateStoreDidSyncAlarmAndNotification, object: nil)
-                }})
-        } else {
-            guard let notifications = self.scheduler.getScheduledLocalNotifications() else { return }
-            let inActiveAlarms = self.alarms.filter({ (alarm) -> Bool in
-                var isDelivered = true
-                for notification in notifications {
-                    guard let identifier = notification.userInfo?["identifier"] as? String else { continue }
-                    if (identifier == alarm.id) {
-                        isDelivered = false
-                        break
-                    }
-                }
-                return isDelivered
-            })
-            
-            for alarm in inActiveAlarms {
-                alarm.isActive = false
-                self.updateAlarm(alarm: alarm)
-                self.reloadAlarms()
-                NotificationCenter.default.post(name: Notification.Name.AlarmDateStoreDidSyncAlarmAndNotification, object: nil)
-            }
-        }
-    }
-    
     private func selectAll() -> [Alarm] {
         let rowsResult = manager.selectAll(query: AlarmTable.table)
         switch rowsResult {
@@ -179,6 +163,7 @@ class AlarmDataStore: NSObject {
     }
     
     func insertAlarm(alarm: Alarm) {
+        self.alarms.append(alarm)
         let insert = AlarmTable.table.insert(AlarmTable.Column.id <- alarm.id,
                                              AlarmTable.Column.name <- alarm.name,
                                              AlarmTable.Column.date <- alarm.date,
@@ -191,7 +176,12 @@ class AlarmDataStore: NSObject {
         
         switch result {
         case let .success(rowID):
-            self.scheduler.addNotification(with: alarm)
+            NotificationCenter.default.post(name: Notification.Name.AlarmDataStoreDidAddAlarm,
+                                            object: nil,
+                                            userInfo: ["alarm": alarm])
+            NotificationCenter.default.post(name: Notification.Name.AlarmDataStoreDidChange,
+                                            object: nil,
+                                            userInfo: ["alarm": alarm])
             print("Success: insert row \(rowID)")
         case let .failure(error):
             print(error)
@@ -209,7 +199,12 @@ class AlarmDataStore: NSObject {
                                                                      AlarmTable.Column.isSnooze <- alarm.isSnooze))
         switch result {
         case .success:
-            self.scheduler.updateNotification(with: alarm)
+            NotificationCenter.default.post(name: Notification.Name.AlarmDataStoreDidUpdateAlarm,
+                                            object: nil,
+                                            userInfo: ["alarm" : alarm])
+            NotificationCenter.default.post(name: Notification.Name.AlarmDataStoreDidChange,
+                                            object: nil,
+                                            userInfo: ["alarm": alarm])
             print("Success: update row \(alarm.id)")
         case let .failure(error):
             print("error: \(error)")
@@ -217,11 +212,19 @@ class AlarmDataStore: NSObject {
     }
     
     func deleteAlarm(alarm: Alarm) {
+        guard let row = self.alarms.index(of: alarm) else { return }
+        self.alarms.remove(at: row)
+        
         let deletingRow = AlarmTable.table.filter(AlarmTable.Column.id == alarm.id)
         let result = self.manager.deleteRow(delete: deletingRow.delete())
         switch result {
         case .success:
-            self.scheduler.deleteNotification(with: alarm)
+            NotificationCenter.default.post(name: Notification.Name.AlarmDataStoreDidDeleteAlarm,
+                                            object: nil,
+                                            userInfo: ["alarm" : alarm])
+            NotificationCenter.default.post(name: Notification.Name.AlarmDataStoreDidChange,
+                                            object: nil,
+                                            userInfo: ["alarm": alarm])
             print("Success: delete row \(alarm.id)")
         case let .failure(error):
             print("error: \(error)")

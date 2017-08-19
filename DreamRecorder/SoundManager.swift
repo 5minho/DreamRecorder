@@ -85,44 +85,48 @@ extension UNNotificationRequest: Comparable {
     }
 }
 
+extension Notification.Name {
+    static let SoundManagerDidPlayAlarmToEnd = Notification.Name("SoundManagerDidPlayAlarmToEnd")
+}
+
 class SoundManager {
-    
     // Singleton Property.
     static let shared: SoundManager = SoundManager()
 
     // AVFoundation Property.
     var queuePlayer: AVQueuePlayer?
     
-    // Background.
-    func nextTriggerDate(completionHandler completion: @escaping (Date?) -> Void) {
-        if #available(iOS 10.0, *) {
-            UNUserNotificationCenter.current().getPendingNotificationRequests(completionHandler: { (requests) in
-                let ascendingNotifications = requests.sorted(by: > )
-                if let calendarNotificationTrigger = ascendingNotifications.first?.trigger as? UNCalendarNotificationTrigger {
-                    let nextTriggerDate = calendarNotificationTrigger.nextTriggerDate()
-                    completion(nextTriggerDate)
-                } else {
-                    completion(nil)
-                }
-                
-            })
-        } else {
-            guard let notifications = UIApplication.shared.scheduledLocalNotifications else { return completion(nil) }
-            let ascendingNotifications = notifications.sorted(by: > )
-            let nextTriggerDate = ascendingNotifications.first?.fireDate
-            completion(nextTriggerDate)
-        }
+    var nextTriggerDate: Date?
+    
+    func awake(){
+        
+    }
+    
+    init() {
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(self.handleAlarmSchedulerNextNotificationDateDidChange(sender:)),
+                                               name: Notification.Name.AlarmSchedulerNextNotificationDateDidChange,
+                                               object: nil)
+        
+        self.registerBackgroundSoundToAlarm(withSoundName: "Alarm-tone")
+    }
+    
+    @objc func handleAlarmSchedulerNextNotificationDateDidChange(sender: Notification) {
+        
+        guard let alarm = sender.userInfo?["alarm"] as? Alarm else { return }
+        self.nextTriggerDate = sender.userInfo?["nextDate"] as? Date
+        
+        self.updateAlarmSound(withSoundName: alarm.sound)
     }
     
     func playAlarmSoundIfNeeded(playerItem: AVPlayerItem){
-        print("ifneeded")
-        self.nextTriggerDate { (date) in
-            guard let nextTriggeredDate = date else { return }
-            print("\(nextTriggeredDate) compared \(Date().addingTimeInterval(60))")
-            if nextTriggeredDate.compareByMinuteUnit(other: Date().addingTimeInterval(60)) {
+        print("Sound Item Did End")
+        playerItem.seek(to: kCMTimeZero)
+        if let nextTriggerDate = self.nextTriggerDate {
+            print("\(nextTriggerDate) compared \(Date().addingTimeInterval(3))")
+            if nextTriggerDate.compare(Date().addingTimeInterval(3)) == .orderedAscending {
                 self.queuePlayer?.advanceToNextItem()
-            } else {
-                playerItem.seek(to: kCMTimeZero)
+                print("Play Next Music")
             }
         }
     }
@@ -132,10 +136,10 @@ class SoundManager {
         self.playAlarmSoundIfNeeded(playerItem: item)
     }
     
-    func registerBackgroundSoundToAlarm(){
+    func registerBackgroundSoundToAlarm(withSoundName soundName: String){
         
-        guard let silentSoundPath = Bundle.main.path(forResource: "Spaceship_Alarm", ofType: "mp3") else { return }
-        guard let alarmSoundPath = Bundle.main.path(forResource: "Carefree_Melody", ofType: "mp3") else { return }
+        guard let silentSoundPath = Bundle.main.path(forResource: "mute", ofType: "mp3") else { return }
+        guard let alarmSoundPath = Bundle.main.path(forResource: soundName, ofType: "wav") else { return }
         
         let silentSoundURL = URL(fileURLWithPath: silentSoundPath)
         let alarmSoundURL = URL(fileURLWithPath: alarmSoundPath)
@@ -147,7 +151,6 @@ class SoundManager {
         self.queuePlayer?.actionAtItemEnd = .none
         self.queuePlayer?.volume = 1
         
-        
         self.queuePlayer?.play()
         
         NotificationCenter.default.addObserver(self,
@@ -155,8 +158,32 @@ class SoundManager {
                                                name: Notification.Name.AVPlayerItemDidPlayToEndTime,
                                                object: self.queuePlayer?.currentItem)
     }
-
-    func playAlarmSound(name soundName: String) {
+    
+    func updateAlarmSound(withSoundName soundName: String) {
         
+        guard let silentSoundPath = Bundle.main.path(forResource: "mute", ofType: "mp3") else { return }
+        guard let alarmSoundPath = Bundle.main.path(forResource: soundName, ofType: "wav") else { return }
+        
+        let silentSoundURL = URL(fileURLWithPath: silentSoundPath)
+        let alarmSoundURL = URL(fileURLWithPath: alarmSoundPath)
+        
+        let silentPlayerItem = AVPlayerItem(url: silentSoundURL)
+        let alarmPlayerItem = AVPlayerItem(url: alarmSoundURL)
+        
+        self.queuePlayer = AVQueuePlayer(items: [silentPlayerItem, alarmPlayerItem])
+        self.queuePlayer?.actionAtItemEnd = .none
+        self.queuePlayer?.volume = 1
+
+        self.queuePlayer?.play()
+        
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(self.playerItemDidPlayToEndTime(sender:)),
+                                               name: Notification.Name.AVPlayerItemDidPlayToEndTime,
+                                               object: self.queuePlayer?.currentItem)
+    }
+    
+    func pauseAlarm(){
+        self.queuePlayer?.pause()
+        NotificationCenter.default.post(name: Notification.Name.SoundManagerDidPlayAlarmToEnd, object: nil)
     }
 }
