@@ -61,16 +61,17 @@ class AlarmListViewController: UIViewController, ThemeAppliable {
         let rightBarButton = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(self.rightBarButtonDidTap(sender:)))
         self.navigationItem.setRightBarButton(rightBarButton, animated: true)
         
-        NotificationCenter.default.addObserver(self, selector: #selector(self.didChnagedAlarms), name: Notification.Name.AlarmDateStoreDidSyncAlarmAndNotification, object: nil)
-        
-        self.store.reloadAlarms()
+        NotificationCenter.default.addObserver(self, selector: #selector(self.handleAlarmDataStoreDidChange), name: Notification.Name.AlarmDataStoreDidChange, object: nil)
     }
     
-    func didChnagedAlarms(){
-        DispatchQueue.main.async {
-            self.tableView.reloadData()
+    func handleAlarmDataStoreDidChange(sender: Notification){
+        OperationQueue.main.addOperation {
+            self.tableView.reloadSections(IndexSet(integer: IndexSet.Element.allZeros), with: .automatic)
         }
-
+//        guard let alarm = sender.userInfo?["alarm"] as? Alarm else { return }
+//        guard let row = self.store.alarms.index(of: alarm) else { return }
+//        let indexPath = IndexPath(row: row, section: 0)
+//        self.tableView.reloadRows(at: [indexPath], with: .automatic)
     }
     
     override func viewDidDisappear(_ animated: Bool) {
@@ -153,10 +154,8 @@ extension AlarmListViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
-            let deletingAlarm = self.store.alarms.remove(at: indexPath.row)
+            let deletingAlarm = self.store.alarms[indexPath.row]
             self.store.deleteAlarm(alarm: deletingAlarm)
-            let deletingRow = IndexPath(row: indexPath.row, section: 0)
-            tableView.deleteRows(at: [deletingRow], with: .automatic)
         }
     }
     
@@ -164,30 +163,35 @@ extension AlarmListViewController: UITableViewDelegate, UITableViewDataSource {
 extension AlarmListViewController: AlarmListCellDelegate{
     func alarmListCell(cell : AlarmListCell, activeSwitchValueChanged sender: UISwitch) {
         guard sender.tag < self.store.alarms.count else { return }
-        
-        let updatedAlarm = self.store.alarms[sender.tag]
-        if sender.isOn {
-            self.store.scheduler.addNotification(with: updatedAlarm)
-        } else {
-            self.store.scheduler.deleteNotification(with: updatedAlarm)
-        }
+        let updatingAlarm = self.store.alarms[sender.tag]
+        updatingAlarm.isActive = sender.isOn
+        self.store.updateAlarm(alarm: updatingAlarm)
     }
 }
 extension AlarmListViewController: AlarmAddViewControllerDelegate, AlarmEditViewControllerDelegate {
     // Add Controller Delegate.
     func alarmAddViewController(_: AlarmAddViewController, didSaveNewAlarm alarm: Alarm) {
-        self.store.alarms.append(alarm)
+        alarm.date = alarm.date.removingSeconds()
         self.store.insertAlarm(alarm: alarm)
-        
-        self.tableView.reloadSections(IndexSet(integersIn: 0...0), with: .automatic)
     }
     // Edit Controller Delegate.
     func alarmEditViewController(_ controller: AlarmEditViewController, didSaveEditedAlarm alarm: Alarm) {
-        self.store.updateAlarm(alarm: alarm)
-        
-        guard let row = self.store.alarms.index(of: alarm) else { return }
-        let indexPath = IndexPath(row: row, section: 0)
-        self.tableView.reloadRows(at: [indexPath], with: .automatic)
+        alarm.date = alarm.date.removingSeconds()
+        if alarm.isActive == false {
+            let alertController = UIAlertController(title: "Alarm", message: "수정된 알람을 활성화 시키겠습니까?", preferredStyle: .alert)
+            let okAction = UIAlertAction(title: "OK", style: .default) { (action) in
+                alarm.isActive = true
+                self.store.updateAlarm(alarm: alarm)
+            }
+            let cancelAction = UIAlertAction(title: "Cancel", style: .cancel) { (action) in
+                self.store.updateAlarm(alarm: alarm)
+            }
+            alertController.addAction(okAction)
+            alertController.addAction(cancelAction)
+            self.present(alertController, animated: true, completion: nil)
+        } else {
+            self.store.updateAlarm(alarm: alarm)
+        }
     }
 }
 

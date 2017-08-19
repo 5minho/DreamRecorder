@@ -104,7 +104,7 @@ extension AlarmAddViewController: UITableViewDataSource, UITableViewDelegate {
         } else if indexPath.row == AlarmDetailCellStyle.label.rawValue {
             cell.detailTextLabel?.text = newAlarm.name
         } else if indexPath.row == AlarmDetailCellStyle.sound.rawValue {
-            cell.detailTextLabel?.text = newAlarm.sound
+            cell.detailTextLabel?.text = newAlarm.sound.soundTitle
         } else if indexPath.row == AlarmDetailCellStyle.snooze.rawValue {
             if let switchAccessoryView = cell.switchAccessoryView {
                 switchAccessoryView.isOn = newAlarm.isSnooze

@@ -19,6 +19,7 @@ class AlarmPlayViewController: UIViewController {
         dateFormatter.dateFormat = "hh:mm:ss"
         return dateFormatter
     }()
+    var shouldCustomTransition: Bool = true
     var playingAlarm: Alarm?
     var timer: Timer?
     
@@ -33,7 +34,10 @@ class AlarmPlayViewController: UIViewController {
         self.alarmTimeLabel.font = UIFont.title1
         self.leftTimeLabel.font = UIFont.title3
         
-        self.transitioningDelegate = self
+        if shouldCustomTransition {
+            self.transitioningDelegate = self
+        }
+        
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(self.dismissByGesture(sender:)))
         self.view.addGestureRecognizer(tapGestureRecognizer)
         
@@ -52,7 +56,9 @@ class AlarmPlayViewController: UIViewController {
     }
     
     func dismissByGesture(sender: UITapGestureRecognizer){
-        print("DissmissbYGesture \(self.alarmTimeLabel.frame)")
+        self.timer?.invalidate()
+        self.timer = nil
+        SoundManager.shared.pauseAlarm()
         self.dismiss(animated: true, completion: nil)
     }
 }

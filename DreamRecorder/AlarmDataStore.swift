@@ -48,17 +48,25 @@ class AlarmDataStore: NSObject {
     private let manager: DBManagerable = DBManager.shared
     
     // this alarms array is varaible that is loaded from database to memory and application will access this array for data
-    var alarms: [Alarm] = []
+    var alarms: [Alarm]
     
     override init() {
+        self.alarms = []
+        
         super.init()
+        
         AlarmDataStore.migarationIfNeeded()
+        self.alarms = self.selectAll()
         
         // add observer scheduler notification.
-        NotificationCenter.default.addObserver(self, selector: #selector(self.self.updateOnceNotificationActive(sender:)), name: Notification.Name.AlarmSchedulerNotificationDidDelivered, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(self.updateOnceNotificationActive(sender:)), name: Notification.Name.AlarmSchedulerNotificationDidDelivered, object: nil)
         // From resent or recevive notification.
         NotificationCenter.default.addObserver(self, selector: #selector(self.handleApplicationWillPresentNotification(sender:)), name: Notification.Name.ApplicationWillPresentNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(self.handleApplicationDidReceiveResponse(sender:)), name: Notification.Name.ApplicationDidReceiveResponse, object: nil)
+    }
+    
+    func awake(){
+        
     }
     
     func handleApplicationWillPresentNotification(sender: Notification) {
@@ -89,10 +97,16 @@ class AlarmDataStore: NSObject {
         guard let inActiveAlarms = sender.userInfo?["alarms"] as? [Alarm] else { return }
         
         for inActiveAlarm in inActiveAlarms {
-            inActiveAlarm.isActive = false
-            self.updateAlarm(alarm: inActiveAlarm)
+            var shouldNotificationUpdate = false
+            if inActiveAlarm.isActive {
+                inActiveAlarm.isActive = false
+                self.updateAlarm(alarm: inActiveAlarm)
+                shouldNotificationUpdate = true
+            }
+            if shouldNotificationUpdate {
+                NotificationCenter.default.post(name: Notification.Name.AlarmDataStoreDidUpdateAlarm, object: nil)
+            }
         }
-        NotificationCenter.default.post(name: Notification.Name.AlarmDataStoreDidUpdateAlarm, object: nil)
     }
     
     static func migarationIfNeeded(){
@@ -124,7 +138,7 @@ class AlarmDataStore: NSObject {
         
         switch tableResult {
         case .success:
-            print("Success: create table")
+            print("Success: create table if not exists.")
         case let .failure(error):
             print("error: \(error)")
         }
@@ -133,10 +147,6 @@ class AlarmDataStore: NSObject {
     func alarm(withNotificationIdentifier identifier: String) -> Alarm? {
         let alarm = self.alarms.filter { identifier.contains($0.id) }
         return alarm.first
-    }
-    
-    func reloadAlarms(){
-        self.alarms = self.selectAll()
     }
     
     private func selectAll() -> [Alarm] {
@@ -154,7 +164,7 @@ class AlarmDataStore: NSObject {
                                         isSnooze: alarm.get(AlarmTable.Column.isSnooze))
                 newAlarms.append(alarmLoaded)
             }
-            print("Success: select all \(rows.underestimatedCount))")
+            print("Success: select all \(rows.underestimatedCount)")
             return newAlarms
         case let .failure(error):
             print(error)
