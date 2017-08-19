@@ -33,12 +33,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         if #available(iOS 10.0, *) {
             
             UNUserNotificationCenter.current().delegate = self
-            UNUserNotificationCenter.current().removeAllPendingNotificationRequests()
+//            UNUserNotificationCenter.current().removeAllPendingNotificationRequests()
             UNUserNotificationCenter.current().getPendingNotificationRequests(completionHandler: { (requests) in
                 for request in requests {
                     print("\(request.identifier)")
                 }
-                print("User Noti Count: \(requests.count)")
+//                print("User Noti Count: \(requests.count)")
             })
         } else {
             guard let notifications = UIApplication.shared.scheduledLocalNotifications else { return true }
@@ -50,6 +50,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         DreamDataStore.shared.createTable()
         DreamDataStore.shared.selectAll()
         
+        AlarmDataStore.shared.awake()
+        AlarmScheduler.shared.awake()
+        SoundManager.shared.awake()
+        
+        AlarmScheduler.shared.handleSoundManagerDidPlayAlarmToEnd()
+        
         // Apply Theme.
         UIBarButtonItem.appearance().setTitleTextAttributes([NSForegroundColorAttributeName : UIColor.defaultButtonTitleColor], for: .normal)
         UINavigationBar.appearance().tintColor = UIColor.white
@@ -60,8 +66,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func applicationWillResignActive(_ application: UIApplication) {
         // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
         // Use this method to pause ongoing tasks, disable timers, and invalidate graphics rendering callbacks. Games should use this method to pause the game.
-        AlarmDataStore.shared.scheduler.soundManager.registerBackgroundSoundToAlarm()
-        AlarmDataStore.shared.scheduler.duplicateNotificationByFollowingAlarm()
+//        AlarmDataStore.shared.scheduler.soundManager.registerBackgroundSoundToAlarm()
+//        AlarmDataStore.shared.scheduler.duplicateNotificationByFollowingAlarm()
     }
 
     func applicationDidEnterBackground(_ application: UIApplication) {
@@ -75,7 +81,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func applicationDidBecomeActive(_ application: UIApplication) {
         // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
-        AlarmDataStore.shared.syncAlarmAndNotification()
+//        AlarmDataStore.shared.syncAlarmAndNotification()
     }
 
     func applicationWillTerminate(_ application: UIApplication) {
@@ -104,12 +110,26 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
     @available(iOS 10.0, *)
     func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
         print("User - present")
-        AlarmDataStore.shared.syncAlarmAndNotification()
+        NotificationCenter.default.post(name: Notification.Name.ApplicationWillPresentNotification,
+                                        object: nil,
+                                        userInfo: ["identifier": notification.request.identifier])
+        guard let alarmPlayViewController = AlarmPlayViewController.storyboardInstance() else { return }
+        alarmPlayViewController.modalTransitionStyle = .crossDissolve
+        alarmPlayViewController.shouldCustomTransition = false
+        alarmPlayViewController.playingAlarm = AlarmDataStore.shared.alarm(withNotificationIdentifier: notification.request.identifier)
+        guard let tabBarController = self.window?.rootViewController as? UITabBarController else { return }
+        guard let navigationController = tabBarController.selectedViewController as? UINavigationController else { return }
+        guard let listController = navigationController.topViewController as? AlarmListViewController else { return }
+        listController.present(alarmPlayViewController, animated: true, completion: nil)
     }
     
     @available(iOS 10.0, *)
     func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
         print("User - response")
+        NotificationCenter.default.post(name: Notification.Name.ApplicationDidReceiveResponse,
+                                        object: nil,
+                                        userInfo: ["identifier": response.notification.request.identifier,
+                                                   "actionIdentifier": response.actionIdentifier])
         completionHandler()
     }
     
