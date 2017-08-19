@@ -48,9 +48,30 @@ extension Date {
     }
 }
 
-
 extension Date {
-    func compareByMinuteUnit(other date: Date) -> Bool {
-        return (Calendar.current.compare(self, to: date, toGranularity: .minute) == .orderedSame)
+    func removingSeconds() -> Date {
+        let dateComponents = Calendar.current.dateComponents([.year, .month, .day, .hour, .minute, .minute], from:
+            self)
+        let secondRemovedDate = Calendar.current.date(from: dateComponents)
+        return secondRemovedDate ?? self
+    }
+}
+
+import AVFoundation
+// represent for soundName if sound is set by ipod-library
+extension String {
+    var soundTitle: String {
+        if self.hasPrefix("ipod-library:") {
+            guard let url = URL(string: self) else { return self }
+            let asset = AVAsset(url: url)
+            for metaItem in asset.commonMetadata {
+                if metaItem.commonKey == AVMetadataCommonKeyTitle {
+                    return metaItem.stringValue ?? self
+                }
+            }
+            return self
+        } else {
+            return self.components(separatedBy: ".").first ?? self
+        }
     }
 }
