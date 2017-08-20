@@ -36,6 +36,18 @@ extension Bool {
     }
 }
 
+extension String {
+    
+    var localized: String {
+        return NSLocalizedString(self, comment: "")
+    }
+    
+    func localized(comment: String) -> String {
+        return NSLocalizedString(self, comment: comment)
+    }
+    
+}
+
 extension Date {
     static var declaredDatatype: String {
         return Int.declaredDatatype
