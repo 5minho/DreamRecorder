@@ -1,0 +1,17 @@
+/* 
+  Localizable.strings
+  DreamRecorder
+
+  Created by 오민호 on 2017. 8. 20..
+  Copyright © 2017년 BoostCamp. All rights reserved.
+*/
+
+"Dreams" = "Dreams";
+"title" = "제목";
+"please enter a title" = "please enter a title";
+"Enter a title" = "Enter a title";
+"Save" = "Save";
+"No title" = "No title";
+"Cancel" = "Cancel";
+"Recognize..." = "Recognize...";
+"end recognize" = "end recognize";

@@ -11,19 +11,25 @@ import UIKit
 class DetailDreamViewController : UIViewController {
     
     static func storyboardInstance() -> DetailDreamViewController? {
+        
         let storyboard = UIStoryboard(name: String(describing: self), bundle: nil)
         return storyboard.instantiateInitialViewController() as? DetailDreamViewController
+        
     }
     
     enum Mode {
+        
         case read
         case edit
+        
     }
     
     var mode : Mode = .read {
+        
         didSet {
             self.adjustViewMode()
         }
+        
     }
     
     @IBOutlet weak var titleField: UITextField!
@@ -33,7 +39,20 @@ class DetailDreamViewController : UIViewController {
     
     private var isFirstShown: Bool = true
     
-    weak var dream : Dream?
+    var dream : Dream?
+    
+    lazy var editButton : UIBarButtonItem  = {
+        return UIBarButtonItem(barButtonSystemItem: .edit,
+                               target: self,
+                               action: #selector(touchUpEditBarButtonItem(_:)))
+    }()
+    
+    lazy var doneButton : UIBarButtonItem = {
+        return UIBarButtonItem(barButtonSystemItem: .done,
+                               target: self,
+                               action: #selector(touchUpDoneBarButtonItem(_:)))
+    }()
+    
     
     override func viewDidLoad() {
         
@@ -58,6 +77,7 @@ class DetailDreamViewController : UIViewController {
             
             self.adjustViewMode()
             self.isFirstShown = false
+            
         }
         
     }
@@ -84,38 +104,37 @@ class DetailDreamViewController : UIViewController {
         
     }
     
-    private func adjustViewMode(){
+    private func adjustViewMode() {
         
         switch self.mode {
             
         case .read:
             
-            self.deleteButton.isHidden = true
-            self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .edit,
-                                                                     target: self,
-                                                                     action: #selector(touchUpEditBarButtonItem(_:)))
-            
-            self.titleField.layer.borderWidth = 0
-            self.titleField.isUserInteractionEnabled = false
-            self.contentTextView.isUserInteractionEnabled = false
-            self.contentTextView.layer.borderWidth = 0
+            self.deleteButton?.isHidden = true
+            self.navigationItem.rightBarButtonItem = editButton
+            self.titleField?.layer.borderWidth = 0
+            self.titleField?.isUserInteractionEnabled = false
+            self.contentTextView?.isUserInteractionEnabled = false
+            self.contentTextView?.layer.borderWidth = 0
             
         case .edit:
             
-            self.deleteButton.isHidden = false
-            self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done,
-                                                                     target: self,
-                                                                     action: #selector(touchUpDoneBarButtonItem(_:)))
-            self.titleField.layer.borderWidth = 1
-            self.titleField.isUserInteractionEnabled = true
-            self.contentTextView.isUserInteractionEnabled = true
-            self.contentTextView.layer.borderWidth = 1
+            self.deleteButton?.isHidden = false
+            self.navigationItem.rightBarButtonItem = doneButton
+            self.titleField?.layer.borderWidth = 1
+            self.titleField?.isUserInteractionEnabled = true
+            self.contentTextView?.isUserInteractionEnabled = true
+            self.contentTextView?.layer.borderWidth = 1
             
         }
+        
     }
+    
+    
 }
 
 extension DetailDreamViewController : DreamDeletable {
+    
     @IBAction func touchupDeleteButton() {
         guard let dream = self.dream else {
             return
@@ -127,6 +146,7 @@ extension DetailDreamViewController : DreamDeletable {
         
         self.present(alert, animated: true, completion: nil)
     }
+    
 }
 
 extension DetailDreamViewController : ThemeAppliable {
