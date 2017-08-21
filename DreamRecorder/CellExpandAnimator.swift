@@ -68,7 +68,7 @@ class CellExpandAnimator: NSObject, UIViewControllerAnimatedTransitioning {
         interactiveLabel.textAlignment = fromLabel.textAlignment
         interactiveLabel.translatesAutoresizingMaskIntoConstraints = false
         
-        let backgroundView = UIView(frame: toViewController.view.frame)
+        let backgroundView = UIView(frame: UIScreen.main.bounds)
         backgroundView.backgroundColor = UIColor.clear
         
         let interactiveView = UIView(frame: fromViewInitialFrame)
@@ -81,12 +81,11 @@ class CellExpandAnimator: NSObject, UIViewControllerAnimatedTransitioning {
         backgroundView.addSubview(interactiveLabel)
         interactiveLabel.frame = fromLabelInitialFrame
         
+        let centerXConstraint = interactiveLabel.centerXAnchor.constraint(equalTo: backgroundView.leadingAnchor, constant: fromLabelInitialFrame.origin.x + fromLabelInitialFrame.width / 2)
+        let centerYConstraint = interactiveLabel.centerYAnchor.constraint(equalTo: backgroundView.topAnchor, constant: fromLabelInitialFrame.origin.y + fromLabelInitialFrame.height / 2)
         
-        let leftConstraint = interactiveLabel.leftAnchor.constraint(equalTo: backgroundView.leftAnchor, constant: fromLabelInitialFrame.origin.x)
-        let topConstraint = interactiveLabel.topAnchor.constraint(equalTo: backgroundView.topAnchor, constant: fromLabelInitialFrame.origin.y)
-        leftConstraint.isActive = true
-        topConstraint.isActive = true
-        
+        centerXConstraint.isActive = true
+        centerYConstraint.isActive = true
         
         
         let transitionDuration = self.transitionDuration(using: transitionContext)
@@ -98,8 +97,8 @@ class CellExpandAnimator: NSObject, UIViewControllerAnimatedTransitioning {
             transitionContext.containerView.addSubview(toViewController.view)
             toViewController.view.isHidden = true
             
-            leftConstraint.constant = toLabel.frame.origin.x
-            topConstraint.constant = toLabel.frame.origin.y
+            centerXConstraint.constant = toLabel.frame.origin.x + toLabel.frame.width / 2
+            centerYConstraint.constant = toLabel.frame.origin.y + toLabel.frame.height / 2
             
             UIView.animate(withDuration: transitionDuration, animations: {
                 
@@ -114,19 +113,17 @@ class CellExpandAnimator: NSObject, UIViewControllerAnimatedTransitioning {
             }
         } else {
             
-            guard let toViewFinalFrame = toView.superview?.convert(toView.frame, to: toViewController.view) else { return }
-            guard let toLabelFinalFrame = toLabel.superview?.convert(toLabel.frame, to: toViewController.view) else { return }
+            guard let toViewFinalFrame = toView.superview?.convert(toView.frame, to: backgroundView) else { return }
+            guard let toLabelFinalFrame = toLabel.superview?.convert(toLabel.frame, to: backgroundView) else { return }
             
             transitionContext.containerView.addSubview(toViewController.view)
             transitionContext.containerView.addSubview(backgroundView)
             
             let transitionDuration = self.transitionDuration(using: transitionContext)
-            
-            leftConstraint.constant = toLabelFinalFrame.origin.x
-            topConstraint.constant = toLabelFinalFrame.origin.y
+            centerXConstraint.constant = toLabelFinalFrame.origin.x + toLabelFinalFrame.width / 2
+            centerYConstraint.constant = toLabelFinalFrame.origin.y + toLabelFinalFrame.height / 2
             
             UIView.animate(withDuration: transitionDuration, animations: {
-                
                 backgroundView.layoutIfNeeded()
                 interactiveView.frame = toViewFinalFrame
                 toViewController.view.alpha = 1
