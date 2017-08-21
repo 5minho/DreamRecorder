@@ -42,16 +42,10 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="aLA-w5-KVG">
-                                <rect key="frame" x="16" y="128" width="288" height="168"/>
+                                <rect key="frame" x="16" y="128" width="288" height="192"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                             </textView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Recognize" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VhR-U7-15x">
-                                <rect key="frame" x="120" y="439.5" width="80" height="20.5"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Feb 21, 2017 07:30am" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8sA-7V-b0a">
                                 <rect key="frame" x="75.5" y="99" width="169" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
@@ -59,7 +53,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ldo-vi-Cgp" customClass="RecordButton" customModule="DreamRecorder" customModuleProvider="target">
-                                <rect key="frame" x="117" y="316" width="86" height="85"/>
+                                <rect key="frame" x="111.5" y="340" width="97" height="96"/>
                                 <gestureRecognizers/>
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="ldo-vi-Cgp" secondAttribute="height" multiplier="103:102" id="YpE-XI-gWJ"/>
@@ -71,17 +65,23 @@
                                     <action selector="touchUpRecordButton:" destination="tgh-FV-AFi" eventType="touchUpInside" id="xOd-Ni-gs6"/>
                                 </connections>
                             </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RgU-CR-TTc">
+                                <rect key="frame" x="160.5" y="472" width="0.0" height="0.0"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <gestureRecognizers/>
                         <constraints>
-                            <constraint firstItem="eTY-qy-oGA" firstAttribute="top" secondItem="VhR-U7-15x" secondAttribute="bottom" constant="20" id="0R8-iH-wdy"/>
                             <constraint firstItem="aLA-w5-KVG" firstAttribute="trailing" secondItem="vV8-aY-6tN" secondAttribute="trailingMargin" id="9I8-Pq-UVY"/>
-                            <constraint firstItem="aLA-w5-KVG" firstAttribute="height" secondItem="vV8-aY-6tN" secondAttribute="height" multiplier="0.35" id="H0G-F7-Y5C"/>
+                            <constraint firstItem="eTY-qy-oGA" firstAttribute="top" secondItem="RgU-CR-TTc" secondAttribute="bottom" constant="8" id="GaI-2O-yvy"/>
+                            <constraint firstItem="aLA-w5-KVG" firstAttribute="height" secondItem="vV8-aY-6tN" secondAttribute="height" multiplier="0.4" id="H0G-F7-Y5C"/>
                             <constraint firstItem="8sA-7V-b0a" firstAttribute="centerX" secondItem="vV8-aY-6tN" secondAttribute="centerX" id="NU5-xe-Wr1"/>
                             <constraint firstItem="8sA-7V-b0a" firstAttribute="top" secondItem="i2q-OP-9fO" secondAttribute="bottom" constant="35" id="Pqj-A8-IQT"/>
-                            <constraint firstItem="ldo-vi-Cgp" firstAttribute="width" secondItem="aLA-w5-KVG" secondAttribute="width" multiplier="0.3" id="QrH-Ou-lB9"/>
-                            <constraint firstItem="VhR-U7-15x" firstAttribute="centerX" secondItem="vV8-aY-6tN" secondAttribute="centerX" id="XVQ-vl-aax"/>
+                            <constraint firstItem="ldo-vi-Cgp" firstAttribute="height" secondItem="aLA-w5-KVG" secondAttribute="height" multiplier="0.5" id="YuX-1v-xB0"/>
+                            <constraint firstItem="RgU-CR-TTc" firstAttribute="centerX" secondItem="vV8-aY-6tN" secondAttribute="centerX" id="bll-ai-FtO"/>
                             <constraint firstItem="aLA-w5-KVG" firstAttribute="leading" secondItem="vV8-aY-6tN" secondAttribute="leadingMargin" id="cha-fO-57h"/>
                             <constraint firstItem="ldo-vi-Cgp" firstAttribute="top" secondItem="aLA-w5-KVG" secondAttribute="bottom" constant="20" id="nT9-9x-WSq"/>
                             <constraint firstItem="ldo-vi-Cgp" firstAttribute="centerX" secondItem="vV8-aY-6tN" secondAttribute="centerX" id="oVe-OH-ZPa"/>
@@ -105,7 +105,7 @@
                     </navigationItem>
                     <connections>
                         <outlet property="contentField" destination="aLA-w5-KVG" id="FoJ-va-xOA"/>
-                        <outlet property="recongnitionStateLabel" destination="VhR-U7-15x" id="jhA-jD-OhM"/>
+                        <outlet property="leftTimeLabel" destination="RgU-CR-TTc" id="dQY-zU-gf3"/>
                         <outlet property="recordButton" destination="ldo-vi-Cgp" id="5al-cK-GbK"/>
                         <outlet property="todayLabel" destination="8sA-7V-b0a" id="hXb-Hk-gsk"/>
                     </connections>
