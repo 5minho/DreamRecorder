@@ -7,10 +7,11 @@
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12089"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
+        <capability name="Navigation items with more than one left or right bar item" minToolsVersion="7.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--Dreams-->
+        <!--Dream List View Controller-->
         <scene sceneID="dz4-fE-MlL">
             <objects>
                 <viewController automaticallyAdjustsScrollViewInsets="NO" id="ZiX-wj-kNe" customClass="DreamListViewController" customModule="DreamRecorder" customModuleProvider="target" sceneMemberID="viewController">
@@ -94,8 +95,15 @@
                             <constraint firstItem="tIO-hr-KgU" firstAttribute="top" secondItem="vUg-oK-qHJ" secondAttribute="bottom" id="u0C-0p-khQ"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" title="Dreams" id="PVO-FU-TPJ">
-                        <barButtonItem key="leftBarButtonItem" systemItem="edit" id="Tmh-X4-Mdz"/>
+                    <navigationItem key="navigationItem" id="PVO-FU-TPJ">
+                        <leftBarButtonItems>
+                            <barButtonItem systemItem="edit" id="Tmh-X4-Mdz"/>
+                            <barButtonItem id="pBZ-bE-AaE">
+                                <connections>
+                                    <action selector="touchUpDateButton:" destination="ZiX-wj-kNe" id="Kpu-cr-wub"/>
+                                </connections>
+                            </barButtonItem>
+                        </leftBarButtonItems>
                         <barButtonItem key="rightBarButtonItem" systemItem="add" id="pLP-HH-jyp">
                             <connections>
                                 <action selector="addDream:" destination="ZiX-wj-kNe" id="79b-ne-V8f"/>
@@ -104,6 +112,7 @@
                     </navigationItem>
                     <simulatedTabBarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
+                        <outlet property="dateButton" destination="pBZ-bE-AaE" id="Ggs-E3-e0v"/>
                         <outlet property="tableView" destination="tIO-hr-KgU" id="AvL-TY-fRe"/>
                     </connections>
                 </viewController>
