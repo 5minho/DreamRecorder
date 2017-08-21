@@ -10,7 +10,6 @@
 		5A9BEBD51F3AEA480054EA6D /* NaverSpeech.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5A9BEBD41F3AEA480054EA6D /* NaverSpeech.framework */; };
 		5A9BEBD61F3AEA480054EA6D /* NaverSpeech.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 5A9BEBD41F3AEA480054EA6D /* NaverSpeech.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		5AD8F7071F386198005311F8 /* DreamRecorderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AD8F7061F386198005311F8 /* DreamRecorderTests.swift */; };
-		A50F34181F445E2B00128B5B /* 1-minute-of-silence.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = A50F33EA1F445E2B00128B5B /* 1-minute-of-silence.mp3 */; };
 		A50F34191F445E2B00128B5B /* AddDreamNavigationController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A50F33EB1F445E2B00128B5B /* AddDreamNavigationController.storyboard */; };
 		A50F341A1F445E2B00128B5B /* AddDreamNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A50F33EC1F445E2B00128B5B /* AddDreamNavigationController.swift */; };
 		A50F341B1F445E2B00128B5B /* Alarm.swift in Sources */ = {isa = PBXBuildFile; fileRef = A50F33ED1F445E2B00128B5B /* Alarm.swift */; };
@@ -61,6 +60,8 @@
 		A50F345A1F44C4A300128B5B /* Default.wav in Resources */ = {isa = PBXBuildFile; fileRef = A50F34591F44C4A300128B5B /* Default.wav */; };
 		A50F345C1F4557A200128B5B /* ThemeAppliable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A50F345B1F4557A200128B5B /* ThemeAppliable.swift */; };
 		A50F34671F45C31100128B5B /* mute.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = A50F34661F45C31100128B5B /* mute.mp3 */; };
+		A523EFF11F49888B00C869C0 /* AlarmAlertViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A523EFF01F49888B00C869C0 /* AlarmAlertViewController.swift */; };
+		A523EFF31F498DCD00C869C0 /* AlarmAlertViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A523EFF21F498DCD00C869C0 /* AlarmAlertViewController.storyboard */; };
 		F01F9B278627D96E045DE02E /* Pods_DreamRecorder.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D397857D16523815AF771D51 /* Pods_DreamRecorder.framework */; };
 /* End PBXBuildFile section */
 
@@ -95,7 +96,6 @@
 		5AD8F7061F386198005311F8 /* DreamRecorderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DreamRecorderTests.swift; sourceTree = "<group>"; };
 		5AD8F7081F386198005311F8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		71592AFC9695CAD77FC7E788 /* Pods-DreamRecorder.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DreamRecorder.release.xcconfig"; path = "Pods/Target Support Files/Pods-DreamRecorder/Pods-DreamRecorder.release.xcconfig"; sourceTree = "<group>"; };
-		A50F33EA1F445E2B00128B5B /* 1-minute-of-silence.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "1-minute-of-silence.mp3"; sourceTree = "<group>"; };
 		A50F33EB1F445E2B00128B5B /* AddDreamNavigationController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = AddDreamNavigationController.storyboard; sourceTree = "<group>"; };
 		A50F33EC1F445E2B00128B5B /* AddDreamNavigationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddDreamNavigationController.swift; sourceTree = "<group>"; };
 		A50F33ED1F445E2B00128B5B /* Alarm.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Alarm.swift; sourceTree = "<group>"; };
@@ -146,6 +146,8 @@
 		A50F34591F44C4A300128B5B /* Default.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = Default.wav; sourceTree = "<group>"; };
 		A50F345B1F4557A200128B5B /* ThemeAppliable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThemeAppliable.swift; sourceTree = "<group>"; };
 		A50F34661F45C31100128B5B /* mute.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = mute.mp3; sourceTree = "<group>"; };
+		A523EFF01F49888B00C869C0 /* AlarmAlertViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AlarmAlertViewController.swift; sourceTree = "<group>"; };
+		A523EFF21F498DCD00C869C0 /* AlarmAlertViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = AlarmAlertViewController.storyboard; sourceTree = "<group>"; };
 		C82E4CE7279A775BF2E77C04 /* Pods-DreamRecorder.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DreamRecorder.debug.xcconfig"; path = "Pods/Target Support Files/Pods-DreamRecorder/Pods-DreamRecorder.debug.xcconfig"; sourceTree = "<group>"; };
 		D397857D16523815AF771D51 /* Pods_DreamRecorder.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_DreamRecorder.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -233,6 +235,7 @@
 				A50F33F21F445E2B00128B5B /* AlarmEditViewController.storyboard */,
 				A50F33F51F445E2B00128B5B /* AlarmListViewController.storyboard */,
 				A50F33F71F445E2B00128B5B /* AlarmPlayViewController.storyboard */,
+				A523EFF21F498DCD00C869C0 /* AlarmAlertViewController.storyboard */,
 				A50F344F1F44664B00128B5B /* AlarmSoundListViewController.storyboard */,
 			);
 			name = Alarm;
@@ -256,6 +259,7 @@
 				A50F33F31F445E2B00128B5B /* AlarmEditViewController.swift */,
 				A50F33F61F445E2B00128B5B /* AlarmListViewController.swift */,
 				A50F33F81F445E2B00128B5B /* AlarmPlayViewController.swift */,
+				A523EFF01F49888B00C869C0 /* AlarmAlertViewController.swift */,
 				A50F33EC1F445E2B00128B5B /* AddDreamNavigationController.swift */,
 				A50F34081F445E2B00128B5B /* DetailDreamViewController.swift */,
 				A50F34161F445E2B00128B5B /* SpeechDreamViewController.swift */,
@@ -319,7 +323,6 @@
 				A50F34661F45C31100128B5B /* mute.mp3 */,
 				A50F34121F445E2B00128B5B /* Old-alarm-clock-ringing.wav */,
 				A50F34591F44C4A300128B5B /* Default.wav */,
-				A50F33EA1F445E2B00128B5B /* 1-minute-of-silence.mp3 */,
 				A50F34151F445E2B00128B5B /* Spaceship_Alarm.mp3 */,
 				A50F34011F445E2B00128B5B /* Carefree_Melody.mp3 */,
 			);
@@ -472,12 +475,12 @@
 				A50F34381F445E2B00128B5B /* DreamListViewController.storyboard in Resources */,
 				A50F342A1F445E2B00128B5B /* LaunchScreen.storyboard in Resources */,
 				A50F34191F445E2B00128B5B /* AddDreamNavigationController.storyboard in Resources */,
-				A50F34181F445E2B00128B5B /* 1-minute-of-silence.mp3 in Resources */,
 				A50F34231F445E2B00128B5B /* AlarmListViewController.storyboard in Resources */,
 				A50F34291F445E2B00128B5B /* Assets.xcassets in Resources */,
 				A50F34321F445E2B00128B5B /* DetailDreamViewController.storyboard in Resources */,
 				A50F342B1F445E2B00128B5B /* Main.storyboard in Resources */,
 				A50F342C1F445E2B00128B5B /* Carefree_Melody.mp3 in Resources */,
+				A523EFF31F498DCD00C869C0 /* AlarmAlertViewController.storyboard in Resources */,
 				A50F34201F445E2B00128B5B /* AlarmEditViewController.storyboard in Resources */,
 				A50F34251F445E2B00128B5B /* AlarmPlayViewController.storyboard in Resources */,
 				A50F343A1F445E2B00128B5B /* Info.plist in Resources */,
@@ -559,6 +562,7 @@
 				A50F34281F445E2B00128B5B /* AppDelegate.swift in Sources */,
 				A50F34241F445E2B00128B5B /* AlarmListViewController.swift in Sources */,
 				A50F341A1F445E2B00128B5B /* AddDreamNavigationController.swift in Sources */,
+				A523EFF11F49888B00C869C0 /* AlarmAlertViewController.swift in Sources */,
 				A50F343C1F445E2B00128B5B /* MultiButton.swift in Sources */,
 				A50F344E1F4465B700128B5B /* AlarmSoundListViewController.swift in Sources */,
 				A50F343E1F445E2B00128B5B /* RecordButton.swift in Sources */,
