@@ -41,10 +41,13 @@ class AlarmListCell: UITableViewCell {
     
     func setupDreamTheme(){
         self.backgroundColor = UIColor.alarmDefaultBackgroundColor
+        
         self.timeLabel.textColor = UIColor.alarmCellTitleColor
         self.nameLabel.textColor = UIColor.alarmCellBodyColor
+        
         self.activeSwitch.tintColor = UIColor.alarmSwitchTintColor
         self.activeSwitch.onTintColor = UIColor.alarmSwitchOnTintColor
+        
         self.weekdayButton.buttonBackgroundColor = UIColor.alarmDefaultBackgroundColor
         self.weekdayButton.buttonTitleColor = UIColor.alarmCellBodyColor
         self.weekdayButton.buttonTitleColorHighlighted = UIColor.white
