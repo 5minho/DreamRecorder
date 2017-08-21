@@ -57,21 +57,39 @@ extension Date {
     }
 }
 
+
 import AVFoundation
-// represent for soundName if sound is set by ipod-library
+
 extension String {
-    var soundTitle: String {
+    // @discussion      Note that alarm class can have two type of sound path.
+    //                  One is ipod-library for media item user have.
+    //                  Another is main bundle sound files.
+    var soundTitle: String? {
         if self.hasPrefix("ipod-library:") {
             guard let url = URL(string: self) else { return self }
             let asset = AVAsset(url: url)
             for metaItem in asset.commonMetadata {
                 if metaItem.commonKey == AVMetadataCommonKeyTitle {
-                    return metaItem.stringValue ?? self
+                    return metaItem.stringValue
                 }
             }
-            return self
+            return nil
         } else {
-            return self.components(separatedBy: ".").first ?? self
+            return self.components(separatedBy: ".").first
+        }
+    }
+    
+    var soundFormat: String? {
+        return self.components(separatedBy: ".").last
+    }
+    
+    var soundURL: URL? {
+        if self.hasPrefix("ipod-library:") {
+            return URL(string: self)
+        } else {
+            guard let fileFormat = self.components(separatedBy: ".").last else { return nil }
+            guard let path = Bundle.main.path(forResource: self.soundTitle, ofType: fileFormat) else { return nil }
+            return URL(fileURLWithPath: path)
         }
     }
 }
