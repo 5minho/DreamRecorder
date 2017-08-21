@@ -9,6 +9,12 @@
 import UIKit
 import UserNotifications
 
+func showAlarmPlayViewController() {
+    guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { return }
+    guard let alarmPlayViewController = AlarmPlayViewController.storyboardInstance() else { return }
+    appDelegate.window?.addSubview(alarmPlayViewController.view)
+}
+
 class AlarmPlayViewController: UIViewController {
 
     @IBOutlet weak var alarmTimeLabel: UILabel!
@@ -50,15 +56,27 @@ class AlarmPlayViewController: UIViewController {
     
     func updateLeftTimeLabel(){
         guard let playingAlarm = playingAlarm else { return }
-        let dateComponents = Calendar.current.dateComponents([.day, .hour, .minute, .second], from: Date(), to: playingAlarm.date)
-        
-        self.leftTimeLabel.text = "\(dateComponents.hour!):\(dateComponents.minute!):\(dateComponents.second!)"
+        AlarmScheduler.shared.nextTriggerDate(withIdentifier: playingAlarm.id, completionBlock: { (nextTriggerDate) in
+            OperationQueue.main.addOperation {
+                guard let nextTriggerDate = nextTriggerDate else { return }
+                let dateComponents = Calendar.current.dateComponents([.day, .hour, .minute, .second], from: Date(), to: nextTriggerDate)
+                
+                guard let day = dateComponents.day,
+                    var hour = dateComponents.hour,
+                    let minute = dateComponents.minute,
+                    let second = dateComponents.second
+                else {
+                    return
+                }
+                hour += day * 24
+                self.leftTimeLabel.text = "\(hour):\(minute):\(second)"
+            }
+        })
     }
     
     func dismissByGesture(sender: UITapGestureRecognizer){
         self.timer?.invalidate()
         self.timer = nil
-        SoundManager.shared.pauseAlarm()
         self.dismiss(animated: true, completion: nil)
     }
 }
