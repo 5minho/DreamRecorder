@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12121" systemVersion="16G29" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="GjN-v5-YKJ">
-    <device id="retina4_7" orientation="portrait">
+    <device id="retina3_5" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12089"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+        <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -37,14 +38,31 @@
                         <viewControllerLayoutGuide type="bottom" id="eTY-qy-oGA"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="vV8-aY-6tN">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="aLA-w5-KVG">
+                                <rect key="frame" x="16" y="128" width="288" height="168"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                            </textView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Recognize" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VhR-U7-15x">
+                                <rect key="frame" x="120" y="439.5" width="80" height="20.5"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Feb 21, 2017 07:30am" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8sA-7V-b0a">
+                                <rect key="frame" x="75.5" y="99" width="169" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ldo-vi-Cgp" customClass="RecordButton" customModule="DreamRecorder" customModuleProvider="target">
-                                <rect key="frame" x="106" y="389" width="163" height="161"/>
+                                <rect key="frame" x="117" y="316" width="86" height="85"/>
                                 <gestureRecognizers/>
                                 <constraints>
-                                    <constraint firstAttribute="width" secondItem="ldo-vi-Cgp" secondAttribute="height" multiplier="81:80" id="fvr-zZ-d6z"/>
+                                    <constraint firstAttribute="width" secondItem="ldo-vi-Cgp" secondAttribute="height" multiplier="103:102" id="YpE-XI-gWJ"/>
                                 </constraints>
                                 <state key="normal" title="Record">
                                     <color key="titleColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
@@ -53,34 +71,21 @@
                                     <action selector="touchUpRecordButton:" destination="tgh-FV-AFi" eventType="touchUpInside" id="xOd-Ni-gs6"/>
                                 </connections>
                             </button>
-                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="aLA-w5-KVG">
-                                <rect key="frame" x="16" y="99" width="343" height="270"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="270" id="VJY-x8-eAf"/>
-                                </constraints>
-                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
-                            </textView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VhR-U7-15x">
-                                <rect key="frame" x="106" y="573" width="163" height="30"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <gestureRecognizers/>
                         <constraints>
-                            <constraint firstItem="aLA-w5-KVG" firstAttribute="top" secondItem="i2q-OP-9fO" secondAttribute="bottom" constant="35" id="5CB-yX-mN9"/>
-                            <constraint firstItem="ldo-vi-Cgp" firstAttribute="leading" secondItem="vV8-aY-6tN" secondAttribute="leadingMargin" constant="90" id="5bv-5i-ned"/>
-                            <constraint firstItem="VhR-U7-15x" firstAttribute="leading" secondItem="ldo-vi-Cgp" secondAttribute="leading" id="6zG-cE-1id"/>
+                            <constraint firstItem="eTY-qy-oGA" firstAttribute="top" secondItem="VhR-U7-15x" secondAttribute="bottom" constant="20" id="0R8-iH-wdy"/>
                             <constraint firstItem="aLA-w5-KVG" firstAttribute="trailing" secondItem="vV8-aY-6tN" secondAttribute="trailingMargin" id="9I8-Pq-UVY"/>
-                            <constraint firstItem="VhR-U7-15x" firstAttribute="top" secondItem="ldo-vi-Cgp" secondAttribute="bottom" constant="23" id="HHg-aF-COy"/>
-                            <constraint firstItem="eTY-qy-oGA" firstAttribute="top" secondItem="VhR-U7-15x" secondAttribute="bottom" constant="64" id="Xsn-en-ANg"/>
+                            <constraint firstItem="aLA-w5-KVG" firstAttribute="height" secondItem="vV8-aY-6tN" secondAttribute="height" multiplier="0.35" id="H0G-F7-Y5C"/>
+                            <constraint firstItem="8sA-7V-b0a" firstAttribute="centerX" secondItem="vV8-aY-6tN" secondAttribute="centerX" id="NU5-xe-Wr1"/>
+                            <constraint firstItem="8sA-7V-b0a" firstAttribute="top" secondItem="i2q-OP-9fO" secondAttribute="bottom" constant="35" id="Pqj-A8-IQT"/>
+                            <constraint firstItem="ldo-vi-Cgp" firstAttribute="width" secondItem="aLA-w5-KVG" secondAttribute="width" multiplier="0.3" id="QrH-Ou-lB9"/>
+                            <constraint firstItem="VhR-U7-15x" firstAttribute="centerX" secondItem="vV8-aY-6tN" secondAttribute="centerX" id="XVQ-vl-aax"/>
                             <constraint firstItem="aLA-w5-KVG" firstAttribute="leading" secondItem="vV8-aY-6tN" secondAttribute="leadingMargin" id="cha-fO-57h"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="ldo-vi-Cgp" secondAttribute="trailing" constant="90" id="kRH-Uh-YJ4"/>
-                            <constraint firstItem="VhR-U7-15x" firstAttribute="trailing" secondItem="ldo-vi-Cgp" secondAttribute="trailing" id="l8q-f9-P7O"/>
-                            <constraint firstItem="ldo-vi-Cgp" firstAttribute="top" secondItem="aLA-w5-KVG" secondAttribute="bottom" constant="20" id="xHc-0Y-K8Z"/>
+                            <constraint firstItem="ldo-vi-Cgp" firstAttribute="top" secondItem="aLA-w5-KVG" secondAttribute="bottom" constant="20" id="nT9-9x-WSq"/>
+                            <constraint firstItem="ldo-vi-Cgp" firstAttribute="centerX" secondItem="vV8-aY-6tN" secondAttribute="centerX" id="oVe-OH-ZPa"/>
+                            <constraint firstItem="aLA-w5-KVG" firstAttribute="top" secondItem="8sA-7V-b0a" secondAttribute="bottom" constant="8" id="umD-7k-ZcO"/>
                         </constraints>
                         <connections>
                             <outletCollection property="gestureRecognizers" destination="Y4L-8D-IX3" appends="YES" id="Xtx-Xo-IlQ"/>
@@ -102,6 +107,7 @@
                         <outlet property="contentField" destination="aLA-w5-KVG" id="FoJ-va-xOA"/>
                         <outlet property="recongnitionStateLabel" destination="VhR-U7-15x" id="jhA-jD-OhM"/>
                         <outlet property="recordButton" destination="ldo-vi-Cgp" id="5al-cK-GbK"/>
+                        <outlet property="todayLabel" destination="8sA-7V-b0a" id="hXb-Hk-gsk"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Dbe-DH-mYk" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -111,7 +117,7 @@
                     </connections>
                 </tapGestureRecognizer>
             </objects>
-            <point key="canvasLocation" x="1140" y="-46.326836581709152"/>
+            <point key="canvasLocation" x="1140" y="-47.5"/>
         </scene>
     </scenes>
 </document>
