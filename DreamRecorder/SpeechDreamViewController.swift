@@ -13,14 +13,20 @@ import NaverSpeech
 class SpeechDreamViewController : UIViewController {
     
     @IBOutlet weak var contentField: UITextView!
-    @IBOutlet weak var recongnitionStateLabel: UILabel!
+    @IBOutlet weak var todayLabel: UILabel!
+    @IBOutlet weak var recordButton: RecordButton!
+    @IBOutlet weak var leftTimeLabel: UILabel!
+    
     fileprivate var previousText : String = ""
     fileprivate var defaultText : String = ""
-    @IBOutlet weak var todayLabel: UILabel!
-    
+    fileprivate var equalCount = 0
     fileprivate let speechRecognizer : NSKRecognizer
     
-    @IBOutlet weak var recordButton: RecordButton!
+    
+    
+    fileprivate var isTimerRunning = false
+    fileprivate var leftTime = 10
+    fileprivate var timer  = Timer()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -109,18 +115,46 @@ class SpeechDreamViewController : UIViewController {
         
     }
     
+    fileprivate func startTimer() {
+        isTimerRunning = true
+        self.leftTime = 10
+        self.timer = Timer.scheduledTimer(timeInterval: 1,
+                                          target: self,
+                                          selector: #selector(updateLeftTime),
+                                          userInfo: nil,
+                                          repeats: true)
+        
+    }
+    
+    fileprivate func finishTimer() {
+        isTimerRunning = false
+        self.timer.invalidate()
+        self.leftTimeLabel.text = ""
+    }
+    
+    @objc private func updateLeftTime() {
+        
+        if self.leftTime == 1 {
+            
+            self.inActivateRecognizer()
+            self.finishTimer()
+            return
+            
+        }
+        
+        self.leftTime -= 1
+        
+        self.leftTimeLabel.text = "\(self.leftTime)초 후에 마이크가 꺼집니다."
+    
+    }
+    
     private func activateRecognizer() {
         
         if speechRecognizer.isRunning == false {
             
             self.recordButton.recordState = .recording
             speechRecognizer.start(with: .korean)
-            asyncSetAudioCategory(AVAudioSessionCategoryRecord) {
-                DispatchQueue.main.async {
-                    self.recongnitionStateLabel.text = "Recognize..."
-                }
-            }
-            
+            asyncSetAudioCategory(AVAudioSessionCategoryRecord)
         }
         
     }
@@ -136,13 +170,15 @@ class SpeechDreamViewController : UIViewController {
         
     }
     
-    fileprivate func asyncSetAudioCategory(_ category: String, completion: (() -> Void)?) {
+    fileprivate func asyncSetAudioCategory(_ category: String, _ completion: (() -> Void)? = nil) {
+        
         audioDispatch.async {
             try? AVAudioSession.sharedInstance().setCategory(category)
         }
         if let completeHandler = completion {
             completeHandler()
         }
+        
     }
 }
 
@@ -168,11 +204,7 @@ extension SpeechDreamViewController : NSKRecognizerDelegate {
             return
         }
         
-        asyncSetAudioCategory(AVAudioSessionCategorySoloAmbient) {
-            DispatchQueue.main.async {
-                self.recongnitionStateLabel.text = "end recognize"
-            }
-        }
+        asyncSetAudioCategory(AVAudioSessionCategorySoloAmbient)
     }
     
     public func recognizer(_ aRecognizer: NSKRecognizer!, didRecordSpeechData aSpeechData: Data!) {
@@ -182,7 +214,22 @@ extension SpeechDreamViewController : NSKRecognizerDelegate {
     
     public func recognizer(_ aRecognizer: NSKRecognizer!, didReceivePartialResult aResult: String!) {
         print("Partial result: \(aResult)")
-
+        
+        if !isTimerRunning {
+            equalCount = (previousText == aResult) ? equalCount + 1 : equalCount
+            
+            if equalCount == 20 {
+                
+                equalCount = 0
+                self.startTimer()
+                
+            }
+        }
+        
+        if previousText != aResult {
+            self.finishTimer()
+        }
+        
         if aResult.isEmpty {
             contentField.text = defaultText + " " + previousText
             return
@@ -202,6 +249,7 @@ extension SpeechDreamViewController : NSKRecognizerDelegate {
         let lastResult = aResult.results.first as? String
         
         previousText = ""
+        
         if let result = lastResult {
             contentField.text = defaultText + " " + result
             defaultText = contentField.text
