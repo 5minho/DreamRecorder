@@ -25,7 +25,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         let audioSession = AVAudioSession.sharedInstance()
         do {
-            try audioSession.setCategory(AVAudioSessionCategoryPlayback, with: .duckOthers)
+            try audioSession.setCategory(AVAudioSessionCategoryPlayback, with: .mixWithOthers)
             try audioSession.setActive(true)
         } catch {
         }
@@ -50,9 +50,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         DreamDataStore.shared.createTable()
         DreamDataStore.shared.selectAll()
         
+        SoundManager.shared.awake()
         AlarmDataStore.shared.awake()
         AlarmScheduler.shared.awake()
-        SoundManager.shared.awake()
         
         AlarmScheduler.shared.handleSoundManagerDidPlayAlarmToEnd()
         
@@ -77,6 +77,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func applicationWillEnterForeground(_ application: UIApplication) {
         // Called as part of the transition from the background to the active state; here you can undo many of the changes made on entering the background.
+        if (SoundManager.shared.isPlayingAlarm) {
+            guard let alarmAlertViewController = AlarmAlertViewController.storyboardInstance() else { return }
+            alarmAlertViewController.modalTransitionStyle = .crossDissolve
+            alarmAlertViewController.alertAlarm = SoundManager.shared.nextAlarm
+            self.window?.rootViewController?.present(alarmAlertViewController, animated: true, completion: nil)
+        }
     }
 
     func applicationDidBecomeActive(_ application: UIApplication) {
@@ -86,6 +92,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func applicationWillTerminate(_ application: UIApplication) {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+        
+        // Duplicate Notification.
     }
 }
 
@@ -110,26 +118,31 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
     @available(iOS 10.0, *)
     func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
         print("User - present")
-        NotificationCenter.default.post(name: Notification.Name.ApplicationWillPresentNotification,
-                                        object: nil,
-                                        userInfo: ["identifier": notification.request.identifier])
-        guard let alarmPlayViewController = AlarmPlayViewController.storyboardInstance() else { return }
-        alarmPlayViewController.modalTransitionStyle = .crossDissolve
-        alarmPlayViewController.shouldCustomTransition = false
-        alarmPlayViewController.playingAlarm = AlarmDataStore.shared.alarm(withNotificationIdentifier: notification.request.identifier)
-        guard let tabBarController = self.window?.rootViewController as? UITabBarController else { return }
-        guard let navigationController = tabBarController.selectedViewController as? UINavigationController else { return }
-        guard let listController = navigationController.topViewController as? AlarmListViewController else { return }
-        listController.present(alarmPlayViewController, animated: true, completion: nil)
+        AlarmScheduler.shared.inactivateAlarmIfNeeded()
+//        NotificationCenter.default.post(name: Notification.Name.ApplicationWillPresentNotification,
+//                                        object: nil,
+//                                        userInfo: ["identifier": notification.request.identifier])
+        
+        guard let alarmAlertViewController = AlarmAlertViewController.storyboardInstance() else { return }
+        alarmAlertViewController.modalTransitionStyle = .crossDissolve
+        alarmAlertViewController.alertAlarm = AlarmDataStore.shared.alarm(withNotificationIdentifier: notification.request.identifier)
+        self.window?.rootViewController?.present(alarmAlertViewController, animated: true, completion: nil)
+        
+        completionHandler([.alert, .sound])
     }
     
     @available(iOS 10.0, *)
     func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
         print("User - response")
-        NotificationCenter.default.post(name: Notification.Name.ApplicationDidReceiveResponse,
-                                        object: nil,
-                                        userInfo: ["identifier": response.notification.request.identifier,
-                                                   "actionIdentifier": response.actionIdentifier])
+//        NotificationCenter.default.post(name: Notification.Name.ApplicationDidReceiveResponse,
+//                                        object: nil,
+//                                        userInfo: ["identifier": response.notification.request.identifier,
+//                                                   "actionIdentifier": response.actionIdentifier])
+        guard let alarmAlertViewController = AlarmAlertViewController.storyboardInstance() else { return }
+        alarmAlertViewController.modalTransitionStyle = .crossDissolve
+        alarmAlertViewController.alertAlarm = AlarmDataStore.shared.alarm(withNotificationIdentifier: response.notification.request.identifier)
+        self.window?.rootViewController?.present(alarmAlertViewController, animated: true, completion: nil)
+        
         completionHandler()
     }
     
