@@ -63,6 +63,10 @@ class DetailDreamViewController : UIViewController {
             titleField.text = selectedDream.title
             contentTextView.text = selectedDream.content
             
+            if let createdDate = self.dream?.createdDate {
+                createdDateLabel.text = DateParser().detail(from: createdDate)
+            }
+            
         }
         
         self.applyTheme()
@@ -129,7 +133,6 @@ class DetailDreamViewController : UIViewController {
         }
         
     }
-    
     
 }
 
