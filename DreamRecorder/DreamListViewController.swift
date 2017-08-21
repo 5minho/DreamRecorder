@@ -18,11 +18,23 @@ class DreamListViewController : UIViewController {
     fileprivate var filteredDreams = [Dream]()
     fileprivate let dateParser = DateParser()
     
+    //TODO : 검색속도 더 빠르게 하기
+    fileprivate var searchOperation = BlockOperation()
+    
+    fileprivate var opearationQueue : OperationQueue = {
+        
+        var opearationQueue = OperationQueue()
+        opearationQueue.qualityOfService = .background
+        return opearationQueue
+        
+    }()
+
+    
     var currentViewedDate = Date() {
         
         didSet {
             
-            if let fromYear = dateParser.year(from: currentViewedDate) {
+            if let fromYear = dateParser.year(from: currentViewedDate) { 
                 let fromMonth : Int = dateParser.month(from: currentViewedDate)
                 
                 var toYear = fromYear
@@ -65,7 +77,6 @@ class DreamListViewController : UIViewController {
         }
         
         self.addObserver()
-        
         self.setSearchViewController()
     }
     
@@ -108,6 +119,7 @@ class DreamListViewController : UIViewController {
         NotificationCenter.default.addObserver(forName: DreamDataStore.NotificationName.didAddDream, object: nil, queue: .main) {
             [unowned self] notification in
             self.tableView.insertRows(at: [IndexPath(row: 0, section: 0)], with: .automatic)
+            self.currentViewedDate = Date()
         }
         
     }
@@ -142,6 +154,8 @@ class DreamListViewController : UIViewController {
     }
 }
 
+
+
 extension DreamListViewController : UISearchResultsUpdating {
     
     func updateSearchResults(for searchController: UISearchController) {
@@ -155,12 +169,16 @@ extension DreamListViewController : UISearchResultsUpdating {
     
     func filterContentForSearchText(_ searchText: String, scope: String = "All") {
         
-        DispatchQueue.global().async {
+        opearationQueue.cancelAllOperations()
+        
+        searchOperation = BlockOperation {
             self.filteredDreams = DreamDataStore.shared.filter(searchText)
             DispatchQueue.main.async {
                 self.tableView.reloadData()
             }
         }
+        searchOperation.qualityOfService = .background
+        opearationQueue.addOperation(searchOperation)
         
     }
     
@@ -208,9 +226,7 @@ extension DreamListViewController : UITableViewDelegate, UITableViewDataSource, 
             if self.tableView.isEditing {
                 detailDreamViewController.mode = .edit
             }
-            
         }
-        
     }
 
     // 
@@ -224,15 +240,10 @@ extension DreamListViewController : UITableViewDelegate, UITableViewDataSource, 
             }
             
         }
-    
-//        let pinButton = UITableViewRowAction(style: .normal, title: "pin") { (action, indexPath) in
-//            print("pin")
-//        }
-        
+
         deleteButton.backgroundColor = UIColor.blue
-//        pinButton.backgroundColor = UIColor.purple
         
-        return [deleteButton/*, pinButton*/]
+        return [deleteButton]
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
