@@ -9,16 +9,26 @@
 import UIKit
 
 extension UIFont {
-    static var title1: UIFont {
-        return UIFont(name: "HelveticaNeue-Light", size: UIFont.preferredFont(forTextStyle: UIFontTextStyle.title1).pointSize) ?? UIFont.preferredFont(forTextStyle: UIFontTextStyle.title1)
+    static var customFontName: String {
+        return UIAccessibilityIsBoldTextEnabled() ? "HelveticaNeue-Bold" : "HelveticaNeue-Light"
     }
+    
+    static var title1: UIFont {
+        return UIFont(name: self.customFontName, size: UIFont.preferredFont(forTextStyle: UIFontTextStyle.title1).pointSize) ?? UIFont.preferredFont(forTextStyle: UIFontTextStyle.title1)
+    }
+    static var title2: UIFont {
+        UIAccessibilityIsBoldTextEnabled()
+        return UIFont(name: self.customFontName, size: UIFont.preferredFont(forTextStyle: UIFontTextStyle.title2).pointSize) ?? UIFont.preferredFont(forTextStyle: UIFontTextStyle.title2)
+    }
+    
     static var title3: UIFont {
-        return UIFont(name: "HelveticaNeue-Light", size: UIFont.preferredFont(forTextStyle: UIFontTextStyle.title3).pointSize) ?? UIFont.preferredFont(forTextStyle: UIFontTextStyle.title3)
+        UIAccessibilityIsBoldTextEnabled()
+        return UIFont(name: self.customFontName, size: UIFont.preferredFont(forTextStyle: UIFontTextStyle.title3).pointSize) ?? UIFont.preferredFont(forTextStyle: UIFontTextStyle.title3)
     }
     static var caption: UIFont {
-        return UIFont(name: "HelveticaNeue-Light", size: UIFont.preferredFont(forTextStyle: UIFontTextStyle.caption1).pointSize) ?? UIFont.preferredFont(forTextStyle: UIFontTextStyle.caption1)
+        return UIFont(name: self.customFontName, size: UIFont.preferredFont(forTextStyle: UIFontTextStyle.caption1).pointSize) ?? UIFont.preferredFont(forTextStyle: UIFontTextStyle.caption1)
     }
     static var body: UIFont {
-        return UIFont(name: "HelveticaNeue-Light", size: UIFont.preferredFont(forTextStyle: UIFontTextStyle.body).pointSize) ?? UIFont.preferredFont(forTextStyle: UIFontTextStyle.body)
+        return UIFont(name: self.customFontName, size: UIFont.preferredFont(forTextStyle: UIFontTextStyle.body).pointSize) ?? UIFont.preferredFont(forTextStyle: UIFontTextStyle.body)
     }
 }
