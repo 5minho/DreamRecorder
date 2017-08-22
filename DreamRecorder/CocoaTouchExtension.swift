@@ -60,9 +60,60 @@ extension Date {
     }
 }
 
+extension Date {
+    func removingSeconds() -> Date {
+        let dateComponents = Calendar.current.dateComponents([.year, .month, .day, .hour, .minute, .minute], from:
+            self)
+        let secondRemovedDate = Calendar.current.date(from: dateComponents)
+        return secondRemovedDate ?? self
+    }
+}
 
 extension Date {
-    func compareByMinuteUnit(other date: Date) -> Bool {
-        return (Calendar.current.compare(self, to: date, toGranularity: .minute) == .orderedSame)
+    var addingSnoozeTimeInterval: Date {
+        return self.addingTimeInterval(60*9)
+    }
+}
+
+
+import AVFoundation
+
+//extension AVAsset: NSCoding {
+//    
+//    
+//    
+//}
+
+extension String {
+    // @discussion      Note that alarm class can have two type of sound path.
+    //                  One is ipod-library for media item user have.
+    //                  Another is main bundle sound files.
+    var soundTitle: String? {
+        if self.hasPrefix("ipod-library:") {
+            guard let url = URL(string: self) else { return self }
+            let asset = AVAsset(url: url)
+            for metaItem in asset.commonMetadata {
+                if metaItem.commonKey == AVMetadataCommonKeyTitle {
+                    return metaItem.stringValue
+                }
+            }
+            return nil
+        } else {
+            return self.components(separatedBy: ".").first
+        }
+    }
+    
+    var soundFormat: String? {
+        return self.components(separatedBy: ".").last
+    }
+    
+    var soundURL: URL? {
+        if self.hasPrefix("ipod-library:") {
+            return URL(string: self)
+        } else {
+            guard let fileFormat = self.components(separatedBy: ".").last else { return nil }
+            guard let path = Bundle.main.path(forResource: self.soundTitle, ofType: fileFormat) else { return nil }
+            return URL(fileURLWithPath: path)
+        }
     }
 }

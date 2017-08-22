@@ -45,10 +45,13 @@ class AlarmDetailCell: UITableViewCell {
     }
     
     private func updateLabels(){
-        self.textLabel?.text = String(describing: self.cellStyle).localizedCapitalized
-        self.detailTextLabel?.text = nil
+        self.textLabel?.text = String(describing: self.cellStyle).localizedCapitalized.localized
         self.textLabel?.textColor = UIColor.alarmDarkText
+        self.textLabel?.font = UIFont.body
+        
+        self.detailTextLabel?.text = nil
         self.detailTextLabel?.textColor = UIColor.alarmText
+        self.detailTextLabel?.font = UIFont.callout
     }
     
     private func setupAccessoryView(){

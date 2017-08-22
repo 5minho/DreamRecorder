@@ -8,28 +8,22 @@
 
 import UIKit
 
-class AlarmListViewController: UIViewController, ThemeAppliable {
-    
-    // AlarmThemeAppliable
-    var themeStyle: ThemeStyle = .alarm
-    var themeTableView: UITableView? {
-        return self.tableView
-    }
-    var themeNavigationController: UINavigationController? {
-        return self.navigationController
-    }
-    
-    // IBOutlet Subviews.
+class AlarmListViewController: UIViewController {
+
+    // MARK: Properties.
+    // Subviews.
     @IBOutlet weak var tableView: UITableView!
     
-    // Properties.
+    // Internal.
     lazy var store = AlarmDataStore.shared
     
-    // CellExpandableAnimator temporary views.
-    var selectedCell: UITableViewCell?
-    var selectedCellLabel: UILabel?
+    // Private.
+    fileprivate var shouldReloadTable: Bool = true  // default is true. it will set false to block reload table from AlarmDataStoreDidChange notification.
     
-    // IBActions.
+    fileprivate var selectedCell: AlarmListCell?  // Capture temporary selected cell and label for custom transitioning.
+    fileprivate var selectedCellLabel: UILabel?
+    
+    // MARK: Actions.
     func leftBarButtonDidTap(sender: UIBarButtonItem) {
         self.tableView.setEditing(!self.tableView.isEditing, animated: true)
     }
@@ -44,10 +38,11 @@ class AlarmListViewController: UIViewController, ThemeAppliable {
         self.present(navigationController, animated: true, completion: nil)
     }
     
+    // MARK: View Cycle.
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.applyTheme()
+        self.applyThemeIfViewDidLoad()
         
         self.tableView.delegate = self
         self.tableView.dataSource = self
@@ -61,16 +56,13 @@ class AlarmListViewController: UIViewController, ThemeAppliable {
         let rightBarButton = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(self.rightBarButtonDidTap(sender:)))
         self.navigationItem.setRightBarButton(rightBarButton, animated: true)
         
-        NotificationCenter.default.addObserver(self, selector: #selector(self.didChnagedAlarms), name: Notification.Name.AlarmDateStoreDidSyncAlarmAndNotification, object: nil)
-        
-        self.store.reloadAlarms()
+        NotificationCenter.default.addObserver(self, selector: #selector(self.handleAlarmDataStoreDidChange), name: Notification.Name.AlarmDataStoreDidChange, object: nil)
     }
     
-    func didChnagedAlarms(){
-        DispatchQueue.main.async {
-            self.tableView.reloadData()
-        }
-
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        self.applyThemeIfViewWillAppear()
     }
     
     override func viewDidDisappear(_ animated: Bool) {
@@ -78,11 +70,20 @@ class AlarmListViewController: UIViewController, ThemeAppliable {
         
         self.tableView.setEditing(false, animated: true)
     }
+    
+    // MARK: Notification Handler.
+    func handleAlarmDataStoreDidChange(sender: Notification){
+        if shouldReloadTable {
+            OperationQueue.main.addOperation {
+                self.tableView.reloadSections(IndexSet(integer: IndexSet.Element.allZeros), with: .automatic)
+            }
+        }
+        self.shouldReloadTable = true
+    }
 }
 
 extension AlarmListViewController: UITableViewDelegate, UITableViewDataSource {
-    
-    // DataSource.
+    // MARK: TableView DataSource.
     func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
@@ -107,87 +108,139 @@ extension AlarmListViewController: UITableViewDelegate, UITableViewDataSource {
         }
     }
     
+    // MARK: TableView Delegate.
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        
+    
         tableView.deselectRow(at: indexPath, animated: true)
         
         if self.tableView.isEditing {
             guard let alarmEditViewController = AlarmEditViewController.storyboardInstance() else { return }
+            
             alarmEditViewController.alarm = self.store.alarms[indexPath.row]
             alarmEditViewController.delegate = self
+            
             let navigationController = UINavigationController(rootViewController: alarmEditViewController)
             self.present(navigationController, animated: true, completion: nil)
+            
         } else {
             guard let cell = tableView.cellForRow(at: indexPath) as? AlarmListCell else { return }
+            
             self.selectedCell = cell
             self.selectedCellLabel = cell.timeLabel
             
             let selectedAlarm = self.store.alarms[indexPath.row]
             
             if selectedAlarm.isActive == false {
-                let alertController = UIAlertController(title: "Alarm", message: "알람을 활성화 시키겠습니까?", preferredStyle: .alert)
-                let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: { (action) in
-                    alertController.dismiss(animated: true, completion: nil)
-                })
+                
+                let alertController = UIAlertController(title: NSLocalizedString("Alarm", comment: ""),
+                                                        message: NSLocalizedString("알람을 먼저 활성화 하십시오.", comment: ""),
+                                                        preferredStyle: .alert)
                 let okAction = UIAlertAction(title: "OK", style: .default, handler: { (action) in
                     alertController.dismiss(animated: true, completion: nil)
-                    guard let alarmPlayViewController = AlarmPlayViewController.storyboardInstance() else { return }
-                    alarmPlayViewController.presentingDelegate = self
-                    alarmPlayViewController.playingAlarm = selectedAlarm
-                    self.present(alarmPlayViewController, animated: true, completion: nil)
-                    
                 })
-                alertController.addAction(cancelAction)
                 alertController.addAction(okAction)
+                
                 self.present(alertController, animated: true, completion: nil)
+                
             } else {
                 guard let alarmPlayViewController = AlarmPlayViewController.storyboardInstance() else { return }
+                
                 alarmPlayViewController.presentingDelegate = self
                 alarmPlayViewController.playingAlarm = selectedAlarm
+                
                 self.present(alarmPlayViewController, animated: true, completion: nil)
             }
-            
-            
         }
     }
     
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
-            let deletingAlarm = self.store.alarms.remove(at: indexPath.row)
+            self.shouldReloadTable = false
+            
+            let deletingAlarm = self.store.alarms[indexPath.row]
             self.store.deleteAlarm(alarm: deletingAlarm)
-            let deletingRow = IndexPath(row: indexPath.row, section: 0)
-            tableView.deleteRows(at: [deletingRow], with: .automatic)
+            
+            // Replace reload table with deleting rows if alarm deleted.
+            self.tableView.deleteRows(at: [indexPath], with: .automatic)
         }
     }
     
 }
-extension AlarmListViewController: AlarmListCellDelegate{
+extension AlarmListViewController: AlarmListCellDelegate {
+    // MARK: AlarmListCell Delegate.
     func alarmListCell(cell : AlarmListCell, activeSwitchValueChanged sender: UISwitch) {
         guard sender.tag < self.store.alarms.count else { return }
+        let updatingAlarm = self.store.alarms[sender.tag]
+        updatingAlarm.isActive = sender.isOn
+        self.store.updateAlarm(alarm: updatingAlarm)
+    }
+}
+
+extension AlarmListViewController: AlarmAddViewControllerDelegate, AlarmEditViewControllerDelegate {
+    // MARK: AlarmAddViewController Delegate.
+    func alarmAddViewController(_: AlarmAddViewController, didSaveNewAlarm alarm: Alarm) {
+        self.shouldReloadTable = false
         
-        let updatedAlarm = self.store.alarms[sender.tag]
-        if sender.isOn {
-            self.store.scheduler.addNotification(with: updatedAlarm)
+        alarm.date = alarm.date.removingSeconds()
+        self.store.insertAlarm(alarm: alarm)
+        
+        // Replace reload table with inserting rows if alarm added.
+        guard let index = self.store.alarms.index(of: alarm) else { return }
+        let newIndexPath = IndexPath(row: index, section: 0)
+        self.tableView.insertRows(at: [newIndexPath], with: .automatic)
+        
+    }
+    
+    // MARK: AlarmEditViewController Delegate.
+    func alarmEditViewController(_ controller: AlarmEditViewController, didSaveEditedAlarm alarm: Alarm) {
+        self.shouldReloadTable = false
+        
+        alarm.date = alarm.date.removingSeconds()
+        if alarm.isActive == false {
+            let alertController = UIAlertController(title: NSLocalizedString("Alarm", comment: ""),
+                                                    message: NSLocalizedString("수정된 알람을 활성화 시키겠습니까?", comment: ""),
+                                                    preferredStyle: .alert)
+            
+            let okAction = UIAlertAction(title: "OK", style: .default) { (action) in
+                alarm.isActive = true
+                self.store.updateAlarm(alarm: alarm)
+                
+                // Replace reload table with reloading rows if alarm updated.
+                guard let index = self.store.alarms.index(of: alarm) else { return }
+                let editedIndexPath = IndexPath(row: index, section: 0)
+                self.tableView.reloadRows(at: [editedIndexPath], with: .automatic)
+            }
+            let cancelAction = UIAlertAction(title: "Cancel", style: .cancel) { (action) in
+                self.store.updateAlarm(alarm: alarm)
+                
+                // Replace reload table with reloading rows if alarm updated.
+                guard let index = self.store.alarms.index(of: alarm) else { return }
+                let editedIndexPath = IndexPath(row: index, section: 0)
+                self.tableView.reloadRows(at: [editedIndexPath], with: .automatic)
+            }
+            alertController.addAction(okAction)
+            alertController.addAction(cancelAction)
+            
+            self.present(alertController, animated: true, completion: nil)
+            
         } else {
-            self.store.scheduler.deleteNotification(with: updatedAlarm)
+            self.store.updateAlarm(alarm: alarm)
+            
+            // Replace reload table with reloading rows if alarm updated.
+            guard let index = self.store.alarms.index(of: alarm) else { return }
+            let editedIndexPath = IndexPath(row: index, section: 0)
+            self.tableView.reloadRows(at: [editedIndexPath], with: .automatic)
         }
     }
 }
-extension AlarmListViewController: AlarmAddViewControllerDelegate, AlarmEditViewControllerDelegate {
-    // Add Controller Delegate.
-    func alarmAddViewController(_: AlarmAddViewController, didSaveNewAlarm alarm: Alarm) {
-        self.store.alarms.append(alarm)
-        self.store.insertAlarm(alarm: alarm)
-        
-        self.tableView.reloadSections(IndexSet(integersIn: 0...0), with: .automatic)
+
+extension AlarmListViewController: ThemeAppliable {
+    // MARK: ThemeAppliable.
+    var themeStyle: ThemeStyle {
+        return .alarm
     }
-    // Edit Controller Delegate.
-    func alarmEditViewController(_ controller: AlarmEditViewController, didSaveEditedAlarm alarm: Alarm) {
-        self.store.updateAlarm(alarm: alarm)
-        
-        guard let row = self.store.alarms.index(of: alarm) else { return }
-        let indexPath = IndexPath(row: row, section: 0)
-        self.tableView.reloadRows(at: [indexPath], with: .automatic)
+    var themeTableView: UITableView? {
+        return self.tableView
     }
 }
 

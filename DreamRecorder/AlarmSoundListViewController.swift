@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import MediaPlayer
 
 protocol AlarmSoundListViewControllerDelegate: NSObjectProtocol {
     func alarmSoundListViewController(_ controller: AlarmSoundListViewController, didChangeSoundName: String)
@@ -14,71 +15,153 @@ protocol AlarmSoundListViewControllerDelegate: NSObjectProtocol {
 
 class AlarmSoundListViewController: UIViewController {
     
+    // MARK: Properties.
+    // Subviews.
     @IBOutlet weak var tableView: UITableView!
     
-    var soundNames: [String] = ["Default", "Alarm-tone", "Old-alarm-clock-ringing", "Loud-alarm-clock-sound"]
+    // Internal.
     var alarm: Alarm?
+    weak var delegate: AlarmSoundListViewControllerDelegate?
     
-    var delegate: AlarmSoundListViewControllerDelegate?
+    // Private.
+    fileprivate var soundNames: [String] = ["Default.wav", "Alarm-tone.wav", "Old-alarm-clock-ringing.wav", "Carefree_Melody.mp3"]
     
+    // Mark: View Cycle.
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.applyTheme()
+        self.applyThemeIfViewDidLoad()
         
         self.tableView.delegate = self
         self.tableView.dataSource = self
+        
+        self.title = "Sound".localized
     }
 }
 
 extension AlarmSoundListViewController: UITableViewDataSource, UITableViewDelegate {
+    
+    // MARK: TableView DataSource.
     func numberOfSections(in tableView: UITableView) -> Int {
-        return 1
+        return 2
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return self.soundNames.count
+        if section == 0 {
+            return self.soundNames.count
+        } else {
+            return 1
+        }
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        
         let cell = tableView.dequeueReusableCell(withIdentifier: "UITableViewCell", for: indexPath)
-        cell.textLabel?.text = soundNames[indexPath.row]
-        cell.textLabel?.font = UIFont.title3
+        
+        guard let editingAlarm = self.alarm else { return cell }
+        
         cell.backgroundColor = UIColor.alarmDefaultBackgroundColor
-        cell.textLabel?.textColor = UIColor.alarmDarkText
-        cell.tintColor = UIColor.alarmSwitchOnTintColor
-        if let soundName = self.alarm?.sound {
-            cell.accessoryType = (soundName == self.soundNames[indexPath.row]) ? .checkmark : .none
+        
+        if indexPath.section == 0 {
+            
+            guard indexPath.row < self.soundNames.count else { return cell }
+            
+            cell.tintColor = UIColor.alarmSwitchOnTintColor
+            cell.textLabel?.font = UIFont.body
+            cell.textLabel?.textColor = UIColor.alarmDarkText
+            
+            cell.textLabel?.text = soundNames[indexPath.row].soundTitle
+            cell.accessoryType = (editingAlarm.sound == self.soundNames[indexPath.row]) ? .checkmark : .none
+            
+            return cell
+            
+        } else {
+            
+            cell.textLabel?.text = "Pick a song".localized
+            cell.textLabel?.textColor = UIColor.alarmDarkText
+            cell.detailTextLabel?.font = UIFont.callout
+            cell.detailTextLabel?.textColor = UIColor.alarmLightText
+            
+            if self.soundNames.contains(editingAlarm.sound) == false {
+                
+                cell.accessoryType = .checkmark
+                cell.detailTextLabel?.text = self.alarm?.sound.soundTitle
+                
+            } else {
+                cell.accessoryType = .none
+            }
+            
+            return cell
         }
-        return cell
     }
     
+    // MARK: TableView Delegate.
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
         tableView.deselectRow(at: indexPath, animated: true)
-        for cell in tableView.visibleCells {
-            cell.accessoryType = .none
+        
+        if indexPath.section == 0 {
+            // Bundle Sound Files.
+            for cell in tableView.visibleCells {
+                cell.accessoryType = .none
+            }
+            
+            let selectedCell = tableView.cellForRow(at: indexPath)
+            selectedCell?.accessoryType = .checkmark
+            
+            let selectedSoundName = self.soundNames[indexPath.row]
+            self.alarm?.sound = selectedSoundName
+            
+            self.delegate?.alarmSoundListViewController(self, didChangeSoundName: selectedSoundName)
+            self.navigationController?.popViewController(animated: true)
+            
+        } else {
+            // Select Media Library Music Files.
+            let pickerController = MPMediaPickerController(mediaTypes: .any)
+            pickerController.allowsPickingMultipleItems = false
+            pickerController.showsCloudItems = false
+            pickerController.delegate = self
+            
+            self.present(pickerController, animated: true, completion: nil)
         }
-        tableView.cellForRow(at: indexPath)?.accessoryType = .checkmark
-        let selectedSoundName = self.soundNames[indexPath.row]
-        self.alarm?.sound = selectedSoundName
-        self.delegate?.alarmSoundListViewController(self, didChangeSoundName: selectedSoundName)
-        self.navigationController?.popViewController(animated: true)
+    }
+}
+
+extension AlarmSoundListViewController: MPMediaPickerControllerDelegate {
+    // MARK: MPMediaPickerController Delegate.
+    func mediaPickerDidCancel(_ mediaPicker: MPMediaPickerController) {
+        mediaPicker.dismiss(animated: true, completion: nil)
+    }
+    
+    func mediaPicker(_ mediaPicker: MPMediaPickerController, didPickMediaItems mediaItemCollection: MPMediaItemCollection) {
+        
+        if let item = mediaItemCollection.items.first,
+            let itemURL = item.assetURL {
+            
+            self.alarm?.sound = itemURL.absoluteString
+            
+            mediaPicker.dismiss(animated: true, completion: {
+                self.delegate?.alarmSoundListViewController(self, didChangeSoundName: itemURL.absoluteString)
+                self.navigationController?.popViewController(animated: true)
+            })
+        } else {
+            self.navigationController?.popViewController(animated: true)
+        }
     }
 }
 
 extension AlarmSoundListViewController: ThemeAppliable {
+    // MARK: ThemeAppliable
     var themeStyle: ThemeStyle {
         return .alarm
     }
     var themeTableView: UITableView? {
         return self.tableView
     }
-    var themeNavigationController: UINavigationController? {
-        return self.navigationController
-    }
 }
 
 extension AlarmSoundListViewController {
+    // MARK: StoryboardInstance.
     class func storyboardInstance() -> AlarmSoundListViewController? {
         let storyboard = UIStoryboard(name: String(describing: self), bundle: nil)
         return storyboard.instantiateInitialViewController() as? AlarmSoundListViewController

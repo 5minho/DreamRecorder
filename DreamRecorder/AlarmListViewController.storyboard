@@ -25,15 +25,15 @@
                                 <rect key="frame" x="0.0" y="64" width="375" height="554"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="AlarmListCell" rowHeight="90" id="R5T-WR-r5t" customClass="AlarmListCell" customModule="DreamRecorder" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="28" width="375" height="90"/>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="AlarmListCell" rowHeight="124" id="R5T-WR-r5t" customClass="AlarmListCell" customModule="DreamRecorder" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="28" width="375" height="124"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="R5T-WR-r5t" id="XfW-9m-8wK">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="89.5"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="123.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9BY-cI-xgB" customClass="MultiButton" customModule="DreamRecorder" customModuleProvider="target">
-                                                    <rect key="frame" x="16" y="57.5" width="210" height="16"/>
+                                                    <rect key="frame" x="16" y="82" width="210" height="25.5"/>
                                                     <userDefinedRuntimeAttributes>
                                                         <userDefinedRuntimeAttribute type="number" keyPath="numberOfButton">
                                                             <integer key="value" value="7"/>
@@ -49,20 +49,22 @@
                                                         </userDefinedRuntimeAttribute>
                                                     </userDefinedRuntimeAttributes>
                                                 </stackView>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="249" text="07:30 pm" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VpK-Bd-UfZ">
-                                                    <rect key="frame" x="16" y="16" width="118" height="33.5"/>
-                                                    <fontDescription key="fontDescription" style="UICTFontTextStyleTitle1"/>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" horizontalCompressionResistancePriority="751" verticalCompressionResistancePriority="751" text="07:30 PM" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VpK-Bd-UfZ">
+                                                    <rect key="frame" x="16" y="16" width="120.5" height="58"/>
+                                                    <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="28"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bBv-Jt-2tc">
-                                                    <rect key="frame" x="328" y="33" width="39" height="24"/>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="249" verticalHuggingPriority="251" text="Alarm Title Name" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bBv-Jt-2tc">
+                                                    <rect key="frame" x="144.5" y="50" width="222.5" height="24"/>
                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleTitle3"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                             </subviews>
                                             <constraints>
+                                                <constraint firstItem="9BY-cI-xgB" firstAttribute="top" secondItem="bBv-Jt-2tc" secondAttribute="bottom" constant="8" id="FSM-eP-rC3"/>
+                                                <constraint firstItem="bBv-Jt-2tc" firstAttribute="leading" secondItem="VpK-Bd-UfZ" secondAttribute="trailing" constant="8" id="NN4-XN-3En"/>
                                                 <constraint firstItem="VpK-Bd-UfZ" firstAttribute="top" secondItem="XfW-9m-8wK" secondAttribute="topMargin" constant="8" id="QIN-pp-2tj"/>
                                                 <constraint firstItem="9BY-cI-xgB" firstAttribute="leading" secondItem="VpK-Bd-UfZ" secondAttribute="leading" id="S7g-K5-e4A"/>
                                                 <constraint firstAttribute="bottomMargin" secondItem="9BY-cI-xgB" secondAttribute="bottom" constant="8" id="Ssa-HS-eaN"/>

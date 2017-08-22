@@ -38,7 +38,7 @@ class Alarm: NSObject, NSCopying {
          name: String = "Alarm",
          date: Date = Date(),
          weekday: WeekdayOptions = .none,
-         sound: String = "Default",
+         sound: String = "Default.wav",
          isActive: Bool = true,
          isSnooze: Bool = true) {
         

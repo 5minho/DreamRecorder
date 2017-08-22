@@ -26,7 +26,7 @@ class DreamListCell : UITableViewCell {
         
         self.dayLabel.font = UIFont.title1
         self.monthLabel.font = UIFont.title3
-        self.timeLabel.font = UIFont.caption
+        self.timeLabel.font = UIFont.caption1
         self.dreamTitleLabel.font = UIFont.title3
     }
     

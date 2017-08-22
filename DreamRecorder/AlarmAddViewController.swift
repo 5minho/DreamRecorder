@@ -17,56 +17,47 @@ class AlarmAddViewController: UIViewController {
     // MARK: Properties.
     // SubViews.
     @IBOutlet weak var tableView: UITableView!
-    var datePicker: UIDatePicker!
+    private var datePicker: UIDatePicker!
     
-    // Model and Delegate.
+    // Internal.
     var alarm: Alarm?
     weak var delegate: AlarmAddViewControllerDelegate?
     
-    // MARK: Functions.
-    // Actions.
+    // MARK: Actions.
     func leftBarButtonDidTap(sender: UIBarButtonItem) {
         self.dismiss(animated: true, completion: nil)
     }
     
     func rightBarButtonDidTap(sender: UIBarButtonItem) {
-        guard let newAlarm = self.alarm else { return }
+        
+        guard let newAlarm = self.alarm else { return print(#function) }
         newAlarm.isActive = true
+        
         self.dismiss(animated: true, completion: {
-            [unowned self] in
             self.delegate?.alarmAddViewController(self, didSaveNewAlarm: newAlarm)
         })
+        
+        
     }
     
-    func datePickerDidChangeValue(sender: UIDatePicker) {
+    func datePickerValueDidChange(sender: UIDatePicker) {
         guard let newAlarm = self.alarm else { return }
         newAlarm.date = sender.date
     }
     
-    // MARK: View LifeCycle.
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        
-        // Reset Views Property.
-        // This is because ListViewController is reuse this controller for adding alarm repeatly.
-        guard let newAlarm = self.alarm else { return }
-        self.datePicker.date = newAlarm.date
-        self.tableView.reloadData()
-    }
-    
+    // MARK: View Cycle.
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.applyTheme()
+        self.applyThemeIfViewDidLoad()
         
         self.tableView.delegate = self
         self.tableView.dataSource = self
-        
         self.tableView.tableFooterView = UIView(frame: .zero)
         
         self.datePicker = UIDatePicker()
         self.datePicker.datePickerMode = .time
-        self.datePicker.addTarget(self, action: #selector(self.datePickerDidChangeValue(sender:)), for: .valueChanged)
+        self.datePicker.addTarget(self, action: #selector(self.datePickerValueDidChange(sender:)), for: .valueChanged)
         self.tableView.tableHeaderView = self.datePicker
         
         let leftBarButton = UIBarButtonItem(title: "Cancel", style: .plain, target: self, action: #selector(self.leftBarButtonDidTap(sender:)))
@@ -74,12 +65,14 @@ class AlarmAddViewController: UIViewController {
         
         let rightBarButton = UIBarButtonItem(title: "Save", style: .done, target: self, action: #selector(self.rightBarButtonDidTap(sender:)))
         self.navigationItem.setRightBarButton(rightBarButton, animated: true)
+        
+        self.title = "Add Alarm".localized
     }
 }
 
-// MARK: TableView DataSourcem Delegate.
+
 extension AlarmAddViewController: UITableViewDataSource, UITableViewDelegate {
-    // DataSource.
+    // MARK: TableView DataSource.
     func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
@@ -97,77 +90,92 @@ extension AlarmAddViewController: UITableViewDataSource, UITableViewDelegate {
         cell.cellStyle = style
         cell.delegate = self
         
-        if indexPath.row == AlarmDetailCellStyle.repeat.rawValue {
-            if let weekdayButtonsAccessoryView = cell.weekdayButtonAccessoryView {
-                weekdayButtonsAccessoryView.setSelection(options: newAlarm.weekday)
-            }
-        } else if indexPath.row == AlarmDetailCellStyle.label.rawValue {
+        switch indexPath.row {
+        case AlarmDetailCellStyle.repeat.rawValue:
+            guard let weekdayButtonsAccessoryView = cell.weekdayButtonAccessoryView else { break }
+            weekdayButtonsAccessoryView.setSelection(options: newAlarm.weekday)
+            
+        case AlarmDetailCellStyle.label.rawValue:
             cell.detailTextLabel?.text = newAlarm.name
-        } else if indexPath.row == AlarmDetailCellStyle.sound.rawValue {
-            cell.detailTextLabel?.text = newAlarm.sound
-        } else if indexPath.row == AlarmDetailCellStyle.snooze.rawValue {
-            if let switchAccessoryView = cell.switchAccessoryView {
-                switchAccessoryView.isOn = newAlarm.isSnooze
-            }
+            
+        case AlarmDetailCellStyle.sound.rawValue:
+            cell.detailTextLabel?.text = newAlarm.sound.soundTitle
+            
+        case AlarmDetailCellStyle.snooze.rawValue:
+            guard let switchAccessoryView = cell.switchAccessoryView else { break }
+            switchAccessoryView.isOn = newAlarm.isSnooze
+            
+        default:
+            break
         }
         return cell
-
     }
     
-    // Delegate.
+    // MARK: TableView Delegate.
+    // @discussion      Handle only label, sound cell.
+    //                  Other cells have accessoryView action that is called by cell delegate.
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
         tableView.deselectRow(at: indexPath, animated: true)
         
         switch indexPath.row {
         case AlarmDetailCellStyle.label.rawValue:
-            let alertController = UIAlertController(title: "Title Label", message: nil, preferredStyle: .alert)
+            let alertController = UIAlertController(title: NSLocalizedString("Title Label", comment: ""), message: nil, preferredStyle: .alert)
+            
             alertController.addTextField(configurationHandler: {
                 [unowned self] (textField) in
                 textField.text = self.alarm?.name
             })
-            let doneAction = UIAlertAction(title: "Done", style: .default, handler: {
+            
+            let cancelAction = UIAlertAction(title: NSLocalizedString("Cancel", comment: ""), style: .cancel, handler: nil)
+            let doneAction = UIAlertAction(title: NSLocalizedString("Done", comment: ""), style: .default, handler: {
                 [unowned self, unowned tableView] (action) in
-                guard let editingAlarm = self.alarm else { return }
+                
+                guard let newAlarm = self.alarm else { return }
                 guard let text = alertController.textFields?.first?.text else { return }
-                tableView.cellForRow(at: indexPath)?.detailTextLabel?.text = text
-                editingAlarm.name = text
+                
+                let labelCell = tableView.cellForRow(at: indexPath)
+                labelCell?.detailTextLabel?.text = text
+                newAlarm.name = text
             })
             
-            let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
-            alertController.addAction(doneAction)
             alertController.addAction(cancelAction)
+            alertController.addAction(doneAction)
+            
             self.present(alertController, animated: true, completion: nil)
+            
         case AlarmDetailCellStyle.sound.rawValue:
             guard let alarmSoundListViewController = AlarmSoundListViewController.storyboardInstance() else { return }
             alarmSoundListViewController.delegate = self
             alarmSoundListViewController.alarm = self.alarm
             self.navigationController?.pushViewController(alarmSoundListViewController, animated: true)
+            
         default:
-            // Another cell have AccessoryView Action that is called by cell delegate.
             break
         }
     }
 }
 
-// MARK: AccessoryView Actions.
+
 extension AlarmAddViewController: AlarmDetailCellDelegate {
+    // MARK: AlarmDetailCell Delegate.
     func alarmDetailCell(_: AlarmDetailCell, repeatButtonDidTouchUp button: UIButton, at index: Int) {
-        guard let editingAlarm = self.alarm else { return }
         let weekday = WeekdayOptions(rawValue: 1 << index)
+        
         if button.isSelected {
-            editingAlarm.weekday.insert(weekday)
+            self.alarm?.weekday.insert(weekday)
         } else {
-            editingAlarm.weekday.remove(weekday)
+            self.alarm?.weekday.remove(weekday)
         }
     }
 
     func alarmDetailCell(_: AlarmDetailCell, snoozeSwitchValueChanged sender: UISwitch) {
-        guard let editingAlarm = self.alarm else { return }
-        editingAlarm.isSnooze = sender.isOn
+        self.alarm?.isSnooze = sender.isOn
     }
 }
 
 extension AlarmAddViewController: AlarmSoundListViewControllerDelegate {
+    // MARK: AlarmSoundListViewController Delegate.
     func alarmSoundListViewController(_ controller: AlarmSoundListViewController, didChangeSoundName: String) {
         let soundCellIndexPath = IndexPath(row: AlarmDetailCellStyle.sound.rawValue, section: 0)
         self.tableView.reloadRows(at: [soundCellIndexPath], with: .automatic)
@@ -175,14 +183,12 @@ extension AlarmAddViewController: AlarmSoundListViewControllerDelegate {
 }
 
 extension AlarmAddViewController: ThemeAppliable {
+    // MARK: ThemeAppliable
     var themeStyle: ThemeStyle {
         return .alarm
     }
     var themeTableView: UITableView? {
         return self.tableView
-    }
-    var themeNavigationController: UINavigationController? {
-        return self.navigationController
     }
 }
 

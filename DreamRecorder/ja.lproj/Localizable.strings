@@ -15,3 +15,14 @@
 "Cancel" = "キャンセル";
 "Recognize ..." = "音声認識中...";
 "end recognize" = "音声認識完了";
+
+
+"Alarm" = "アラーム";
+"Edit Alarm" = "編集 アラーム";
+"Add Alarm" = "追加する アラーム";
+"Sound" = "音";
+"Pick a song" = "曲を選ぶ";
+"Repeat" = "繰り返す";
+"Label" = "ラベル";
+"Sound" = "音";
+"Snooze" = "スヌーズ";

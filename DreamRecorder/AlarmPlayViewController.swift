@@ -19,6 +19,7 @@ class AlarmPlayViewController: UIViewController {
         dateFormatter.dateFormat = "hh:mm:ss"
         return dateFormatter
     }()
+    var shouldCustomTransition: Bool = true
     var playingAlarm: Alarm?
     var timer: Timer?
     
@@ -33,7 +34,10 @@ class AlarmPlayViewController: UIViewController {
         self.alarmTimeLabel.font = UIFont.title1
         self.leftTimeLabel.font = UIFont.title3
         
-        self.transitioningDelegate = self
+        if shouldCustomTransition {
+            self.transitioningDelegate = self
+        }
+        
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(self.dismissByGesture(sender:)))
         self.view.addGestureRecognizer(tapGestureRecognizer)
         
@@ -46,13 +50,28 @@ class AlarmPlayViewController: UIViewController {
     
     func updateLeftTimeLabel(){
         guard let playingAlarm = playingAlarm else { return }
-        let dateComponents = Calendar.current.dateComponents([.day, .hour, .minute, .second], from: Date(), to: playingAlarm.date)
         
-        self.leftTimeLabel.text = "\(dateComponents.hour!):\(dateComponents.minute!):\(dateComponents.second!)"
+        AlarmScheduler.shared.nextTriggerDate(withAlarmIdentifier: playingAlarm.id, completionBlock: { (_, nextTriggerDate) in
+            OperationQueue.main.addOperation {
+                guard let nextTriggerDate = nextTriggerDate else { return }
+                let dateComponents = Calendar.current.dateComponents([.day, .hour, .minute, .second], from: Date(), to: nextTriggerDate)
+                
+                guard let day = dateComponents.day,
+                    var hour = dateComponents.hour,
+                    let minute = dateComponents.minute,
+                    let second = dateComponents.second
+                else {
+                    return
+                }
+                hour += day * 24
+                self.leftTimeLabel.text = "\(hour):\(minute):\(second)"
+            }
+        })
     }
     
     func dismissByGesture(sender: UITapGestureRecognizer){
-        print("DissmissbYGesture \(self.alarmTimeLabel.frame)")
+        self.timer?.invalidate()
+        self.timer = nil
         self.dismiss(animated: true, completion: nil)
     }
 }

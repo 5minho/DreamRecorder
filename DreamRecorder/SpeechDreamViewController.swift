@@ -32,7 +32,7 @@ class SpeechDreamViewController : UIViewController {
         
         todayLabel.text = DateParser().detail(from: Date())
         setContentFieldLayer()
-        self.applyTheme()
+        self.applyThemeIfViewDidLoad()
         
     }
     
@@ -55,6 +55,7 @@ class SpeechDreamViewController : UIViewController {
         
         self.view.endEditing(true)
         self.inActivateRecognizer()
+        self.applyThemeIfViewWillAppear()
         
     }
 
@@ -278,10 +279,6 @@ extension SpeechDreamViewController : ThemeAppliable {
     
     var themeTableView: UITableView? {
         return nil
-    }
-    
-    var themeNavigationController: UINavigationController? {
-        return self.navigationController
     }
     
 }

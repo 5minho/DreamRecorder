@@ -69,7 +69,7 @@ class DetailDreamViewController : UIViewController {
             
         }
         
-        self.applyTheme()
+//        self.applyTheme()
         
     }
     

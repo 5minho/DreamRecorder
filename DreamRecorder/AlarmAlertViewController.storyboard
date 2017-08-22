@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12121" systemVersion="16G29" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="OC8-uV-Rtp">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12089"/>
+        <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--Alarm Alert View Controller-->
+        <scene sceneID="J55-Nz-gxi">
+            <objects>
+                <viewController id="OC8-uV-Rtp" customClass="AlarmAlertViewController" customModule="DreamRecorder" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="nHh-0O-lIR"/>
+                        <viewControllerLayoutGuide type="bottom" id="xQW-bm-nvK"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="BcC-v0-ykd">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="40" translatesAutoresizingMaskIntoConstraints="NO" id="upm-0J-cGo">
+                                <rect key="frame" x="116.5" y="452" width="142" height="30"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cFO-z7-q8A">
+                                        <rect key="frame" x="0.0" y="0.0" width="51" height="30"/>
+                                        <state key="normal" title="Snooze"/>
+                                        <connections>
+                                            <action selector="snoozeButtonDidTap:" destination="OC8-uV-Rtp" eventType="touchUpInside" id="bbi-2J-pUm"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="QWC-Ju-s7g">
+                                        <rect key="frame" x="91" y="0.0" width="51" height="30"/>
+                                        <state key="normal" title="stop"/>
+                                        <connections>
+                                            <action selector="stopButtonDidTap:" destination="OC8-uV-Rtp" eventType="touchUpInside" id="8qA-gx-rBc"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                            </stackView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Alarm Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Cu0-Pj-a3l">
+                                <rect key="frame" x="124" y="183.5" width="128" height="33.5"/>
+                                <fontDescription key="fontDescription" style="UICTFontTextStyleTitle1"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="00:00:00" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rOm-je-nmM">
+                                <rect key="frame" x="151.5" y="225" width="71.5" height="20.5"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="rOm-je-nmM" firstAttribute="top" secondItem="Cu0-Pj-a3l" secondAttribute="bottom" constant="8" id="2su-uQ-QZt"/>
+                            <constraint firstItem="Cu0-Pj-a3l" firstAttribute="centerY" secondItem="BcC-v0-ykd" secondAttribute="centerY" multiplier="3:5" id="5rZ-Rw-x0j"/>
+                            <constraint firstItem="rOm-je-nmM" firstAttribute="centerX" secondItem="Cu0-Pj-a3l" secondAttribute="centerX" id="Vbr-3u-rbs"/>
+                            <constraint firstItem="upm-0J-cGo" firstAttribute="centerX" secondItem="BcC-v0-ykd" secondAttribute="centerX" id="em6-8S-JF9"/>
+                            <constraint firstItem="upm-0J-cGo" firstAttribute="centerY" secondItem="BcC-v0-ykd" secondAttribute="centerY" multiplier="7:5" id="fE5-K1-Kdo"/>
+                            <constraint firstItem="Cu0-Pj-a3l" firstAttribute="centerX" secondItem="BcC-v0-ykd" secondAttribute="centerX" id="i14-fq-KRl"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="alarmNameLabel" destination="Cu0-Pj-a3l" id="yhm-4k-jLf"/>
+                        <outlet property="leftTimeLabel" destination="rOm-je-nmM" id="sbE-cQ-DaH"/>
+                        <outlet property="snoozeButton" destination="cFO-z7-q8A" id="h4P-d5-EJs"/>
+                        <outlet property="stopButton" destination="QWC-Ju-s7g" id="Uo2-op-yVa"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="bck-xn-8F9" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-39.200000000000003" y="135.38230884557723"/>
+        </scene>
+    </scenes>
+</document>
