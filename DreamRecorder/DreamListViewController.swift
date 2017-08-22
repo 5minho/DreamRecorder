@@ -11,9 +11,54 @@ import UIKit
 class DreamListViewController : UIViewController {
     
     @IBOutlet weak var tableView: UITableView!
+    @IBOutlet weak var dateButton: UIBarButtonItem!
+    
     fileprivate var searchController : UISearchController!
     
     fileprivate var filteredDreams = [Dream]()
+    fileprivate let dateParser = DateParser()
+    
+    //TODO : 검색속도 더 빠르게 하기
+    fileprivate var searchOperation = BlockOperation()
+    
+    fileprivate var opearationQueue : OperationQueue = {
+        
+        var opearationQueue = OperationQueue()
+        opearationQueue.qualityOfService = .background
+        return opearationQueue
+        
+    }()
+
+    
+    var currentViewedDate = Date() {
+        
+        didSet {
+            
+            if let fromYear = dateParser.year(from: currentViewedDate) { 
+                let fromMonth : Int = dateParser.month(from: currentViewedDate)
+                
+                var toYear = fromYear
+                var toMonth = fromMonth + 1
+                
+                if fromMonth == 12 {
+                    
+                    toMonth = 1
+                    toYear = fromYear + 1
+                    
+                }
+                
+                DreamDataStore.shared.select(fromYear: fromYear,
+                                             fromMonth: fromMonth,
+                                             toYear: toYear,
+                                             toMonth: toMonth)
+                
+                self.navigationItem.title = "\(fromYear).\(fromMonth)"
+                self.tableView.reloadSections(IndexSet(integersIn: 0...0), with: .automatic)
+            }
+            
+        }
+        
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -23,20 +68,28 @@ class DreamListViewController : UIViewController {
         self.tableView.delegate = self
         self.tableView.dataSource = self
         self.tableView.allowsSelectionDuringEditing = true
-        
+        self.dateButton.title = "Date".localized
         self.navigationItem.leftBarButtonItem = editButtonItem
-    
-        self.addObserver()
         
+        if let year = self.dateParser.year(from: currentViewedDate) {
+            let month : Int = self.dateParser.month(from: currentViewedDate)
+            self.navigationItem.title = "\(year).\(month)"
+        }
+        
+        self.addObserver()
         self.setSearchViewController()
     }
     
-    override func viewWillAppear(_ animated: Bool) {
     
+    
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+<<<<<<< HEAD
         self.applyThemeIfViewWillAppear()
         tableView.reloadSections(IndexSet(integersIn:0...0), with: .automatic)
         
+=======
+>>>>>>> c7f4b06595d7cc51c8a6aac91c1f185bd7f5438e
     }
     
     override func setEditing(_ editing: Bool, animated: Bool) {
@@ -47,7 +100,9 @@ class DreamListViewController : UIViewController {
     }
     
     deinit {
+        
         NotificationCenter.default.removeObserver(self)
+        
     }
 
     @IBAction func addDream(_ sender: UIBarButtonItem) {
@@ -70,6 +125,7 @@ class DreamListViewController : UIViewController {
         NotificationCenter.default.addObserver(forName: DreamDataStore.NotificationName.didAddDream, object: nil, queue: .main) {
             [unowned self] notification in
             self.tableView.insertRows(at: [IndexPath(row: 0, section: 0)], with: .automatic)
+            self.currentViewedDate = Date()
         }
         
     }
@@ -85,7 +141,26 @@ class DreamListViewController : UIViewController {
         
     }
     
+    @IBAction func touchUpDateButton(_ sender: UIBarButtonItem) {
+
+        if let datePickerConroller = DatePickerViewController.storyboardInstance() {
+            
+            if let year = dateParser.year(from: currentViewedDate) {
+                let month : Int = dateParser.month(from: currentViewedDate)
+                
+                    datePickerConroller.selectedDate = (year, month)
+                
+                }
+            
+            datePickerConroller.modalPresentationStyle = .overCurrentContext
+            present(datePickerConroller, animated: true, completion: nil)
+            
+        }
+        
+    }
 }
+
+
 
 extension DreamListViewController : UISearchResultsUpdating {
     
@@ -100,8 +175,16 @@ extension DreamListViewController : UISearchResultsUpdating {
     
     func filterContentForSearchText(_ searchText: String, scope: String = "All") {
         
-        filteredDreams = DreamDataStore.shared.filter(searchText)
-        tableView.reloadData()
+        opearationQueue.cancelAllOperations()
+        
+        searchOperation = BlockOperation {
+            self.filteredDreams = DreamDataStore.shared.filter(searchText)
+            DispatchQueue.main.async {
+                self.tableView.reloadData()
+            }
+        }
+        searchOperation.qualityOfService = .background
+        opearationQueue.addOperation(searchOperation)
         
     }
     
@@ -139,6 +222,8 @@ extension DreamListViewController : UITableViewDelegate, UITableViewDataSource, 
   
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
+        tableView.deselectRow(at: indexPath, animated: true)
+        
         if let detailDreamViewController = DetailDreamViewController.storyboardInstance() {
             
             detailDreamViewController.dream = self.isFiltering() ? filteredDreams[indexPath.row] : DreamDataStore.shared.dream(at: indexPath.row)
@@ -147,9 +232,7 @@ extension DreamListViewController : UITableViewDelegate, UITableViewDataSource, 
             if self.tableView.isEditing {
                 detailDreamViewController.mode = .edit
             }
-            
         }
-        
     }
 
     // 
@@ -163,15 +246,10 @@ extension DreamListViewController : UITableViewDelegate, UITableViewDataSource, 
             }
             
         }
-    
-        let pinButton = UITableViewRowAction(style: .normal, title: "pin") { (action, indexPath) in
-            print("pin")
-        }
-        
+
         deleteButton.backgroundColor = UIColor.blue
-        pinButton.backgroundColor = UIColor.purple
         
-        return [deleteButton, pinButton]
+        return [deleteButton]
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -185,6 +263,7 @@ extension DreamListViewController : UITableViewDelegate, UITableViewDataSource, 
 }
 
 extension DreamListViewController : ThemeAppliable {
+    
     var themeStyle: ThemeStyle {
         return .dream
     }
@@ -195,4 +274,5 @@ extension DreamListViewController : ThemeAppliable {
     var themeNavigationController: UINavigationController? {
         return self.navigationController
     }
+    
 }
