@@ -27,12 +27,13 @@ class DatePickerViewController : UIViewController {
     @IBOutlet weak var datePicker: UIPickerView!
     
     var selectedDate : (year: Int?, month: Int?)?
+    let currentYear = DateParser().year(from: Date())
     
-    var years: [Int] = {
+    lazy var years: [Int] = {
         
         var years : [Int] = []
         
-        if var currentYear = DateParser().year(from: Date()) {
+        if var currentYear = self.currentYear {
             for _ in 1 ... 30 {
                 years.append(currentYear)
                 currentYear -= 1
@@ -49,11 +50,12 @@ class DatePickerViewController : UIViewController {
         self.datePicker.delegate = self
         self.datePicker.dataSource = self
         
-        if let year = self.selectedDate?.year, let month = self.selectedDate?.month {
+        if let year = self.selectedDate?.year, let month = self.selectedDate?.month, let currentYear = self.currentYear{
             
-            self.datePicker.selectRow(year, inComponent: DateType.year.rawValue, animated: false)
+            self.datePicker.selectRow(currentYear - year, inComponent: DateType.year.rawValue, animated: false)
             self.datePicker.selectRow(month - 1, inComponent: DateType.month.rawValue, animated: false)
             
+//            self.selectedDate = (year, month)
         }
         
         view.backgroundColor = UIColor.clear.withAlphaComponent(0.5)
