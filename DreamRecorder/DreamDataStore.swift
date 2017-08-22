@@ -25,6 +25,7 @@ class DreamDataStore {
     private var cacheManager = DreamCacheManager()
     
     private var dreams : [Dream] = []
+    var filteredDreams : [Dream] = []
     
     var count : Int {
         return dreams.count
@@ -54,6 +55,10 @@ class DreamDataStore {
         }
         
         return dreams[index]
+    }
+    
+    func index(of dream : Dream) -> Int? {
+        return self.dreams.index(of: dream)
     }
     
     
@@ -220,21 +225,29 @@ class DreamDataStore {
 
     
     @discardableResult func delete(dream: Dream, at index : Int? = nil) -> RowResult {
-        
         let deletingRow = DreamTable.table.filter(DreamTable.Column.id == dream.id)
         let result = self.dbManager.deleteRow(delete: deletingRow.delete())
         
         switch result {
             
         case .success:
-            
+        
             guard let idx : Int = index ?? dreams.index(of: dream) else {
                 return result
             }
             
+            var userInfo = ["row" : idx]
+            
+            if let deletedIdx = filteredDreams.index(of: dream) {
+                
+                filteredDreams.remove(at: deletedIdx)
+                userInfo = ["rowInFiltering" : deletedIdx]
+                
+            }
+            
             self.cacheManager.deleteCached(dream: dream)
             self.dreams.remove(at: idx)
-            NotificationCenter.default.post(name: NotificationName.didDeleteDream, object: nil, userInfo : ["index" : idx])
+            NotificationCenter.default.post(name: NotificationName.didDeleteDream, object: nil, userInfo : userInfo)
             
         case let .failure(error):
             print("error: \(error)")
@@ -243,7 +256,7 @@ class DreamDataStore {
         return result
     }
     
-    func filter(_ searchText : String) -> [Dream] {
+    func filter(_ searchText : String, completion : () -> Void ) {
         
         let filterResult = dbManager.filterRow(query: DreamTable.table.filter(
             DreamTable.Column.title.like("%\(searchText)%") ||
@@ -251,9 +264,10 @@ class DreamDataStore {
             )
         )
         
-        var filterdDream : [Dream] = []
+        filteredDreams = []
         
         switch filterResult {
+            
         case let .success(rows):
             
             rows.forEach({
@@ -264,13 +278,14 @@ class DreamDataStore {
                 let modifiedDate = $0.get(DreamTable.Column.modifiedDate)
                 
                 let dream = Dream(id: id, title: title, content: content, createdDate: createdDate, modifiedDate: modifiedDate)
-                filterdDream.append(dream)
+                filteredDreams.append(dream)
             })
-            return filterdDream
+            
+            completion()
             
         case .failure(_):
-            return filterdDream
+            print("fail")
+
         }
-        
     }
 }

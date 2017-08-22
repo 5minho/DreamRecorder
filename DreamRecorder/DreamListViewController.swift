@@ -18,17 +18,8 @@ class DreamListViewController : UIViewController {
     fileprivate var filteredDreams = [Dream]()
     fileprivate let dateParser = DateParser()
     
-    //TODO : 검색속도 더 빠르게 하기
-    fileprivate var searchOperation = BlockOperation()
-    
-    fileprivate var opearationQueue : OperationQueue = {
-        
-        var opearationQueue = OperationQueue()
-        opearationQueue.qualityOfService = .background
-        return opearationQueue
-        
-    }()
-
+    fileprivate let concurrentQueue = DispatchQueue(label: "filtering", attributes: .concurrent)
+    fileprivate var isQueueEmpty = true
     
     var currentViewedDate = Date() {
         
@@ -72,8 +63,10 @@ class DreamListViewController : UIViewController {
         self.navigationItem.leftBarButtonItem = editButtonItem
         
         if let year = self.dateParser.year(from: currentViewedDate) {
+            
             let month : Int = self.dateParser.month(from: currentViewedDate)
             self.navigationItem.title = "\(year).\(month)"
+            
         }
         
         self.addObserver()
@@ -111,15 +104,30 @@ class DreamListViewController : UIViewController {
         
         NotificationCenter.default.addObserver(forName: DreamDataStore.NotificationName.didDeleteDream, object: nil, queue: .main) {
             notification in
-            if let row = notification.userInfo?["index"] as? Int {
-                self.tableView.deleteRows(at: [IndexPath(row: row, section: 0)], with: .automatic)
+            
+            if self.isFiltering() {
+                
+                if let row = notification.userInfo?["rowInFiltering"] as? Int {
+                    self.tableView.deleteRows(at: [IndexPath(row: row, section: 0)], with: .automatic)
+                }
+                
+            } else {
+                
+                if let row = notification.userInfo?["row"] as? Int {
+                    self.tableView.deleteRows(at: [IndexPath(row: row, section: 0)], with: .automatic)
+                }
+                
             }
+            
+            
         }
         
         NotificationCenter.default.addObserver(forName: DreamDataStore.NotificationName.didAddDream, object: nil, queue: .main) {
-            [unowned self] notification in
+            notification in
+            
             self.tableView.insertRows(at: [IndexPath(row: 0, section: 0)], with: .automatic)
             self.currentViewedDate = Date()
+            
         }
         
     }
@@ -129,7 +137,10 @@ class DreamListViewController : UIViewController {
         searchController = UISearchController(searchResultsController: nil)
         searchController?.searchResultsUpdater = self
         searchController?.dimsBackgroundDuringPresentation = false
+        searchController?.searchBar.placeholder = "꿈 제목, 꿈 내용 검색"
         definesPresentationContext = true
+        self.searchController.searchBar.delegate = self
+        
         self.tableView?.tableHeaderView = searchController?.searchBar
         self.tableView.contentOffset =  CGPoint(x: 0, y: searchController.searchBar.frame.height)
         
@@ -154,7 +165,17 @@ class DreamListViewController : UIViewController {
     }
 }
 
-
+extension DreamListViewController : UISearchBarDelegate {
+    
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        
+        searchBar.resignFirstResponder()
+        if let searchText = searchBar.text {
+            filterContentForSearchText(searchText)
+        }
+        
+    }
+}
 
 extension DreamListViewController : UISearchResultsUpdating {
     
@@ -167,19 +188,26 @@ extension DreamListViewController : UISearchResultsUpdating {
         return searchController.searchBar.text?.isEmpty ?? true
     }
     
+    
+    
     func filterContentForSearchText(_ searchText: String, scope: String = "All") {
         
-        opearationQueue.cancelAllOperations()
+        guard isQueueEmpty else {
+            return
+        }
         
-        searchOperation = BlockOperation {
-            self.filteredDreams = DreamDataStore.shared.filter(searchText)
-            DispatchQueue.main.async {
-                self.tableView.reloadData()
+        concurrentQueue.async {
+            self.isQueueEmpty = false
+
+            DreamDataStore.shared.filter(searchText) {
+                
+                DispatchQueue.main.async {
+                    self.tableView.reloadData()
+                    self.isQueueEmpty = true
+                }
+
             }
         }
-        searchOperation.qualityOfService = .background
-        opearationQueue.addOperation(searchOperation)
-        
     }
     
     func isFiltering() -> Bool {
@@ -192,7 +220,7 @@ extension DreamListViewController : UITableViewDelegate, UITableViewDataSource, 
     
     // MARK: - Table view dataSource
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return  self.isFiltering() ? self.filteredDreams.count : DreamDataStore.shared.count
+        return  self.isFiltering() ? DreamDataStore.shared.filteredDreams.count : DreamDataStore.shared.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -202,25 +230,27 @@ extension DreamListViewController : UITableViewDelegate, UITableViewDataSource, 
         }
         
         if isFiltering() {
-            cell.update(dream: filteredDreams[indexPath.row])
+            cell.update(dream: DreamDataStore.shared.filteredDreams[indexPath.row])
+            
         } else {
+            
             if let dream = DreamDataStore.shared.dream(at: indexPath.row) {
                 cell.update(dream: dream)
             }
+            
         }
         
         return cell
     }
     
     // MARK: - Table view delegate
-  
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
         tableView.deselectRow(at: indexPath, animated: true)
         
         if let detailDreamViewController = DetailDreamViewController.storyboardInstance() {
             
-            detailDreamViewController.dream = self.isFiltering() ? filteredDreams[indexPath.row] : DreamDataStore.shared.dream(at: indexPath.row)
+            detailDreamViewController.dream = self.isFiltering() ? DreamDataStore.shared.filteredDreams[indexPath.row] : DreamDataStore.shared.dream(at: indexPath.row)
             navigationController?.pushViewController(detailDreamViewController, animated: true)
             
             if self.tableView.isEditing {
@@ -229,7 +259,7 @@ extension DreamListViewController : UITableViewDelegate, UITableViewDataSource, 
         }
     }
 
-    // 
+    
     func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
         
         let deleteButton = UITableViewRowAction(style: .destructive, title: "삭제") { action, indexPath -> Void in
