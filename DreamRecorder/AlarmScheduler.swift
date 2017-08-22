@@ -50,7 +50,10 @@ class AlarmScheduler {
     // MARK: Initializer.
     init() {
         self.setupNotificationSetting()
+        self.updateNotificationsIfNeeded()
+        self.postNextNotificationDateDidChangeIfNeeded()
         
+        // AlarmDataStore -> AlarmScheduler.
         NotificationCenter.default.addObserver(self,
                                                selector: #selector(self.handleAlarmDataStoreDidAddAlarm(sender:)),
                                                name: Notification.Name.AlarmDataStoreDidAddAlarm,
@@ -63,90 +66,22 @@ class AlarmScheduler {
                                                selector: #selector(self.handleAlarmDataStoreDidDeleteAlarm(sender:)),
                                                name: Notification.Name.AlarmDataStoreDidDeleteAlarm,
                                                object: nil)
-        NotificationCenter.default.addObserver(self,
-                                               selector: #selector(self.handleSoundManagerDidPlayAlarmToEnd),
-                                               name: Notification.Name.SoundManagerDidPlayAlarmToEnd,
-                                               object: nil)
-        NotificationCenter.default.addObserver(self,
-                                               selector: #selector(self.handleUIApplicationWillEnterForeground(sender:)),
-                                               name: Notification.Name.UIApplicationWillEnterForeground,
-                                               object: nil)
-    }
-    
-    func inactivateAlarmIfNeeded() {
-        if #available(iOS 10.0, *) {
-            // Remove All Duplicated Notification.
-            UNUserNotificationCenter.current().getDeliveredNotifications(completionHandler: { (notifications) in
-                var duplicatedRequests: [String] = []
-                for deliveredNotificaton in notifications {
-                    if deliveredNotificaton.request.identifier.contains("#") {
-                        duplicatedRequests.append(deliveredNotificaton.request.identifier)
-                    }
-                }
-                UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: duplicatedRequests)
-            })
-            
-            // update Alarm`s isActive if repeat of that is false
-            UNUserNotificationCenter.current().getPendingNotificationRequests(completionHandler: { (requests) in
-                let inActiveAlarms = AlarmDataStore.shared.alarms.filter({ (alarm) -> Bool in
-                    var notificationNotExist = true
-                    
-                    for request in requests {
-                        let identifier = "\(request.identifier)"
-                        if identifier.hasPrefix(alarm.id) {
-                            notificationNotExist = false
-                            break
-                        }
-                    }
-                    return notificationNotExist
-                })
-                
-                if inActiveAlarms.count > 0 {
-                    NotificationCenter.default.post(name: Notification.Name.AlarmSchedulerNotificationDidDelivered,
-                                                    object: nil,
-                                                    userInfo: [AlarmNotificationUserInfoKey.alarms: inActiveAlarms])
-                }
-                
-            })
-        } else {
-            guard let notifications = UIApplication.shared.scheduledLocalNotifications else { return }
-            
-            // Remove All Duplicated Notification.
-            for notification in notifications {
-                guard let notificationIdentifier = notification.userInfo?[AlarmNotificationUserInfoKey.identifier] as? String else { continue }
-                if notificationIdentifier.contains("#") {
-                    UIApplication.shared.cancelLocalNotification(notification)
-                }
-            }
-            
-            let inActiveAlarms = AlarmDataStore.shared.alarms.filter({ (alarm) -> Bool in
-                var isDelivered = true
-                for notification in notifications {
-                    guard let identifier = notification.userInfo?[AlarmNotificationUserInfoKey.identifier] as? String else { continue }
-                    if identifier.contains(alarm.id) {
-                        isDelivered = false
-                        break
-                    }
-                }
-                return isDelivered
-            })
-            
-            if inActiveAlarms.count > 0 {
-                NotificationCenter.default.post(name: Notification.Name.AlarmSchedulerNotificationDidDelivered,
-                                                object: nil,
-                                                userInfo: [AlarmNotificationUserInfoKey.alarms: inActiveAlarms])
-            }
+        
+        // SoundManager -> AlarmScheduler.
+        NotificationCenter.default.addObserver(forName: .SoundManagerAlarmPlayerDidEnd,
+                                               object: nil,
+                                               queue: .main)
+        { (notification) in
+            self.postNextNotificationDateDidChangeIfNeeded()
         }
-    }
-    
-    // from UIApplication.
-    @objc func handleUIApplicationWillEnterForeground(sender: Notification){
-        self.inactivateAlarmIfNeeded()
-    }
-    
-    // from SoundManager.
-    @objc func handleSoundManagerDidPlayAlarmToEnd() {
-        self.postNextNotificationDateDidChangeIfNeeded()
+        
+        // UIApplication -> AlarmScheduler.
+        NotificationCenter.default.addObserver(forName: .UIApplicationWillEnterForeground,
+                                               object: nil,
+                                               queue: .main)
+        { (notification) in
+            self.postNextNotificationDateDidChangeIfNeeded()
+        }
     }
     
     // from AlarmDataStore.
@@ -174,47 +109,133 @@ class AlarmScheduler {
         })
     }
     
+    func updateNotificationsIfNeeded() {
+        if #available(iOS 10.0, *) {
+            // 앱이 꺼질 것을 대배하여 여려개 생성해놓은 아직 남아있는 Notification들을 삭제한다.
+            // 앱이 Terminate되어서 uplicate되었는데 몇 번째의 Notification을 받은 상태로 앱을 실행했는지 알 수 없으므로.
+            UNUserNotificationCenter.current().getDeliveredNotifications(completionHandler: { (notifications) in
+                var duplicatedRequests: [String] = []
+                for deliveredNotificaton in notifications {
+                    if deliveredNotificaton.request.identifier.contains("#") {
+                        duplicatedRequests.append(deliveredNotificaton.request.identifier)
+                    }
+                }
+                UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: duplicatedRequests)
+            })
+            
+            
+            // Alarm 목록중에 Notifiation을 가지고 있지 않은 Alarm은 Inactivate해주어야 한다.
+            // 사용자가 반복이 없는 알람을 설정해 놓았을 경우 해당 알람 시간이 지난 후 라면 비활성화 하여야한다.
+            // 앱 실행단계(Scheduler Initializer), background에서 foreground진입단계, present단계, didreceive단계에서 호출한다. 
+            // TODO: DidReceive는 foreground가 대체하므로 필요 없을 것.
+            UNUserNotificationCenter.current().getPendingNotificationRequests(completionHandler: { (requests) in
+                
+                var snoozeRequests: [String] = []
+                
+                for request in requests {
+                    guard request.identifier.hasSuffix("@") else { continue }
+                    snoozeRequests.append(request.identifier)
+                }
+                
+                if snoozeRequests.isEmpty == false {
+                    UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: snoozeRequests)
+                }
+                
+                // 알람 객체는 있으나 Notification이 없는 객체는 alarm.isActive를 false로 바꾸어 주어야함.
+                let inActiveAlarms = AlarmDataStore.shared.alarms.filter({ (alarm) -> Bool in
+                    
+                    var notificationNotExist = true
+                    
+                    for request in requests {
+                        guard request.identifier.hasPrefix(alarm.id) else { continue }
+                        notificationNotExist = false
+                        break
+                    }
+                    
+                    return notificationNotExist
+                })
+
+                guard inActiveAlarms.isEmpty == false else { return }
+                
+                NotificationCenter.default.post(name: Notification.Name.AlarmSchedulerNotificationDidDelivered,
+                                                object: nil,
+                                                userInfo: [AlarmNotificationUserInfoKey.alarms: inActiveAlarms])
+            })
+        } else {
+            guard let notifications = UIApplication.shared.scheduledLocalNotifications else { return }
+            
+            // 중복알람을 위한 노티피케이션을 삭제한다.
+            // 스누즈 노트피케이션을 삭제한다.
+            for notification in notifications {
+                guard let notificationIdentifier = notification.userInfo?[AlarmNotificationUserInfoKey.identifier] as? String else { continue }
+                if notificationIdentifier.hasSuffix("#") ||
+                    notificationIdentifier.hasSuffix("@") {
+                    UIApplication.shared.cancelLocalNotification(notification)
+                }
+            }
+            
+            // 알람 객체는 있으나 Notification이 없는 객체는 alarm.isActive를 false로 바꾸어 주어야함.
+            let inActiveAlarms = AlarmDataStore.shared.alarms.filter({ (alarm) -> Bool in
+                var isDelivered = true
+                for notification in notifications {
+                    guard let identifier = notification.userInfo?[AlarmNotificationUserInfoKey.identifier] as? String else { continue }
+                    if identifier.contains(alarm.id) {
+                        isDelivered = false
+                        break
+                    }
+                }
+                return isDelivered
+            })
+            
+            if inActiveAlarms.count > 0 {
+                NotificationCenter.default.post(name: Notification.Name.AlarmSchedulerNotificationDidDelivered,
+                                                object: nil,
+                                                userInfo: [AlarmNotificationUserInfoKey.alarms: inActiveAlarms])
+            }
+        }
+    }
+    
     // MARK: Methods.
     // @abstract        Post if the nearst notification did change.
     private func postNextNotificationDateDidChangeIfNeeded(){
         self.nextTriggerDate(completionHandler: { (identifier, date) in
-            guard let alarmIdentifier = identifier else { return }
-            guard let nextAlarm = AlarmDataStore.shared.alarm(withNotificationIdentifier: alarmIdentifier) else { return }
+            var nextAlarm: Alarm? = nil
+            if let nextAlarmIdentifier = identifier {
+                nextAlarm = AlarmDataStore.shared.alarm(withNotificationIdentifier: nextAlarmIdentifier)
+            }
+            
             NotificationCenter.default.post(name: Notification.Name.AlarmSchedulerNextNotificationDateDidChange,
                                             object: nil,
-                                            userInfo: [AlarmNotificationUserInfoKey.alarm: nextAlarm,
+                                            userInfo: [AlarmNotificationUserInfoKey.alarm: nextAlarm as Any,
                                                        AlarmNotificationUserInfoKey.nextTriggerDate: date as Any])
         })
     }
     
-    // @abstract        nextTriggerDate.
-    // params
-    // return
-    func nextTriggerDate(withIdentifier identifier: String, completionBlock completion: @escaping (_ nextTriggerDate: Date?) -> Void) {
-        if #available(iOS 10.0, *) {
-            UNUserNotificationCenter.current().getPendingNotificationRequests(completionHandler: { (requests) in
-                let filteredRequests = requests.filter { $0.identifier.hasPrefix(identifier) }
-                let ascendingNotifications = filteredRequests.sorted(by: > )
-                if let calendarNotificationTrigger = ascendingNotifications.first?.trigger as? UNCalendarNotificationTrigger {
-                    let nextTriggerDate = calendarNotificationTrigger.nextTriggerDate()
-                    completion(nextTriggerDate)
-                } else {
-                    completion(nil)
-                }
-            })
-        } else {
-            guard let notifications = UIApplication.shared.scheduledLocalNotifications else { return completion(nil) }
-            let filteredNotifications = notifications.filter { ($0.userInfo?[AlarmNotificationUserInfoKey.identifier] as? String)?.contains(identifier) ?? false }
-            let ascendingNotifications = filteredNotifications.sorted(by: > )
-            let nextTriggerDate = ascendingNotifications.first?.fireDate
-            completion(nextTriggerDate)
-        }
+    /// UserNotificationCenter에 등록된 Notification들 중에서 해당 Identifier를 가진 노티피케이션의 다음에 발생할 날짜를 completion을 통해 반환합니다.
+    /// UserNotification에서는 현재 등록된 NotificationRequest를 Completion을 통해 반환하기 때문에 Completion으로 통일 시켜 반환한다.
+    ///
+    /// - Parameters:
+    ///   - identifier: Notification을 Filter할 때 사용 될 Alarm객체 Identifier.
+    ///   - completion:
+    func nextTriggerDate(withAlarmIdentifier identifier: String, completionBlock completion: @escaping (_: String?, _: Date?) -> Void) {
+        self.nextTriggerDate(withIdentifier: identifier, completionBlock: completion)
     }
     
-    func nextTriggerDate(completionHandler completion: @escaping (_ identifier: String?, _ date: Date?) -> Void) {
+    func nextTriggerDate(completionHandler completion: @escaping (_: String?, _: Date?) -> Void) {
+        self.nextTriggerDate(withIdentifier: nil, completionBlock: completion)
+    }
+    
+    
+    private func nextTriggerDate(withIdentifier identifier: String?, completionBlock completion: @escaping (_ identifier: String?, _ nextTriggerDate: Date?) -> Void) {
+        
         if #available(iOS 10.0, *) {
+            
             UNUserNotificationCenter.current().getPendingNotificationRequests(completionHandler: { (requests) in
-                let ascendingNotifications = requests.sorted(by: > )
+                var filteredRequests = requests
+                if let identifier = identifier {
+                    filteredRequests = requests.filter { $0.identifier.hasPrefix(identifier) }
+                }
+                let ascendingNotifications = filteredRequests.sorted(by: > )
                 if let calendarNotificationTrigger = ascendingNotifications.first?.trigger as? UNCalendarNotificationTrigger {
                     let identifier = ascendingNotifications.first?.identifier
                     let nextTriggerDate = calendarNotificationTrigger.nextTriggerDate()
@@ -224,11 +245,39 @@ class AlarmScheduler {
                 }
             })
         } else {
+            
             guard let notifications = UIApplication.shared.scheduledLocalNotifications else { return completion(nil, nil) }
-            let ascendingNotifications = notifications.sorted(by: > )
+            
+            var filteredNotifications = notifications
+            if let identifier = identifier {
+                filteredNotifications = notifications.filter { ($0.userInfo?[AlarmNotificationUserInfoKey.identifier] as? String)?.contains(identifier) ?? false }
+            }
+            let ascendingNotifications = filteredNotifications.sorted(by: > )
             let identifier = ascendingNotifications.first?.userInfo?[AlarmNotificationUserInfoKey.identifier] as? String
             let nextTriggerDate = ascendingNotifications.first?.fireDate
             completion(identifier, nextTriggerDate)
+        }
+    }
+    
+    func removeSnoozeNotification(for alarm: Alarm, completionBlock completion: (() -> Void)?) {
+        if #available(iOS 10.0, *) {
+            UNUserNotificationCenter.current().getPendingNotificationRequests { (requests) in
+                let snoozeIdentifier = "\(alarm.id)@"
+                var removeIdnentifiers: [String] = []
+                for request in requests {
+                    if request.identifier.hasPrefix(snoozeIdentifier) {
+                        removeIdnentifiers.append(request.identifier)
+                    }
+                }
+                print("Notification \(removeIdnentifiers.count) is removed")
+                UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: removeIdnentifiers)
+                completion?()
+            }
+            
+        } else {
+//            // Fallback on earlier versions
+//            self.removeNotificationFallback(with: alarm)
+//            completion?()
         }
     }
     
@@ -239,7 +288,7 @@ class AlarmScheduler {
         
         if #available(iOS 10.0, *) {
             // Notification Request Identifier.
-            let identifier = alarm.id
+            let identifier = "\(alarm.id)@"
             
             // Notification Request Content.
             let content = UNMutableNotificationContent()
@@ -249,13 +298,10 @@ class AlarmScheduler {
             content.sound = UNNotificationSound(named: "\(alarm.sound)")
             
             // Notification Trigger DateComponents.
-            var dateComponents = Calendar.current.dateComponents([.hour, .minute], from: Date().addingTimeInterval(60*9))
-            
-            guard let currentHour = dateComponents.hour else { return }
-            guard let currentMinute = dateComponents.minute else { return }
+            let dateComponents = Calendar.current.dateComponents([.hour, .minute, .second], from: Date().addingTimeInterval(60))
             
             let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponents, repeats: false)
-            let request = UNNotificationRequest(identifier: "\(identifier)#", content: content, trigger: trigger)
+            let request = UNNotificationRequest(identifier: identifier, content: content, trigger: trigger)
             UNUserNotificationCenter.current().add(request, withCompletionHandler: nil)
             
             print("Notification \(identifier) is created (for Snooze)")
@@ -264,7 +310,7 @@ class AlarmScheduler {
             let snoozeNotification: UILocalNotification = UILocalNotification()
             let snoozeDate = Date().addingTimeInterval(60*9)
             
-            snoozeNotification.userInfo = ["identifier": "\(alarm.id)#"]
+            snoozeNotification.userInfo = ["identifier": "\(alarm.id)@"]
             snoozeNotification.alertBody = alarm.name
             snoozeNotification.alertAction = "Open App"
             snoozeNotification.category = alarm.isSnooze ? CategoryIdentifier.snoozeLocalNotificationCategory : CategoryIdentifier.onceLocalNotificationCategory
