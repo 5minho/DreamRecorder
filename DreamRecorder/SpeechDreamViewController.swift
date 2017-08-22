@@ -67,7 +67,7 @@ class SpeechDreamViewController : UIViewController {
         let contentFieldLayer = self.contentField.layer
         contentFieldLayer.borderWidth = 1
         contentFieldLayer.borderColor = UIColor.black.cgColor
-        self.applyTheme()
+//        self.applyTheme()
         
     }
     

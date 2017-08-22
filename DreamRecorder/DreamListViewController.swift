@@ -18,7 +18,7 @@ class DreamListViewController : UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.applyTheme()
+        self.applyThemeIfViewDidLoad()
         
         self.tableView.delegate = self
         self.tableView.dataSource = self
@@ -34,6 +34,7 @@ class DreamListViewController : UIViewController {
     override func viewWillAppear(_ animated: Bool) {
     
         super.viewWillAppear(animated)
+        self.applyThemeIfViewWillAppear()
         tableView.reloadSections(IndexSet(integersIn:0...0), with: .automatic)
         
     }
