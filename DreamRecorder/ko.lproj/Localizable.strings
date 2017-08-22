@@ -15,3 +15,13 @@
 "Cancel" = "취소";
 "Recognize..." = "음성인식 중...";
 "end recognize" = "음성인식 완료";
+
+"Alarm" = "알람";
+"Edit Alarm" = "알람 변경";
+"Add Alarm" = "알람 추가";
+"Sound" = "소리";
+"Pick a song" = "노래 선택";
+"Repeat" = "반복";
+"Label" = "알람명";
+"Sound" = "알람음";
+"Snooze" = "다시 알림";
