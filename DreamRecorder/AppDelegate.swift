@@ -49,8 +49,30 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             // from LocalNotification to UNNotification.
         }
         
-        DreamDataStore.shared.createTable()
-        DreamDataStore.shared.selectAll()
+        let dateParser = DateParser()
+        
+        if let fromYear = dateParser.year(from: Date()) {
+            
+            let fromMonth : Int = dateParser.month(from: Date())
+            
+            var toYear = fromYear
+            var toMonth = fromMonth + 1
+            
+            if fromMonth == 12 {
+                
+                toMonth = 1
+                toYear = fromYear + 1
+                
+            }
+            
+            DreamDataStore.shared.createTable()
+            DreamDataStore.shared.select(fromYear: fromYear,
+                                         fromMonth: fromMonth,
+                                         toYear: toYear,
+                                         toMonth: toMonth)
+            
+        }
+        
         
         NotificationCenter.default.addObserver(self, selector: #selector(self.presentAlarmAlertViewController(withAlertAlarm:)), name: Notification.Name.SoundManagerAlarmPlayerDidStart, object: nil)
         

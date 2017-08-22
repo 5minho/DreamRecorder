@@ -9,61 +9,29 @@
 import UIKit
 import AVFoundation
 import NaverSpeech
-import Speech
 
-
-@available(iOS 10.0, *)
 class SpeechDreamViewController : UIViewController {
     
     @IBOutlet weak var contentField: UITextView!
-    @IBOutlet weak var recongnitionStateLabel: UILabel!
+    @IBOutlet weak var todayLabel: UILabel!
+    @IBOutlet weak var recordButton: RecordButton!
+    @IBOutlet weak var leftTimeLabel: UILabel!
+    
     fileprivate var previousText : String = ""
     fileprivate var defaultText : String = ""
-    
+    fileprivate var equalCount = 0
     fileprivate let speechRecognizer : NSKRecognizer
     
-    ////////////
-    fileprivate let appleRecognizer = SFSpeechRecognizer(locale : Locale(identifier: "ko_KR"))
-    fileprivate var recognitionRequest: SFSpeechAudioBufferRecognitionRequest?
-    fileprivate var recognitionTask: SFSpeechRecognitionTask?
-    fileprivate let audioEngine = AVAudioEngine()
-    ////////////
     
     
-    @IBOutlet weak var recordButton: RecordButton!
+    fileprivate var isTimerRunning = false
+    fileprivate var leftTime = 10
+    fileprivate var timer  = Timer()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        ///////////////
-        SFSpeechRecognizer.requestAuthorization { (authStatus) in
-            
-            var isButtonEnabled = false
-            
-            switch authStatus {  //5
-            case .authorized:
-                isButtonEnabled = true
-                
-                OperationQueue.main.addOperation() {
-                    self.recordButton.isEnabled = isButtonEnabled
-                }
-                
-            case .denied:
-                isButtonEnabled = false
-                print("User denied access to speech recognition")
-                
-            case .restricted:
-                isButtonEnabled = false
-                print("Speech recognition restricted on this device")
-                
-            case .notDetermined:
-                isButtonEnabled = false
-                print("Speech recognition not yet authorized")
-            }
-
-        }
-        ///////////////
-        
+        todayLabel.text = DateParser().detail(from: Date())
         let contentFieldLayer = self.contentField.layer
         contentFieldLayer.borderWidth = 1
         contentFieldLayer.borderColor = UIColor.black.cgColor
@@ -143,18 +111,41 @@ class SpeechDreamViewController : UIViewController {
     
     @IBAction func touchUpRecordButton(_ sender: UIButton) {
         
-//        speechRecognizer.isRunning ? inActivateRecognizer() : activateRecognizer()
+        speechRecognizer.isRunning ? inActivateRecognizer() : activateRecognizer()
         
-        if audioEngine.isRunning {
-            audioEngine.stop()
-            recognitionRequest?.endAudio()
-            recordButton.isEnabled = false
-            recordButton.setTitle("Start Recording", for: .normal)
-        } else {
-            startRecording()
-            recordButton.setTitle("Stop Recording", for: .normal)
+    }
+    
+    fileprivate func startTimer() {
+        isTimerRunning = true
+        self.leftTime = 10
+        self.timer = Timer.scheduledTimer(timeInterval: 1,
+                                          target: self,
+                                          selector: #selector(updateLeftTime),
+                                          userInfo: nil,
+                                          repeats: true)
+        
+    }
+    
+    fileprivate func finishTimer() {
+        isTimerRunning = false
+        self.timer.invalidate()
+        self.leftTimeLabel.text = ""
+    }
+    
+    @objc private func updateLeftTime() {
+        
+        if self.leftTime == 1 {
+            
+            self.inActivateRecognizer()
+            self.finishTimer()
+            return
+            
         }
         
+        self.leftTime -= 1
+        
+        self.leftTimeLabel.text = "\(self.leftTime)초 후에 마이크가 꺼집니다."
+    
     }
     
     private func activateRecognizer() {
@@ -163,12 +154,7 @@ class SpeechDreamViewController : UIViewController {
             
             self.recordButton.recordState = .recording
             speechRecognizer.start(with: .korean)
-            asyncSetAudioCategory(AVAudioSessionCategoryRecord) {
-                DispatchQueue.main.async {
-                    self.recongnitionStateLabel.text = "Recognize..."
-                }
-            }
-            
+            asyncSetAudioCategory(AVAudioSessionCategoryRecord)
         }
         
     }
@@ -184,96 +170,18 @@ class SpeechDreamViewController : UIViewController {
         
     }
     
-    fileprivate func asyncSetAudioCategory(_ category: String, completion: (() -> Void)?) {
+    fileprivate func asyncSetAudioCategory(_ category: String, _ completion: (() -> Void)? = nil) {
+        
         audioDispatch.async {
             try? AVAudioSession.sharedInstance().setCategory(category)
         }
         if let completeHandler = completion {
             completeHandler()
         }
+        
     }
 }
 
-@available(iOS 10.0, *)
-extension SpeechDreamViewController : SFSpeechRecognizerDelegate {
-    
-    func speechRecognizer(_ speechRecognizer: SFSpeechRecognizer, availabilityDidChange available: Bool) {
-        if available {
-            recordButton.isEnabled = true
-        } else {
-            recordButton.isEnabled = false
-        }
-    }
-    
-    func startRecording() {
-        
-        if recognitionTask != nil {
-            recognitionTask?.cancel()
-            recognitionTask = nil
-        }
-        
-        let audioSession = AVAudioSession.sharedInstance()
-        do {
-            try audioSession.setCategory(AVAudioSessionCategoryRecord)
-            try audioSession.setMode(AVAudioSessionModeMeasurement)
-            try audioSession.setActive(true, with: .notifyOthersOnDeactivation)
-        } catch {
-            print("audioSession properties weren't set because of an error.")
-        }
-        
-        recognitionRequest = SFSpeechAudioBufferRecognitionRequest()
-        
-        guard let inputNode = audioEngine.inputNode else {
-            fatalError("Audio engine has no input node")
-        }
-        
-        guard let recognitionRequest = recognitionRequest else {
-            fatalError("Unable to create an SFSpeechAudioBufferRecognitionRequest object")
-        }
-        
-        recognitionRequest.shouldReportPartialResults = true
-        
-        recognitionTask = appleRecognizer?.recognitionTask(with: recognitionRequest, resultHandler: { (result, error) in
-            
-            var isFinal = false
-            
-            if result != nil {
-                
-                self.contentField.text = result?.bestTranscription.formattedString
-                isFinal = (result?.isFinal)!
-            }
-            
-            if error != nil || isFinal {
-                self.audioEngine.stop()
-                inputNode.removeTap(onBus: 0)
-                
-                self.recognitionRequest = nil
-                self.recognitionTask = nil
-                
-                self.recordButton.isEnabled = true
-            }
-        })
-        
-        let recordingFormat = inputNode.outputFormat(forBus: 0)
-        inputNode.installTap(onBus: 0, bufferSize: 1024, format: recordingFormat) { (buffer, when) in
-            self.recognitionRequest?.append(buffer)
-        }
-        
-        audioEngine.prepare()
-        
-        do {
-            try audioEngine.start()
-        } catch {
-            print("audioEngine couldn't start because of an error.")
-        }
-        
-        contentField.text = "Say something, I'm listening!"
-        
-    }
-    
-}
-
-@available(iOS 10.0, *)
 extension SpeechDreamViewController : NSKRecognizerDelegate {
     
     public func recognizerDidEnterReady(_ aRecognizer: NSKRecognizer!) {
@@ -296,12 +204,7 @@ extension SpeechDreamViewController : NSKRecognizerDelegate {
             return
         }
         
-        asyncSetAudioCategory(AVAudioSessionCategorySoloAmbient) {
-            DispatchQueue.main.async {
-                self.recongnitionStateLabel.text = "end recognize"
-            }
-        }
-
+        asyncSetAudioCategory(AVAudioSessionCategorySoloAmbient)
     }
     
     public func recognizer(_ aRecognizer: NSKRecognizer!, didRecordSpeechData aSpeechData: Data!) {
@@ -311,7 +214,22 @@ extension SpeechDreamViewController : NSKRecognizerDelegate {
     
     public func recognizer(_ aRecognizer: NSKRecognizer!, didReceivePartialResult aResult: String!) {
         print("Partial result: \(aResult)")
-
+        
+        if !isTimerRunning {
+            equalCount = (previousText == aResult) ? equalCount + 1 : equalCount
+            
+            if equalCount == 20 {
+                
+                equalCount = 0
+                self.startTimer()
+                
+            }
+        }
+        
+        if previousText != aResult {
+            self.finishTimer()
+        }
+        
         if aResult.isEmpty {
             contentField.text = defaultText + " " + previousText
             return
@@ -331,6 +249,7 @@ extension SpeechDreamViewController : NSKRecognizerDelegate {
         let lastResult = aResult.results.first as? String
         
         previousText = ""
+        
         if let result = lastResult {
             contentField.text = defaultText + " " + result
             defaultText = contentField.text
@@ -339,7 +258,7 @@ extension SpeechDreamViewController : NSKRecognizerDelegate {
     }
 }
 
-@available(iOS 10.0, *)
+
 extension SpeechDreamViewController : ThemeAppliable {
     
     var themeStyle: ThemeStyle {
