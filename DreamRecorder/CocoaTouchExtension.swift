@@ -69,8 +69,20 @@ extension Date {
     }
 }
 
+extension Date {
+    var addingSnoozeTimeInterval: Date {
+        return self.addingTimeInterval(60*9)
+    }
+}
+
 
 import AVFoundation
+
+//extension AVAsset: NSCoding {
+//    
+//    
+//    
+//}
 
 extension String {
     // @discussion      Note that alarm class can have two type of sound path.
