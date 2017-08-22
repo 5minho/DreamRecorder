@@ -27,6 +27,7 @@ extension DreamDeletable {
         
         let deleteAction = UIAlertAction(title: "Delete", style: .destructive, handler: { (action) -> Void in
             DreamDataStore.shared.delete(dream: dream)
+            
             if let handler = completion {
                 handler()
             }
@@ -37,3 +38,4 @@ extension DreamDeletable {
     }
     
 }
+

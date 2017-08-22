@@ -20,9 +20,8 @@ class SpeechDreamViewController : UIViewController {
     fileprivate var previousText : String = ""
     fileprivate var defaultText : String = ""
     fileprivate var equalCount = 0
+    
     fileprivate let speechRecognizer : NSKRecognizer
-    
-    
     
     fileprivate var isTimerRunning = false
     fileprivate var leftTime = 10
@@ -32,9 +31,7 @@ class SpeechDreamViewController : UIViewController {
         super.viewDidLoad()
         
         todayLabel.text = DateParser().detail(from: Date())
-        let contentFieldLayer = self.contentField.layer
-        contentFieldLayer.borderWidth = 1
-        contentFieldLayer.borderColor = UIColor.black.cgColor
+        setContentFieldLayer()
         self.applyTheme()
         
     }
@@ -67,6 +64,7 @@ class SpeechDreamViewController : UIViewController {
         speechRecognizer.stop()
         
         let alert = UIAlertController(title: "title", message: "please enter a title", preferredStyle: .alert)
+        
         alert.addTextField { textField in
             textField.placeholder = "Enter a title"
             textField.clearButtonMode = .whileEditing
@@ -116,6 +114,7 @@ class SpeechDreamViewController : UIViewController {
     }
     
     fileprivate func startTimer() {
+        
         isTimerRunning = true
         self.leftTime = 10
         self.timer = Timer.scheduledTimer(timeInterval: 1,
@@ -123,6 +122,14 @@ class SpeechDreamViewController : UIViewController {
                                           selector: #selector(updateLeftTime),
                                           userInfo: nil,
                                           repeats: true)
+        
+    }
+    
+    func setContentFieldLayer() {
+        
+        let contentFieldLayer = self.contentField.layer
+        contentFieldLayer.borderWidth = 1
+        contentFieldLayer.borderColor = UIColor.black.cgColor
         
     }
     
@@ -155,6 +162,7 @@ class SpeechDreamViewController : UIViewController {
             self.recordButton.recordState = .recording
             speechRecognizer.start(with: .korean)
             asyncSetAudioCategory(AVAudioSessionCategoryRecord)
+            
         }
         
     }
@@ -175,11 +183,13 @@ class SpeechDreamViewController : UIViewController {
         audioDispatch.async {
             try? AVAudioSession.sharedInstance().setCategory(category)
         }
+        
         if let completeHandler = completion {
             completeHandler()
         }
         
     }
+    
 }
 
 extension SpeechDreamViewController : NSKRecognizerDelegate {
@@ -197,6 +207,7 @@ extension SpeechDreamViewController : NSKRecognizerDelegate {
     }
     
     public func recognizerDidEnterInactive(_ aRecognizer: NSKRecognizer!) {
+        
         print("Event occurred: Inactive")
         
         if recordButton.recordState == .recording {

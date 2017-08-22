@@ -100,10 +100,11 @@ class DetailDreamViewController : UIViewController {
         self.dream?.title = titleField.text ?? ""
         self.dream?.content = contentTextView.text ?? ""
         self.dream?.modifiedDate = Date()
-        guard let dream = self.dream else {
-            return
+        
+        if let dream = self.dream {
+            DreamDataStore.shared.update(dream: dream)
         }
-        DreamDataStore.shared.update(dream: dream)
+        
         self.mode = .read
         
     }
