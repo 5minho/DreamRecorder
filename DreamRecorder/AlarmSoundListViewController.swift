@@ -30,10 +30,12 @@ class AlarmSoundListViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.applyTheme()
+        self.applyThemeIfViewDidLoad()
         
         self.tableView.delegate = self
         self.tableView.dataSource = self
+        
+        self.title = "Sound".localized
     }
 }
 
@@ -55,26 +57,40 @@ extension AlarmSoundListViewController: UITableViewDataSource, UITableViewDelega
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         let cell = tableView.dequeueReusableCell(withIdentifier: "UITableViewCell", for: indexPath)
+        
         guard let editingAlarm = self.alarm else { return cell }
         
-        cell.textLabel?.font = UIFont.title3
         cell.backgroundColor = UIColor.alarmDefaultBackgroundColor
-        cell.textLabel?.textColor = UIColor.alarmDarkText
-        cell.tintColor = UIColor.alarmSwitchOnTintColor
+        
         if indexPath.section == 0 {
+            
+            guard indexPath.row < self.soundNames.count else { return cell }
+            
+            cell.tintColor = UIColor.alarmSwitchOnTintColor
+            cell.textLabel?.font = UIFont.body
+            cell.textLabel?.textColor = UIColor.alarmDarkText
+            
             cell.textLabel?.text = soundNames[indexPath.row].soundTitle
             cell.accessoryType = (editingAlarm.sound == self.soundNames[indexPath.row]) ? .checkmark : .none
+            
             return cell
+            
         } else {
-            cell.textLabel?.text = "Custom"
-            cell.detailTextLabel?.font = UIFont.caption
+            
+            cell.textLabel?.text = "Pick a song".localized
+            cell.textLabel?.textColor = UIColor.alarmDarkText
+            cell.detailTextLabel?.font = UIFont.callout
             cell.detailTextLabel?.textColor = UIColor.alarmLightText
+            
             if self.soundNames.contains(editingAlarm.sound) == false {
+                
                 cell.accessoryType = .checkmark
                 cell.detailTextLabel?.text = self.alarm?.sound.soundTitle
+                
             } else {
                 cell.accessoryType = .none
             }
+            
             return cell
         }
     }
@@ -89,6 +105,7 @@ extension AlarmSoundListViewController: UITableViewDataSource, UITableViewDelega
             for cell in tableView.visibleCells {
                 cell.accessoryType = .none
             }
+            
             let selectedCell = tableView.cellForRow(at: indexPath)
             selectedCell?.accessoryType = .checkmark
             
@@ -97,12 +114,14 @@ extension AlarmSoundListViewController: UITableViewDataSource, UITableViewDelega
             
             self.delegate?.alarmSoundListViewController(self, didChangeSoundName: selectedSoundName)
             self.navigationController?.popViewController(animated: true)
+            
         } else {
-            // Media Library Music Files.
+            // Select Media Library Music Files.
             let pickerController = MPMediaPickerController(mediaTypes: .any)
-            pickerController.delegate = self
             pickerController.allowsPickingMultipleItems = false
             pickerController.showsCloudItems = false
+            pickerController.delegate = self
+            
             self.present(pickerController, animated: true, completion: nil)
         }
     }
@@ -116,14 +135,18 @@ extension AlarmSoundListViewController: MPMediaPickerControllerDelegate {
     
     func mediaPicker(_ mediaPicker: MPMediaPickerController, didPickMediaItems mediaItemCollection: MPMediaItemCollection) {
         
-        guard let item = mediaItemCollection.items.first else { return }
-        guard let itemURL = item.assetURL else { return }
-        
-        self.alarm?.sound = itemURL.absoluteString
-        mediaPicker.dismiss(animated: true, completion: {
-            self.delegate?.alarmSoundListViewController(self, didChangeSoundName: itemURL.absoluteString)
+        if let item = mediaItemCollection.items.first,
+            let itemURL = item.assetURL {
+            
+            self.alarm?.sound = itemURL.absoluteString
+            
+            mediaPicker.dismiss(animated: true, completion: {
+                self.delegate?.alarmSoundListViewController(self, didChangeSoundName: itemURL.absoluteString)
+                self.navigationController?.popViewController(animated: true)
+            })
+        } else {
             self.navigationController?.popViewController(animated: true)
-        })
+        }
     }
 }
 
@@ -134,9 +157,6 @@ extension AlarmSoundListViewController: ThemeAppliable {
     }
     var themeTableView: UITableView? {
         return self.tableView
-    }
-    var themeNavigationController: UINavigationController? {
-        return self.navigationController
     }
 }
 

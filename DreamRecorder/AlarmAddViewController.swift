@@ -29,12 +29,15 @@ class AlarmAddViewController: UIViewController {
     }
     
     func rightBarButtonDidTap(sender: UIBarButtonItem) {
-        guard let newAlarm = self.alarm else { return }
+        
+        guard let newAlarm = self.alarm else { return print(#function) }
         newAlarm.isActive = true
+        
         self.dismiss(animated: true, completion: {
-            [unowned self] in
             self.delegate?.alarmAddViewController(self, didSaveNewAlarm: newAlarm)
         })
+        
+        
     }
     
     func datePickerValueDidChange(sender: UIDatePicker) {
@@ -46,7 +49,7 @@ class AlarmAddViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.applyTheme()
+        self.applyThemeIfViewDidLoad()
         
         self.tableView.delegate = self
         self.tableView.dataSource = self
@@ -62,6 +65,8 @@ class AlarmAddViewController: UIViewController {
         
         let rightBarButton = UIBarButtonItem(title: "Save", style: .done, target: self, action: #selector(self.rightBarButtonDidTap(sender:)))
         self.navigationItem.setRightBarButton(rightBarButton, animated: true)
+        
+        self.title = "Add Alarm".localized
     }
 }
 
@@ -184,9 +189,6 @@ extension AlarmAddViewController: ThemeAppliable {
     }
     var themeTableView: UITableView? {
         return self.tableView
-    }
-    var themeNavigationController: UINavigationController? {
-        return self.navigationController
     }
 }
 

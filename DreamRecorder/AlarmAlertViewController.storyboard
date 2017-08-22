@@ -41,15 +41,23 @@
                                 </subviews>
                             </stackView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Alarm Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Cu0-Pj-a3l">
-                                <rect key="frame" x="123.5" y="183.5" width="128" height="33.5"/>
+                                <rect key="frame" x="124" y="183.5" width="128" height="33.5"/>
                                 <fontDescription key="fontDescription" style="UICTFontTextStyleTitle1"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="00:00:00" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rOm-je-nmM">
+                                <rect key="frame" x="151.5" y="225" width="71.5" height="20.5"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
+                            <constraint firstItem="rOm-je-nmM" firstAttribute="top" secondItem="Cu0-Pj-a3l" secondAttribute="bottom" constant="8" id="2su-uQ-QZt"/>
                             <constraint firstItem="Cu0-Pj-a3l" firstAttribute="centerY" secondItem="BcC-v0-ykd" secondAttribute="centerY" multiplier="3:5" id="5rZ-Rw-x0j"/>
+                            <constraint firstItem="rOm-je-nmM" firstAttribute="centerX" secondItem="Cu0-Pj-a3l" secondAttribute="centerX" id="Vbr-3u-rbs"/>
                             <constraint firstItem="upm-0J-cGo" firstAttribute="centerX" secondItem="BcC-v0-ykd" secondAttribute="centerX" id="em6-8S-JF9"/>
                             <constraint firstItem="upm-0J-cGo" firstAttribute="centerY" secondItem="BcC-v0-ykd" secondAttribute="centerY" multiplier="7:5" id="fE5-K1-Kdo"/>
                             <constraint firstItem="Cu0-Pj-a3l" firstAttribute="centerX" secondItem="BcC-v0-ykd" secondAttribute="centerX" id="i14-fq-KRl"/>
@@ -57,6 +65,7 @@
                     </view>
                     <connections>
                         <outlet property="alarmNameLabel" destination="Cu0-Pj-a3l" id="yhm-4k-jLf"/>
+                        <outlet property="leftTimeLabel" destination="rOm-je-nmM" id="sbE-cQ-DaH"/>
                         <outlet property="snoozeButton" destination="cFO-z7-q8A" id="h4P-d5-EJs"/>
                         <outlet property="stopButton" destination="QWC-Ju-s7g" id="Uo2-op-yVa"/>
                     </connections>

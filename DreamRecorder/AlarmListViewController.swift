@@ -42,7 +42,7 @@ class AlarmListViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.applyTheme()
+        self.applyThemeIfViewDidLoad()
         
         self.tableView.delegate = self
         self.tableView.dataSource = self
@@ -57,6 +57,12 @@ class AlarmListViewController: UIViewController {
         self.navigationItem.setRightBarButton(rightBarButton, animated: true)
         
         NotificationCenter.default.addObserver(self, selector: #selector(self.handleAlarmDataStoreDidChange), name: Notification.Name.AlarmDataStoreDidChange, object: nil)
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        self.applyThemeIfViewWillAppear()
     }
     
     override func viewDidDisappear(_ animated: Bool) {
@@ -138,8 +144,7 @@ extension AlarmListViewController: UITableViewDelegate, UITableViewDataSource {
                 
             } else {
                 guard let alarmPlayViewController = AlarmPlayViewController.storyboardInstance() else { return }
-                print(cell.timeLabel.frame)
-                print(cell.convert(cell.timeLabel.frame, to: self.navigationController?.view))
+                
                 alarmPlayViewController.presentingDelegate = self
                 alarmPlayViewController.playingAlarm = selectedAlarm
                 
@@ -195,6 +200,7 @@ extension AlarmListViewController: AlarmAddViewControllerDelegate, AlarmEditView
             let alertController = UIAlertController(title: NSLocalizedString("Alarm", comment: ""),
                                                     message: NSLocalizedString("수정된 알람을 활성화 시키겠습니까?", comment: ""),
                                                     preferredStyle: .alert)
+            
             let okAction = UIAlertAction(title: "OK", style: .default) { (action) in
                 alarm.isActive = true
                 self.store.updateAlarm(alarm: alarm)
@@ -235,9 +241,6 @@ extension AlarmListViewController: ThemeAppliable {
     }
     var themeTableView: UITableView? {
         return self.tableView
-    }
-    var themeNavigationController: UINavigationController? {
-        return self.navigationController
     }
 }
 

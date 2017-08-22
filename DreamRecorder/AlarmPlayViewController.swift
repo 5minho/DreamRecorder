@@ -9,12 +9,6 @@
 import UIKit
 import UserNotifications
 
-func showAlarmPlayViewController() {
-    guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { return }
-    guard let alarmPlayViewController = AlarmPlayViewController.storyboardInstance() else { return }
-    appDelegate.window?.addSubview(alarmPlayViewController.view)
-}
-
 class AlarmPlayViewController: UIViewController {
 
     @IBOutlet weak var alarmTimeLabel: UILabel!
@@ -56,7 +50,8 @@ class AlarmPlayViewController: UIViewController {
     
     func updateLeftTimeLabel(){
         guard let playingAlarm = playingAlarm else { return }
-        AlarmScheduler.shared.nextTriggerDate(withIdentifier: playingAlarm.id, completionBlock: { (nextTriggerDate) in
+        
+        AlarmScheduler.shared.nextTriggerDate(withAlarmIdentifier: playingAlarm.id, completionBlock: { (_, nextTriggerDate) in
             OperationQueue.main.addOperation {
                 guard let nextTriggerDate = nextTriggerDate else { return }
                 let dateComponents = Calendar.current.dateComponents([.day, .hour, .minute, .second], from: Date(), to: nextTriggerDate)

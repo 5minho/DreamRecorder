@@ -57,7 +57,7 @@ class AlarmEditViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.applyTheme()
+        self.applyThemeIfViewDidLoad()
         
         self.tableView.delegate = self
         self.tableView.dataSource = self
@@ -69,10 +69,10 @@ class AlarmEditViewController: UIViewController {
         self.datePicker.addTarget(self, action: #selector(self.datePickerValueDidChange(sender:)), for: .valueChanged)
         self.tableView.tableHeaderView = self.datePicker
         
-        let leftBarButton = UIBarButtonItem(title: "Cancel", style: .plain, target: self, action: #selector(self.leftBarButtonDidTap(sender:)))
+        let leftBarButton = UIBarButtonItem(title: "Cancel".localized, style: .plain, target: self, action: #selector(self.leftBarButtonDidTap(sender:)))
         self.navigationItem.setLeftBarButton(leftBarButton, animated: true)
         
-        let rightBarButton = UIBarButtonItem(title: "Save", style: .done, target: self, action: #selector(self.rightBarButtonDidTap(sender:)))
+        let rightBarButton = UIBarButtonItem(title: "Save".localized, style: .done, target: self, action: #selector(self.rightBarButtonDidTap(sender:)))
         self.navigationItem.setRightBarButton(rightBarButton, animated: true)
     }
 }
@@ -126,7 +126,7 @@ extension AlarmEditViewController: UITableViewDataSource, UITableViewDelegate {
         
         switch indexPath.row {
         case AlarmDetailCellStyle.label.rawValue:
-            let alertController = UIAlertController(title: "Title Label", message: nil, preferredStyle: .alert)
+            let alertController = UIAlertController(title: "Alarm Label".localized, message: nil, preferredStyle: .alert)
             alertController.addTextField(configurationHandler: {
                 [unowned self] (textField) in
                 textField.text = self.editingAlarm?.name
@@ -186,9 +186,6 @@ extension AlarmEditViewController: ThemeAppliable {
     }
     var themeTableView: UITableView? {
         return self.tableView
-    }
-    var themeNavigationController: UINavigationController? {
-        return self.navigationController
     }
 }
 
