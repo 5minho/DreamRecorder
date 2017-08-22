@@ -5,7 +5,6 @@
     </device>
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12089"/>
-        <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -21,21 +20,21 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <pickerView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="aNX-kg-dfb">
+                            <pickerView contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="aNX-kg-dfb">
                                 <rect key="frame" x="0.0" y="154" width="320" height="240"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </pickerView>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="uRv-WR-zL6">
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="uRv-WR-zL6">
                                 <rect key="frame" x="160" y="394" width="160" height="42"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" title="Ok"/>
                                 <connections>
                                     <action selector="touchUpOkButton:" destination="ZdA-nH-424" eventType="touchUpInside" id="oGe-S7-LIp"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="WUb-Iw-5Hx">
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="WUb-Iw-5Hx">
                                 <rect key="frame" x="0.0" y="394" width="160" height="42"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="42" id="h4h-C8-5u5"/>
-                                </constraints>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" title="Cancel"/>
                                 <connections>
                                     <action selector="touchUpCancelButton:" destination="ZdA-nH-424" eventType="touchUpInside" id="85D-ze-fPj"/>
@@ -44,25 +43,14 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <gestureRecognizers/>
-                        <constraints>
-                            <constraint firstItem="uRv-WR-zL6" firstAttribute="leading" secondItem="WUb-Iw-5Hx" secondAttribute="trailing" id="53l-n7-rJ3"/>
-                            <constraint firstItem="uRv-WR-zL6" firstAttribute="width" secondItem="WUb-Iw-5Hx" secondAttribute="width" id="5Pc-oU-VJd"/>
-                            <constraint firstItem="WUb-Iw-5Hx" firstAttribute="leading" secondItem="aNX-kg-dfb" secondAttribute="leading" id="6fZ-uV-wfF"/>
-                            <constraint firstItem="WUb-Iw-5Hx" firstAttribute="height" secondItem="uRv-WR-zL6" secondAttribute="height" id="ELs-gN-cbO"/>
-                            <constraint firstItem="WUb-Iw-5Hx" firstAttribute="leading" secondItem="boe-gD-sTr" secondAttribute="leading" id="FJV-oP-vQo"/>
-                            <constraint firstItem="aNX-kg-dfb" firstAttribute="height" secondItem="boe-gD-sTr" secondAttribute="height" multiplier="0.5" id="ahG-VG-fhZ"/>
-                            <constraint firstItem="uRv-WR-zL6" firstAttribute="top" secondItem="aNX-kg-dfb" secondAttribute="bottom" id="d7N-Kn-GzN"/>
-                            <constraint firstItem="Y6d-lH-fVR" firstAttribute="top" secondItem="WUb-Iw-5Hx" secondAttribute="bottom" constant="44" id="piO-WS-zMS"/>
-                            <constraint firstItem="uRv-WR-zL6" firstAttribute="bottom" secondItem="WUb-Iw-5Hx" secondAttribute="bottom" id="sQy-VV-i1W"/>
-                            <constraint firstItem="aNX-kg-dfb" firstAttribute="width" secondItem="boe-gD-sTr" secondAttribute="width" id="v1o-Kc-L0l"/>
-                            <constraint firstItem="WUb-Iw-5Hx" firstAttribute="width" secondItem="boe-gD-sTr" secondAttribute="width" multiplier="0.5" id="wbz-tw-QCa"/>
-                        </constraints>
                         <connections>
                             <outletCollection property="gestureRecognizers" destination="Jtx-15-5mW" appends="YES" id="kZ6-Sr-R5t"/>
                         </connections>
                     </view>
                     <connections>
+                        <outlet property="cancelButton" destination="WUb-Iw-5Hx" id="fhf-fc-Olb"/>
                         <outlet property="datePicker" destination="aNX-kg-dfb" id="8dP-Tr-oXz"/>
+                        <outlet property="okButton" destination="uRv-WR-zL6" id="Atr-Gs-vLO"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="rfy-4h-CG0" userLabel="First Responder" sceneMemberID="firstResponder"/>
