@@ -32,6 +32,8 @@ struct DateParser {
         
         if hour > 12 {
             return "\(String(format: "%02d", hour - 12)):\(String(format: "%02d", minute)) PM"
+        } else if hour == 12 {
+            return "\(String(format: "%02d", hour)):\(String(format: "%02d", minute)) PM"
         }
         return "\(String(format: "%02d", hour)):\(String(format: "%02d", minute)) AM"
         
