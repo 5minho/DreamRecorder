@@ -62,7 +62,8 @@ class SpeechDreamViewController : UIViewController {
     
     @IBAction func doneRecordDream(_ sender: UIBarButtonItem) {
         
-        speechRecognizer.stop()
+        finishTimer()
+        inActivateRecognizer()
         
         let alert = UIAlertController(title: "title", message: "please enter a title", preferredStyle: .alert)
         
@@ -101,7 +102,11 @@ class SpeechDreamViewController : UIViewController {
     }
     
     @IBAction func cancelRecord(_ sender: UIBarButtonItem) {
+        
+        finishTimer()
+        inActivateRecognizer()
         presentingViewController?.dismiss(animated: true, completion: nil)
+        
     }
     
     @IBAction func recognitionViewTapped(_ sender: UITapGestureRecognizer) {
@@ -110,6 +115,7 @@ class SpeechDreamViewController : UIViewController {
     
     @IBAction func touchUpRecordButton(_ sender: UIButton) {
         
+        finishTimer()
         speechRecognizer.isRunning ? inActivateRecognizer() : activateRecognizer()
         
     }
@@ -135,9 +141,11 @@ class SpeechDreamViewController : UIViewController {
     }
     
     fileprivate func finishTimer() {
+        
         isTimerRunning = false
         self.timer.invalidate()
         self.leftTimeLabel.text = ""
+        
     }
     
     @objc private func updateLeftTime() {
@@ -160,8 +168,8 @@ class SpeechDreamViewController : UIViewController {
         
         if speechRecognizer.isRunning == false {
             
-            self.recordButton.recordState = .recording
             speechRecognizer.start(with: .korean)
+            self.recordButton.recordState = .recording
             asyncSetAudioCategory(AVAudioSessionCategoryRecord)
             
         }
@@ -182,11 +190,12 @@ class SpeechDreamViewController : UIViewController {
     fileprivate func asyncSetAudioCategory(_ category: String, _ completion: (() -> Void)? = nil) {
         
         audioDispatch.async {
+            
             try? AVAudioSession.sharedInstance().setCategory(category)
-        }
-        
-        if let completeHandler = completion {
-            completeHandler()
+            if let completeHandler = completion {
+                completeHandler()
+            }
+            
         }
         
     }
@@ -217,11 +226,14 @@ extension SpeechDreamViewController : NSKRecognizerDelegate {
         }
         
         asyncSetAudioCategory(AVAudioSessionCategorySoloAmbient)
+        
     }
     
     public func recognizer(_ aRecognizer: NSKRecognizer!, didRecordSpeechData aSpeechData: Data!) {
+        
         print(aSpeechData.description)
         print("Record speech data, data size: \(aSpeechData.count)")
+        
     }
     
     public func recognizer(_ aRecognizer: NSKRecognizer!, didReceivePartialResult aResult: String!) {
@@ -230,7 +242,7 @@ extension SpeechDreamViewController : NSKRecognizerDelegate {
         if !isTimerRunning {
             equalCount = (previousText == aResult) ? equalCount + 1 : equalCount
             
-            if equalCount == 20 {
+            if equalCount == 15 {
                 
                 equalCount = 0
                 self.startTimer()
