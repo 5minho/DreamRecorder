@@ -253,6 +253,26 @@ extension SpeechDreamViewController : NSKRecognizerDelegate {
     
     public func recognizer(_ aRecognizer: NSKRecognizer!, didReceiveError aError: Error!) {
         print("Error: \(aError)")
+        
+        guard let error = aError as? NMSpeechRecognizerError else {
+            
+            present(UIAlertController.simpleAlert(title: "오류 발생".localized), animated: false, completion: nil)
+            return
+            
+        }
+        
+        switch error {
+            
+        case .errorNetworkNACK, .errorNetworkRead, .errorNetworkWrite, .errorNetworkInitialize, .errorNetworkFinalize:
+            present(UIAlertController.simpleAlert(title: "네트워크 오류 [\(error.rawValue)]".localized, message: "네트워크연결을 확인해 주세요".localized), animated: false, completion: nil)
+        case .errorAudioFinalize, .errorAudioInitialize, .errorAudioRecord :
+            present(UIAlertController.simpleAlert(title: "오디오 오류 [\(error.rawValue)]".localized), animated: false, completion: nil)
+            
+        default:
+            present(UIAlertController.simpleAlert(title: "오류 [\(error.rawValue)]".localized), animated: false, completion: nil)
+            
+        }
+        
     }
     
     public func recognizer(_ aRecognizer: NSKRecognizer!, didReceive aResult: NSKRecognizedResult!) {

@@ -75,6 +75,18 @@ extension Date {
     }
 }
 
+extension UIAlertController {
+    
+    static func simpleAlert(title: String, message : String? = nil) -> UIAlertController {
+        
+        let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        let action = UIAlertAction(title: "확인".localized, style: .default, handler: nil)
+        alertController.addAction(action)
+        
+        return alertController
+    }
+    
+}
 
 import AVFoundation
 
