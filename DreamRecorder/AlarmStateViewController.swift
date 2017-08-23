@@ -9,43 +9,51 @@
 import UIKit
 import UserNotifications
 
-class AlarmPlayViewController: UIViewController {
+class AlarmStatusViewController: UIViewController {
 
+    // MARK: Properties.
+    // Subviews.
     @IBOutlet weak var alarmTimeLabel: UILabel!
     @IBOutlet weak var leftTimeLabel: UILabel!
     
-    var dateFormmater: DateFormatter = {
+    // Private.
+    private var timer: Timer?
+    private var dateFormmater: DateFormatter = {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "hh:mm:ss"
         return dateFormatter
     }()
-    var shouldCustomTransition: Bool = true
-    var playingAlarm: Alarm?
-    var timer: Timer?
     
+    // Internal.
+    var playingAlarm: Alarm?
     weak var presentingDelegate: CellExpandAnimatorPresentingDelegate?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        /// Apply Alarm Theme.
         self.view.backgroundColor = UIColor.alarmDefaultBackgroundColor
         self.alarmTimeLabel.textColor = UIColor.alarmDarkText
         self.leftTimeLabel.textColor = UIColor.alarmLightText
         self.alarmTimeLabel.font = UIFont.title1
         self.leftTimeLabel.font = UIFont.title3
         
-        if shouldCustomTransition {
-            self.transitioningDelegate = self
-        }
+        self.transitioningDelegate = self
         
-        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(self.dismissByGesture(sender:)))
+        let tapGestureRecognizer = UITapGestureRecognizer(target: self,
+                                                          action: #selector(self.dismissByGesture(sender:)))
         self.view.addGestureRecognizer(tapGestureRecognizer)
         
-        self.updateLeftTimeLabel()
-        self.timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(self.updateLeftTimeLabel), userInfo: nil, repeats: true)
-        
         guard let playingAlarm = playingAlarm else { return }
+        
         self.alarmTimeLabel.text = DateParser().time(from: playingAlarm.date)
+        
+        self.updateLeftTimeLabel()
+        self.timer = Timer.scheduledTimer(timeInterval: 1,
+                                          target: self,
+                                          selector: #selector(self.updateLeftTimeLabel),
+                                          userInfo: nil,
+                                          repeats: true)
     }
     
     func updateLeftTimeLabel(){
