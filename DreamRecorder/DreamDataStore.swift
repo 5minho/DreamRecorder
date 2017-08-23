@@ -224,7 +224,8 @@ class DreamDataStore {
     }
 
     
-    @discardableResult func delete(dream: Dream, at index : Int? = nil) -> RowResult {
+    @discardableResult func delete(dream: Dream) -> RowResult {
+        
         let deletingRow = DreamTable.table.filter(DreamTable.Column.id == dream.id)
         let result = self.dbManager.deleteRow(delete: deletingRow.delete())
         
@@ -232,21 +233,20 @@ class DreamDataStore {
             
         case .success:
         
-            guard let idx : Int = index ?? dreams.index(of: dream) else {
-                return result
+            var userInfo : [String : Int] = [:]
+            
+            if let idx = dreams.index(of: dream) {
+                userInfo["row"] = idx
+                self.dreams.remove(at: idx)
             }
             
-            var userInfo = ["row" : idx]
-            
             if let deletedIdx = filteredDreams.index(of: dream) {
-                
-                filteredDreams.remove(at: deletedIdx)
-                userInfo = ["rowInFiltering" : deletedIdx]
-                
+                userInfo["rowInFiltering"] = deletedIdx
+                self.filteredDreams.remove(at: deletedIdx)
             }
             
             self.cacheManager.deleteCached(dream: dream)
-            self.dreams.remove(at: idx)
+            
             NotificationCenter.default.post(name: NotificationName.didDeleteDream, object: nil, userInfo : userInfo)
             
         case let .failure(error):
@@ -254,6 +254,7 @@ class DreamDataStore {
         }
         
         return result
+        
     }
     
     func filter(_ searchText : String, completion : () -> Void ) {
