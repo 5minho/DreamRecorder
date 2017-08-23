@@ -9,10 +9,10 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--Alarm Play View Controller-->
+        <!--Alarm State View Controller-->
         <scene sceneID="JbO-NW-OhV">
             <objects>
-                <viewController id="Bxk-SZ-fyZ" customClass="AlarmPlayViewController" customModule="DreamRecorder" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="Bxk-SZ-fyZ" customClass="AlarmStateViewController" customModule="DreamRecorder" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="Mkv-FB-4mU"/>
                         <viewControllerLayoutGuide type="bottom" id="DND-6v-P1l"/>
@@ -21,8 +21,8 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="👇 Tap To Dismiss" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pzk-HM-M9p">
-                                <rect key="frame" x="116.5" y="572" width="142.5" height="21"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Swipe To Dismiss" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pzk-HM-M9p">
+                                <rect key="frame" x="121.5" y="572" width="133.5" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
@@ -52,6 +52,7 @@
                     </view>
                     <connections>
                         <outlet property="alarmTimeLabel" destination="ZXN-m1-UID" id="fOa-9i-EG2"/>
+                        <outlet property="hintLabel" destination="pzk-HM-M9p" id="Wwy-sF-h31"/>
                         <outlet property="leftTimeLabel" destination="GfH-2w-WuB" id="BRC-lV-vHq"/>
                     </connections>
                 </viewController>

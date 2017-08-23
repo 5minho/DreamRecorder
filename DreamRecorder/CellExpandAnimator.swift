@@ -8,6 +8,11 @@
 
 import UIKit
 
+class AnimatorInteractor: UIPercentDrivenInteractiveTransition {
+    var hasStarted = false
+    var shouldFinish = false
+}
+
 enum CellExpandAnimatorType {
     case present
     case dismiss
@@ -73,7 +78,7 @@ class CellExpandAnimator: NSObject, UIViewControllerAnimatedTransitioning {
         
         let interactiveView = UIView(frame: fromViewInitialFrame)
         interactiveView.backgroundColor = fromView.backgroundColor
-        interactiveView.layer.borderColor = UIColor.lightGray.cgColor
+        interactiveView.layer.borderColor = UIColor.dreamBorderColor.cgColor
         interactiveView.layer.borderWidth = 0.5
         interactiveView.layer.frame = interactiveView.layer.frame.insetBy(dx: -1, dy: 0)
         
@@ -129,9 +134,12 @@ class CellExpandAnimator: NSObject, UIViewControllerAnimatedTransitioning {
                 toViewController.view.alpha = 1
                 
             }) { (completed) in
-                backgroundView.removeFromSuperview()
-                UIView.transition(from: fromViewController.view, to: toViewController.view, duration: 0.2, options: UIViewAnimationOptions.transitionCrossDissolve, completion: nil)
+                if transitionContext.transitionWasCancelled {
+                    transitionContext.containerView.addSubview(fromViewController.view)
+                }
+                
                 transitionContext.completeTransition(!transitionContext.transitionWasCancelled)
+                backgroundView.removeFromSuperview()
             }
         }
         

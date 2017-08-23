@@ -26,3 +26,12 @@
 "Label" = "ラベル";
 "Sound" = "音";
 "Snooze" = "スヌーズ";
+"This alarm is not active." = "This alarm is not active";
+"Do you want to activate this alarm?" = "수정된 알람을 활성화 시키겠습니까?";
+"Unknown title" = "Unknown title";
+
+"Once." = "한번만";
+"Repeat Weekday." = "평일 반복";
+"Repeat Weekend." = "주말 반복";
+"Repeat every day." = "매일 반복";
+"Repeat." = "반복 요일";

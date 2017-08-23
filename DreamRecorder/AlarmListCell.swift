@@ -23,37 +23,35 @@ class AlarmListCell: UITableViewCell {
     
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-//        self.setupWeekdayButton()
-        
     }
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
-//        self.setupWeekdayButton()
         self.setupAccessoryView()
     }
     
     override func awakeFromNib() {
         super.awakeFromNib()
         self.setupWeekdayButton()
-        self.setupDreamTheme()
+        self.applyViewTheme()
     }
     
-    func setupDreamTheme(){
-        self.backgroundColor = UIColor.alarmDefaultBackgroundColor
+    func applyViewTheme() {
         
-        self.timeLabel.textColor = UIColor.alarmCellTitleColor
-        self.nameLabel.textColor = UIColor.alarmCellBodyColor
+        self.backgroundColor = UIColor.dreamBackgroundColor
         
-        self.activeSwitch.tintColor = UIColor.alarmSwitchTintColor
-        self.activeSwitch.onTintColor = UIColor.alarmSwitchOnTintColor
+        self.timeLabel.textColor = UIColor.dreamTextColor1
+        self.nameLabel.textColor = UIColor.dreamTextColor2
         
-        self.weekdayButton.buttonBackgroundColor = UIColor.alarmDefaultBackgroundColor
-        self.weekdayButton.buttonTitleColor = UIColor.alarmCellBodyColor
-        self.weekdayButton.buttonTitleColorHighlighted = UIColor.white
+        self.activeSwitch.tintColor = UIColor.dreamBorderColor
+        self.activeSwitch.onTintColor = UIColor.dreamBackgroundColorHighlighted
+        
+        self.weekdayButton.buttonBackgroundColor = UIColor.dreamBackgroundColor
+        self.weekdayButton.buttonTitleColor = UIColor.dreamTextColor3
+        self.weekdayButton.buttonTitleColorHighlighted = UIColor.dreamTextColor1
         
         self.timeLabel.font = UIFont.title1
-        self.nameLabel.font = UIFont.title3
+        self.nameLabel.font = UIFont.body
     }
     
     private func setupWeekdayButton(){
@@ -71,3 +69,4 @@ class AlarmListCell: UITableViewCell {
         self.delegate?.alarmListCell(cell: self, activeSwitchValueChanged: sender)
     }
 }
+

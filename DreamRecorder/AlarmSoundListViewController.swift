@@ -15,7 +15,7 @@ protocol AlarmSoundListViewControllerDelegate: NSObjectProtocol {
 
 class AlarmSoundListViewController: UIViewController {
     
-    // MARK: Properties.
+    // MARK: - Properties.
     // Subviews.
     @IBOutlet weak var tableView: UITableView!
     
@@ -24,9 +24,9 @@ class AlarmSoundListViewController: UIViewController {
     weak var delegate: AlarmSoundListViewControllerDelegate?
     
     // Private.
-    fileprivate var soundNames: [String] = ["Default.wav", "Alarm-tone.wav", "Old-alarm-clock-ringing.wav", "Carefree_Melody.mp3"]
+    fileprivate let soundNames: [String] = ["Default.wav", "Alarm-tone.wav", "Old-alarm-clock-ringing.wav", "Carefree_Melody.mp3"]
     
-    // Mark: View Cycle.
+    // MARK: - - View Cycle.
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -41,7 +41,7 @@ class AlarmSoundListViewController: UIViewController {
 
 extension AlarmSoundListViewController: UITableViewDataSource, UITableViewDelegate {
     
-    // MARK: TableView DataSource.
+    // MARK: - TableView DataSource.
     func numberOfSections(in tableView: UITableView) -> Int {
         return 2
     }
@@ -60,15 +60,7 @@ extension AlarmSoundListViewController: UITableViewDataSource, UITableViewDelega
         
         guard let editingAlarm = self.alarm else { return cell }
         
-        cell.backgroundColor = UIColor.alarmDefaultBackgroundColor
-        
         if indexPath.section == 0 {
-            
-            guard indexPath.row < self.soundNames.count else { return cell }
-            
-            cell.tintColor = UIColor.alarmSwitchOnTintColor
-            cell.textLabel?.font = UIFont.body
-            cell.textLabel?.textColor = UIColor.alarmDarkText
             
             cell.textLabel?.text = soundNames[indexPath.row].soundTitle
             cell.accessoryType = (editingAlarm.sound == self.soundNames[indexPath.row]) ? .checkmark : .none
@@ -78,9 +70,6 @@ extension AlarmSoundListViewController: UITableViewDataSource, UITableViewDelega
         } else {
             
             cell.textLabel?.text = "Pick a song".localized
-            cell.textLabel?.textColor = UIColor.alarmDarkText
-            cell.detailTextLabel?.font = UIFont.callout
-            cell.detailTextLabel?.textColor = UIColor.alarmLightText
             
             if self.soundNames.contains(editingAlarm.sound) == false {
                 
@@ -95,7 +84,7 @@ extension AlarmSoundListViewController: UITableViewDataSource, UITableViewDelega
         }
     }
     
-    // MARK: TableView Delegate.
+    // MARK: - TableView Delegate.
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
         tableView.deselectRow(at: indexPath, animated: true)
@@ -117,18 +106,18 @@ extension AlarmSoundListViewController: UITableViewDataSource, UITableViewDelega
             
         } else {
             // Select Media Library Music Files.
-            let pickerController = MPMediaPickerController(mediaTypes: .any)
-            pickerController.allowsPickingMultipleItems = false
-            pickerController.showsCloudItems = false
-            pickerController.delegate = self
+            let mediaPickerController = MPMediaPickerController(mediaTypes: .any)
+            mediaPickerController.allowsPickingMultipleItems = false
+            mediaPickerController.showsCloudItems = false
+            mediaPickerController.delegate = self
             
-            self.present(pickerController, animated: true, completion: nil)
+            self.present(mediaPickerController, animated: true, completion: nil)
         }
     }
 }
 
 extension AlarmSoundListViewController: MPMediaPickerControllerDelegate {
-    // MARK: MPMediaPickerController Delegate.
+    // MARK: - MPMediaPickerController Delegate.
     func mediaPickerDidCancel(_ mediaPicker: MPMediaPickerController) {
         mediaPicker.dismiss(animated: true, completion: nil)
     }
@@ -151,7 +140,7 @@ extension AlarmSoundListViewController: MPMediaPickerControllerDelegate {
 }
 
 extension AlarmSoundListViewController: ThemeAppliable {
-    // MARK: ThemeAppliable
+    // MARK: - ThemeAppliable.
     var themeStyle: ThemeStyle {
         return .alarm
     }
@@ -161,7 +150,7 @@ extension AlarmSoundListViewController: ThemeAppliable {
 }
 
 extension AlarmSoundListViewController {
-    // MARK: StoryboardInstance.
+    // MARK: - StoryboardInstance.
     class func storyboardInstance() -> AlarmSoundListViewController? {
         let storyboard = UIStoryboard(name: String(describing: self), bundle: nil)
         return storyboard.instantiateInitialViewController() as? AlarmSoundListViewController
