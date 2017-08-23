@@ -8,6 +8,13 @@
 
 import Foundation
 
+/// 일요일(1 << 0)부터 토요일(1 << 6)까지 포함할 수 OptionSet.
+///
+/// Alarm 클래스의 프로퍼티로 weeday를 지님.
+/// Calendar에서 기본적으로 제공하는 Weekday를 통해서 접근이 가능하다.
+///
+/// 주의: Calendar.current.weekdaySymbols는 0 ~ 6 인덱스를 가지는데
+/// Calendar.Component.weekday는 1부터 7의 값을 가진다.
 struct WeekdayOptions: OptionSet {
     let rawValue: Int
     

@@ -9,10 +9,9 @@ import Foundation
 import SQLite
 
 // MARK: Foundation
-// extension dataType to read and write at sqlite database for type suppport
-// TRICK: reading WeekdayOptions as Int invoke error, so use Int64 as Int Wrapper.
-
+// Foundation DataType을 sqlite database가 지원하는 포맷으로 Extension함.
 extension WeekdayOptions: Value {
+    // WeekdayOptions을 Int로 읽어드리면 에러가 발생, Int64로 감싸서 읽고/쓰기 실행.
     static var declaredDatatype: String {
         return Int64.declaredDatatype
     }
@@ -78,35 +77,34 @@ extension Date {
 
 import AVFoundation
 
-//extension AVAsset: NSCoding {
-//    
-//    
-//    
-//}
-
 extension String {
-    // @discussion      Note that alarm class can have two type of sound path.
-    //                  One is ipod-library for media item user have.
-    //                  Another is main bundle sound files.
+    // MARK: - Sound Path.
+    /// 알람 클래스의 sound프로퍼티는 sound path값을 지닌다.
+    /// 번들에 포함된 알람음과 사용자 Media에 있는 음악 파일Path 중 하나를 가질 수 있다.
     var soundTitle: String? {
+        
         if self.hasPrefix("ipod-library:") {
-            guard let url = URL(string: self) else { return self }
+            guard let url = URL(string: self) else { return "Unknown title".localized }
+            
             let asset = AVAsset(url: url)
+            
             for metaItem in asset.commonMetadata {
-                if metaItem.commonKey == AVMetadataCommonKeyTitle {
-                    return metaItem.stringValue
-                }
+                guard metaItem.commonKey == AVMetadataCommonKeyTitle else { continue }
+                return metaItem.stringValue
             }
-            return nil
+            return "Unknown title".localized
+            
         } else {
             return self.components(separatedBy: ".").first
         }
     }
     
+    /// 알람 클래스의 sound path값이 번들 파일의 path값일 경우 soundFormat을 .을 구분자로 하여 확장자를 가져올 수 있다.
     var soundFormat: String? {
         return self.components(separatedBy: ".").last
     }
     
+    /// 알람 클래스의 sound path값을 번들파일과 미디어파일 각각의 Asset URL를 얻을 수 있다.
     var soundURL: URL? {
         if self.hasPrefix("ipod-library:") {
             return URL(string: self)
