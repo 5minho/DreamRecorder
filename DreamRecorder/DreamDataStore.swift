@@ -13,6 +13,8 @@ class DreamDataStore {
     
     static let shared : DreamDataStore = DreamDataStore()
     
+    static let startYearToSave = 1970
+    
     private init() {}
     
     struct NotificationName {
@@ -85,11 +87,17 @@ class DreamDataStore {
     
     func select(fromYear : Int, fromMonth : Int, toYear: Int, toMonth: Int) {
         
-        let yearIndex = fromYear - 1970
+        let yearIndex = fromYear - DreamDataStore.startYearToSave
         
-        if !cacheManager.cachedDreams[yearIndex][fromMonth].isEmpty {
-            self.dreams = cacheManager.cachedDreams[yearIndex][fromMonth]
+        guard var cachedDreams = cacheManager.cachedDreams[safe: yearIndex]?[safe: fromMonth] else {
             return
+        }
+        
+        if cachedDreams.isEmpty == false {
+            
+            self.dreams = cachedDreams
+            return
+            
         }
         
         let calendar = Calendar(identifier: .gregorian)
@@ -130,13 +138,13 @@ class DreamDataStore {
                 
                 let dream = Dream(id: id, title: title, content: content, createdDate: createdDate, modifiedDate: modifiedDate)
                 
-                if cacheManager.cachedDreams[yearIndex][fromMonth].index(of: dream) == nil {
-                    cacheManager.cachedDreams[yearIndex][fromMonth].append(dream)
+                if cachedDreams.index(of: dream) == nil {
+                    cachedDreams.append(dream)
                 }
                 
             })
             
-            self.dreams = cacheManager.cachedDreams[yearIndex][fromMonth]
+            self.dreams = cachedDreams
             
         case let .failure(error) :
             print(error)

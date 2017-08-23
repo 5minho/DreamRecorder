@@ -70,9 +70,19 @@ extension Date {
 }
 
 extension Date {
+    
     var addingSnoozeTimeInterval: Date {
         return self.addingTimeInterval(60*9)
     }
+    
+}
+
+extension Array {
+    
+    subscript (safe index: Int) -> Element? {
+        return indices ~= index ? self[index] : nil
+    }
+    
 }
 
 extension UIAlertController {
