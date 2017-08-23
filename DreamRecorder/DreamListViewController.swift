@@ -15,10 +15,9 @@ class DreamListViewController : UIViewController {
     
     fileprivate var searchController : UISearchController!
     
-    fileprivate var filteredDreams = [Dream]()
     fileprivate let dateParser = DateParser()
     
-    fileprivate let concurrentQueue = DispatchQueue(label: "filtering", attributes: .concurrent)
+    fileprivate let serialDispatchQueue = DispatchQueue(label: "filtering")
     fileprivate var isQueueEmpty = true
     
     var currentViewedDate = Date() {
@@ -162,7 +161,6 @@ class DreamListViewController : UIViewController {
             present(datePickerConroller, animated: true, completion: nil)
             
         }
-        
     }
 }
 
@@ -197,7 +195,7 @@ extension DreamListViewController : UISearchResultsUpdating {
             return
         }
         
-        concurrentQueue.async {
+        serialDispatchQueue.async {
             self.isQueueEmpty = false
 
             DreamDataStore.shared.filter(searchText) {
@@ -231,6 +229,7 @@ extension DreamListViewController : UITableViewDelegate, UITableViewDataSource, 
         }
         
         if isFiltering() {
+            
             cell.update(dream: DreamDataStore.shared.filteredDreams[indexPath.row])
             
         } else {
@@ -265,7 +264,7 @@ extension DreamListViewController : UITableViewDelegate, UITableViewDataSource, 
         
         let deleteButton = UITableViewRowAction(style: .destructive, title: "삭제") { action, indexPath -> Void in
             
-            if let dream = DreamDataStore.shared.dream(at: indexPath.row) {
+            if let dream = self.isFiltering() ? DreamDataStore.shared.filteredDreams[indexPath.row] : DreamDataStore.shared.dream(at: indexPath.row) {
                 let alert = self.deleteAlert(dream: dream, completion: nil)
                 self.present(alert, animated: true, completion: nil)
             }
