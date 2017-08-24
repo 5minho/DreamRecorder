@@ -238,13 +238,13 @@ extension DreamListViewController : UITableViewDelegate, UITableViewDataSource, 
         
         if isFiltering() {
             
-            if let filterDreams = DreamDataStore.shared.filteredDreams[safe: indexPath.row] {
-                cell.update(dream: filterDreams)
+            if let filterDream = DreamDataStore.shared.filteredDreams[safe: indexPath.row] {
+                cell.update(dream: filterDream)
             }
         
         } else {
             
-            if let dream = DreamDataStore.shared.dream(at: indexPath.row) {
+            if let dream = DreamDataStore.shared.dreams[safe: indexPath.row] {
                 cell.update(dream: dream)
             }
             
@@ -261,7 +261,10 @@ extension DreamListViewController : UITableViewDelegate, UITableViewDataSource, 
         
         if let detailDreamViewController = DetailDreamViewController.storyboardInstance() {
             
-            detailDreamViewController.dream = self.isFiltering() ? DreamDataStore.shared.filteredDreams[indexPath.row] : DreamDataStore.shared.dream(at: indexPath.row)
+            detailDreamViewController.dream = self.isFiltering() ?
+                DreamDataStore.shared.filteredDreams[safe: indexPath.row] :
+                DreamDataStore.shared.dreams[safe: indexPath.row]
+            
             navigationController?.pushViewController(detailDreamViewController, animated: true)
             
             if self.tableView.isEditing {
@@ -273,11 +276,15 @@ extension DreamListViewController : UITableViewDelegate, UITableViewDataSource, 
     
     func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
         
-        let deleteButton = UITableViewRowAction(style: .destructive, title: "삭제") { action, indexPath -> Void in
+        let deleteButton = UITableViewRowAction(style: .destructive, title: "삭제".localized) { action, indexPath -> Void in
             
-            if let dream = self.isFiltering() ? DreamDataStore.shared.filteredDreams[indexPath.row] : DreamDataStore.shared.dream(at: indexPath.row) {
+            if let dream = self.isFiltering() ?
+                DreamDataStore.shared.filteredDreams[safe: indexPath.row] :
+                DreamDataStore.shared.dreams[safe: indexPath.row] {
+                
                 let alert = self.deleteAlert(dream: dream, completion: nil)
                 self.present(alert, animated: true, completion: nil)
+                
             }
             
         }
@@ -286,14 +293,7 @@ extension DreamListViewController : UITableViewDelegate, UITableViewDataSource, 
         
         return [deleteButton]
     }
-    
-//    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-//        return 80
-//    }
-    
-    func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 80
-    }
+
     
 }
 

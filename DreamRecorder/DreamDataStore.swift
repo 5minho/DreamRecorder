@@ -26,7 +26,7 @@ class DreamDataStore {
     
     private var cacheManager = DreamCacheManager()
     
-    private var dreams : [Dream] = []
+    var dreams : [Dream] = []
     var filteredDreams : [Dream] = []
     
     var count : Int {
@@ -48,15 +48,6 @@ class DreamDataStore {
             
         }
         
-    }
-    
-    func dream(at index : Int) -> Dream? {
-        
-        guard index < self.count else {
-            return nil
-        }
-        
-        return dreams[index]
     }
     
     func index(of dream : Dream) -> Int? {
