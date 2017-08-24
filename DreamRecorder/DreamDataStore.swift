@@ -265,7 +265,7 @@ class DreamDataStore {
         
     }
     
-    func filter(_ searchText : String, completion : () -> Void ) {
+    func filter(_ searchText : String) {
         
         let filterResult = dbManager.filterRow(query: DreamTable.table.filter(
             DreamTable.Column.title.like("%\(searchText)%") ||
@@ -289,8 +289,6 @@ class DreamDataStore {
                 let dream = Dream(id: id, title: title, content: content, createdDate: createdDate, modifiedDate: modifiedDate)
                 filteredDreams.append(dream)
             })
-            
-            completion()
             
         case .failure(_):
             print("fail")

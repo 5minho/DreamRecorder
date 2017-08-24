@@ -20,6 +20,8 @@ class DreamListViewController : UIViewController {
     fileprivate let serialDispatchQueue = DispatchQueue(label: "filtering")
     fileprivate var isQueueEmpty = true
     
+    fileprivate var pendingFilterWorkItem: DispatchWorkItem?
+    
     var currentViewedDate = Date() {
         
         didSet {
@@ -53,10 +55,12 @@ class DreamListViewController : UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.applyThemeIfViewDidLoad()
-        
         self.tableView.delegate = self
         self.tableView.dataSource = self
+        
+        tableView.rowHeight = UITableViewAutomaticDimension
+        tableView.estimatedRowHeight = 140
+        
         self.tableView.allowsSelectionDuringEditing = true
         self.dateButton.title = "Date".localized
         self.navigationItem.leftBarButtonItem = editButtonItem
@@ -70,13 +74,13 @@ class DreamListViewController : UIViewController {
         
         self.addObserver()
         self.setSearchViewController()
+        self.applyThemeIfViewDidLoad()
     }
     
     
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        self.applyThemeIfViewWillAppear()
     }
     
     override func setEditing(_ editing: Bool, animated: Bool) {
@@ -119,7 +123,6 @@ class DreamListViewController : UIViewController {
                 
             }
             
-            
         }
         
         NotificationCenter.default.addObserver(forName: DreamDataStore.NotificationName.didAddDream, object: nil, queue: .main) {
@@ -142,6 +145,7 @@ class DreamListViewController : UIViewController {
         self.searchController.searchBar.delegate = self
         
         self.tableView?.tableHeaderView = searchController?.searchBar
+        
         self.tableView.contentOffset =  CGPoint(x: 0, y: searchController.searchBar.frame.height)
         
     }
@@ -162,6 +166,9 @@ class DreamListViewController : UIViewController {
             
         }
     }
+    
+    let opq = OperationQueue()
+    
 }
 
 extension DreamListViewController : UISearchBarDelegate {
@@ -179,7 +186,9 @@ extension DreamListViewController : UISearchBarDelegate {
 extension DreamListViewController : UISearchResultsUpdating {
     
     func updateSearchResults(for searchController: UISearchController) {
+    
         filterContentForSearchText(searchController.searchBar.text!)
+        
     }
     
     func searchBarIsEmpty() -> Bool {
@@ -189,24 +198,23 @@ extension DreamListViewController : UISearchResultsUpdating {
     
     
     
-    func filterContentForSearchText(_ searchText: String, scope: String = "All") {
+    
+    func filterContentForSearchText(_ searchText: String) {
         
-        guard isQueueEmpty else {
-            return
-        }
+        self.pendingFilterWorkItem?.cancel()
         
-        serialDispatchQueue.async {
-            self.isQueueEmpty = false
-
-            DreamDataStore.shared.filter(searchText) {
-                
-                DispatchQueue.main.async {
-                    self.tableView.reloadData()
-                    self.isQueueEmpty = true
-                }
-
+        let filterWorkItem = DispatchWorkItem {
+            DreamDataStore.shared.filter(searchText)
+            
+            DispatchQueue.main.async { [unowned self] in
+                self.tableView.reloadData()
             }
         }
+        
+        pendingFilterWorkItem = filterWorkItem
+        
+        serialDispatchQueue.asyncAfter(deadline: .now() + .milliseconds(250), execute: filterWorkItem)
+
     }
     
     func isFiltering() -> Bool {
@@ -230,8 +238,10 @@ extension DreamListViewController : UITableViewDelegate, UITableViewDataSource, 
         
         if isFiltering() {
             
-            cell.update(dream: DreamDataStore.shared.filteredDreams[indexPath.row])
-            
+            if let filterDreams = DreamDataStore.shared.filteredDreams[safe: indexPath.row] {
+                cell.update(dream: filterDreams)
+            }
+        
         } else {
             
             if let dream = DreamDataStore.shared.dream(at: indexPath.row) {
@@ -242,6 +252,7 @@ extension DreamListViewController : UITableViewDelegate, UITableViewDataSource, 
         
         return cell
     }
+    
     
     // MARK: - Table view delegate
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -276,9 +287,9 @@ extension DreamListViewController : UITableViewDelegate, UITableViewDataSource, 
         return [deleteButton]
     }
     
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 80
-    }
+//    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+//        return 80
+//    }
     
     func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
         return 80
