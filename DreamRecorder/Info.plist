@@ -23,7 +23,7 @@
 	<key>NSAppleMusicUsageDescription</key>
 	<string></string>
 	<key>NSMicrophoneUsageDescription</key>
-	<string></string>
+	<string>마이크!!!!!!!!!!</string>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>audio</string>

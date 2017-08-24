@@ -27,9 +27,12 @@ class SpeechDreamViewController : UIViewController {
     fileprivate var leftTime = 10
     fileprivate var timer  = Timer()
     
+    fileprivate var micAccessPermission = false
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        self.recordButton.isEnabled = self.shouldCheckRecordPermission()
         todayLabel.text = DateParser().detail(from: Date())
         setContentFieldLayer()
         self.applyThemeIfViewDidLoad()
@@ -117,6 +120,34 @@ class SpeechDreamViewController : UIViewController {
         
         finishTimer()
         speechRecognizer.isRunning ? inActivateRecognizer() : activateRecognizer()
+        
+    }
+    
+    private func shouldCheckRecordPermission() -> Bool {
+        
+        let recordPermission = AVAudioSession.sharedInstance().recordPermission()
+        switch recordPermission {
+            
+        case AVAudioSessionRecordPermission.granted :
+            return true
+            
+        case AVAudioSessionRecordPermission.denied:
+            return false
+            
+        case AVAudioSessionRecordPermission.undetermined :
+            return true
+            
+        default :
+            return true
+            
+        }
+    }
+    
+    private func openURLforMicroPhoneAccess(action : UIAlertAction) {
+        
+        if let url = URL(string: "App-prefs:root=Privacy&path=MICROPHONE") {
+            UIApplication.shared.openURL(url)
+        }
         
     }
     
@@ -265,6 +296,8 @@ extension SpeechDreamViewController : NSKRecognizerDelegate {
     
     public func recognizer(_ aRecognizer: NSKRecognizer!, didReceiveError aError: Error!) {
         print("Error: \(aError)")
+        finishTimer()
+        recordButton.recordState = .idle
         
         guard let error = aError as? NMSpeechRecognizerError else {
             
@@ -276,7 +309,8 @@ extension SpeechDreamViewController : NSKRecognizerDelegate {
         switch error {
             
         case .errorNetworkNACK, .errorNetworkRead, .errorNetworkWrite, .errorNetworkInitialize, .errorNetworkFinalize:
-            present(UIAlertController.simpleAlert(title: "네트워크 오류 [\(error.rawValue)]".localized, message: "네트워크연결을 확인해 주세요".localized), animated: false, completion: nil)
+            present(UIAlertController.simpleAlert(title: "네트워크 오류 [\(error.rawValue)]".localized, message: "네트워크 연결을 확인해 주세요".localized), animated: false, completion: nil)
+            
         case .errorAudioFinalize, .errorAudioInitialize, .errorAudioRecord :
             present(UIAlertController.simpleAlert(title: "오디오 오류 [\(error.rawValue)]".localized), animated: false, completion: nil)
             
