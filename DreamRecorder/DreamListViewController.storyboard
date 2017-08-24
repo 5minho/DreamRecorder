@@ -6,6 +6,7 @@
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12089"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
         <capability name="Navigation items with more than one left or right bar item" minToolsVersion="7.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -28,15 +29,15 @@
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <color key="sectionIndexBackgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="DreamListCell" rowHeight="80" id="EvR-lu-qFS" customClass="DreamListCell" customModule="DreamRecorder" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="28" width="320" height="80"/>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="DreamListCell" rowHeight="140" id="EvR-lu-qFS" customClass="DreamListCell" customModule="DreamRecorder" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="28" width="320" height="140"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="EvR-lu-qFS" id="Pmr-Ei-qzb">
-                                            <rect key="frame" x="0.0" y="0.0" width="320" height="79.5"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="320" height="139.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="20" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YsF-IN-mQV">
-                                                    <rect key="frame" x="32" y="5" width="42" height="30"/>
+                                                    <rect key="frame" x="32" y="8" width="42" height="30"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" secondItem="YsF-IN-mQV" secondAttribute="height" multiplier="7:5" id="TFI-lM-mFQ"/>
                                                     </constraints>
@@ -45,22 +46,19 @@
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="FEB" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zZ0-Az-eGx">
-                                                    <rect key="frame" x="32" y="42.5" width="42" height="21"/>
-                                                    <constraints>
-                                                        <constraint firstAttribute="width" secondItem="zZ0-Az-eGx" secondAttribute="height" multiplier="2:1" id="1uU-IE-HWE"/>
-                                                    </constraints>
+                                                    <rect key="frame" x="32" y="46" width="30" height="77.5"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="7:00 AM" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jPy-z7-IeS">
-                                                    <rect key="frame" x="95.5" y="12" width="51" height="16"/>
+                                                    <rect key="frame" x="96.5" y="15" width="51" height="16"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="My Dream Name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ub0-Iu-qLE">
-                                                    <rect key="frame" x="96" y="39" width="150" height="24"/>
+                                                    <rect key="frame" x="70" y="99" width="150" height="24"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="20"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
@@ -68,13 +66,14 @@
                                             </subviews>
                                             <constraints>
                                                 <constraint firstItem="YsF-IN-mQV" firstAttribute="leading" secondItem="Pmr-Ei-qzb" secondAttribute="centerX" multiplier="0.2" id="Arb-jq-j3m"/>
-                                                <constraint firstItem="YsF-IN-mQV" firstAttribute="centerY" secondItem="Pmr-Ei-qzb" secondAttribute="centerY" multiplier="0.5" id="EuA-uO-eyU"/>
                                                 <constraint firstItem="ub0-Iu-qLE" firstAttribute="bottom" secondItem="zZ0-Az-eGx" secondAttribute="bottom" id="NQi-26-JI2"/>
                                                 <constraint firstItem="jPy-z7-IeS" firstAttribute="leading" secondItem="YsF-IN-mQV" secondAttribute="trailing" multiplier="1.3" id="SuC-yw-goU"/>
-                                                <constraint firstItem="ub0-Iu-qLE" firstAttribute="leading" secondItem="jPy-z7-IeS" secondAttribute="leading" id="U2c-Ku-afn"/>
                                                 <constraint firstItem="jPy-z7-IeS" firstAttribute="centerY" secondItem="YsF-IN-mQV" secondAttribute="centerY" id="ZGF-eM-Vyo"/>
+                                                <constraint firstItem="zZ0-Az-eGx" firstAttribute="top" secondItem="YsF-IN-mQV" secondAttribute="bottom" constant="8" id="aTM-jr-ZVP"/>
+                                                <constraint firstItem="ub0-Iu-qLE" firstAttribute="leading" secondItem="zZ0-Az-eGx" secondAttribute="trailing" constant="8" id="gkI-cI-Kng"/>
+                                                <constraint firstItem="YsF-IN-mQV" firstAttribute="top" secondItem="Pmr-Ei-qzb" secondAttribute="top" constant="8" id="hWK-ZM-WjB"/>
                                                 <constraint firstItem="zZ0-Az-eGx" firstAttribute="leading" secondItem="YsF-IN-mQV" secondAttribute="leading" id="iQ8-ce-PYB"/>
-                                                <constraint firstAttribute="centerY" secondItem="zZ0-Az-eGx" secondAttribute="centerY" multiplier="0.75" id="sKk-2G-wkp"/>
+                                                <constraint firstAttribute="bottomMargin" secondItem="zZ0-Az-eGx" secondAttribute="bottom" constant="8" id="q86-KY-JNz"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                         <connections>
