@@ -14,12 +14,16 @@ protocol AlarmEditViewControllerDelegate: NSObjectProtocol {
 
 class AlarmEditViewController: UIViewController {
     
-    // MARK: Properties.
+    // MARK: - Properties.
     // SubViews.
     @IBOutlet weak var tableView: UITableView!
-    var datePicker: UIDatePicker!
+    private var datePicker: UIDatePicker!
     
     // Internal.
+    
+    // DatePicker나 Cell 액션에 의해 Alarm객체의 프로퍼티가 바로 변경되는데 이때 취소되었을 때 같은 참조값을 가지고 있던
+    // alarm(AlarmListViewController에서 참고하고 있는)은 변경되지 않게 하기 위해 alarm객체를 복사하여 editingAlarm로 가지고 있는다.
+    // alarm은 RightBarButton(Done Button)이 눌리기 전까지는 더이상 참조하지 않는다.
     var alarm: Alarm? {
         didSet {
             self.editingAlarm = self.alarm?.copy() as? Alarm
@@ -28,12 +32,14 @@ class AlarmEditViewController: UIViewController {
     var editingAlarm: Alarm?
     weak var delegate: AlarmEditViewControllerDelegate?
     
-    // MARK: Actions.
+    // MARK: - Actions.
+    // NavigationItem.
     func leftBarButtonDidTap(sender: UIBarButtonItem) {
         self.dismiss(animated: true, completion: nil)
     }
     
     func rightBarButtonDidTap(sender: UIBarButtonItem) {
+        
         guard let editedAlarm = self.editingAlarm else { return }
         guard let originalAlarm = self.alarm else { return }
         
@@ -42,8 +48,8 @@ class AlarmEditViewController: UIViewController {
         originalAlarm.weekday = editedAlarm.weekday
         originalAlarm.sound = editedAlarm.sound
         originalAlarm.isSnooze = editedAlarm.isSnooze
+        
         self.dismiss(animated: true, completion: {
-            [unowned self] in
             self.delegate?.alarmEditViewController(self, didSaveEditedAlarm: originalAlarm)
         })
     }
@@ -53,7 +59,7 @@ class AlarmEditViewController: UIViewController {
         editingAlarm.date = sender.date
     }
     
-    // MARK: View Cycle.
+    // MARK: - View Cycle.
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -61,23 +67,30 @@ class AlarmEditViewController: UIViewController {
         
         self.tableView.delegate = self
         self.tableView.dataSource = self
-        self.tableView.tableFooterView = UIView(frame: .zero)
         
         self.datePicker = UIDatePicker()
         self.datePicker.date = self.alarm?.date ?? Date()
         self.datePicker.datePickerMode = .time
+        self.datePicker.setValue(UIColor.dreamTextColor1, forKey: "textColor")
         self.datePicker.addTarget(self, action: #selector(self.datePickerValueDidChange(sender:)), for: .valueChanged)
         self.tableView.tableHeaderView = self.datePicker
         
-        let leftBarButton = UIBarButtonItem(title: "Cancel".localized, style: .plain, target: self, action: #selector(self.leftBarButtonDidTap(sender:)))
+        let leftBarButton = UIBarButtonItem(title: "Cancel".localized,
+                                            style: .plain,
+                                            target: self,
+                                            action: #selector(self.leftBarButtonDidTap(sender:)))
+        let rightBarButton = UIBarButtonItem(title: "Save".localized,
+                                             style: .done,
+                                             target: self,
+                                             action: #selector(self.rightBarButtonDidTap(sender:)))
         self.navigationItem.setLeftBarButton(leftBarButton, animated: true)
-        
-        let rightBarButton = UIBarButtonItem(title: "Save".localized, style: .done, target: self, action: #selector(self.rightBarButtonDidTap(sender:)))
         self.navigationItem.setRightBarButton(rightBarButton, animated: true)
+        
+        self.title = "Edit Alarm".localized
     }
 }
 
-// MARK: TableView DataSourcem Delegate.
+// MARK: - TableView DataSourcem Delegate.
 extension AlarmEditViewController: UITableViewDataSource, UITableViewDelegate {
     // TableView DataSource.
     func numberOfSections(in tableView: UITableView) -> Int {
@@ -91,71 +104,91 @@ extension AlarmEditViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "AlarmDetailCell", for: indexPath) as? AlarmDetailCell else { return UITableViewCell() }
-        guard let style = AlarmDetailCellStyle(rawValue: indexPath.row) else { return UITableViewCell() }
+        guard let cellStyle = AlarmDetailCellStyle(rawValue: indexPath.row) else { return UITableViewCell() }
         guard let editingAlarm = self.editingAlarm else { return UITableViewCell() }
         
-        cell.cellStyle = style
+        cell.cellStyle = cellStyle
         cell.delegate = self
         
-        switch indexPath.row {
-        case AlarmDetailCellStyle.repeat.rawValue:
+        switch cellStyle {
+        case .repeat:
             guard let weekdayButtonsAccessoryView = cell.weekdayButtonAccessoryView else { break }
             weekdayButtonsAccessoryView.setSelection(options: editingAlarm.weekday)
             
-        case AlarmDetailCellStyle.label.rawValue:
+        case .label:
             cell.detailTextLabel?.text = editingAlarm.name
             
-        case AlarmDetailCellStyle.sound.rawValue:
+        case .sound:
             cell.detailTextLabel?.text = editingAlarm.sound.soundTitle
             
-        case AlarmDetailCellStyle.snooze.rawValue:
+        case .snooze:
             guard let switchAccessoryView = cell.switchAccessoryView else { break }
             switchAccessoryView.isOn = editingAlarm.isSnooze
-            
-        default:
-            break
         }
         return cell
     }
     
-    // MARK: TableView Delegate.
-    // @discussion      Handle only label, sound cell.
-    //                  Other cells have accessoryView action that is called by cell delegate.
+    // MARK: - TableView Delegate.
+    
+    // didSelectRow에서는 오직 Label과 Sound 셀만 처리한다.
+    // 나머지 다른 셀(Repeat, Snooze)는 AccessoryView의 Action에 대응해야한다.
+    // AccessoryView의 Action은 커스텀 셀인 AlarmDetailCell의 Delegate에 정의되어 있다.
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
         tableView.deselectRow(at: indexPath, animated: true)
         
-        switch indexPath.row {
-        case AlarmDetailCellStyle.label.rawValue:
+        guard let cellStyle = AlarmDetailCellStyle(rawValue: indexPath.row) else { return }
+        
+        switch cellStyle {
+        case .label:
+            
             let alertController = UIAlertController(title: "Alarm Label".localized, message: nil, preferredStyle: .alert)
             alertController.addTextField(configurationHandler: {
                 [unowned self] (textField) in
                 textField.text = self.editingAlarm?.name
+                textField.clearButtonMode = .always
             })
-            let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
-            let doneAction = UIAlertAction(title: "Done", style: .default, handler: {
+            
+            let cancelAction = UIAlertAction(title: "Cancel".localized, style: .cancel, handler: nil)
+            let doneAction = UIAlertAction(title: "Done".localized, style: .default, handler: {
                 [unowned self, unowned tableView] (action) in
+                
                 guard let text = alertController.textFields?.first?.text else { return }
+                
+                let labelCell = tableView.cellForRow(at: indexPath)
+                labelCell?.detailTextLabel?.text = text
+                
                 self.editingAlarm?.name = text
-                tableView.cellForRow(at: indexPath)?.detailTextLabel?.text = text
             })
+            
             alertController.addAction(doneAction)
             alertController.addAction(cancelAction)
+            
             self.present(alertController, animated: true, completion: nil)
-        case AlarmDetailCellStyle.sound.rawValue:
+            
+        case .sound:
+            
             guard let alarmSoundListViewController = AlarmSoundListViewController.storyboardInstance() else { return }
+            
             alarmSoundListViewController.delegate = self
             alarmSoundListViewController.alarm = self.editingAlarm
+            
             self.navigationController?.pushViewController(alarmSoundListViewController, animated: true)
+        
         default:
-            // Another cell have AccessoryView Action that is called by cell delegate.
+            // Repeat과 Snooze셀은 셀을 눌럿을 때는 아무것도 하지 않는다.
+            // 그들은 오직 AccessoryView의 Action을 통해서 alarm의 프로퍼티를 변경한다.
             break
         }
     }
 }
 
-// MARK: AccessoryView Actions.
+// MARK: - AccessoryView Actions.
 extension AlarmEditViewController: AlarmDetailCellDelegate {
-    // MARK: AlarmDetailCellDelegate
+    // MARK: - AlarmDetailCellDelegate
+    
+    // 요일 버튼이 클릭됐을 때 불리는 delegate 메서드.
+    // 각 버튼을 해당 순차적으로 요일을 해당하며 WeekdayOptions를 통해서 alarm객체를 수정한다.
     func alarmDetailCell(_: AlarmDetailCell, repeatButtonDidTouchUp button: UIButton, at index: Int) {
         let weekday = WeekdayOptions(rawValue: 1 << index)
         
@@ -166,13 +199,14 @@ extension AlarmEditViewController: AlarmDetailCellDelegate {
         }
     }
     
+    // 스위치 버튼의 값이 변경됐을 때 불리는 delegate 메서드.
     func alarmDetailCell(_: AlarmDetailCell, snoozeSwitchValueChanged sender: UISwitch) {
         self.editingAlarm?.isSnooze = sender.isOn
     }
 }
 
 extension AlarmEditViewController: AlarmSoundListViewControllerDelegate {
-    // MARK: AlarmSoundListViewController Delegate.
+    // MARK: - AlarmSoundListViewController Delegate.
     func alarmSoundListViewController(_ controller: AlarmSoundListViewController, didChangeSoundName: String) {
         let soundCellIndexPath = IndexPath(row: AlarmDetailCellStyle.sound.rawValue, section: 0)
         self.tableView.reloadRows(at: [soundCellIndexPath], with: .automatic)
@@ -180,7 +214,7 @@ extension AlarmEditViewController: AlarmSoundListViewControllerDelegate {
 }
 
 extension AlarmEditViewController: ThemeAppliable {
-    // MARK: ThemeAppliable.
+    // MARK: - ThemeAppliable.
     var themeStyle: ThemeStyle {
         return .alarm
     }
@@ -190,7 +224,7 @@ extension AlarmEditViewController: ThemeAppliable {
 }
 
 extension AlarmEditViewController {
-    // MARK: Storyboard Instance.
+    // MARK: - Storyboard Instance.
     class func storyboardInstance() -> AlarmEditViewController? {
         let storyboard = UIStoryboard(name: String(describing: self), bundle: nil)
         return storyboard.instantiateInitialViewController() as? AlarmEditViewController

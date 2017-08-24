@@ -8,83 +8,7 @@
 
 import UIKit
 import AVFoundation
-import UserNotifications
 import MediaPlayer
-
-extension UILocalNotification: Comparable {
-    
-    public static func <(lhs: UILocalNotification, rhs: UILocalNotification) -> Bool {
-        guard let leftFireDate = lhs.fireDate else { return false }
-        guard let rightFireDate = rhs.fireDate else { return false }
-        
-        return (leftFireDate.compare(rightFireDate) == .orderedDescending)
-    }
-    
-    public static func <=(lhs: UILocalNotification, rhs: UILocalNotification) -> Bool {
-        guard let leftFireDate = lhs.fireDate else { return false }
-        guard let rightFireDate = rhs.fireDate else { return false }
-        
-        return (leftFireDate.compare(rightFireDate) == .orderedDescending) ||
-                (leftFireDate.compare(rightFireDate) == .orderedSame)
-    }
-
-    public static func >=(lhs: UILocalNotification, rhs: UILocalNotification) -> Bool {
-        guard let leftFireDate = lhs.fireDate else { return false }
-        guard let rightFireDate = rhs.fireDate else { return false }
-        
-        return (leftFireDate.compare(rightFireDate) == .orderedAscending) ||
-                (leftFireDate.compare(rightFireDate) == .orderedSame)
-    }
-
-    public static func >(lhs: UILocalNotification, rhs: UILocalNotification) -> Bool {
-        guard let leftFireDate = lhs.fireDate else { return false }
-        guard let rightFireDate = rhs.fireDate else { return false }
-        
-        return (leftFireDate.compare(rightFireDate) == .orderedAscending)
-    }
-}
-
-@available(iOS 10.0, *)
-extension UNNotificationRequest: Comparable {
-    
-    public static func <(lhs: UNNotificationRequest, rhs: UNNotificationRequest) -> Bool {
-        guard let leftTrigger = lhs.trigger as? UNCalendarNotificationTrigger else { return false }
-        guard let rightTrigger = rhs.trigger as? UNCalendarNotificationTrigger else { return false }
-        guard let leftTriggerDate = leftTrigger.nextTriggerDate() else { return false }
-        guard let rightTriggerDate = rightTrigger.nextTriggerDate() else { return false }
-        
-        return (leftTriggerDate.compare(rightTriggerDate) == .orderedDescending)
-    }
-
-    public static func <=(lhs: UNNotificationRequest, rhs: UNNotificationRequest) -> Bool {
-        guard let leftTrigger = lhs.trigger as? UNCalendarNotificationTrigger else { return false }
-        guard let rightTrigger = rhs.trigger as? UNCalendarNotificationTrigger else { return false }
-        guard let leftTriggerDate = leftTrigger.nextTriggerDate() else { return false }
-        guard let rightTriggerDate = rightTrigger.nextTriggerDate() else { return false }
-        
-        return (leftTriggerDate.compare(rightTriggerDate) == .orderedDescending) ||
-                (leftTriggerDate.compare(rightTriggerDate) == .orderedSame)
-    }
-
-    public static func >=(lhs: UNNotificationRequest, rhs: UNNotificationRequest) -> Bool {
-        guard let leftTrigger = lhs.trigger as? UNCalendarNotificationTrigger else { return false }
-        guard let rightTrigger = rhs.trigger as? UNCalendarNotificationTrigger else { return false }
-        guard let leftTriggerDate = leftTrigger.nextTriggerDate() else { return false }
-        guard let rightTriggerDate = rightTrigger.nextTriggerDate() else { return false }
-        
-        return (leftTriggerDate.compare(rightTriggerDate) == .orderedAscending) ||
-                (leftTriggerDate.compare(rightTriggerDate) == .orderedSame)
-    }
-    
-    public static func >(lhs: UNNotificationRequest, rhs: UNNotificationRequest) -> Bool {
-        guard let leftTrigger = lhs.trigger as? UNCalendarNotificationTrigger else { return false }
-        guard let rightTrigger = rhs.trigger as? UNCalendarNotificationTrigger else { return false }
-        guard let leftTriggerDate = leftTrigger.nextTriggerDate() else { return false }
-        guard let rightTriggerDate = rightTrigger.nextTriggerDate() else { return false }
-        
-        return (leftTriggerDate.compare(rightTriggerDate) == .orderedAscending)
-    }
-}
 
 extension Notification.Name {
     static let SoundManagerAlarmPlayerDidEnd = Notification.Name("SoundManagerAlarmPlayerDidEnd")
@@ -235,9 +159,12 @@ class SoundManager: NSObject {
         self.perform(#selector(self.fadeInAlarmPlayerSound), with: nil, afterDelay: 0.1)
     }
     
-    /// 알람음을 중지시킨다.
-    /// AVPlayer should be removed from NotificationCenter, Otherwise playAlarmSoundRepeatly will be called continuously.
-    /// post SoundManagerDidPlayAlarmToEnd that might update next trigger date.
+    /**
+        알람음을 중지시킨다.
+     
+        AVPlayer should be removed from NotificationCenter, Otherwise playAlarmSoundRepeatly will be called continuously.
+        post SoundManagerDidPlayAlarmToEnd that might update next trigger date.
+     **/
     func pauseAlarm(){
         
         // iOS9 이상부터 deinit될 때 removeObserver를 부를 필요가 없어졌다.

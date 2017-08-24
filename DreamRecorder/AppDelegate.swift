@@ -19,13 +19,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
 
         // Apply Theme.
+        
         UIBarButtonItem.appearance().setTitleTextAttributes([NSForegroundColorAttributeName : UIColor.defaultButtonTitleColor], for: .normal)
         UINavigationBar.appearance().tintColor = UIColor.white
         UISearchBar.appearance().barTintColor = UIColor.dreamPink
         UISearchBar.appearance().tintColor = UIColor.white
         UITextField.appearance(whenContainedInInstancesOf: [UISearchBar.self]).tintColor = UIColor.white
-
-
+        UIApplication.shared.statusBarStyle = .lightContent
+        
+        
         let audioSession = AVAudioSession.sharedInstance()
         do {
             try audioSession.setCategory(AVAudioSessionCategoryPlayback, with: .mixWithOthers)
@@ -92,8 +94,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func applicationWillResignActive(_ application: UIApplication) {
         // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
         // Use this method to pause ongoing tasks, disable timers, and invalidate graphics rendering callbacks. Games should use this method to pause the game.
-//        AlarmDataStore.shared.scheduler.soundManager.registerBackgroundSoundToAlarm()
-//        AlarmDataStore.shared.scheduler.duplicateNotificationByFollowingAlarm()
+        AlarmScheduler.shared.duplicateNotificationForNextAlarm()
     }
 
     func applicationDidEnterBackground(_ application: UIApplication) {
@@ -103,6 +104,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func applicationWillEnterForeground(_ application: UIApplication) {
         // Called as part of the transition from the background to the active state; here you can undo many of the changes made on entering the background.
+        print("willEndeter")
         if (SoundManager.shared.isPlayingAlarm) {
             if let nextAlarm = SoundManager.shared.nextAlarm {
                 self.presentAlarmAlertViewController(withAlertAlarm: nextAlarm)
@@ -129,7 +131,6 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
     // Handle LocalNotification.
     func application(_ application: UIApplication, didReceive notification: UILocalNotification) {
         print("Local - didReceive")
-        print(notification.category)
     }
     
     func application(_ application: UIApplication, handleActionWithIdentifier identifier: String?, for notification: UILocalNotification, completionHandler: @escaping () -> Void) {
@@ -144,10 +145,15 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
     @available(iOS 10.0, *)
     func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
         print("User - present")
-        AlarmScheduler.shared.updateNotificationsIfNeeded()
-        if let presentedAlarm = AlarmDataStore.shared.alarm(withNotificationIdentifier: notification.request.identifier) {
-            self.presentAlarmAlertViewController(withAlertAlarm: presentedAlarm)
+        
+        guard let alertingAlarm = AlarmDataStore.shared.alarm(withNotificationIdentifier: notification.request.identifier) else { return }
+        self.presentAlarmAlertViewController(withAlertAlarm: alertingAlarm)
+        
+        if alertingAlarm.weekday == .none {
+            alertingAlarm.isActive = false
         }
+        AlarmDataStore.shared.updateAlarm(alarm: alertingAlarm)
+        
         completionHandler([.alert, .sound])
     }
     
@@ -155,10 +161,8 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
     func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
         print("User - response")
 
-        guard let alarmAlertViewController = AlarmAlertViewController.storyboardInstance() else { return }
-        alarmAlertViewController.modalTransitionStyle = .crossDissolve
-        alarmAlertViewController.alertAlarm = AlarmDataStore.shared.alarm(withNotificationIdentifier: response.notification.request.identifier)
-        self.window?.rootViewController?.present(alarmAlertViewController, animated: true, completion: nil)
+        guard let alertingAlarm = AlarmDataStore.shared.alarm(withNotificationIdentifier: response.notification.request.identifier) else { return }
+        self.presentAlarmAlertViewController(withAlertAlarm: alertingAlarm)
         
         completionHandler()
     }

@@ -26,3 +26,12 @@
 "Label" = "Label";
 "Sound" = "Sound";
 "Snooze" = "Snooze";
+"This alarm is not active." = "This alarm is not active";
+"Do you want to activate this alarm?" = "Do you want to activate this alarm?";
+"Unknown title" = "Unknown title";
+
+"Once." = "Once.";
+"Repeat Weekday." = "Repeat Weekday.";
+"Repeat Weekend." = "Repeat Weekend.";
+"Repeat every day." = "Repeat every day.";
+"Repeat." = "Repeat.";
