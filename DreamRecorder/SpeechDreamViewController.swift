@@ -17,6 +17,8 @@ class SpeechDreamViewController : UIViewController {
     @IBOutlet weak var recordButton: RecordButton!
     @IBOutlet weak var leftTimeLabel: UILabel!
     
+    fileprivate let userLangauge = NSKRecognizerLanguageCode(rawValue : UserDefaults.standard.integer(forKey: "languege"))
+    
     fileprivate var previousText : String = ""
     fileprivate var defaultText : String = ""
     fileprivate var equalCount = 0
@@ -32,14 +34,26 @@ class SpeechDreamViewController : UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.recordButton.isEnabled = self.shouldCheckRecordPermission()
+        AVAudioSession.sharedInstance().requestRecordPermission({ granted in
+            if granted == false {
+                self.recordButton.isEnabled = false
+            }
+        })
+    
         todayLabel.text = DateParser().detail(from: Date())
+        
         setContentFieldLayer()
         self.applyThemeIfViewDidLoad()
+        
+        self.todayLabel.textColor = UIColor.dreamLightPink
+        self.leftTimeLabel.textColor = UIColor.dreamTextColor3
+        self.contentField.font = UIFont.body
+        self.contentField.textColor = UIColor.dreamLightPink
         
     }
     
     let audioDispatch = DispatchQueue(label: "audioSerialQueue")
+    
     
     required init?(coder aDecoder: NSCoder) {
         
@@ -123,26 +137,6 @@ class SpeechDreamViewController : UIViewController {
         
     }
     
-    private func shouldCheckRecordPermission() -> Bool {
-        
-        let recordPermission = AVAudioSession.sharedInstance().recordPermission()
-        switch recordPermission {
-            
-        case AVAudioSessionRecordPermission.granted :
-            return true
-            
-        case AVAudioSessionRecordPermission.denied:
-            return false
-            
-        case AVAudioSessionRecordPermission.undetermined :
-            return true
-            
-        default :
-            return true
-            
-        }
-    }
-    
     private func openURLforMicroPhoneAccess(action : UIAlertAction) {
         
         if let url = URL(string: "App-prefs:root=Privacy&path=MICROPHONE") {
@@ -167,7 +161,7 @@ class SpeechDreamViewController : UIViewController {
         
         let contentFieldLayer = self.contentField.layer
         contentFieldLayer.borderWidth = 1
-        contentFieldLayer.borderColor = UIColor.black.cgColor
+        contentFieldLayer.borderColor = UIColor.dreamBorderColor.cgColor
         
     }
     
@@ -199,15 +193,21 @@ class SpeechDreamViewController : UIViewController {
         
         if speechRecognizer.isRunning == false {
             
-            speechRecognizer.start(with: .korean)
-            self.recordButton.recordState = .recording
-            asyncSetAudioCategory(AVAudioSessionCategoryRecord)
+            guard let langauge = userLangauge else {
+                return
+            }
             
+            self.recordButton.recordState = .recording
+            
+            asyncSetAudioCategory(AVAudioSessionCategoryRecord) {
+                self.speechRecognizer.start(with: langauge)
+            }
+    
         }
         
     }
     
-    private func inActivateRecognizer() {
+    fileprivate func inActivateRecognizer() {
         
         if speechRecognizer.isRunning {
             
@@ -222,7 +222,15 @@ class SpeechDreamViewController : UIViewController {
         
         audioDispatch.async {
             
-            try? AVAudioSession.sharedInstance().setCategory(category)
+            let audioSession = AVAudioSession.sharedInstance()
+            do {
+                try audioSession.setCategory(AVAudioSessionCategoryRecord)
+                try audioSession.setMode(AVAudioSessionModeMeasurement)
+                try audioSession.setActive(true, with: .notifyOthersOnDeactivation)
+            } catch {
+                print("audioSession properties weren't set because of an error.")
+            }
+            
             if let completeHandler = completion {
                 completeHandler()
             }
@@ -256,7 +264,7 @@ extension SpeechDreamViewController : NSKRecognizerDelegate {
             return
         }
         
-        asyncSetAudioCategory(AVAudioSessionCategorySoloAmbient)
+        //asyncSetAudioCategory(AVAudioSessionCategorySoloAmbient)
         
     }
     
@@ -296,6 +304,7 @@ extension SpeechDreamViewController : NSKRecognizerDelegate {
     
     public func recognizer(_ aRecognizer: NSKRecognizer!, didReceiveError aError: Error!) {
         print("Error: \(aError)")
+        
         finishTimer()
         recordButton.recordState = .idle
         
