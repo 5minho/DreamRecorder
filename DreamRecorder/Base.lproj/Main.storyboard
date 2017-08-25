@@ -4,14 +4,16 @@
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
+        <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12089"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--Tab Bar Controller-->
+        <!--Main Tab Bar View Controller-->
         <scene sceneID="vxw-uY-ldm">
             <objects>
-                <tabBarController id="vaX-0e-7Cd" sceneMemberID="viewController">
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Rub-bP-LLk" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <tabBarController id="vaX-0e-7Cd" customClass="MainTabBarViewController" customModule="DreamRecorder" customModuleProvider="target" sceneMemberID="viewController">
                     <tabBar key="tabBar" contentMode="scaleToFill" id="CVr-pP-f3i">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="49"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -20,9 +22,9 @@
                     <connections>
                         <segue destination="tt2-UU-CfS" kind="relationship" relationship="viewControllers" id="jNK-J4-gEN"/>
                         <segue destination="nMf-FN-y00" kind="relationship" relationship="viewControllers" id="6yk-xa-mlq"/>
+                        <segue destination="bIM-gv-YMm" kind="relationship" relationship="viewControllers" id="Eyt-Qi-Xt5"/>
                     </connections>
                 </tabBarController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="Rub-bP-LLk" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-586" y="-50"/>
         </scene>
@@ -45,6 +47,16 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Xhj-QX-kEs" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="398" y="219"/>
+        </scene>
+        <!--SettingViewController-->
+        <scene sceneID="ulm-sk-9lj">
+            <objects>
+                <viewControllerPlaceholder storyboardName="SettingViewController" id="bIM-gv-YMm" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="Item" id="fBP-gn-0UN"/>
+                </viewControllerPlaceholder>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="2LU-rN-NO1" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="382" y="463"/>
         </scene>
     </scenes>
 </document>

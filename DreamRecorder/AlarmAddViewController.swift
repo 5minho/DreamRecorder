@@ -52,6 +52,7 @@ class AlarmAddViewController: UIViewController {
         
         self.tableView.delegate = self
         self.tableView.dataSource = self
+        self.tableView.estimatedRowHeight = 44
         
         self.datePicker = UIDatePicker()
         self.datePicker.datePickerMode = .time
@@ -93,6 +94,9 @@ extension AlarmAddViewController: UITableViewDataSource, UITableViewDelegate {
         
         cell.cellStyle = cellStyle
         cell.delegate = self
+        
+        cell.textLabel?.textColor = UIColor.dreamTextColor1
+        cell.detailTextLabel?.textColor = UIColor.dreamTextColor2
         
         switch cellStyle {
             

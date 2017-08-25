@@ -64,18 +64,32 @@ class AlarmListViewController: UIViewController {
         self.navigationItem.setLeftBarButton(leftBarButton, animated: true)
         self.navigationItem.setRightBarButton(rightBarButton, animated: true)
         
+        self.title = "Alarm".localized
+        
+        self.registerForPreviewing(with: self, sourceView: self.view)
+        
         NotificationCenter.default.addObserver(self,
                                                selector: #selector(self.handleAlarmDataStoreDidChange),
-                                               name: Notification.Name.AlarmDataStoreDidChange,
+                                               name: .AlarmDataStoreDidChange,
                                                object: nil)
+        NotificationCenter.default.addObserver(forName: .UIContentSizeCategoryDidChange,
+                                               object: nil,
+                                               queue: OperationQueue.main)
+        { _ in
+            DispatchQueue.main.async {
+                self.tableView.isHidden = true
+                CustomFont.current.reloadFont()
+                self.tableView.reloadData()
+                self.tableView.isHidden = false
+            }
+        }
         
-        self.title = "Alarm".localized
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        
-        self.applyThemeIfViewWillAppear()
+        NotificationCenter.default.addObserver(forName: Notification.Name.DreamRecorderFontDidChange,
+                                               object: nil,
+                                               queue: .main)
+        { (_) in
+            self.tableView.reloadData()
+        }
     }
     
     override func viewDidDisappear(_ animated: Bool) {
@@ -132,6 +146,11 @@ extension AlarmListViewController: UITableViewDelegate, UITableViewDataSource {
         cell.delegate = self
         cell.activeSwitch.tag = indexPath.row
         cell.weekdayButton.setButtonsEnabled(to: false)
+        
+        // Update Font If ContentSizeCategoryDidChange
+        cell.timeLabel.font = UIFont.title1
+        cell.nameLabel.font = UIFont.body
+        cell.weekdayButton.setFonts(to: UIFont.caption1)
         
         return cell
     }
@@ -296,6 +315,76 @@ extension AlarmListViewController: AlarmAddViewControllerDelegate, AlarmEditView
             self.tableView.reloadRows(at: [editedIndexPath], with: .automatic)
         }
     }
+}
+
+extension AlarmListViewController: AlarmStateViewControllerDelegate {
+    // MARK: - AlarmStateViewController Delegate.
+    func alarmStateViewController(_ controller: AlarmStateViewController, didActivePrewviewAction alarm: Alarm) {
+        
+        guard let activatedRow = self.store.alarms.index(of: alarm) else { return }
+        
+        alarm.isActive = true
+        
+        self.shouldReloadTable = false
+        
+        self.store.updateAlarm(alarm: alarm)
+        
+        let activatedIndexPath = IndexPath(row: activatedRow, section: 0)
+        self.tableView.reloadRows(at: [activatedIndexPath], with: .automatic)
+    }
+    
+    func alarmStateViewController(_ controller: AlarmStateViewController, didDeletePrewviewAction alarm: Alarm) {
+        
+        guard let deletedRow = self.store.alarms.index(of: alarm) else { return }
+        
+        alarm.isActive = true
+        
+        self.shouldReloadTable = false
+        
+        self.store.deleteAlarm(alarm: alarm)
+        
+        let deletedIndexPath = IndexPath(row: deletedRow, section: 0)
+        self.tableView.deleteRows(at: [deletedIndexPath], with: .automatic)
+    }
+}
+
+extension AlarmListViewController: UIViewControllerPreviewingDelegate {
+    // MARK: - UIViewControllerPreviewingDelegate.
+    func previewingContext(_ previewingContext: UIViewControllerPreviewing, commit viewControllerToCommit: UIViewController) {
+        guard let alarmStateViewController = viewControllerToCommit as? AlarmStateViewController else { return }
+        guard let isActiveAlarm = alarmStateViewController.currentAlarm?.isActive else { return }
+        if isActiveAlarm {
+            alarmStateViewController.view.backgroundColor = UIColor.dreamBackgroundColor
+            self.present(alarmStateViewController, animated: true, completion: nil)
+        }
+    }
+    
+    func previewingContext(_ previewingContext: UIViewControllerPreviewing, viewControllerForLocation location: CGPoint) -> UIViewController? {
+        let positionInView = self.view.convert(location, to: self.tableView)
+        
+        if let indexPath = self.tableView.indexPathForRow(at: positionInView) {
+            let pickedAlarm = AlarmDataStore.shared.alarms[indexPath.row]
+            let cellRect = self.tableView.rectForRow(at: indexPath)
+            previewingContext.sourceRect = cellRect
+            
+            guard let alarmStateViewController = AlarmStateViewController.storyboardInstance() else { return nil }
+            
+            alarmStateViewController.delegate = self
+            alarmStateViewController.presentingDelegate = self
+            alarmStateViewController.currentAlarm = pickedAlarm
+            
+            alarmStateViewController.view.backgroundColor = UIColor.white.withAlphaComponent(0.3)
+            
+            self.selectedCell = self.tableView.cellForRow(at: indexPath) as? AlarmListCell
+            self.selectedCellLabel = self.selectedCell?.timeLabel
+            
+            return alarmStateViewController
+            
+        } else {
+            return nil
+        }
+    }
+    
 }
 
 extension AlarmListViewController: ThemeAppliable {

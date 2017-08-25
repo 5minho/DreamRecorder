@@ -13,20 +13,42 @@ import AVFoundation
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
+    
+    private struct ShortcutItemType {
+        static let nextAlarm = "com.boostCamp.ios.DreamRecorder.nextAlarm"
+    }
+    func application(_ application: UIApplication, performActionFor shortcutItem: UIApplicationShortcutItem, completionHandler: @escaping (Bool) -> Void) {
+        
+        // Handle Quick Action.
+        
+        if shortcutItem.type == ShortcutItemType.nextAlarm {
+            AlarmScheduler.shared.nextTriggerDate(completionHandler: { (identifier, date) in
+                guard let alarmIdentifier = identifier else { return }
+                guard let nextAlarm = AlarmDataStore.shared.alarm(withNotificationIdentifier: alarmIdentifier) else { return }
+                
+                DispatchQueue.main.async {
+                    self.presentAlarmStateViewController(withAlertAlarm: nextAlarm)
+                    completionHandler(true)
+                }
+            })
+        }
+    }
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
         
+        // Register Quick action.
+        let icon = UIApplicationShortcutIcon(type: .alarm)
+        let item = UIApplicationShortcutItem(type: ShortcutItemType.nextAlarm, localizedTitle: "Next Alarm", localizedSubtitle: "See next alarm state", icon: icon, userInfo: nil)
+        UIApplication.shared.shortcutItems = [item]
 
         // Apply Theme.
-        
         UIBarButtonItem.appearance().setTitleTextAttributes([NSForegroundColorAttributeName : UIColor.defaultButtonTitleColor], for: .normal)
         UINavigationBar.appearance().tintColor = UIColor.white
         UISearchBar.appearance().barTintColor = UIColor.dreamPink
         UISearchBar.appearance().tintColor = UIColor.white
         UITextField.appearance(whenContainedInInstancesOf: [UISearchBar.self]).tintColor = UIColor.white
         UIApplication.shared.statusBarStyle = .lightContent
-        
         
         let audioSession = AVAudioSession.sharedInstance()
         do {
@@ -170,7 +192,7 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
 
 
 extension AppDelegate {
-    func presentAlarmAlertViewController(withAlertAlarm alarm: Alarm) {
+    @objc fileprivate func presentAlarmAlertViewController(withAlertAlarm alarm: Alarm) {
         guard let alarmAlertViewController = AlarmAlertViewController.storyboardInstance() else { return }
         alarmAlertViewController.modalTransitionStyle = .crossDissolve
         alarmAlertViewController.alertAlarm = alarm
@@ -184,6 +206,24 @@ extension AppDelegate {
         if let topViewController = lastViewController,
             type(of: topViewController) != AlarmAlertViewController.self {
             topViewController.present(alarmAlertViewController, animated: true, completion: nil)
+        }
+    }
+    
+    fileprivate func presentAlarmStateViewController(withAlertAlarm alarm: Alarm) {
+        guard let alarmStateViewController = AlarmStateViewController.storyboardInstance() else { return }
+        alarmStateViewController.currentAlarm = alarm
+        alarmStateViewController.modalTransitionStyle = .crossDissolve
+        alarmStateViewController.shouldAnimatedTransitioning = false
+        
+        var lastViewController: UIViewController? = self.window?.rootViewController
+        
+        while lastViewController?.presentedViewController != nil {
+            lastViewController = lastViewController?.presentedViewController
+        }
+        
+        if let topViewController = lastViewController,
+            type(of: topViewController) != AlarmStateViewController.self {
+            topViewController.present(alarmStateViewController, animated: true, completion: nil)
         }
     }
 }
