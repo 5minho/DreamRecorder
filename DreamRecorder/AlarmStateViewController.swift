@@ -9,6 +9,11 @@
 import UIKit
 import UserNotifications
 
+protocol AlarmStateViewControllerDelegate: NSObjectProtocol {
+    func alarmStateViewController(_ controller: AlarmStateViewController, didActivePrewviewAction alarm: Alarm)
+    func alarmStateViewController(_ controller: AlarmStateViewController, didDeletePrewviewAction alarm: Alarm)
+}
+
 class AlarmStateViewController: UIViewController {
 
     // MARK: - Properties.
@@ -28,6 +33,8 @@ class AlarmStateViewController: UIViewController {
     
     // - Internal.
     var currentAlarm: Alarm?
+    weak var delegate: AlarmStateViewControllerDelegate?
+    var shouldAnimatedTransitioning = true
     weak var presentingDelegate: CellExpandAnimatorPresentingDelegate?
     
     override func viewDidLoad() {
@@ -42,7 +49,9 @@ class AlarmStateViewController: UIViewController {
         self.hintLabel.font = UIFont.callout
         self.hintLabel.textColor = UIColor.dreamTextColor2
         
-        self.transitioningDelegate = self
+        if self.shouldAnimatedTransitioning {
+            self.transitioningDelegate = self
+        }
         
         let panGestureRecognizer = UIPanGestureRecognizer(target: self,
                                                           action: #selector(self.handlePanGestureRecognizer(sender:)))
@@ -53,6 +62,7 @@ class AlarmStateViewController: UIViewController {
         self.alarmTimeLabel.text = DateParser().time(from: currentAlarm.date)
         
         self.updateLeftTimeLabel()
+        
         self.timer = Timer.scheduledTimer(timeInterval: 1,
                                           target: self,
                                           selector: #selector(self.updateLeftTimeLabel),
@@ -67,7 +77,8 @@ class AlarmStateViewController: UIViewController {
     /// nextTrigerDate를 얻은 후에 Label(UI)업데이트는 메인 스레드로 돌린다.
     ///
     /// 반복이 없는 알람의 경우 한번 울린 후에는 00:00:00에서 멈추게 된다.
-    @objc private func updateLeftTimeLabel(){
+    func updateLeftTimeLabel(){
+        
         guard let currentAlarm = self.currentAlarm else { return }
         
         AlarmScheduler.shared.nextTriggerDate(withAlarmIdentifier: currentAlarm.id)
@@ -150,6 +161,28 @@ class AlarmStateViewController: UIViewController {
         default:
             // possible and failed state.
             break
+        }
+    }
+}
+
+extension AlarmStateViewController {
+    override var previewActionItems: [UIPreviewActionItem] {
+        
+        guard let currentAlarm = self.currentAlarm else { return [] }
+        
+        if currentAlarm.isActive {
+            let deletePreviewAction = UIPreviewAction(title: "Delete".localized, style: .destructive) { (previewAction, viewController) in
+                self.delegate?.alarmStateViewController(self, didDeletePrewviewAction: currentAlarm)
+            }
+            return [deletePreviewAction]
+        } else {
+            let activatePreviewAction = UIPreviewAction(title: "Activate".localized, style: .default) { (previewAction, viewController) in
+                self.delegate?.alarmStateViewController(self, didActivePrewviewAction: currentAlarm)
+            }
+            let deletePreviewAction = UIPreviewAction(title: "Delete".localized, style: .destructive) { (previewAction, viewController) in
+                self.delegate?.alarmStateViewController(self, didDeletePrewviewAction: currentAlarm)
+            }
+            return [activatePreviewAction, deletePreviewAction]
         }
     }
 }
