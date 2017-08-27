@@ -11,15 +11,18 @@ import XCTest
 
 class DateParserTests : XCTestCase {
     
-    func testDateParserTest() {
+    func testDateParser() {
         let dateParser = DateParser()
         
         var components : DateComponents = {
             var components = DateComponents()
-            (components.hour, components.minute) = (12, 58)
+            (components.year, components.month, components.day,components.weekday, components.hour, components.minute) =
+                (2016, 8 , 19, 3, 12, 58)
             return components
         }()
         
+        let date = Calendar(identifier: .gregorian).date(from: components)
+
         XCTAssert("12:58 PM" == dateParser.time(from: Calendar(identifier: .gregorian).date(from: components)!))
         
         (components.hour, components.minute) = (11, 0)
@@ -39,5 +42,14 @@ class DateParserTests : XCTestCase {
         
         (components.hour, components.minute) = (2, 4)
         XCTAssert("02:04 AM" == dateParser.time(from: Calendar(identifier: .gregorian).date(from: components)!))
+        
+        XCTAssert(2017 == dateParser.year(from: Date()))
+        XCTAssert(2016 == dateParser.year(from: date!))
+        
+        XCTAssert(dateParser.month(from: date!) == 8)
+        
+        XCTAssert(dateParser.day(from: date!) == "28")
+        
     }
+    
 }
