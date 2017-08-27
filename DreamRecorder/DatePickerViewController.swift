@@ -29,6 +29,9 @@ class DatePickerViewController : UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        setDatePickers()
+        setDescriptionLabel()
+        setButtonsLabel()
         
         view.backgroundColor = UIColor.clear.withAlphaComponent(0.5)
         view.isOpaque = false
@@ -79,9 +82,9 @@ class DatePickerViewController : UIViewController {
     
     @IBAction func touchUpOkButton(_ sender: UIButton) {
         
-        if selectedPeriod.from > selectedPeriod.to {
-            selectedPeriod = (selectedPeriod.to, selectedPeriod.from)
-        }
+//        if selectedPeriod.from > selectedPeriod.to {
+//            selectedPeriod = (selectedPeriod.to, selectedPeriod.from)
+//        }
         
         let dreamListViewController = self.presentingViewController as? DreamListViewController
         dreamListViewController?.currentDatePeriod = self.selectedPeriod
