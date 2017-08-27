@@ -84,6 +84,7 @@ extension Array {
     
 }
 
+<<<<<<< HEAD
 extension UIAlertController {
     
     static func simpleAlert(title: String, message : String? = nil) -> UIAlertController {
@@ -95,6 +96,48 @@ extension UIAlertController {
         return alertController
     }
     
+
+extension UIColor {
+    /// 한가지 색상을 이용하여 1x1의 이미지를 생성한다.
+    ///
+    /// UIGraphicsGetImageFromCurrentImageContext()를 통해 이미지를 얻지 못할 경우에는 UIImage()를 반환한다.
+    ///
+    /// - Parameter color: UIImage의 배경색상에 활용 될 UIColor.
+    /// - Returns: 파라미터로 전달된 UIColor를 통해 1x1의 이미지를 반환한다.
+    func shadowImage() -> UIImage {
+        defer {
+            UIGraphicsEndImageContext()
+        }
+        
+        let imageContextSize = CGSize(width: 1, height: 1)
+        UIGraphicsBeginImageContextWithOptions(imageContextSize, false, 0)
+        
+        self.setFill()
+        UIRectFill(CGRect(origin: .zero, size: CGSize(width: 1, height: 1)))
+        
+        let filledImage = UIGraphicsGetImageFromCurrentImageContext()
+        return filledImage ?? UIImage()
+    }
+}
+
+extension UIImage {
+    /// 이미지를 특정 사이즈의 이미지로 반환합니다.
+    ///
+    /// UIImageView의 같은 경우 ContentMode로 이미지의 표시여부를 조정할 수 있지만
+    /// UITabbar의 이미지로 쓰의거나 UITableViewCell에서의 image로 활용될 경우 이미지크기그대로 보여진다.
+    ///
+    /// 물론 특정 공간(셀이나 텝바)에서만 사용될 경우 이미지의 사이즈를 최소화 하여 용량을 줄이는 것이 현명하지만
+    /// Setting에 있는 UITableViewCell또한 Dynamic type을 지원하므로 Image가 같이가는 것이 보기 좋을 것이다.
+    func image(with size: CGSize) -> UIImage? {
+        defer {
+            UIGraphicsEndImageContext()
+        }
+        UIGraphicsBeginImageContextWithOptions(size, false, 0)
+        self.draw(in: CGRect(x: 0, y: 0, width: size.width, height: size.height))
+        let resizedImage = UIGraphicsGetImageFromCurrentImageContext()
+        return resizedImage
+    }
+
 }
 
 import AVFoundation

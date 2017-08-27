@@ -6,6 +6,7 @@
   Copyright © 2017년 BoostCamp. All rights reserved.
 */
 
+"Dream" = "Dream";
 "Dreams" = "Dreams";
 "title" = "제목";
 "please enter a title" = "please enter a title";
@@ -35,3 +36,8 @@
 "Repeat Weekend." = "Repeat Weekend.";
 "Repeat every day." = "Repeat every day.";
 "Repeat." = "Repeat.";
+
+// - Setting.
+"Setting" = "Setting";
+"Language" = "Language";
+"Font" = "Font";

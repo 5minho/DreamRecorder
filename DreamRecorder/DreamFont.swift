@@ -14,22 +14,41 @@ class CustomFont {
     // - Singleton.
     static let current: CustomFont = CustomFont()
     
-    // - Custom font name.
-    static var customFontName: String = {
-        return UIAccessibilityIsBoldTextEnabled() ? "HelveticaNeue-Bold" : "HelveticaNeue-Light"
+    // - Internal.
+    /// 폰트 이름 배열.
+    lazy var userFontNames: [String] = ["System",
+                                        "AppleSDGothicNeo-Light",
+                                        "HelveticaNeue-Light",
+                                        "Verdana",
+                                        "TimesNewRomanPSMT"]
+    
+    // - Private.
+    /// 폰트 이름에 해당하는 각각의 Bold체.
+    private lazy var userFontNamesBold: [String] = ["System",
+                                                    "AppleSDGothicNeo-Bold",
+                                                    "HelveticaNeue-Bold",
+                                                    "Verdana-Bold",
+                                                    "TimesNewRomanPS-BoldMT"]
+    
+    /// 사용자가 설정창에서 설정한 폰트 이름. (Bold 반영x)
+    /// 만약 시스템폰트를 사용한다면 nil을 반환.
+    lazy fileprivate var userFontName: String? = UserDefaults.standard.string(forKey: UserDefaults.UserKey.fontName)
+
+    /// 사용자가 설정한 폰트명을 가지고 Accessibility Bold Text여부를 통해 기본 또는 Bold폰트를 반환. (사이즈 반영x)
+    /// 만약 적절한 폰트명을 찾지 못하면 nil을 반환한다. 반환된 nil은 userPreferredFont에서 System폰트로 반환하게 된다.
+    lazy var styledUserFontName: String? = {
+        return self.loadStyledFontName()
     }()
     
-    // - Whether system font or custom font.
-    fileprivate var isSystemFont = UserDefaults.standard.bool(forKey: UserDefaults.UserKey.isSystemFont)
-    
     init() {
+        
         NotificationCenter.default.addObserver(forName: .UIAccessibilityBoldTextStatusDidChange,
                                                object: self,
                                                queue: OperationQueue.main)
         {
             (notification) in
             
-            CustomFont.customFontName = UIAccessibilityIsBoldTextEnabled() ? "HelveticaNeue-Bold" : "HelveticaNeue-Light"
+            self.reloadFont()
         }
     }
     
@@ -40,17 +59,30 @@ class CustomFont {
     /// - Returns: textStyle에 해당하는 폰트를 반환한다.
     fileprivate func userPreferredFont(forTextStyle textStyle: UIFontTextStyle) -> UIFont {
         let systemFont = UIFont.preferredFont(forTextStyle: textStyle)
-        if self.isSystemFont == true,
-            let customFont = UIFont(name: CustomFont.customFontName, size: systemFont.pointSize) {
-            return customFont
+        if let styledUserFontName = self.styledUserFontName {
+            let customFont = UIFont(name: styledUserFontName, size: systemFont.pointSize)
+            return customFont ?? systemFont
         } else {
             return systemFont
         }
     }
     
-    /// 폰트 설정값을 UserDefaults에서 다시 불러온다.
+    private func loadStyledFontName() -> String? {
+        guard let userFontName = self.userFontName else { return nil }
+        
+        if UIAccessibilityIsBoldTextEnabled() {
+            guard let index = self.userFontNames.index(of: userFontName) else { return nil }
+            return self.userFontNamesBold[index]
+        } else {
+            return userFontName
+        }
+    }
+    
+    /// UserDefaults에 저장된 사용자가 선택한 폰트명을 업데이트한다.(폰트 업데이트)
+    /// userPreferredFont가 참조하는 styledUserFontName의 값을 업데이트한다.(Bold업데이트)
     func reloadFont() {
-        self.isSystemFont = UserDefaults.standard.bool(forKey: UserDefaults.UserKey.isSystemFont)
+        self.userFontName = UserDefaults.standard.string(forKey: UserDefaults.UserKey.fontName)
+        self.styledUserFontName = self.loadStyledFontName()
     }
 }
 
@@ -87,6 +119,6 @@ extension UIFont {
 
 extension UserDefaults {
     struct UserKey {
-        static let isSystemFont = "isSystemFont"
+        static let fontName = "DreamRecorder.fontName"
     }
 }

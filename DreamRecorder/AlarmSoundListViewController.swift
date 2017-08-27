@@ -34,6 +34,7 @@ class AlarmSoundListViewController: UIViewController {
         
         self.tableView.delegate = self
         self.tableView.dataSource = self
+        self.tableView.estimatedRowHeight = 44
         
         self.title = "Sound".localized
     }
@@ -62,6 +63,7 @@ extension AlarmSoundListViewController: UITableViewDataSource, UITableViewDelega
         
         if indexPath.section == 0 {
             
+            cell.textLabel?.textColor = UIColor.dreamTextColor1
             cell.textLabel?.text = soundNames[indexPath.row].soundTitle
             cell.accessoryType = (editingAlarm.sound == self.soundNames[indexPath.row]) ? .checkmark : .none
             
@@ -70,6 +72,8 @@ extension AlarmSoundListViewController: UITableViewDataSource, UITableViewDelega
         } else {
             
             cell.textLabel?.text = "Pick a song".localized
+            cell.textLabel?.textColor = UIColor.dreamTextColor3
+            cell.detailTextLabel?.textColor = UIColor.dreamTextColor1
             
             if self.soundNames.contains(editingAlarm.sound) == false {
                 

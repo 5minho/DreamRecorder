@@ -45,14 +45,14 @@ class CellExpandAnimator: NSObject, UIViewControllerAnimatedTransitioning {
     
     public func animateTransition(using transitionContext: UIViewControllerContextTransitioning) {
         
-        guard let fromViewController = transitionContext.viewController(forKey: .from)  else { return }
-        guard let toViewController = transitionContext.viewController(forKey: .to) else { return }
+        guard let fromViewController = transitionContext.viewController(forKey: .from)  else { return transitionContext.completeTransition(true) }
+        guard let toViewController = transitionContext.viewController(forKey: .to) else { return transitionContext.completeTransition(true) }
         
-        guard let presentingView = self.presentingDelegate?.presentingView else { return }
-        guard let presentingLabel = self.presentingDelegate?.presentingLabel else { return }
+        guard let presentingView = self.presentingDelegate?.presentingView else { return transitionContext.completeTransition(true) }
+        guard let presentingLabel = self.presentingDelegate?.presentingLabel else { return transitionContext.completeTransition(true) }
         
-        guard let presentedView = self.presentedDelegate?.presentedView else { return }
-        guard let presentedLabel = self.presentedDelegate?.presentedLabel else { return }
+        guard let presentedView = self.presentedDelegate?.presentedView else { return transitionContext.completeTransition(true) }
+        guard let presentedLabel = self.presentedDelegate?.presentedLabel else { return transitionContext.completeTransition(true) }
         
         let fromView = (self.type == .present) ? presentingView : presentedView
         let fromLabel = (self.type == .present) ? presentingLabel : presentedLabel
@@ -60,8 +60,8 @@ class CellExpandAnimator: NSObject, UIViewControllerAnimatedTransitioning {
         let toView = (self.type == .dismiss) ? presentingView : presentedView
         let toLabel = (self.type == .dismiss) ? presentingLabel : presentedLabel
         
-        guard let fromViewInitialFrame = fromView.superview?.convert(fromView.frame, to: toViewController.view) else { return }
-        guard let fromLabelInitialFrame = fromLabel.superview?.convert(fromLabel.frame, to: toViewController.view) else { return }
+        guard let fromViewInitialFrame = fromView.superview?.convert(fromView.frame, to: toViewController.view) else { return transitionContext.completeTransition(true) }
+        guard let fromLabelInitialFrame = fromLabel.superview?.convert(fromLabel.frame, to: toViewController.view) else { return transitionContext.completeTransition(true) }
         
         // Make InteractiveLabel
         // @Disscussion.
@@ -92,7 +92,6 @@ class CellExpandAnimator: NSObject, UIViewControllerAnimatedTransitioning {
         centerXConstraint.isActive = true
         centerYConstraint.isActive = true
         
-        
         let transitionDuration = self.transitionDuration(using: transitionContext)
         
         if self.type == .present {
@@ -109,40 +108,41 @@ class CellExpandAnimator: NSObject, UIViewControllerAnimatedTransitioning {
                 
                 backgroundView.layoutIfNeeded()
                 interactiveView.frame = toView.frame
-                toViewController.view.alpha = 1
+                
             }) { (completed) in
                 backgroundView.removeFromSuperview()
                 transitionContext.completeTransition(!transitionContext.transitionWasCancelled)
-                UIView.transition(from: fromViewController.view, to: toViewController.view, duration: 0.2, options: UIViewAnimationOptions.transitionCrossDissolve, completion: nil)
                 toViewController.view.isHidden = false
             }
         } else {
             
-            guard let toViewFinalFrame = toView.superview?.convert(toView.frame, to: backgroundView) else { return }
-            guard let toLabelFinalFrame = toLabel.superview?.convert(toLabel.frame, to: backgroundView) else { return }
-            
-            transitionContext.containerView.addSubview(toViewController.view)
-            transitionContext.containerView.addSubview(backgroundView)
-            
-            let transitionDuration = self.transitionDuration(using: transitionContext)
-            centerXConstraint.constant = toLabelFinalFrame.origin.x + toLabelFinalFrame.width / 2
-            centerYConstraint.constant = toLabelFinalFrame.origin.y + toLabelFinalFrame.height / 2
-            
-            UIView.animate(withDuration: transitionDuration, animations: {
-                backgroundView.layoutIfNeeded()
-                interactiveView.frame = toViewFinalFrame
-                toViewController.view.alpha = 1
+            if let toViewFinalFrame = toView.superview?.convert(toView.frame, to: toViewController.view),
+                let toLabelFinalFrame = toLabel.superview?.convert(toLabel.frame, to: toViewController.view) {
                 
-            }) { (completed) in
-                if transitionContext.transitionWasCancelled {
-                    transitionContext.containerView.addSubview(fromViewController.view)
+                transitionContext.containerView.addSubview(toViewController.view)
+                transitionContext.containerView.addSubview(backgroundView)
+                
+                let transitionDuration = self.transitionDuration(using: transitionContext)
+                centerXConstraint.constant = toLabelFinalFrame.origin.x + toLabelFinalFrame.width / 2
+                centerYConstraint.constant = toLabelFinalFrame.origin.y + toLabelFinalFrame.height / 2
+                
+                UIView.animate(withDuration: transitionDuration, animations: {
+                    backgroundView.layoutIfNeeded()
+                    interactiveView.frame = toViewFinalFrame
+                    toViewController.view.alpha = 1
+                    
+                }) { (completed) in
+                    if transitionContext.transitionWasCancelled {
+                        transitionContext.containerView.addSubview(fromViewController.view)
+                    }
+                    
+                    transitionContext.completeTransition(!transitionContext.transitionWasCancelled)
+                    backgroundView.removeFromSuperview()
                 }
-                
+            } else {
                 transitionContext.completeTransition(!transitionContext.transitionWasCancelled)
                 backgroundView.removeFromSuperview()
             }
         }
-        
-        
     }
 }

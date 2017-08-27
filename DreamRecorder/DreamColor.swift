@@ -21,7 +21,7 @@ extension UIColor {
     
     // NEW.
     static let dreamBackgroundColor = UIColor(red:0.01, green:0.05, blue:0.12, alpha:1.00)
-    static let dreamBackgroundColorHighlighted = UIColor(red:0.02, green:0.15, blue:0.34, alpha:1.00)
+    static let dreamBackgroundColorHighlighted = UIColor(red:0.04, green:0.27, blue:0.62, alpha:1.00)
     
     static let dreamBorderColor = UIColor(red:0.07, green:0.29, blue:0.51, alpha:1.00)
     
@@ -29,6 +29,7 @@ extension UIColor {
     static let dreamTextColor2 = UIColor(red:0.53, green:0.61, blue:0.79, alpha:1.00)
     static let dreamTextColor3 = UIColor(red:0.31, green:0.44, blue:0.60, alpha:1.00)
     
+//    static let dreamTextColor4 = UIColor(red:0.99, green:0.91, blue:0.92, alpha:1.00)
     
 //    static let alarmText = UIColor(red:0.40, green:0.43, blue:0.50, alpha:1.00)
 //    static let alarmDarkText = UIColor(red:0.29, green:0.29, blue:0.29, alpha:1.00)

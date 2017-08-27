@@ -18,30 +18,9 @@ protocol ThemeAppliable {
     var themeTableView: UITableView? { get }    // 만약 UIViewController가 UITableView를 가지고 있으면 해당 UITableView를 반환시켜 테마를 적용할 수 있다.
     
     func applyThemeIfViewDidLoad()
-    func applyThemeIfViewWillAppear()
 }
 
 extension ThemeAppliable where Self: UIViewController {
-    
-    /// viewDidLoad() 안에서 applyTheme()을 호출하면 view, navigationController, tableView에 커스텀 색상 테마를 적용한다.
-    func applyThemeIfViewWillAppear() {
-        // 각각의 테마 적용.
-        if themeStyle == .dream {
-            let shadowImage = self.shadowImage(with: UIColor.dreamNavigationBarShadowColor)
-            
-            self.tabBarController?.tabBar.barTintColor = UIColor.dreamDefaultBackgroundColor
-            self.tabBarController?.tabBar.backgroundImage = UIImage()
-            self.tabBarController?.tabBar.shadowImage = shadowImage
-            self.tabBarController?.tabBar.tintColor = UIColor.white
-        } else {
-            let shadowImage = self.shadowImage(with: UIColor.dreamBorderColor)
-            
-            self.tabBarController?.tabBar.barTintColor = UIColor.dreamBackgroundColor
-            self.tabBarController?.tabBar.backgroundImage = UIImage()
-            self.tabBarController?.tabBar.shadowImage = shadowImage
-            self.tabBarController?.tabBar.tintColor = UIColor.white
-        }
-    }
 
     /// viewWillAppear() 안에서 applyTheme()을 호출하면 tabBarController에 커스텀 색상 테마를 적용한다.
     func applyThemeIfViewDidLoad(){
@@ -55,7 +34,7 @@ extension ThemeAppliable where Self: UIViewController {
         // 각각의 테마 적용.
         if themeStyle == .dream {
             
-            let shadowImage = self.shadowImage(with: UIColor.dreamNavigationBarShadowColor)
+            let shadowImage = UIColor.dreamNavigationBarShadowColor.shadowImage()
             
             self.navigationController?.navigationBar.backgroundColor = UIColor.dreamDefaultBackgroundColor
             self.navigationController?.navigationBar.shadowImage = shadowImage
@@ -71,7 +50,7 @@ extension ThemeAppliable where Self: UIViewController {
             }
         } else {
             
-            let shadowImage = self.shadowImage(with: UIColor.dreamBorderColor)
+            let shadowImage = UIColor.dreamBorderColor.shadowImage()
             
             self.navigationController?.navigationBar.backgroundColor = UIColor.dreamBackgroundColor
             self.navigationController?.navigationBar.shadowImage = shadowImage
@@ -86,27 +65,6 @@ extension ThemeAppliable where Self: UIViewController {
                 self.tabBarController?.tabBar.unselectedItemTintColor = UIColor.alarmText
             }
         }
-    }
-    
-    /// 한가지 색상을 이용하여 1x1의 이미지를 생성한다.
-    ///
-    /// UIGraphicsGetImageFromCurrentImageContext()를 통해 이미지를 얻지 못할 경우에는 UIImage()를 반환한다.
-    ///
-    /// - Parameter color: UIImage의 배경색상에 활용 될 UIColor.
-    /// - Returns: 파라미터로 전달된 UIColor를 통해 1x1의 이미지를 반환한다.
-    private func shadowImage(with color: UIColor) -> UIImage {
-        defer {
-            UIGraphicsEndImageContext()
-        }
-        
-        let imageContextSize = CGSize(width: 1, height: 1)
-        UIGraphicsBeginImageContextWithOptions(imageContextSize, false, 0)
-        
-        color.setFill()
-        UIRectFill(CGRect(origin: .zero, size: CGSize(width: 1, height: 1)))
-        
-        let filledImage = UIGraphicsGetImageFromCurrentImageContext()
-        return filledImage ?? UIImage()
     }
 }
 
