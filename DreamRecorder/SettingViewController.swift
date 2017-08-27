@@ -32,6 +32,12 @@ class SettingViewController: UIViewController {
         { (_) in
             self.tableView.reloadData()
         }
+        
+        NotificationCenter.default.addObserver(forName: Notification.Name.DreamRecorderLanguageDidChange,
+                                               object: nil,
+                                               queue: .main) { (_) in
+            self.tableView.reloadData()
+        }
     }
 }
 
@@ -71,11 +77,11 @@ extension SettingViewController: UITableViewDelegate, UITableViewDataSource {
             case 0:
                 
                 cell.textLabel?.text = "Language".localized
-                cell.detailTextLabel?.text = "Korea"
+                cell.detailTextLabel?.text = UserLangauge.names[UserDefaults.standard.integer(forKey: "language")]
                 
                 let iconHeight = cell.frame.height - 32
                 let iconSize = CGSize(width: iconHeight, height: iconHeight)
-                let iconImage = #imageLiteral(resourceName: "icon_earth").image(with: iconSize)?.withRenderingMode(.alwaysTemplate)
+                let iconImage = #imageLiteral(resourceName: "earth17").image(with: iconSize)?.withRenderingMode(.alwaysTemplate)
                 cell.imageView?.image = iconImage
 
             default:
@@ -92,7 +98,7 @@ extension SettingViewController: UITableViewDelegate, UITableViewDataSource {
                 
                 let iconHeight = cell.frame.height - 32
                 let iconSize = CGSize(width: iconHeight, height: iconHeight)
-                let iconImage = #imageLiteral(resourceName: "icon_font").image(with: iconSize)?.withRenderingMode(.alwaysTemplate)
+                let iconImage = #imageLiteral(resourceName: "font3").image(with: iconSize)?.withRenderingMode(.alwaysTemplate)
                 cell.imageView?.image = iconImage
             
             default:
@@ -107,6 +113,13 @@ extension SettingViewController: UITableViewDelegate, UITableViewDataSource {
         
         switch indexPath.section {
         case 0:
+            switch indexPath.row {
+            case 0:
+                let languageListViewController = LanguageListViewController(style: .plain)
+                self.navigationController?.pushViewController(languageListViewController, animated: true)
+            default:
+                break
+            }
             break
         case 1:
             switch indexPath.row {

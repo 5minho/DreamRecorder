@@ -7,6 +7,8 @@
 //
 
 import UIKit
+
+
 protocol SettingItemListViewControllerDelegate: NSObjectProtocol {
     var items: [String] { get }
     var currentItem: String? { get }
@@ -60,8 +62,31 @@ class SettingItemListViewController: UITableViewController {
     }
 }
 
+struct UserLangauge {
+    static let names = ["Korean", "Japanese", "English"]
+}
+
 extension Notification.Name {
     static let DreamRecorderFontDidChange = Notification.Name("DreamRecorderFontDidChange")
+    static let DreamRecorderLanguageDidChange = Notification.Name("DreamRecorderLanguageDidChange")
+}
+
+class LanguageListViewController: SettingItemListViewController, SettingItemListViewControllerDelegate {
+    
+    var items: [String] = UserLangauge.names
+    var currentItem: String? = UserLangauge.names[safe: UserDefaults.standard.integer(forKey: "language")] ?? "Korean"
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        self.delegate = self
+    }
+    
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+        UserDefaults.standard.set(indexPath.row, forKey: "language")
+        NotificationCenter.default.post(name: Notification.Name.DreamRecorderLanguageDidChange, object: nil)
+        self.navigationController?.popViewController(animated: true)
+    }
 }
 
 class FontListViewController: SettingItemListViewController, SettingItemListViewControllerDelegate {
@@ -82,3 +107,5 @@ class FontListViewController: SettingItemListViewController, SettingItemListView
         self.navigationController?.popViewController(animated: true)
     }
 }
+
+
