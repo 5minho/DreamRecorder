@@ -8,6 +8,8 @@
 
 import UIKit
 import AVFoundation
+import NaverSpeech
+
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -22,7 +24,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         UIBarButtonItem.appearance().setTitleTextAttributes([NSForegroundColorAttributeName : UIColor.defaultButtonTitleColor], for: .normal)
         UINavigationBar.appearance().tintColor = UIColor.white
-        UISearchBar.appearance().barTintColor = UIColor.dreamPink
+        
+        UISearchBar.appearance().barTintColor = UIColor.dreamDefaultBackgroundColor
         UISearchBar.appearance().tintColor = UIColor.white
         UITextField.appearance(whenContainedInInstancesOf: [UISearchBar.self]).tintColor = UIColor.white
         UIApplication.shared.statusBarStyle = .lightContent
@@ -50,6 +53,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             print("Local Noti Count: \(notifications.count)")
             // from LocalNotification to UNNotification.
         }
+        
+        
+        UserDefaults.standard.set(NSKRecognizerLanguageCode.korean.rawValue, forKey: "language")
         
         let dateParser = DateParser()
         
