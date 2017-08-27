@@ -84,7 +84,7 @@ class AlarmListViewController: UIViewController {
             }
         }
         
-        NotificationCenter.default.addObserver(forName: Notification.Name.DreamRecorderFontDidChange,
+        NotificationCenter.default.addObserver(forName: Notification.Name.AlarmDataStoreDidChange,
                                                object: nil,
                                                queue: .main)
         { (_) in
