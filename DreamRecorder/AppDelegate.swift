@@ -32,6 +32,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         
         let audioSession = AVAudioSession.sharedInstance()
+        
         do {
             try audioSession.setCategory(AVAudioSessionCategoryPlayback, with: .mixWithOthers)
             try audioSession.setActive(true)
@@ -56,31 +57,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         
         UserDefaults.standard.set(NSKRecognizerLanguageCode.korean.rawValue, forKey: "language")
-        
-        let dateParser = DateParser()
-        
-        if let fromYear = dateParser.year(from: Date()) {
-            
-            let fromMonth : Int = dateParser.month(from: Date())
-            
-            var toYear = fromYear
-            var toMonth = fromMonth + 1
-            
-            if fromMonth == 12 {
-                
-                toMonth = 1
-                toYear = fromYear + 1
-                
-            }
-            
-            DreamDataStore.shared.createTable()
-            DreamDataStore.shared.select(fromYear: fromYear,
-                                         fromMonth: fromMonth,
-                                         toYear: toYear,
-                                         toMonth: toMonth)
-            
-        }
-        
+        DreamDataStore.shared.select(period: (Date(), Date()))
         
         NotificationCenter.default.addObserver(self, selector: #selector(self.presentAlarmAlertViewController(withAlertAlarm:)), name: Notification.Name.SoundManagerAlarmPlayerDidStart, object: nil)
         
