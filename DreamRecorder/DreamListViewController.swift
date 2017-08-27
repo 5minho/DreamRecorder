@@ -22,35 +22,18 @@ class DreamListViewController : UIViewController {
     
     fileprivate var pendingFilterWorkItem: DispatchWorkItem?
     
-    var currentViewedDate = Date() {
+    var currentDatePeriod = (from: Date(), to: Date()) {
         
         didSet {
             
-            if let fromYear = dateParser.year(from: currentViewedDate) { 
-                let fromMonth : Int = dateParser.month(from: currentViewedDate)
-                
-                var toYear = fromYear
-                var toMonth = fromMonth + 1
-                
-                if fromMonth == 12 {
-                    
-                    toMonth = 1
-                    toYear = fromYear + 1
-                    
-                }
-                
-                DreamDataStore.shared.select(fromYear: fromYear,
-                                             fromMonth: fromMonth,
-                                             toYear: toYear,
-                                             toMonth: toMonth)
-                
-                self.navigationItem.title = "\(fromYear).\(fromMonth)"
-                self.tableView.reloadSections(IndexSet(integersIn: 0...0), with: .automatic)
-            }
+            DreamDataStore.shared.select(period: currentDatePeriod)
+            self.tableView.reloadSections(IndexSet(integersIn: 0...0), with: .automatic)
             
         }
         
     }
+    
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -64,13 +47,6 @@ class DreamListViewController : UIViewController {
         self.tableView.allowsSelectionDuringEditing = true
         self.dateButton.title = "Date".localized
         self.navigationItem.leftBarButtonItem = editButtonItem
-        
-        if let year = self.dateParser.year(from: currentViewedDate) {
-            
-            let month : Int = self.dateParser.month(from: currentViewedDate)
-            self.navigationItem.title = "\(year).\(month)"
-            
-        }
         
         self.addObserver()
         self.setSearchViewController()
@@ -129,7 +105,7 @@ class DreamListViewController : UIViewController {
             notification in
             
             self.tableView.insertRows(at: [IndexPath(row: 0, section: 0)], with: .automatic)
-            self.currentViewedDate = Date()
+            self.currentDatePeriod = (Date(), Date())
             
         }
         
@@ -154,13 +130,7 @@ class DreamListViewController : UIViewController {
 
         if let datePickerConroller = DatePickerViewController.storyboardInstance() {
             
-            if let year = dateParser.year(from: currentViewedDate) {
-                let month : Int = dateParser.month(from: currentViewedDate)
-                
-                    datePickerConroller.selectedDate = (year, month)
-                
-                }
-            
+            datePickerConroller.selectedPeriod = self.currentDatePeriod
             datePickerConroller.modalPresentationStyle = .overCurrentContext
             present(datePickerConroller, animated: true, completion: nil)
             

@@ -79,7 +79,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         
         UserDefaults.standard.set(NSKRecognizerLanguageCode.korean.rawValue, forKey: "language")
-        DreamDataStore.shared.select(period: (Date(), Date()))
+        if let firstDayOfCurrentMonth = DateParser().firstDayOfMonth(date: Date()) {
+            DreamDataStore.shared.select(period: (firstDayOfCurrentMonth, Date()))
+        }
+        
         
         NotificationCenter.default.addObserver(self, selector: #selector(self.presentAlarmAlertViewController(withAlertAlarm:)), name: Notification.Name.SoundManagerAlarmPlayerDidStart, object: nil)
         

@@ -21,6 +21,19 @@ struct DateParser {
         
     }()
     
+    func firstDayOfMonth(date: Date) -> Date? {
+        
+        let month = calendar.dateComponents([.month], from: date).month
+        
+        let component : DateComponents = {
+            var component = DateComponents()
+            (component.month, component.day) = (month, 1)
+            return component
+        }()
+        
+        return component.date
+    }
+    
     func time(from date : Date) -> String? {
         
         let component = calendar.dateComponents([.hour, .minute], from: date)

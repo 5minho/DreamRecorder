@@ -25,6 +25,9 @@
                                 <date key="date" timeIntervalSinceReferenceDate="525529034.26726198">
                                     <!--2017-08-27 12:17:14 +0000-->
                                 </date>
+                                <connections>
+                                    <action selector="fromDateChanged:" destination="ZdA-nH-424" eventType="valueChanged" id="6ws-X8-Nbh"/>
+                                </connections>
                             </datePicker>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="751" text="두 날짜 사이의 꿈을 검색 합니다" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="45z-sT-e0R">
                                 <rect key="frame" x="0.0" y="210.5" width="320" height="21"/>
@@ -37,6 +40,9 @@
                                 <date key="date" timeIntervalSinceReferenceDate="525529047.90403801">
                                     <!--2017-08-27 12:17:27 +0000-->
                                 </date>
+                                <connections>
+                                    <action selector="toDateChanged:" destination="ZdA-nH-424" eventType="valueChanged" id="7cW-K2-lgC"/>
+                                </connections>
                             </datePicker>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="uRv-WR-zL6">
                                 <rect key="frame" x="160" y="450" width="160" height="30"/>
