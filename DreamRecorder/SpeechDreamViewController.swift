@@ -72,7 +72,6 @@ class SpeechDreamViewController : UIViewController {
         
         self.view.endEditing(true)
         self.inActivateRecognizer()
-        self.applyThemeIfViewWillAppear()
         
     }
 
@@ -100,7 +99,7 @@ class SpeechDreamViewController : UIViewController {
                 title = "No title"
             }
             
-            let newDream = Dream(id: UUID().uuidString,
+            let newDream = Dream(id: 0,
                                  title: title, content: self.contentField.text,
                                  createdDate: Date(),
                                  modifiedDate: nil)
@@ -263,8 +262,6 @@ extension SpeechDreamViewController : NSKRecognizerDelegate {
             self.speechRecognizer.start(with: .korean)
             return
         }
-        
-        //asyncSetAudioCategory(AVAudioSessionCategorySoloAmbient)
         
     }
     

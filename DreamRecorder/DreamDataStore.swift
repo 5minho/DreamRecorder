@@ -40,7 +40,7 @@ class DreamDataStore {
         
         struct Column {
             
-            static let id = Expression<String>("id")
+            static let id = Expression<Int64>("id")
             static let title = Expression<String?>("title")
             static let content = Expression<String?>("content")
             static let createdDate = Expression<Date>("createdDate")
@@ -58,7 +58,7 @@ class DreamDataStore {
     @discardableResult func createTable() -> TableResult {
         
         let createTableResult = self.dbManager.createTable(statement: DreamTable.table.create(ifNotExists: true) { table in
-            table.column(DreamTable.Column.id, primaryKey: true)
+            table.column(DreamTable.Column.id, primaryKey: .autoincrement)
             table.column(DreamTable.Column.title)
             table.column(DreamTable.Column.content)
             table.column(DreamTable.Column.createdDate)
@@ -76,51 +76,23 @@ class DreamDataStore {
         
     }
     
-    func select(fromYear : Int, fromMonth : Int, toYear: Int, toMonth: Int) {
-        
-        let yearIndex = fromYear - DreamDataStore.startYearToSave
-        
-        guard var cachedDreams = cacheManager.cachedDreams[safe: yearIndex]?[safe: fromMonth] else {
-            return
-        }
-        
-        if cachedDreams.isEmpty == false {
-            
-            self.dreams = cachedDreams
-            return
-            
-        }
-        
-        let calendar = Calendar(identifier: .gregorian)
-        
-        let components : DateComponents = {
-            var components = DateComponents()
-            (components.year, components.month) = (fromYear, fromMonth)
-            return components
-        }()
-        
-        let toComponents : DateComponents = {
-           var components = DateComponents()
-            (components.year, components.month) = (toYear, toMonth)
-            return components
-        }()
-        
-        guard let date = calendar.date(from: components),
-            let toDate = calendar.date(from: toComponents) else {
-            return
-        }
+    func select(period : (from: Date, to: Date)) {
+
+        let fromDate = Expression<Date>(value: period.from)
+        let toDate = Expression<Date>(value: period.to)
         
         let rowsResult = dbManager.filterRow(query: DreamTable.table
-            .filter(DreamTable.Column.createdDate >= Expression<Date>(value: date) &&
-                DreamTable.Column.createdDate < Expression<Date>(value: toDate))
+            .filter(DreamTable.Column.createdDate >= fromDate && DreamTable.Column.createdDate < toDate)
             .order(DreamTable.Column.createdDate.desc))
+        
+        dreams = []
         
         switch rowsResult {
             
         case let .success(rows) :
             
             rows.forEach({
-            
+                
                 let id = $0.get(DreamTable.Column.id)
                 let title = $0.get(DreamTable.Column.title)
                 let content = $0.get(DreamTable.Column.content)
@@ -129,17 +101,14 @@ class DreamDataStore {
                 
                 let dream = Dream(id: id, title: title, content: content, createdDate: createdDate, modifiedDate: modifiedDate)
                 
-                if cachedDreams.index(of: dream) == nil {
-                    cachedDreams.append(dream)
+                if dreams.index(of: dream) == nil {
+                    dreams.append(dream)
                 }
                 
             })
             
-            self.dreams = cachedDreams
-            
         case let .failure(error) :
             print(error)
-            
         }
        
     }
@@ -176,11 +145,12 @@ class DreamDataStore {
     @discardableResult func insert(dream: Dream) -> RowResult {
         
         let insert = DreamTable.table.insert (
-            DreamTable.Column.id <- dream.id,
+
             DreamTable.Column.title <- dream.title,
             DreamTable.Column.content <- dream.content,
             DreamTable.Column.createdDate <- dream.createdDate,
             DreamTable.Column.modifiedDate <- dream.modifiedDate
+            
         )
         
         let result = dbManager.insertRow(insert: insert)
@@ -285,5 +255,37 @@ class DreamDataStore {
             print("fail")
 
         }
+    }
+    
+    func minimumDate() -> Date? {
+        
+        do {
+            
+            let minDate = try dbManager.db.scalar(DreamTable.table.select(DreamTable.Column.createdDate.min))
+            return minDate
+            
+        } catch {
+            
+            print(error)
+            return nil
+            
+        }
+        
+    }
+    
+    func maximumDate() -> Date? {
+        
+        do {
+            
+            let maxDate = try dbManager.db.scalar(DreamTable.table.select(DreamTable.Column.createdDate.max))
+            return maxDate
+            
+        } catch {
+            
+            print(error)
+            return nil
+            
+        }
+        
     }
 }
