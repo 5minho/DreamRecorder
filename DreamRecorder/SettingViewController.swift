@@ -52,7 +52,13 @@ extension SettingViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 1
+        if section == 0 {
+            return 1
+        } else if section == 1 {
+            return 3
+        } else {
+            return 0
+        }
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -95,6 +101,11 @@ extension SettingViewController: UITableViewDelegate, UITableViewDataSource {
                 let iconImage = #imageLiteral(resourceName: "icon_font").image(with: iconSize)?.withRenderingMode(.alwaysTemplate)
                 cell.imageView?.image = iconImage
             
+            case 1:
+                
+                cell.textLabel?.text = "Privacy Notification"
+                
+                
             default:
                 break
             }
@@ -113,6 +124,52 @@ extension SettingViewController: UITableViewDelegate, UITableViewDataSource {
             case 0:
                 let fontListViewController = FontListViewController(style: .plain)
                 self.navigationController?.pushViewController(fontListViewController, animated: true)
+                
+            case 1:
+                guard let profileUrl = URL(string:
+                    "App-Prefs:root=NOTIFICATIONS_ID") else {
+                        return
+                }
+                
+                if UIApplication.shared.canOpenURL(profileUrl) {
+                    
+                    if #available(iOS 10.0, *) {
+                        UIApplication.shared.open(profileUrl, completionHandler: { (success) in
+                            
+                            print(" Profile Settings opened: \(success)")
+                            
+                        })
+                    } else {
+                        // Fallback on earlier versions
+                        UIApplication.shared.openURL(profileUrl)
+                    }
+                } else {
+                    if let url = URL(string: UIApplicationOpenSettingsURLString) {
+                        if #available(iOS 10.0, *) {
+                            UIApplication.shared.open(url, options: [:], completionHandler: { (completed) in
+                                    
+                            })
+                        } else {
+                            // Fallback on earlier versions
+                        }
+                    }
+                }
+            case 2:
+                
+                AlarmScheduler.shared.nextTriggerDate(completionHandler: { (identifier, date) in
+                    if let nextDate = date {
+                        DispatchQueue.main.async {
+                            let shareItem = "HelloWorld"
+                            let alarmTime = nextDate.description
+                            let controller = UIActivityViewController(activityItems: [shareItem, alarmTime],
+                                                                      applicationActivities: nil)
+                            controller.popoverPresentationController?.sourceView = tableView.cellForRow(at: indexPath)
+                            controller.excludedActivityTypes = [UIActivityType.message]
+                            self.present(controller, animated: true, completion: nil)
+                        }
+                    }
+                })
+                
             default:
                 break
             }

@@ -71,6 +71,7 @@ class FontListViewController: SettingItemListViewController, SettingItemListView
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         self.delegate = self
     }
     

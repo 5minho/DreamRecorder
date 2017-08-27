@@ -37,7 +37,11 @@ class AlarmAlertViewController: UIViewController {
         
         // 알람 시간 카운트 다운을 위한 설정.
         self.snoozeStartDate = Date().addingSnoozeTimeInterval
-        self.timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(self.updateLeftTimeLabel), userInfo: nil, repeats: true)
+        self.timer = Timer.scheduledTimer(timeInterval: 1,
+                                          target: self,
+                                          selector: #selector(self.updateLeftTimeLabel),
+                                          userInfo: nil,
+                                          repeats: true)
         self.leftTimeLabel.isHidden = false
         
         // 애니메이션.

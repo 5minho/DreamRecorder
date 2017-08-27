@@ -49,10 +49,18 @@ class AlarmStateViewController: UIViewController {
         self.hintLabel.font = UIFont.callout
         self.hintLabel.textColor = UIColor.dreamTextColor2
         
+        if UIAccessibilityIsVoiceOverRunning() {
+            let customAction = UIAccessibilityCustomAction(name: "Swipe up or down to select custom action.",
+                                                           target: self,
+                                                           selector: #selector(self.dissmissByTap))
+            self.hintLabel.accessibilityCustomActions = [customAction]
+        }
+        
         if self.shouldAnimatedTransitioning {
             self.transitioningDelegate = self
         }
         
+        /// Interactive한 화면전환을 위한 panGestureRecognizer를 등록한다.
         let panGestureRecognizer = UIPanGestureRecognizer(target: self,
                                                           action: #selector(self.handlePanGestureRecognizer(sender:)))
         self.view.addGestureRecognizer(panGestureRecognizer)
@@ -68,6 +76,11 @@ class AlarmStateViewController: UIViewController {
                                           selector: #selector(self.updateLeftTimeLabel),
                                           userInfo: nil,
                                           repeats: true)
+    }
+    
+    /// VoiceOver가 활성화 되어있을 때 커스텀 액션으로서 화면을 dismiss할 수 있도록 한다.
+    func dissmissByTap() {
+        self.dismiss(animated: true, completion: nil)
     }
     
     /// 남은시간을 보여주는 레이블의 텍스트를 현재시간과 해당 알람의 다음에 울릴 시간의 차이를 DateComponent를 통해 테스트로 변환한다.
