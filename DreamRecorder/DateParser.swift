@@ -23,15 +23,20 @@ struct DateParser {
     
     func firstDayOfMonth(date: Date) -> Date? {
         
-        let month = calendar.dateComponents([.month], from: date).month
-        
+        let currentDateComponent = calendar.dateComponents([.month, .year], from: date)
         let component : DateComponents = {
+            
             var component = DateComponents()
-            (component.month, component.day) = (month, 1)
+            
+            (component.year, component.month, component.day) =
+                (currentDateComponent.year, currentDateComponent.month, 1)
+            
             return component
+            
         }()
         
-        return component.date
+        
+        return calendar.date(from: component)
     }
     
     func time(from date : Date) -> String? {
