@@ -84,7 +84,7 @@ extension Array {
     
 }
 
-<<<<<<< HEAD
+
 extension UIAlertController {
     
     static func simpleAlert(title: String, message : String? = nil) -> UIAlertController {
@@ -95,7 +95,7 @@ extension UIAlertController {
         
         return alertController
     }
-    
+}
 
 extension UIColor {
     /// 한가지 색상을 이용하여 1x1의 이미지를 생성한다.
