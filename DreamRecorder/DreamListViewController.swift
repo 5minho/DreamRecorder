@@ -33,8 +33,6 @@ class DreamListViewController : UIViewController {
         
     }
     
-    
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -83,7 +81,7 @@ class DreamListViewController : UIViewController {
     private func addObserver() {
         
         NotificationCenter.default.addObserver(forName: DreamDataStore.NotificationName.didDeleteDream, object: nil, queue: .main) {
-            notification in
+            [unowned self] notification in
             
             if self.isFiltering() {
                 
@@ -102,11 +100,18 @@ class DreamListViewController : UIViewController {
         }
         
         NotificationCenter.default.addObserver(forName: DreamDataStore.NotificationName.didAddDream, object: nil, queue: .main) {
-            notification in
+            [unowned self] notification in
             
             self.tableView.insertRows(at: [IndexPath(row: 0, section: 0)], with: .automatic)
-            self.currentDatePeriod = (Date(), Date())
-            
+            if let firstDayOfMonth = self.dateParser.firstDayOfMonth(date: Date()) {
+                self.currentDatePeriod = (firstDayOfMonth, Date())
+            }
+        }
+        
+        NotificationCenter.default.addObserver(forName: DreamDataStore.NotificationName.didUpdateDream, object: nil, queue: .main) { [unowned self] notificataion in
+        
+            self.tableView.reloadData()
+        
         }
         
     }
@@ -116,7 +121,7 @@ class DreamListViewController : UIViewController {
         searchController = UISearchController(searchResultsController: nil)
         searchController?.searchResultsUpdater = self
         searchController?.dimsBackgroundDuringPresentation = false
-        searchController?.searchBar.placeholder = "꿈 제목, 꿈 내용 검색"
+        searchController?.searchBar.placeholder = "꿈 제목, 꿈 내용 검색".localized
         definesPresentationContext = true
         self.searchController.searchBar.delegate = self
         
@@ -246,7 +251,7 @@ extension DreamListViewController : UITableViewDelegate, UITableViewDataSource, 
     
     func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
         
-        let deleteButton = UITableViewRowAction(style: .destructive, title: "삭제".localized) { action, indexPath -> Void in
+        let deleteButton = UITableViewRowAction(style: .destructive, title: "삭제".localized) { action, indexPath in
             
             if let dream = self.isFiltering() ?
                 DreamDataStore.shared.filteredDreams[safe: indexPath.row] :
@@ -258,10 +263,40 @@ extension DreamListViewController : UITableViewDelegate, UITableViewDataSource, 
             }
             
         }
-
-        deleteButton.backgroundColor = UIColor.blue
         
-        return [deleteButton]
+        let shareButton = UITableViewRowAction(style: .normal, title: "공유".localized) { action, indexPath in
+            
+            if let dream = self.isFiltering() ?
+                DreamDataStore.shared.filteredDreams[safe: indexPath.row] :
+                DreamDataStore.shared.dreams[safe: indexPath.row] {
+                
+                var title = "", content = ""
+                
+                if let dreamTitle = dream.title {
+                    title = "꿈 제목: " + dreamTitle
+                }
+                
+                if let dreamContent = dream.content {
+                    content = "꿈 내용: " + dreamContent
+                }
+                
+                let date = "꿈 저장일: " + self.dateParser.detail(from: dream.createdDate)
+                
+                let controller = UIActivityViewController(activityItems: [title, content, date], applicationActivities: nil)
+                controller.excludedActivityTypes = [UIActivityType.message]
+                
+                self.present(controller, animated: true) {
+                    self.tableView.setEditing(false, animated: true)
+                }
+
+            }
+            
+            
+        }
+
+        deleteButton.backgroundColor = UIColor.red
+        shareButton.backgroundColor = UIColor.blue
+        return [deleteButton, shareButton]
     }
 
     

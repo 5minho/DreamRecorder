@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		5A07FE331F43893200C65037 /* DreamDeletable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A07FE321F43893200C65037 /* DreamDeletable.swift */; };
-		5A07FE351F43977B00C65037 /* DateParserTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A07FE341F43977B00C65037 /* DateParserTests.swift */; };
 		5A2D88501F4A95D900215163 /* DatePickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A2D884F1F4A95D900215163 /* DatePickerViewController.swift */; };
 		5A2D88521F4A983600215163 /* DatePickerViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5A2D88511F4A983600215163 /* DatePickerViewController.storyboard */; };
 		5A377D671F4C288A00C36A0E /* AlarmAlertViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A377D661F4C288A00C36A0E /* AlarmAlertViewController.swift */; };
@@ -19,6 +18,11 @@
 		5A78ACBE1F52FD6700B1091F /* SettingItemListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A78ACBD1F52FD6700B1091F /* SettingItemListViewController.swift */; };
 		5A78ACC11F52FDC800B1091F /* SettingViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5A78ACBF1F52FDC800B1091F /* SettingViewController.storyboard */; };
 		5A78ACC31F52FE2A00B1091F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5A78ACC21F52FE2A00B1091F /* Assets.xcassets */; };
+		5A78ACC51F53012C00B1091F /* MainTabBarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A78ACC41F53012C00B1091F /* MainTabBarViewController.swift */; };
+		5A78ACCB1F53118000B1091F /* AlarmSoundTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A78ACC61F53118000B1091F /* AlarmSoundTests.swift */; };
+		5A78ACCC1F53118000B1091F /* DateParserTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A78ACC71F53118000B1091F /* DateParserTests.swift */; };
+		5A78ACCE1F53118000B1091F /* DreamDateStoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A78ACC91F53118000B1091F /* DreamDateStoreTests.swift */; };
+		5A78ACCF1F53118000B1091F /* SafetyExtensionArrayTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A78ACCA1F53118000B1091F /* SafetyExtensionArrayTests.swift */; };
 		5A78D8FB1F42BDD900D1E679 /* AddDreamNavigationController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5A78D8ED1F42BDD900D1E679 /* AddDreamNavigationController.storyboard */; };
 		5A78D8FC1F42BDD900D1E679 /* AddDreamNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A78D8EE1F42BDD900D1E679 /* AddDreamNavigationController.swift */; };
 		5A78D8FD1F42BDD900D1E679 /* Alarm.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A78D8EF1F42BDD900D1E679 /* Alarm.swift */; };
@@ -61,7 +65,6 @@
 		5AC1D8651F4957C0008BE17F /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 5AC1D8671F4957C0008BE17F /* Localizable.strings */; };
 		5ACA0DAC1F42DC3C00176147 /* RecordButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5ACA0DAB1F42DC3C00176147 /* RecordButton.swift */; };
 		5AD09F181F34686A007BCA09 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5AD09F161F34686A007BCA09 /* LaunchScreen.storyboard */; };
-		5AD8F7071F386198005311F8 /* DreamDataCRUDTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AD8F7061F386198005311F8 /* DreamDataCRUDTests.swift */; };
 		F01F9B278627D96E045DE02E /* Pods_DreamRecorder.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D397857D16523815AF771D51 /* Pods_DreamRecorder.framework */; };
 /* End PBXBuildFile section */
 
@@ -91,7 +94,6 @@
 
 /* Begin PBXFileReference section */
 		5A07FE321F43893200C65037 /* DreamDeletable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DreamDeletable.swift; sourceTree = "<group>"; };
-		5A07FE341F43977B00C65037 /* DateParserTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DateParserTests.swift; sourceTree = "<group>"; };
 		5A2D884F1F4A95D900215163 /* DatePickerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DatePickerViewController.swift; sourceTree = "<group>"; };
 		5A2D88511F4A983600215163 /* DatePickerViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = DatePickerViewController.storyboard; sourceTree = "<group>"; };
 		5A377D661F4C288A00C36A0E /* AlarmAlertViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AlarmAlertViewController.swift; sourceTree = "<group>"; };
@@ -102,6 +104,11 @@
 		5A78ACBD1F52FD6700B1091F /* SettingItemListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingItemListViewController.swift; sourceTree = "<group>"; };
 		5A78ACC01F52FDC800B1091F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/SettingViewController.storyboard; sourceTree = "<group>"; };
 		5A78ACC21F52FE2A00B1091F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		5A78ACC41F53012C00B1091F /* MainTabBarViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainTabBarViewController.swift; sourceTree = "<group>"; };
+		5A78ACC61F53118000B1091F /* AlarmSoundTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AlarmSoundTests.swift; sourceTree = "<group>"; };
+		5A78ACC71F53118000B1091F /* DateParserTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DateParserTests.swift; sourceTree = "<group>"; };
+		5A78ACC91F53118000B1091F /* DreamDateStoreTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DreamDateStoreTests.swift; sourceTree = "<group>"; };
+		5A78ACCA1F53118000B1091F /* SafetyExtensionArrayTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SafetyExtensionArrayTests.swift; sourceTree = "<group>"; };
 		5A78D8ED1F42BDD900D1E679 /* AddDreamNavigationController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = AddDreamNavigationController.storyboard; sourceTree = "<group>"; };
 		5A78D8EE1F42BDD900D1E679 /* AddDreamNavigationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddDreamNavigationController.swift; sourceTree = "<group>"; };
 		5A78D8EF1F42BDD900D1E679 /* Alarm.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Alarm.swift; sourceTree = "<group>"; };
@@ -151,7 +158,6 @@
 		5AD09F171F34686A007BCA09 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		5AD09F191F34686A007BCA09 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		5AD8F7041F386198005311F8 /* DreamRecorderTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DreamRecorderTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		5AD8F7061F386198005311F8 /* DreamDataCRUDTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DreamDataCRUDTests.swift; sourceTree = "<group>"; };
 		5AD8F7081F386198005311F8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		71592AFC9695CAD77FC7E788 /* Pods-DreamRecorder.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DreamRecorder.release.xcconfig"; path = "Pods/Target Support Files/Pods-DreamRecorder/Pods-DreamRecorder.release.xcconfig"; sourceTree = "<group>"; };
 		C82E4CE7279A775BF2E77C04 /* Pods-DreamRecorder.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DreamRecorder.debug.xcconfig"; path = "Pods/Target Support Files/Pods-DreamRecorder/Pods-DreamRecorder.debug.xcconfig"; sourceTree = "<group>"; };
@@ -181,6 +187,7 @@
 		5A07FE2D1F436A7C00C65037 /* controller */ = {
 			isa = PBXGroup;
 			children = (
+				5A78ACC41F53012C00B1091F /* MainTabBarViewController.swift */,
 				5A78D8EE1F42BDD900D1E679 /* AddDreamNavigationController.swift */,
 				5A78D8F11F42BDD900D1E679 /* AlarmAddViewController.swift */,
 				5A78D8F51F42BDD900D1E679 /* AlarmEditViewController.swift */,
@@ -212,6 +219,7 @@
 				5A78D90D1F42BDE400D1E679 /* DetailDreamViewController.storyboard */,
 				5A78D9121F42BDE400D1E679 /* DreamListViewController.storyboard */,
 				5A78D8F41F42BDD900D1E679 /* AlarmEditViewController.storyboard */,
+				5A78D9291F42C29C00D1E679 /* Main.storyboard */,
 			);
 			name = storyboard;
 			sourceTree = "<group>";
@@ -290,7 +298,6 @@
 				5A07FE301F436ACF00C65037 /* view */,
 				5A78D9141F42BDE400D1E679 /* Info.plist */,
 				5AD09F161F34686A007BCA09 /* LaunchScreen.storyboard */,
-				5A78D9291F42C29C00D1E679 /* Main.storyboard */,
 				5A78ACC21F52FE2A00B1091F /* Assets.xcassets */,
 				5AD09F191F34686A007BCA09 /* Info.plist */,
 				5AC1D8671F4957C0008BE17F /* Localizable.strings */,
@@ -301,8 +308,10 @@
 		5AD8F7051F386198005311F8 /* DreamRecorderTests */ = {
 			isa = PBXGroup;
 			children = (
-				5AD8F7061F386198005311F8 /* DreamDataCRUDTests.swift */,
-				5A07FE341F43977B00C65037 /* DateParserTests.swift */,
+				5A78ACC61F53118000B1091F /* AlarmSoundTests.swift */,
+				5A78ACC71F53118000B1091F /* DateParserTests.swift */,
+				5A78ACC91F53118000B1091F /* DreamDateStoreTests.swift */,
+				5A78ACCA1F53118000B1091F /* SafetyExtensionArrayTests.swift */,
 				5AD8F7081F386198005311F8 /* Info.plist */,
 			);
 			path = DreamRecorderTests;
@@ -387,6 +396,7 @@
 					5AD8F7031F386198005311F8 = {
 						CreatedOnToolsVersion = 8.3.3;
 						DevelopmentTeam = 8Y7YWW7H68;
+						LastSwiftMigration = 0830;
 						ProvisioningStyle = Automatic;
 						TestTargetID = 5AD09F091F34686A007BCA09;
 					};
@@ -533,6 +543,7 @@
 				5A85089B1F45651900E2ED7F /* DreamColor.swift in Sources */,
 				5A78D91A1F42BDE400D1E679 /* Config.swift in Sources */,
 				5A78D9201F42BDE400D1E679 /* DreamDataStore.swift in Sources */,
+				5A78ACC51F53012C00B1091F /* MainTabBarViewController.swift in Sources */,
 				5A78D8FD1F42BDD900D1E679 /* Alarm.swift in Sources */,
 				5A78D91B1F42BDE400D1E679 /* DateParser.swift in Sources */,
 				5A78D9071F42BDD900D1E679 /* AlarmScheduler.swift in Sources */,
@@ -554,8 +565,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				5A07FE351F43977B00C65037 /* DateParserTests.swift in Sources */,
-				5AD8F7071F386198005311F8 /* DreamDataCRUDTests.swift in Sources */,
+				5A78ACCC1F53118000B1091F /* DateParserTests.swift in Sources */,
+				5A78ACCB1F53118000B1091F /* AlarmSoundTests.swift in Sources */,
+				5A78ACCE1F53118000B1091F /* DreamDateStoreTests.swift in Sources */,
+				5A78ACCF1F53118000B1091F /* SafetyExtensionArrayTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -753,11 +766,13 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_ENABLE_MODULES = YES;
 				DEVELOPMENT_TEAM = 8Y7YWW7H68;
 				INFOPLIST_FILE = DreamRecorderTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.boostCamp.ios.DreamRecorderTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 3.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/DreamRecorder.app/DreamRecorder";
 			};
@@ -768,6 +783,7 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_ENABLE_MODULES = YES;
 				DEVELOPMENT_TEAM = 8Y7YWW7H68;
 				INFOPLIST_FILE = DreamRecorderTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";

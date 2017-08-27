@@ -19,6 +19,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     private struct ShortcutItemType {
         static let nextAlarm = "com.boostCamp.ios.DreamRecorder.nextAlarm"
     }
+    
     func application(_ application: UIApplication, performActionFor shortcutItem: UIApplicationShortcutItem, completionHandler: @escaping (Bool) -> Void) {
         
         // Handle Quick Action.
@@ -78,9 +79,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
         
         
-        UserDefaults.standard.set(NSKRecognizerLanguageCode.korean.rawValue, forKey: "language")
+        DreamDataStore.shared.createTable()
+        
         if let firstDayOfCurrentMonth = DateParser().firstDayOfMonth(date: Date()) {
+            
             DreamDataStore.shared.select(period: (firstDayOfCurrentMonth, Date()))
+            
         }
         
         
@@ -90,7 +94,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         AlarmDataStore.shared.awake()
         AlarmScheduler.shared.awake()
         
-//        AlarmScheduler.shared.handleSoundManagerDidPlayAlarmToEnd()
+
         
         // Apply Theme.
         UIBarButtonItem.appearance().setTitleTextAttributes([NSForegroundColorAttributeName : UIColor.defaultButtonTitleColor], for: .normal)

@@ -81,14 +81,14 @@ class SpeechDreamViewController : UIViewController {
         finishTimer()
         inActivateRecognizer()
         
-        let alert = UIAlertController(title: "title", message: "please enter a title", preferredStyle: .alert)
+        let alert = UIAlertController(title: "제목".localized, message: "제목을 입력해주세요".localized, preferredStyle: .alert)
         
         alert.addTextField { textField in
-            textField.placeholder = "Enter a title"
+            textField.placeholder = "제목 입력".localized
             textField.clearButtonMode = .whileEditing
         }
         
-        let saveAction = UIAlertAction(title: "Save", style: .default) { action in
+        let saveAction = UIAlertAction(title: "Save".localized, style: .default) { action in
             
             var title = ""
             if let inputTitle = alert.textFields?.first?.text {
@@ -96,11 +96,11 @@ class SpeechDreamViewController : UIViewController {
             }
             
             if title.isEmpty {
-                title = "No title"
+                title = "제목 없음".localized
             }
             
-            let newDream = Dream(id: 0,
-                                 title: title, content: self.contentField.text,
+            let newDream = Dream(title: title,
+                                 content: self.contentField.text,
                                  createdDate: Date(),
                                  modifiedDate: nil)
             
@@ -109,7 +109,7 @@ class SpeechDreamViewController : UIViewController {
             
         }
         
-        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
+        let cancelAction = UIAlertAction(title: "Cancel".localized, style: .cancel)
         
         alert.addAction(saveAction)
         alert.addAction(cancelAction)

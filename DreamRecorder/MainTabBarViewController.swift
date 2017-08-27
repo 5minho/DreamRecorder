@@ -24,10 +24,11 @@ class MainTabBarViewController: UITabBarController {
         guard let controllers = self.viewControllers else { return }
         
         let titles = ["Dream".localized, "Alarm".localized, "Setting".localized]
-        let iconImages = [#imageLiteral(resourceName: "icon_moon"), #imageLiteral(resourceName: "icon_alarm"), #imageLiteral(resourceName: "icon_cog")]
+        let iconImages = [#imageLiteral(resourceName: "image_partlycloudy"), #imageLiteral(resourceName: "musical32"), #imageLiteral(resourceName: "cog2")]
         let iconSize = CGSize(width: 25, height: 25)
         
         for (index, controller) in controllers.enumerated() {
+//            print(index)
             controller.tabBarItem.image = iconImages[index].withRenderingMode(.alwaysTemplate).image(with: iconSize)
             controller.title = titles[index]
         }

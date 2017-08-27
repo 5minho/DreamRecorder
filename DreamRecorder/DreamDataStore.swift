@@ -21,6 +21,7 @@ class DreamDataStore {
         
         static let didDeleteDream = Notification.Name("didDeleteDream")
         static let didAddDream = Notification.Name("didAddDream")
+        static let didUpdateDream = Notification.Name("didUpdateDream")
         
     }
     
@@ -49,12 +50,7 @@ class DreamDataStore {
         }
         
     }
-    
-    func index(of dream : Dream) -> Int? {
-        return self.dreams.index(of: dream)
-    }
-    
-    
+
     @discardableResult func createTable() -> TableResult {
         
         let createTableResult = self.dbManager.createTable(statement: DreamTable.table.create(ifNotExists: true) { table in
@@ -66,10 +62,12 @@ class DreamDataStore {
         })
         
         switch createTableResult {
+            
         case .success:
             print("Table Created")
         case .failure(_):
             print("error")
+            
         }
         
         return createTableResult
@@ -78,11 +76,17 @@ class DreamDataStore {
     
     func select(period : (from: Date, to: Date)) {
 
-        let fromDate = Expression<Date>(value: period.from)
-        let toDate = Expression<Date>(value: period.to)
+        var tmpPeriod : (from: Date, to: Date) = period
         
-        let rowsResult = dbManager.filterRow(query: DreamTable.table
-            .filter(DreamTable.Column.createdDate >= fromDate && DreamTable.Column.createdDate < toDate)
+        if period.from > period.to {
+            tmpPeriod = (period.to, period.from)
+        }
+        
+        let fromDate = Expression<Date>(value: tmpPeriod.from)
+        let toDate = Expression<Date>(value: tmpPeriod.to)
+        
+        let rowsResult = dbManager.selectAll(query: DreamTable.table
+            .filter(DreamTable.Column.createdDate >= fromDate && DreamTable.Column.createdDate <= toDate)
             .order(DreamTable.Column.createdDate.desc))
         
         dreams = []
@@ -116,6 +120,7 @@ class DreamDataStore {
     @discardableResult func selectAll() -> RowsResult {
         
         let rowsResult = dbManager.selectAll(query: DreamTable.table.order(DreamTable.Column.createdDate.desc))
+        
         switch rowsResult {
             
         case let .success(rows):
@@ -126,7 +131,6 @@ class DreamDataStore {
                 let content = $0.get(DreamTable.Column.content)
                 let createdDate = $0.get(DreamTable.Column.createdDate)
                 let modifiedDate = $0.get(DreamTable.Column.modifiedDate)
-                print(title! + " " + content!)
                 
                 let dream = Dream(id: id, title: title, content: content, createdDate: createdDate, modifiedDate: modifiedDate)
                 if self.dreams.index(of: dream) == nil {
@@ -156,14 +160,15 @@ class DreamDataStore {
         let result = dbManager.insertRow(insert: insert)
         
         switch result {
-        case .success(_):
             
-            self.cacheManager.insertCache(dream: dream)
+        case let .success(row):
+            dream.id = Int64(row)
             self.dreams.insert(dream, at: 0)
             NotificationCenter.default.post(name: NotificationName.didAddDream, object: nil)
             
         case .failure(_):
             print("default")
+            
         }
         
         return result
@@ -174,19 +179,25 @@ class DreamDataStore {
         let updateRow = DreamTable.table.filter(DreamTable.Column.id == dream.id)
         
         let result = self.dbManager.updateRow(update: updateRow.update(
+            
             DreamTable.Column.id <- dream.id,
             DreamTable.Column.title <- dream.title,
             DreamTable.Column.content <- dream.content,
             DreamTable.Column.createdDate <- dream.createdDate,
             DreamTable.Column.modifiedDate <- dream.modifiedDate
+            
             )
         )
         
         switch result {
+            
         case .success:
+            
+            NotificationCenter.default.post(name: NotificationName.didUpdateDream, object: nil)
             print("Success: update row \(dream.id)")
         case let .failure(error):
             print("error: \(error)")
+            
         }
         
         return result
@@ -213,8 +224,6 @@ class DreamDataStore {
                 userInfo["rowInFiltering"] = deletedIdx
                 self.filteredDreams.remove(at: deletedIdx)
             }
-            
-            self.cacheManager.deleteCached(dream: dream)
             
             NotificationCenter.default.post(name: NotificationName.didDeleteDream, object: nil, userInfo : userInfo)
             
@@ -287,5 +296,9 @@ class DreamDataStore {
             
         }
         
+    }
+    
+    func dropTable() {
+        try? dbManager.db.run(DreamTable.table.drop())
     }
 }

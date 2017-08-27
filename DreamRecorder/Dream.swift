@@ -17,8 +17,8 @@ class Dream {
     var createdDate : Date
     var modifiedDate : Date?
     
-    init(id: Int64, title : String? = nil, content : String? = nil, createdDate : Date, modifiedDate : Date? = nil) {
-        self.id = 0
+    init(id: Int64 = 0, title : String? = nil, content : String? = nil, createdDate : Date, modifiedDate : Date? = nil) {
+        self.id = id
         self.title = title
         self.content = content
         self.createdDate = createdDate
