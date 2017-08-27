@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		5A07FE331F43893200C65037 /* DreamDeletable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A07FE321F43893200C65037 /* DreamDeletable.swift */; };
 		5A07FE351F43977B00C65037 /* DateParserTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A07FE341F43977B00C65037 /* DateParserTests.swift */; };
+		5A19CFCE1F4EAEA800595E9C /* AlarmStateViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A19CFCD1F4EAEA800595E9C /* AlarmStateViewController.swift */; };
+		5A19CFD01F4EAEB300595E9C /* AlarmStateViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5A19CFCF1F4EAEB300595E9C /* AlarmStateViewController.storyboard */; };
 		5A2D88501F4A95D900215163 /* DatePickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A2D884F1F4A95D900215163 /* DatePickerViewController.swift */; };
 		5A2D88521F4A983600215163 /* DatePickerViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5A2D88511F4A983600215163 /* DatePickerViewController.storyboard */; };
 		5A377D671F4C288A00C36A0E /* AlarmAlertViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A377D661F4C288A00C36A0E /* AlarmAlertViewController.swift */; };
@@ -42,8 +44,6 @@
 		5A78D9261F42BDE400D1E679 /* MultiButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A78D9161F42BDE400D1E679 /* MultiButton.swift */; };
 		5A78D9271F42BDE400D1E679 /* SpeechDreamViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A78D9171F42BDE400D1E679 /* SpeechDreamViewController.swift */; };
 		5A78D92B1F42C29C00D1E679 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5A78D9291F42C29C00D1E679 /* Main.storyboard */; };
-		5A8508931F4521C300E2ED7F /* AlarmPlayViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A8508921F4521C300E2ED7F /* AlarmPlayViewController.swift */; };
-		5A8508951F4521CD00E2ED7F /* AlarmPlayViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5A8508941F4521CD00E2ED7F /* AlarmPlayViewController.storyboard */; };
 		5A8508971F4521E300E2ED7F /* CellExpandAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A8508961F4521E300E2ED7F /* CellExpandAnimator.swift */; };
 		5A85089B1F45651900E2ED7F /* DreamColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A8508981F45651900E2ED7F /* DreamColor.swift */; };
 		5A85089C1F45651900E2ED7F /* DreamFont.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A8508991F45651900E2ED7F /* DreamFont.swift */; };
@@ -51,6 +51,8 @@
 		5A85089F1F45656E00E2ED7F /* SoundManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A85089E1F45656E00E2ED7F /* SoundManager.swift */; };
 		5A8508A11F45658C00E2ED7F /* AlarmSoundListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A8508A01F45658C00E2ED7F /* AlarmSoundListViewController.swift */; };
 		5A8508A31F45659100E2ED7F /* AlarmSoundListViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5A8508A21F45659100E2ED7F /* AlarmSoundListViewController.storyboard */; };
+		5A8C94B61F50A54B00EB5CC9 /* DreamDateStoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A8C94B51F50A54B00EB5CC9 /* DreamDateStoreTests.swift */; };
+		5A9A060F1F4F526400AA7FE3 /* SafetyExtensionArrayTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A9A060E1F4F526400AA7FE3 /* SafetyExtensionArrayTests.swift */; };
 		5A9BEBD51F3AEA480054EA6D /* NaverSpeech.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5A9BEBD41F3AEA480054EA6D /* NaverSpeech.framework */; };
 		5A9BEBD61F3AEA480054EA6D /* NaverSpeech.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 5A9BEBD41F3AEA480054EA6D /* NaverSpeech.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		5A9CE3081F49A2A700F0E5C5 /* DreamCacheManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A9CE3071F49A2A700F0E5C5 /* DreamCacheManager.swift */; };
@@ -89,6 +91,8 @@
 /* Begin PBXFileReference section */
 		5A07FE321F43893200C65037 /* DreamDeletable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DreamDeletable.swift; sourceTree = "<group>"; };
 		5A07FE341F43977B00C65037 /* DateParserTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DateParserTests.swift; sourceTree = "<group>"; };
+		5A19CFCD1F4EAEA800595E9C /* AlarmStateViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AlarmStateViewController.swift; sourceTree = "<group>"; };
+		5A19CFCF1F4EAEB300595E9C /* AlarmStateViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = AlarmStateViewController.storyboard; sourceTree = "<group>"; };
 		5A2D884F1F4A95D900215163 /* DatePickerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DatePickerViewController.swift; sourceTree = "<group>"; };
 		5A2D88511F4A983600215163 /* DatePickerViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = DatePickerViewController.storyboard; sourceTree = "<group>"; };
 		5A377D661F4C288A00C36A0E /* AlarmAlertViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AlarmAlertViewController.swift; sourceTree = "<group>"; };
@@ -122,8 +126,6 @@
 		5A78D9161F42BDE400D1E679 /* MultiButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MultiButton.swift; sourceTree = "<group>"; };
 		5A78D9171F42BDE400D1E679 /* SpeechDreamViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SpeechDreamViewController.swift; sourceTree = "<group>"; };
 		5A78D92A1F42C29C00D1E679 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
-		5A8508921F4521C300E2ED7F /* AlarmPlayViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AlarmPlayViewController.swift; sourceTree = "<group>"; };
-		5A8508941F4521CD00E2ED7F /* AlarmPlayViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = AlarmPlayViewController.storyboard; sourceTree = "<group>"; };
 		5A8508961F4521E300E2ED7F /* CellExpandAnimator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CellExpandAnimator.swift; sourceTree = "<group>"; };
 		5A8508981F45651900E2ED7F /* DreamColor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DreamColor.swift; sourceTree = "<group>"; };
 		5A8508991F45651900E2ED7F /* DreamFont.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DreamFont.swift; sourceTree = "<group>"; };
@@ -131,6 +133,8 @@
 		5A85089E1F45656E00E2ED7F /* SoundManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SoundManager.swift; sourceTree = "<group>"; };
 		5A8508A01F45658C00E2ED7F /* AlarmSoundListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AlarmSoundListViewController.swift; sourceTree = "<group>"; };
 		5A8508A21F45659100E2ED7F /* AlarmSoundListViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = AlarmSoundListViewController.storyboard; sourceTree = "<group>"; };
+		5A8C94B51F50A54B00EB5CC9 /* DreamDateStoreTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DreamDateStoreTests.swift; sourceTree = "<group>"; };
+		5A9A060E1F4F526400AA7FE3 /* SafetyExtensionArrayTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SafetyExtensionArrayTests.swift; sourceTree = "<group>"; };
 		5A9BEBD41F3AEA480054EA6D /* NaverSpeech.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = NaverSpeech.framework; sourceTree = "<group>"; };
 		5A9CE3071F49A2A700F0E5C5 /* DreamCacheManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DreamCacheManager.swift; sourceTree = "<group>"; };
 		5AC1D8611F49578F008BE17F /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/LaunchScreen.strings; sourceTree = "<group>"; };
@@ -181,9 +185,9 @@
 				5A78D9171F42BDE400D1E679 /* SpeechDreamViewController.swift */,
 				5A377D661F4C288A00C36A0E /* AlarmAlertViewController.swift */,
 				5A8508A01F45658C00E2ED7F /* AlarmSoundListViewController.swift */,
-				5A8508921F4521C300E2ED7F /* AlarmPlayViewController.swift */,
 				5A78D8F81F42BDD900D1E679 /* AlarmListViewController.swift */,
 				5A78D90E1F42BDE400D1E679 /* DetailDreamViewController.swift */,
+				5A19CFCD1F4EAEA800595E9C /* AlarmStateViewController.swift */,
 				5A78D9131F42BDE400D1E679 /* DreamListViewController.swift */,
 				5A2D884F1F4A95D900215163 /* DatePickerViewController.swift */,
 			);
@@ -193,7 +197,7 @@
 		5A07FE2E1F436A9200C65037 /* storyboard */ = {
 			isa = PBXGroup;
 			children = (
-				5A8508941F4521CD00E2ED7F /* AlarmPlayViewController.storyboard */,
+				5A19CFCF1F4EAEB300595E9C /* AlarmStateViewController.storyboard */,
 				5A2D88511F4A983600215163 /* DatePickerViewController.storyboard */,
 				5A78D8ED1F42BDD900D1E679 /* AddDreamNavigationController.storyboard */,
 				5A78D8F01F42BDD900D1E679 /* AlarmAddViewController.storyboard */,
@@ -294,6 +298,8 @@
 			children = (
 				5AD8F7061F386198005311F8 /* DreamDataCRUDTests.swift */,
 				5A07FE341F43977B00C65037 /* DateParserTests.swift */,
+				5A8C94B51F50A54B00EB5CC9 /* DreamDateStoreTests.swift */,
+				5A9A060E1F4F526400AA7FE3 /* SafetyExtensionArrayTests.swift */,
 				5AD8F7081F386198005311F8 /* Info.plist */,
 			);
 			path = DreamRecorderTests;
@@ -409,7 +415,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				5A8508951F4521CD00E2ED7F /* AlarmPlayViewController.storyboard in Resources */,
 				5A78D8FB1F42BDD900D1E679 /* AddDreamNavigationController.storyboard in Resources */,
 				5A78D92B1F42C29C00D1E679 /* Main.storyboard in Resources */,
 				5A78D9221F42BDE400D1E679 /* DreamListViewController.storyboard in Resources */,
@@ -424,6 +429,7 @@
 				5A2D88521F4A983600215163 /* DatePickerViewController.storyboard in Resources */,
 				5A78D91D1F42BDE400D1E679 /* DetailDreamViewController.storyboard in Resources */,
 				5A8508A31F45659100E2ED7F /* AlarmSoundListViewController.storyboard in Resources */,
+				5A19CFD01F4EAEB300595E9C /* AlarmStateViewController.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -526,9 +532,9 @@
 				5A78D9071F42BDD900D1E679 /* AlarmScheduler.swift in Sources */,
 				5A78D91E1F42BDE400D1E679 /* DetailDreamViewController.swift in Sources */,
 				5A8508A11F45658C00E2ED7F /* AlarmSoundListViewController.swift in Sources */,
+				5A19CFCE1F4EAEA800595E9C /* AlarmStateViewController.swift in Sources */,
 				5A78D9031F42BDD900D1E679 /* AlarmEditViewController.swift in Sources */,
 				5A78D9081F42BDD900D1E679 /* AppDelegate.swift in Sources */,
-				5A8508931F4521C300E2ED7F /* AlarmPlayViewController.swift in Sources */,
 				5A78D9191F42BDE400D1E679 /* CocoaTouchExtension.swift in Sources */,
 				5A78D9001F42BDD900D1E679 /* AlarmDataStore.swift in Sources */,
 				5A85089D1F45651900E2ED7F /* ThemeAppliable.swift in Sources */,
@@ -543,7 +549,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				5A07FE351F43977B00C65037 /* DateParserTests.swift in Sources */,
+				5A9A060F1F4F526400AA7FE3 /* SafetyExtensionArrayTests.swift in Sources */,
 				5AD8F7071F386198005311F8 /* DreamDataCRUDTests.swift in Sources */,
+				5A8C94B61F50A54B00EB5CC9 /* DreamDateStoreTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
