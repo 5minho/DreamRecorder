@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		5AD8F7071F386198005311F8 /* DreamRecorderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AD8F7061F386198005311F8 /* DreamRecorderTests.swift */; };
 		A50F34191F445E2B00128B5B /* AddDreamNavigationController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A50F33EB1F445E2B00128B5B /* AddDreamNavigationController.storyboard */; };
 		A50F341A1F445E2B00128B5B /* AddDreamNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A50F33EC1F445E2B00128B5B /* AddDreamNavigationController.swift */; };
 		A50F341B1F445E2B00128B5B /* Alarm.swift in Sources */ = {isa = PBXBuildFile; fileRef = A50F33ED1F445E2B00128B5B /* Alarm.swift */; };
@@ -47,7 +46,6 @@
 		A50F343D1F445E2B00128B5B /* Old-alarm-clock-ringing.wav in Resources */ = {isa = PBXBuildFile; fileRef = A50F34121F445E2B00128B5B /* Old-alarm-clock-ringing.wav */; };
 		A50F343E1F445E2B00128B5B /* RecordButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = A50F34131F445E2B00128B5B /* RecordButton.swift */; };
 		A50F343F1F445E2B00128B5B /* SoundManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A50F34141F445E2B00128B5B /* SoundManager.swift */; };
-		A50F34401F445E2B00128B5B /* Spaceship_Alarm.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = A50F34151F445E2B00128B5B /* Spaceship_Alarm.mp3 */; };
 		A50F34411F445E2B00128B5B /* SpeechDreamViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A50F34161F445E2B00128B5B /* SpeechDreamViewController.swift */; };
 		A50F34421F445E2B00128B5B /* SwipeableScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A50F34171F445E2B00128B5B /* SwipeableScrollView.swift */; };
 		A50F344E1F4465B700128B5B /* AlarmSoundListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A50F344D1F4465B700128B5B /* AlarmSoundListViewController.swift */; };
@@ -76,6 +74,8 @@
 		A5993BEF1F4EAFB500F2F522 /* SettingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5993BEE1F4EAFB500F2F522 /* SettingViewController.swift */; };
 		A5993BF11F4EE1FE00F2F522 /* SettingItemListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5993BF01F4EE1FE00F2F522 /* SettingItemListViewController.swift */; };
 		A5993BF41F4FFF9000F2F522 /* AlarmSoundTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5993BF31F4FFF9000F2F522 /* AlarmSoundTests.swift */; };
+		A5993BF61F51853F00F2F522 /* AlarmSchedulerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5993BF51F51853F00F2F522 /* AlarmSchedulerTests.swift */; };
+		A5993BFA1F52A56C00F2F522 /* AlarmDataStoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5993BF91F52A56C00F2F522 /* AlarmDataStoreTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -124,7 +124,6 @@
 		5A9BEBD41F3AEA480054EA6D /* NaverSpeech.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = NaverSpeech.framework; sourceTree = "<group>"; };
 		5AD09F0A1F34686A007BCA09 /* DreamRecorder.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DreamRecorder.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5AD8F7041F386198005311F8 /* DreamRecorderTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DreamRecorderTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		5AD8F7061F386198005311F8 /* DreamRecorderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DreamRecorderTests.swift; sourceTree = "<group>"; };
 		5AD8F7081F386198005311F8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		71592AFC9695CAD77FC7E788 /* Pods-DreamRecorder.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DreamRecorder.release.xcconfig"; path = "Pods/Target Support Files/Pods-DreamRecorder/Pods-DreamRecorder.release.xcconfig"; sourceTree = "<group>"; };
 		A50F33EB1F445E2B00128B5B /* AddDreamNavigationController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = AddDreamNavigationController.storyboard; sourceTree = "<group>"; };
@@ -166,7 +165,6 @@
 		A50F34121F445E2B00128B5B /* Old-alarm-clock-ringing.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = "Old-alarm-clock-ringing.wav"; sourceTree = "<group>"; };
 		A50F34131F445E2B00128B5B /* RecordButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RecordButton.swift; sourceTree = "<group>"; };
 		A50F34141F445E2B00128B5B /* SoundManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SoundManager.swift; sourceTree = "<group>"; };
-		A50F34151F445E2B00128B5B /* Spaceship_Alarm.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = Spaceship_Alarm.mp3; sourceTree = "<group>"; };
 		A50F34161F445E2B00128B5B /* SpeechDreamViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SpeechDreamViewController.swift; sourceTree = "<group>"; };
 		A50F34171F445E2B00128B5B /* SwipeableScrollView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwipeableScrollView.swift; sourceTree = "<group>"; };
 		A50F344D1F4465B700128B5B /* AlarmSoundListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AlarmSoundListViewController.swift; sourceTree = "<group>"; };
@@ -196,6 +194,8 @@
 		A5993BEE1F4EAFB500F2F522 /* SettingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingViewController.swift; sourceTree = "<group>"; };
 		A5993BF01F4EE1FE00F2F522 /* SettingItemListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingItemListViewController.swift; sourceTree = "<group>"; };
 		A5993BF31F4FFF9000F2F522 /* AlarmSoundTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AlarmSoundTests.swift; sourceTree = "<group>"; };
+		A5993BF51F51853F00F2F522 /* AlarmSchedulerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AlarmSchedulerTests.swift; sourceTree = "<group>"; };
+		A5993BF91F52A56C00F2F522 /* AlarmDataStoreTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AlarmDataStoreTests.swift; sourceTree = "<group>"; };
 		C82E4CE7279A775BF2E77C04 /* Pods-DreamRecorder.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DreamRecorder.debug.xcconfig"; path = "Pods/Target Support Files/Pods-DreamRecorder/Pods-DreamRecorder.debug.xcconfig"; sourceTree = "<group>"; };
 		D397857D16523815AF771D51 /* Pods_DreamRecorder.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_DreamRecorder.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -271,8 +271,9 @@
 		5AD8F7051F386198005311F8 /* DreamRecorderTests */ = {
 			isa = PBXGroup;
 			children = (
-				5AD8F7061F386198005311F8 /* DreamRecorderTests.swift */,
+				A5993BF91F52A56C00F2F522 /* AlarmDataStoreTests.swift */,
 				A5993BF31F4FFF9000F2F522 /* AlarmSoundTests.swift */,
+				A5993BF51F51853F00F2F522 /* AlarmSchedulerTests.swift */,
 				5AD8F7081F386198005311F8 /* Info.plist */,
 			);
 			path = DreamRecorderTests;
@@ -385,7 +386,6 @@
 				A50F34661F45C31100128B5B /* mute.mp3 */,
 				A50F34121F445E2B00128B5B /* Old-alarm-clock-ringing.wav */,
 				A50F34591F44C4A300128B5B /* Default.wav */,
-				A50F34151F445E2B00128B5B /* Spaceship_Alarm.mp3 */,
 				A50F34011F445E2B00128B5B /* Carefree_Melody.mp3 */,
 			);
 			name = SoundFiles;
@@ -584,7 +584,6 @@
 			files = (
 				A50F343D1F445E2B00128B5B /* Old-alarm-clock-ringing.wav in Resources */,
 				A50F341C1F445E2B00128B5B /* AlarmAddViewController.storyboard in Resources */,
-				A50F34401F445E2B00128B5B /* Spaceship_Alarm.mp3 in Resources */,
 				A50F34381F445E2B00128B5B /* DreamListViewController.storyboard in Resources */,
 				A50F342A1F445E2B00128B5B /* LaunchScreen.storyboard in Resources */,
 				A53B985E1F4AA9ED00B92FDC /* Localizable.strings in Resources */,
@@ -728,8 +727,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				5AD8F7071F386198005311F8 /* DreamRecorderTests.swift in Sources */,
 				A5993BF41F4FFF9000F2F522 /* AlarmSoundTests.swift in Sources */,
+				A5993BF61F51853F00F2F522 /* AlarmSchedulerTests.swift in Sources */,
+				A5993BFA1F52A56C00F2F522 /* AlarmDataStoreTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
