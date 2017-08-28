@@ -166,7 +166,6 @@ class AlarmScheduler {
                             var notificationNotExist = true
                             
                             for request in pendingNotificationRequests {
-                                print(request.identifier)
                                 guard request.identifier.hasPrefix(alarm.id) else { continue }
                                 notificationNotExist = false
                                 break

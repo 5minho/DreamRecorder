@@ -8,6 +8,8 @@
 
 import UIKit
 import AVFoundation
+import NaverSpeech
+
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -17,6 +19,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     private struct ShortcutItemType {
         static let nextAlarm = "com.boostCamp.ios.DreamRecorder.nextAlarm"
     }
+    
     func application(_ application: UIApplication, performActionFor shortcutItem: UIApplicationShortcutItem, completionHandler: @escaping (Bool) -> Void) {
         
         // Handle Quick Action.
@@ -42,52 +45,37 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Apply Theme.
         UIBarButtonItem.appearance().setTitleTextAttributes([NSForegroundColorAttributeName : UIColor.defaultButtonTitleColor], for: .normal)
         UINavigationBar.appearance().tintColor = UIColor.white
-        UISearchBar.appearance().barTintColor = UIColor.dreamPink
+        
+        UISearchBar.appearance().barTintColor = UIColor.dreamDefaultBackgroundColor
         UISearchBar.appearance().tintColor = UIColor.white
         UITextField.appearance(whenContainedInInstancesOf: [UISearchBar.self]).tintColor = UIColor.white
         UIApplication.shared.statusBarStyle = .lightContent
         
-        // - Set Dream.
-        let dateParser = DateParser()
-        
-        if let fromYear = dateParser.year(from: Date()) {
-            
-            let fromMonth : Int = dateParser.month(from: Date())
-            
-            var toYear = fromYear
-            var toMonth = fromMonth + 1
-            
-            if fromMonth == 12 {
-                
-                toMonth = 1
-                toYear = fromYear + 1
-                
-            }
-            
-            DreamDataStore.shared.createTable()
-            DreamDataStore.shared.select(fromYear: fromYear,
-                                         fromMonth: fromMonth,
-                                         toYear: toYear,
-                                         toMonth: toMonth)
-            
-        }
-        
-        
-        // - Set Alarm.
-        // - Set AudioSession Category.
+
         let audioSession = AVAudioSession.sharedInstance()
+        
         do {
             try audioSession.setCategory(AVAudioSessionCategoryPlayback, with: .mixWithOthers)
             try audioSession.setActive(true)
         } catch {
         }
-        
+
         // - Set UserNotification Delegate.
         if #available(iOS 10.0, *) {
             /// iOS 10.x can receive notification response by confirm to UNUserNotificationCenterDelegate.
             UNUserNotificationCenter.current().delegate = self
         } else {
             /// iOS 9.x can receive AppDelegate`s methods.
+        }
+        
+
+        // - Set Dream.
+        let dateParser = DateParser()
+        
+        DreamDataStore.shared.createTable()
+        
+        if let firstDayOfCurrentMonth = DateParser().firstDayOfMonth(date: Date()) {
+            DreamDataStore.shared.select(period: (firstDayOfCurrentMonth, Date()))
         }
         
         /// SoundManagerAlarmPlayerDidStart 노티피케이션을 등록한다. (SoundManager -> AppDelegate(for UI))

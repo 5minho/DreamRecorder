@@ -69,8 +69,31 @@ extension Date {
 }
 
 extension Date {
+    
     var addingSnoozeTimeInterval: Date {
         return self.addingTimeInterval(60*9)
+    }
+    
+}
+
+extension Array {
+    
+    subscript (safe index: Int) -> Element? {
+        return indices ~= index ? self[index] : nil
+    }
+    
+}
+
+
+extension UIAlertController {
+    
+    static func simpleAlert(title: String, message : String? = nil) -> UIAlertController {
+        
+        let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        let action = UIAlertAction(title: "확인".localized, style: .default, handler: nil)
+        alertController.addAction(action)
+        
+        return alertController
     }
 }
 
@@ -114,6 +137,7 @@ extension UIImage {
         let resizedImage = UIGraphicsGetImageFromCurrentImageContext()
         return resizedImage
     }
+
 }
 
 import AVFoundation

@@ -15,46 +15,19 @@ class DreamListViewController : UIViewController {
     
     fileprivate var searchController : UISearchController!
     
-    fileprivate var filteredDreams = [Dream]()
     fileprivate let dateParser = DateParser()
     
-    //TODO : 검색속도 더 빠르게 하기
-    fileprivate var searchOperation = BlockOperation()
+    fileprivate let serialDispatchQueue = DispatchQueue(label: "filtering")
+    fileprivate var isQueueEmpty = true
     
-    fileprivate var opearationQueue : OperationQueue = {
-        
-        var opearationQueue = OperationQueue()
-        opearationQueue.qualityOfService = .background
-        return opearationQueue
-        
-    }()
-
+    fileprivate var pendingFilterWorkItem: DispatchWorkItem?
     
-    var currentViewedDate = Date() {
+    var currentDatePeriod = (from: Date(), to: Date()) {
         
         didSet {
             
-            if let fromYear = dateParser.year(from: currentViewedDate) { 
-                let fromMonth : Int = dateParser.month(from: currentViewedDate)
-                
-                var toYear = fromYear
-                var toMonth = fromMonth + 1
-                
-                if fromMonth == 12 {
-                    
-                    toMonth = 1
-                    toYear = fromYear + 1
-                    
-                }
-                
-                DreamDataStore.shared.select(fromYear: fromYear,
-                                             fromMonth: fromMonth,
-                                             toYear: toYear,
-                                             toMonth: toMonth)
-                
-                self.navigationItem.title = "\(fromYear).\(fromMonth)"
-                self.tableView.reloadSections(IndexSet(integersIn: 0...0), with: .automatic)
-            }
+            DreamDataStore.shared.select(period: currentDatePeriod)
+            self.tableView.reloadSections(IndexSet(integersIn: 0...0), with: .automatic)
             
         }
         
@@ -63,33 +36,25 @@ class DreamListViewController : UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.applyThemeIfViewDidLoad()
-        
         self.tableView.delegate = self
         self.tableView.dataSource = self
+        
+        tableView.rowHeight = UITableViewAutomaticDimension
+        tableView.estimatedRowHeight = 140
+        
         self.tableView.allowsSelectionDuringEditing = true
         self.dateButton.title = "Date".localized
         self.navigationItem.leftBarButtonItem = editButtonItem
         
-        if let year = self.dateParser.year(from: currentViewedDate) {
-            let month : Int = self.dateParser.month(from: currentViewedDate)
-            self.navigationItem.title = "\(year).\(month)"
-        }
-        
         self.addObserver()
         self.setSearchViewController()
+        self.applyThemeIfViewDidLoad()
     }
     
     
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-<<<<<<< HEAD
-        self.applyThemeIfViewWillAppear()
-        tableView.reloadSections(IndexSet(integersIn:0...0), with: .automatic)
-        
-=======
->>>>>>> c7f4b06595d7cc51c8a6aac91c1f185bd7f5438e
     }
     
     override func setEditing(_ editing: Bool, animated: Bool) {
@@ -116,16 +81,37 @@ class DreamListViewController : UIViewController {
     private func addObserver() {
         
         NotificationCenter.default.addObserver(forName: DreamDataStore.NotificationName.didDeleteDream, object: nil, queue: .main) {
-            notification in
-            if let row = notification.userInfo?["index"] as? Int {
-                self.tableView.deleteRows(at: [IndexPath(row: row, section: 0)], with: .automatic)
+            [unowned self] notification in
+            
+            if self.isFiltering() {
+                
+                if let row = notification.userInfo?["rowInFiltering"] as? Int {
+                    self.tableView.deleteRows(at: [IndexPath(row: row, section: 0)], with: .automatic)
+                }
+                
+            } else {
+                
+                if let row = notification.userInfo?["row"] as? Int {
+                    self.tableView.deleteRows(at: [IndexPath(row: row, section: 0)], with: .automatic)
+                }
+                
             }
+            
         }
         
         NotificationCenter.default.addObserver(forName: DreamDataStore.NotificationName.didAddDream, object: nil, queue: .main) {
             [unowned self] notification in
+            
             self.tableView.insertRows(at: [IndexPath(row: 0, section: 0)], with: .automatic)
-            self.currentViewedDate = Date()
+            if let firstDayOfMonth = self.dateParser.firstDayOfMonth(date: Date()) {
+                self.currentDatePeriod = (firstDayOfMonth, Date())
+            }
+        }
+        
+        NotificationCenter.default.addObserver(forName: DreamDataStore.NotificationName.didUpdateDream, object: nil, queue: .main) { [unowned self] notificataion in
+        
+            self.tableView.reloadData()
+        
         }
         
     }
@@ -135,8 +121,12 @@ class DreamListViewController : UIViewController {
         searchController = UISearchController(searchResultsController: nil)
         searchController?.searchResultsUpdater = self
         searchController?.dimsBackgroundDuringPresentation = false
+        searchController?.searchBar.placeholder = "꿈 제목, 꿈 내용 검색".localized
         definesPresentationContext = true
+        self.searchController.searchBar.delegate = self
+        
         self.tableView?.tableHeaderView = searchController?.searchBar
+        
         self.tableView.contentOffset =  CGPoint(x: 0, y: searchController.searchBar.frame.height)
         
     }
@@ -145,27 +135,35 @@ class DreamListViewController : UIViewController {
 
         if let datePickerConroller = DatePickerViewController.storyboardInstance() {
             
-            if let year = dateParser.year(from: currentViewedDate) {
-                let month : Int = dateParser.month(from: currentViewedDate)
-                
-                    datePickerConroller.selectedDate = (year, month)
-                
-                }
-            
+            datePickerConroller.selectedPeriod = self.currentDatePeriod
             datePickerConroller.modalPresentationStyle = .overCurrentContext
             present(datePickerConroller, animated: true, completion: nil)
             
+        }
+    }
+    
+    let opq = OperationQueue()
+    
+}
+
+extension DreamListViewController : UISearchBarDelegate {
+    
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        
+        searchBar.resignFirstResponder()
+        if let searchText = searchBar.text {
+            filterContentForSearchText(searchText)
         }
         
     }
 }
 
-
-
 extension DreamListViewController : UISearchResultsUpdating {
     
     func updateSearchResults(for searchController: UISearchController) {
+    
         filterContentForSearchText(searchController.searchBar.text!)
+        
     }
     
     func searchBarIsEmpty() -> Bool {
@@ -173,19 +171,25 @@ extension DreamListViewController : UISearchResultsUpdating {
         return searchController.searchBar.text?.isEmpty ?? true
     }
     
-    func filterContentForSearchText(_ searchText: String, scope: String = "All") {
+    
+    
+    
+    func filterContentForSearchText(_ searchText: String) {
         
-        opearationQueue.cancelAllOperations()
+        self.pendingFilterWorkItem?.cancel()
         
-        searchOperation = BlockOperation {
-            self.filteredDreams = DreamDataStore.shared.filter(searchText)
-            DispatchQueue.main.async {
+        let filterWorkItem = DispatchWorkItem {
+            DreamDataStore.shared.filter(searchText)
+            
+            DispatchQueue.main.async { [unowned self] in
                 self.tableView.reloadData()
             }
         }
-        searchOperation.qualityOfService = .background
-        opearationQueue.addOperation(searchOperation)
         
+        pendingFilterWorkItem = filterWorkItem
+        
+        serialDispatchQueue.asyncAfter(deadline: .now() + .milliseconds(250), execute: filterWorkItem)
+
     }
     
     func isFiltering() -> Bool {
@@ -198,7 +202,7 @@ extension DreamListViewController : UITableViewDelegate, UITableViewDataSource, 
     
     // MARK: - Table view dataSource
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return  self.isFiltering() ? self.filteredDreams.count : DreamDataStore.shared.count
+        return  self.isFiltering() ? DreamDataStore.shared.filteredDreams.count : DreamDataStore.shared.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -208,25 +212,34 @@ extension DreamListViewController : UITableViewDelegate, UITableViewDataSource, 
         }
         
         if isFiltering() {
-            cell.update(dream: filteredDreams[indexPath.row])
+            
+            if let filterDream = DreamDataStore.shared.filteredDreams[safe: indexPath.row] {
+                cell.update(dream: filterDream)
+            }
+        
         } else {
-            if let dream = DreamDataStore.shared.dream(at: indexPath.row) {
+            
+            if let dream = DreamDataStore.shared.dreams[safe: indexPath.row] {
                 cell.update(dream: dream)
             }
+            
         }
         
         return cell
     }
     
+    
     // MARK: - Table view delegate
-  
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
         tableView.deselectRow(at: indexPath, animated: true)
         
         if let detailDreamViewController = DetailDreamViewController.storyboardInstance() {
             
-            detailDreamViewController.dream = self.isFiltering() ? filteredDreams[indexPath.row] : DreamDataStore.shared.dream(at: indexPath.row)
+            detailDreamViewController.dream = self.isFiltering() ?
+                DreamDataStore.shared.filteredDreams[safe: indexPath.row] :
+                DreamDataStore.shared.dreams[safe: indexPath.row]
+            
             navigationController?.pushViewController(detailDreamViewController, animated: true)
             
             if self.tableView.isEditing {
@@ -235,30 +248,57 @@ extension DreamListViewController : UITableViewDelegate, UITableViewDataSource, 
         }
     }
 
-    // 
+    
     func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
         
-        let deleteButton = UITableViewRowAction(style: .destructive, title: "삭제") { action, indexPath -> Void in
+        let deleteButton = UITableViewRowAction(style: .destructive, title: "삭제".localized) { action, indexPath in
             
-            if let dream = DreamDataStore.shared.dream(at: indexPath.row) {
+            if let dream = self.isFiltering() ?
+                DreamDataStore.shared.filteredDreams[safe: indexPath.row] :
+                DreamDataStore.shared.dreams[safe: indexPath.row] {
+                
                 let alert = self.deleteAlert(dream: dream, completion: nil)
                 self.present(alert, animated: true, completion: nil)
+                
             }
             
         }
-
-        deleteButton.backgroundColor = UIColor.blue
         
-        return [deleteButton]
+        let shareButton = UITableViewRowAction(style: .normal, title: "공유".localized) { action, indexPath in
+            
+            if let dream = self.isFiltering() ?
+                DreamDataStore.shared.filteredDreams[safe: indexPath.row] :
+                DreamDataStore.shared.dreams[safe: indexPath.row] {
+                
+                var title = "", content = ""
+                
+                if let dreamTitle = dream.title {
+                    title = "꿈 제목: " + dreamTitle
+                }
+                
+                if let dreamContent = dream.content {
+                    content = "꿈 내용: " + dreamContent
+                }
+                
+                let date = "꿈 저장일: " + self.dateParser.detail(from: dream.createdDate)
+                
+                let controller = UIActivityViewController(activityItems: [title, content, date], applicationActivities: nil)
+                controller.excludedActivityTypes = [UIActivityType.message]
+                
+                self.present(controller, animated: true) {
+                    self.tableView.setEditing(false, animated: true)
+                }
+
+            }
+            
+            
+        }
+
+        deleteButton.backgroundColor = UIColor.red
+        shareButton.backgroundColor = UIColor.blue
+        return [deleteButton, shareButton]
     }
-    
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 80
-    }
-    
-    func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 80
-    }
+
     
 }
 

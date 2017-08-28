@@ -5,7 +5,6 @@
     </device>
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12089"/>
-        <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -21,21 +20,39 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <pickerView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="aNX-kg-dfb">
-                                <rect key="frame" x="0.0" y="154" width="320" height="240"/>
-                            </pickerView>
+                            <datePicker contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" datePickerMode="date" minuteInterval="1" translatesAutoresizingMaskIntoConstraints="NO" id="fzo-Fx-DQA">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="202.5"/>
+                                <date key="date" timeIntervalSinceReferenceDate="525529034.26726198">
+                                    <!--2017-08-27 12:17:14 +0000-->
+                                </date>
+                                <connections>
+                                    <action selector="fromDateChanged:" destination="ZdA-nH-424" eventType="valueChanged" id="6ws-X8-Nbh"/>
+                                </connections>
+                            </datePicker>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="751" text="두 날짜 사이의 꿈을 검색 합니다" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="45z-sT-e0R">
+                                <rect key="frame" x="0.0" y="210.5" width="320" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <datePicker contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" datePickerMode="date" minuteInterval="1" translatesAutoresizingMaskIntoConstraints="NO" id="jFZ-Mc-uUX">
+                                <rect key="frame" x="0.0" y="239.5" width="320" height="202.5"/>
+                                <date key="date" timeIntervalSinceReferenceDate="525529047.90403801">
+                                    <!--2017-08-27 12:17:27 +0000-->
+                                </date>
+                                <connections>
+                                    <action selector="toDateChanged:" destination="ZdA-nH-424" eventType="valueChanged" id="7cW-K2-lgC"/>
+                                </connections>
+                            </datePicker>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="uRv-WR-zL6">
-                                <rect key="frame" x="160" y="394" width="160" height="42"/>
+                                <rect key="frame" x="160" y="450" width="160" height="30"/>
                                 <state key="normal" title="Ok"/>
                                 <connections>
                                     <action selector="touchUpOkButton:" destination="ZdA-nH-424" eventType="touchUpInside" id="oGe-S7-LIp"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="WUb-Iw-5Hx">
-                                <rect key="frame" x="0.0" y="394" width="160" height="42"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="42" id="h4h-C8-5u5"/>
-                                </constraints>
+                                <rect key="frame" x="0.0" y="450" width="160" height="30"/>
                                 <state key="normal" title="Cancel"/>
                                 <connections>
                                     <action selector="touchUpCancelButton:" destination="ZdA-nH-424" eventType="touchUpInside" id="85D-ze-fPj"/>
@@ -45,24 +62,35 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <gestureRecognizers/>
                         <constraints>
-                            <constraint firstItem="uRv-WR-zL6" firstAttribute="leading" secondItem="WUb-Iw-5Hx" secondAttribute="trailing" id="53l-n7-rJ3"/>
-                            <constraint firstItem="uRv-WR-zL6" firstAttribute="width" secondItem="WUb-Iw-5Hx" secondAttribute="width" id="5Pc-oU-VJd"/>
-                            <constraint firstItem="WUb-Iw-5Hx" firstAttribute="leading" secondItem="aNX-kg-dfb" secondAttribute="leading" id="6fZ-uV-wfF"/>
-                            <constraint firstItem="WUb-Iw-5Hx" firstAttribute="height" secondItem="uRv-WR-zL6" secondAttribute="height" id="ELs-gN-cbO"/>
-                            <constraint firstItem="WUb-Iw-5Hx" firstAttribute="leading" secondItem="boe-gD-sTr" secondAttribute="leading" id="FJV-oP-vQo"/>
-                            <constraint firstItem="aNX-kg-dfb" firstAttribute="height" secondItem="boe-gD-sTr" secondAttribute="height" multiplier="0.5" id="ahG-VG-fhZ"/>
-                            <constraint firstItem="uRv-WR-zL6" firstAttribute="top" secondItem="aNX-kg-dfb" secondAttribute="bottom" id="d7N-Kn-GzN"/>
-                            <constraint firstItem="Y6d-lH-fVR" firstAttribute="top" secondItem="WUb-Iw-5Hx" secondAttribute="bottom" constant="44" id="piO-WS-zMS"/>
-                            <constraint firstItem="uRv-WR-zL6" firstAttribute="bottom" secondItem="WUb-Iw-5Hx" secondAttribute="bottom" id="sQy-VV-i1W"/>
-                            <constraint firstItem="aNX-kg-dfb" firstAttribute="width" secondItem="boe-gD-sTr" secondAttribute="width" id="v1o-Kc-L0l"/>
-                            <constraint firstItem="WUb-Iw-5Hx" firstAttribute="width" secondItem="boe-gD-sTr" secondAttribute="width" multiplier="0.5" id="wbz-tw-QCa"/>
+                            <constraint firstItem="Y6d-lH-fVR" firstAttribute="top" secondItem="WUb-Iw-5Hx" secondAttribute="bottom" id="AqJ-YT-RwP"/>
+                            <constraint firstItem="uRv-WR-zL6" firstAttribute="leading" secondItem="WUb-Iw-5Hx" secondAttribute="trailing" id="CDD-tg-sBp"/>
+                            <constraint firstItem="jFZ-Mc-uUX" firstAttribute="height" secondItem="fzo-Fx-DQA" secondAttribute="height" id="FFF-Qu-TXK"/>
+                            <constraint firstAttribute="trailing" secondItem="uRv-WR-zL6" secondAttribute="trailing" id="GJp-dT-HcN"/>
+                            <constraint firstItem="45z-sT-e0R" firstAttribute="top" secondItem="fzo-Fx-DQA" secondAttribute="bottom" constant="8" id="Q6P-Op-HoO"/>
+                            <constraint firstItem="fzo-Fx-DQA" firstAttribute="leading" secondItem="boe-gD-sTr" secondAttribute="leading" id="Q70-hE-b2r"/>
+                            <constraint firstAttribute="trailing" secondItem="fzo-Fx-DQA" secondAttribute="trailing" id="UrF-hk-8cR"/>
+                            <constraint firstItem="WUb-Iw-5Hx" firstAttribute="width" secondItem="uRv-WR-zL6" secondAttribute="width" id="Xiq-8R-M1X"/>
+                            <constraint firstItem="fzo-Fx-DQA" firstAttribute="top" secondItem="boe-gD-sTr" secondAttribute="top" id="Zaz-p2-KLD"/>
+                            <constraint firstItem="45z-sT-e0R" firstAttribute="leading" secondItem="boe-gD-sTr" secondAttribute="leading" id="ayd-VR-epe"/>
+                            <constraint firstItem="jFZ-Mc-uUX" firstAttribute="leading" secondItem="boe-gD-sTr" secondAttribute="leading" id="cLj-vG-gmE"/>
+                            <constraint firstItem="jFZ-Mc-uUX" firstAttribute="top" secondItem="45z-sT-e0R" secondAttribute="bottom" constant="8" id="jli-pg-9jd"/>
+                            <constraint firstAttribute="trailing" secondItem="jFZ-Mc-uUX" secondAttribute="trailing" id="jvt-ME-9vb"/>
+                            <constraint firstAttribute="trailing" secondItem="45z-sT-e0R" secondAttribute="trailing" id="pvd-mj-uYh"/>
+                            <constraint firstItem="WUb-Iw-5Hx" firstAttribute="leading" secondItem="boe-gD-sTr" secondAttribute="leading" id="rGF-nh-DA2"/>
+                            <constraint firstItem="WUb-Iw-5Hx" firstAttribute="top" secondItem="jFZ-Mc-uUX" secondAttribute="bottom" constant="8" id="upa-Xv-vjT"/>
+                            <constraint firstItem="WUb-Iw-5Hx" firstAttribute="height" secondItem="uRv-WR-zL6" secondAttribute="height" id="vN1-uv-cAs"/>
+                            <constraint firstItem="Y6d-lH-fVR" firstAttribute="top" secondItem="uRv-WR-zL6" secondAttribute="bottom" id="xL1-PK-rpH"/>
                         </constraints>
                         <connections>
                             <outletCollection property="gestureRecognizers" destination="Jtx-15-5mW" appends="YES" id="kZ6-Sr-R5t"/>
                         </connections>
                     </view>
                     <connections>
-                        <outlet property="datePicker" destination="aNX-kg-dfb" id="8dP-Tr-oXz"/>
+                        <outlet property="cancelButton" destination="WUb-Iw-5Hx" id="fhf-fc-Olb"/>
+                        <outlet property="descriptionLabel" destination="45z-sT-e0R" id="Smr-hO-7hK"/>
+                        <outlet property="fromDatePicker" destination="fzo-Fx-DQA" id="d1I-df-BhS"/>
+                        <outlet property="okButton" destination="uRv-WR-zL6" id="Atr-Gs-vLO"/>
+                        <outlet property="toDatePicker" destination="jFZ-Mc-uUX" id="ItB-Pq-DZ3"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="rfy-4h-CG0" userLabel="First Responder" sceneMemberID="firstResponder"/>

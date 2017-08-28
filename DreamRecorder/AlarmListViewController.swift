@@ -15,7 +15,9 @@ class AlarmListViewController: UIViewController {
     @IBOutlet weak var tableView: UITableView!
     
     // - Private.
-    fileprivate lazy var store: AlarmDataStore = AlarmDataStore.shared
+    fileprivate var store: AlarmDataStore {
+        return AlarmDataStore.shared
+    }
     fileprivate let dateParser: DateParser = DateParser()
     /// default is true. it will set false to block reload table from AlarmDataStoreDidChange notification.
     /// UI(addController, editController, deleteAction)등을 통해 사용자 컨트롤로 일어나는 변화는 직접 해당 row만 변경을 위해
@@ -82,13 +84,6 @@ class AlarmListViewController: UIViewController {
                 self.tableView.reloadData()
                 self.tableView.isHidden = false
             }
-        }
-        
-        NotificationCenter.default.addObserver(forName: Notification.Name.DreamRecorderFontDidChange,
-                                               object: nil,
-                                               queue: .main)
-        { (_) in
-            self.tableView.reloadData()
         }
     }
     
@@ -238,8 +233,8 @@ extension AlarmListViewController: AlarmListCellDelegate {
         
         self.store.updateAlarm(alarm: updatingAlarm)
         
-        let updatedIndexPath = IndexPath(row: sender.tag, section: 0)
-        self.tableView.reloadRows(at: [updatedIndexPath], with: .automatic)
+//        let updatedIndexPath = IndexPath(row: sender.tag, section: 0)
+//        self.tableView.reloadRows(at: [updatedIndexPath], with: .automatic)
     }
 }
 
@@ -253,9 +248,9 @@ extension AlarmListViewController: AlarmAddViewControllerDelegate, AlarmEditView
         self.store.insertAlarm(alarm: alarm)
         
         // Replace reload table with inserting rows if alarm added.
+        
         guard let index = self.store.alarms.index(of: alarm) else { return }
         let newIndexPath = IndexPath(row: index, section: 0)
-        
         self.tableView.insertRows(at: [newIndexPath], with: .automatic)
     }
     

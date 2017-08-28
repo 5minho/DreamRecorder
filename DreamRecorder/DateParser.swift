@@ -21,6 +21,24 @@ struct DateParser {
         
     }()
     
+    func firstDayOfMonth(date: Date) -> Date? {
+        
+        let currentDateComponent = calendar.dateComponents([.month, .year], from: date)
+        let component : DateComponents = {
+            
+            var component = DateComponents()
+            
+            (component.year, component.month, component.day) =
+                (currentDateComponent.year, currentDateComponent.month, 1)
+            
+            return component
+            
+        }()
+        
+        
+        return calendar.date(from: component)
+    }
+    
     func time(from date : Date) -> String? {
         
         let component = calendar.dateComponents([.hour, .minute], from: date)
@@ -32,6 +50,8 @@ struct DateParser {
         
         if hour > 12 {
             return "\(String(format: "%02d", hour - 12)):\(String(format: "%02d", minute)) PM"
+        } else if hour == 12 {
+            return "\(String(format: "%02d", hour)):\(String(format: "%02d", minute)) PM"
         }
         return "\(String(format: "%02d", hour)):\(String(format: "%02d", minute)) AM"
         

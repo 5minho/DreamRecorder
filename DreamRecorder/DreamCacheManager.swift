@@ -10,19 +10,30 @@ import Foundation
 
 class DreamCacheManager {
     
-    let yearsCount = 130 // (1970 ~ 2100) -> (0 ~ 130)
-    let monthCount = 13  // 1 ~ 12
+    private let yearsToSaveCount = 130 // (1970 ~ 2100) -> (0 ~ 130)
+    private let monthToSaveCount = 13  // 1 ~ 12
     
+    private var year = 0
+    private var month = 0
+    
+    private var yearIndex : Int {
+        get {
+            return year - DreamDataStore.startYearToSave
+        }
+    }
+    
+    let dateParser : DateParser
     var cachedDreams : [[[Dream]]]
     
     init() {
         
-        cachedDreams = [[[Dream]]]()
+        self.cachedDreams = [[[Dream]]]()
+        self.dateParser = DateParser()
         
-        for year in 0 ..< yearsCount {
+        for year in 0 ..< yearsToSaveCount {
             cachedDreams.append([[Dream]]())
             
-            for _ in 0 ..< monthCount {
+            for _ in 0 ..< monthToSaveCount {
                 cachedDreams[year].append([Dream]())
             }
         }
@@ -31,23 +42,25 @@ class DreamCacheManager {
     
     func insertCache(dream : Dream) {
         
-        let dateParser = DateParser()
-        
-        
         if let year = dateParser.year(from: dream.createdDate) {
             
-            let yearIndex = year - 1970
-            let month : Int = dateParser.month(from: dream.createdDate)
+            self.year = year
+            self.month = dateParser.month(from: dream.createdDate)
+
+            guard var dreams = self.cachedDreams[safe: yearIndex]?[safe: month] else {
+                return
+            }
         
-            for idx in 0 ..< self.cachedDreams[yearIndex][month].count {
+            for idx in 0 ..< dreams.count {
                 
-                if dream > self.cachedDreams[yearIndex][month][idx] {
-                    self.cachedDreams[yearIndex][month].insert(dream, at: idx)
+                if dream > dreams[idx] {
+                    dreams.insert(dream, at: idx)
                     return
                 }
                 
             }
-            self.cachedDreams[yearIndex][month].append(dream)
+            
+            dreams.append(dream)
             
         }
         
@@ -55,17 +68,21 @@ class DreamCacheManager {
     
     func deleteCached(dream : Dream) {
         
-        let dateParser = DateParser()
-        
         if let year = dateParser.year(from: dream.createdDate) {
             
-            let yearIndex = year - 1970
-            let month : Int = dateParser.month(from: dream.createdDate)
+            self.year = year
+            self.month = dateParser.month(from: dream.createdDate)
             
-            if let idx = self.cachedDreams[yearIndex][month].index(of: dream) {
-                self.cachedDreams[yearIndex][month].remove(at: idx)
+            if var dreams = self.cachedDreams[safe: yearIndex]?[safe: month] {
+            
+                if let idx = dreams.index(of: dream) {
+                    dreams.remove(at: idx)
+                }
+                
             }
+            
         }
+        
     }
     
 }
