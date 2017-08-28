@@ -109,14 +109,13 @@ class AlarmAlertViewController: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+        self.alarmNameLabel.layer.removeAllAnimations()
+        self.alarmNameLabel.transform = .identity
         self.startAlarmNameLabelAnimation(withDuration: 0.1)
     }
     
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
-        
-        self.alarmNameLabel.layer.removeAllAnimations()
-        self.alarmNameLabel.transform = .identity
     }
     
     /// 알람명을 보여주는 레이블이 시소같은 움직임을 가지는 애니메이션을 추가한다.

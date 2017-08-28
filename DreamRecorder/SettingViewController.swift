@@ -61,7 +61,7 @@ extension SettingViewController: UITableViewDelegate, UITableViewDataSource {
         if section == 0 {
             return 1
         } else if section == 1 {
-            return 3
+            return 2
         } else {
             return 0
         }
@@ -87,7 +87,7 @@ extension SettingViewController: UITableViewDelegate, UITableViewDataSource {
                 
                 let iconHeight = cell.frame.height - 32
                 let iconSize = CGSize(width: iconHeight, height: iconHeight)
-                let iconImage = #imageLiteral(resourceName: "earth17").image(with: iconSize)?.withRenderingMode(.alwaysTemplate)
+                let iconImage = #imageLiteral(resourceName: "icon_earth").image(with: iconSize)?.withRenderingMode(.alwaysTemplate)
                 cell.imageView?.image = iconImage
 
             default:
@@ -100,11 +100,11 @@ extension SettingViewController: UITableViewDelegate, UITableViewDataSource {
             case 0:
                 
                 cell.textLabel?.text = "Font".localized
-                cell.detailTextLabel?.text = UserDefaults.standard.string(forKey: UserDefaults.UserKey.fontName)
+                cell.detailTextLabel?.text = UserDefaults.standard.string(forKey: UserDefaults.UserKey.fontName) ?? "System"
                 
                 let iconHeight = cell.frame.height - 32
                 let iconSize = CGSize(width: iconHeight, height: iconHeight)
-                let iconImage = #imageLiteral(resourceName: "font3").image(with: iconSize)?.withRenderingMode(.alwaysTemplate)
+                let iconImage = #imageLiteral(resourceName: "icon_font").image(with: iconSize)?.withRenderingMode(.alwaysTemplate)
                 cell.imageView?.image = iconImage
             
             case 1:
@@ -167,21 +167,6 @@ extension SettingViewController: UITableViewDelegate, UITableViewDataSource {
                         }
                     }
                 }
-            case 2:
-                
-                AlarmScheduler.shared.nextTriggerDate(completionHandler: { (identifier, date) in
-                    if let nextDate = date {
-                        DispatchQueue.main.async {
-                            let shareItem = "HelloWorld"
-                            let alarmTime = nextDate.description
-                            let controller = UIActivityViewController(activityItems: [shareItem, alarmTime],
-                                                                      applicationActivities: nil)
-                            controller.popoverPresentationController?.sourceView = tableView.cellForRow(at: indexPath)
-                            controller.excludedActivityTypes = [UIActivityType.message]
-                            self.present(controller, animated: true, completion: nil)
-                        }
-                    }
-                })
                 
             default:
                 break

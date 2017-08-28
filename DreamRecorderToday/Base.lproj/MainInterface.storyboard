@@ -23,8 +23,8 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="100"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Last Night:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qEn-pW-KPc">
-                                <rect key="frame" x="24" y="16" width="84" height="21"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Last Night:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qEn-pW-KPc">
+                                <rect key="frame" x="24" y="15" width="84" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
@@ -35,12 +35,6 @@
                                 <color key="textColor" red="0.96557557579999997" green="0.97027868029999997" blue="0.97526365520000002" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="nt_partlycloudy" translatesAutoresizingMaskIntoConstraints="NO" id="m2W-GY-BPY">
-                                <rect key="frame" x="212" y="8" width="84" height="84"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" secondItem="m2W-GY-BPY" secondAttribute="height" multiplier="1:1" id="Lr6-mB-swj"/>
-                                </constraints>
-                            </imageView>
                             <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="white" translatesAutoresizingMaskIntoConstraints="NO" id="GFo-nx-Q9T">
                                 <rect key="frame" x="153" y="63.5" width="20" height="20"/>
                             </activityIndicatorView>
@@ -50,6 +44,12 @@
                                 <color key="textColor" red="0.96557557579999997" green="0.97027868029999997" blue="0.97526365520000002" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="image_partlycloudy" translatesAutoresizingMaskIntoConstraints="NO" id="m2W-GY-BPY">
+                                <rect key="frame" x="212" y="8" width="84" height="84"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" secondItem="m2W-GY-BPY" secondAttribute="height" multiplier="1:1" id="Lr6-mB-swj"/>
+                                </constraints>
+                            </imageView>
                         </subviews>
                         <color key="backgroundColor" red="0.027450980392156862" green="0.14509803921568626" blue="0.34509803921568627" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
@@ -85,6 +85,6 @@
         </scene>
     </scenes>
     <resources>
-        <image name="nt_partlycloudy" width="149" height="150"/>
+        <image name="image_partlycloudy" width="149" height="150"/>
     </resources>
 </document>

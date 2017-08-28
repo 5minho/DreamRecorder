@@ -38,9 +38,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Register Quick action.
-        let icon = UIApplicationShortcutIcon(type: .alarm)
-        let item = UIApplicationShortcutItem(type: ShortcutItemType.nextAlarm, localizedTitle: "Next Alarm".localized, localizedSubtitle: "See next alarm state.".localized, icon: icon, userInfo: nil)
-        UIApplication.shared.shortcutItems = [item]
+        let alarmIcon = UIApplicationShortcutIcon(type: .alarm)
+        let nextAlarmItem = UIApplicationShortcutItem(type: ShortcutItemType.nextAlarm,
+                                             localizedTitle: "Next Alarm".localized,
+                                             localizedSubtitle: "See next alarm state.".localized,
+                                             icon: alarmIcon, userInfo: nil)
+        UIApplication.shared.shortcutItems = [nextAlarmItem]
 
         // Apply Theme.
         UIBarButtonItem.appearance().setTitleTextAttributes([NSForegroundColorAttributeName : UIColor.defaultButtonTitleColor], for: .normal)
