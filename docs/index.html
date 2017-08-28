@@ -1,0 +1,808 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="description" content="Responsive Bootstrap Landing Page Template">
+  <meta name="keywords" content="Bootstrap, Landing page, Template, Registration, Landing">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="author" content="Grayrids">
+  <title>Pluto - Material UI Inspired Bootstrap Template</title>
+
+  <link href="css/bootstrap.min.css" rel="stylesheet">
+  <!-- Font Awesome CSS -->
+  <link rel="stylesheet" href="fonts/font-awesome.min.css" type="text/css" media="screen">
+  <!-- Include roboto.css to use the Roboto web font, material.css to include the theme and ripples.css to style the ripple effect -->
+  <link href="css/material.min.css" rel="stylesheet">
+  <link href="css/ripples.min.css" rel="stylesheet">
+  <link href="css/main.css" rel="stylesheet">
+  <link href="css/responsive.css" rel="stylesheet">
+  <link href="css/animate.min.css" rel="stylesheet">
+</head>
+
+<body>
+
+<div class="navbar navbar-invers menu-wrap">
+  <div class="navbar-header text-center">
+    <a class="navbar-brand logo-right" href="javascript:void(0)"><i class="mdi-image-timelapse"></i>DreamRecorder</a>
+  </div>
+  <ul class="nav navbar-nav main-navigation">
+    <li class="active"><a href="#home">Home</a></li>
+    <li><a href="#features">Features</a></li>
+    <li><a href="#why">Intro</a></li>
+    <li><a href="#main-features">User Interface</a></li>
+    <li><a href="#features">Design Pattern</a></li>
+    <li><a href="#screenshot">Code Refactoring</a></li>
+  </ul>
+  <button class="close-button" id="close-button">Close Menu</button>
+</div>
+
+<div class="content-wrap">
+  <header class="hero-area" id="home">
+
+    <div class="container">
+      <div class="col-md-12">
+
+        <div class="navbar navbar-inverse sticky-navigation navbar-fixed-top" role="navigation" data-spy="affix" data-offset-top="200">
+          <div class="container">
+            <div class="navbar-header">
+              <a class="logo-left " href="index.html"><i class="mdi-image-timelapse"></i>Dream Recorder</a>
+            </div>
+            <div class="navbar-right">
+              <button class="menu-icon"  id="open-button">
+                <i class="mdi-navigation-menu"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="contents text-right">
+        <h1 class="wow fadeInRight" data-wow-duration="1000ms" data-wow-delay="300ms">Dream Recorder</h1>
+        <p class="wow fadeInRight" data-wow-duration="1000ms" data-wow-delay="400ms">HoHo Team - @Mino @Bran</p>
+        <a href="https://github.com/minomi/DreamRecorder" class="btn btn-lg btn-primary wow fadeInUp" data-wow-duration="1000ms" data-wow-delay="400ms">Github</a>
+        <a href="#features" class="btn btn-lg btn-border wow fadeInUp" data-wow-duration="1000ms" data-wow-delay="500ms">Learn More</a>
+      </div>
+    </div>
+  </header>
+
+  <section id="why" class="section">
+    <div class="container">
+
+      <div class="row">
+
+        <div class="col-md-6 col-sm-6 wow fadeInRight" data-wow-duration="1000ms" data-wow-delay="300ms">
+
+          <video poster="img/features/img1.png" width="300" height="555" controls="controls">
+            <source src="movie/DreamRecorderMovie.mp4" type="video/mp4" />
+          </video>
+
+        </div>
+
+        <div class="col-md-6 col-sm-6 wow fadeInLeft" data-wow-duration="1000ms" data-wow-delay="300ms">
+          <div class="pull-left content">
+            <h2>This is<br>DreamRecorder</h2>
+            <p>
+              하룻밤 사이에 꾸는 꿈은 보통 아침에 기상 후 몇 분이면 다 잊어버립니다.<br>
+              DreamRecorder는 아침에 일어나자 마자 꿈을 기록 할 수 있게 도와주는 꿈 기록 알람 앱 입니다.<br>
+            </p>
+            <ul class="list-item">
+              <li><i class="mdi-action-done"></i>HIG를 준수하는</li>
+              <li><i class="mdi-action-done"></i>구조와 코드가 읽기 쉬운</li>
+              <li><i class="mdi-action-done"></i>재사용성이 높고 UnitTest를 활용하는</li>
+              <li><i class="mdi-action-done"></i>Accessibility가 높고 사용자 친화적인</li>
+              <!-- <li><i class="mdi-action-done"></i>Refreshing Designß</li> -->
+            </ul>
+            <br>
+            <a href="javascript:void(0)"><img src="img/Download_on_the_App_Store_Badge_US-UK_135x40.svg" alt=""></a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="main-features" class="section main-feature-gray">
+    <div class="container">
+
+      <div class="row">
+        <div class="col-md-6 col-sm-6 wow fadeInLeft" data-wow-duration="1000ms" data-wow-delay="300ms">
+          <div class="feature-item">
+            <h3 class="title-small">
+              User Interface
+            </h3>
+            <h4> Peek and Pop </h4>
+            <p>
+              3D Touch를 통해 AlarmListViewController의 UITableView에 있는 UITableViewCell은 해당 내용을 일시적으로 보여줍니다.
+            </p><br>
+            <h4> Audio </h4>
+            <p>
+              번들로 제공되는 알람음 또는 사용자 미디어 파일을 알람 소리로 설정/재생 할 수 있습니다.
+            </p><br>
+            <h4> Data Entry </h4>
+            <p>
+              UITextField뿐만아니라 가능하면 UIDatePicker나 UITableView(아이템 리스트를 위한)를 제공합니다.
+            </p><br>
+            <h4> Feedback </h4>
+            <p>
+              꿈 기록간에 일정시간동안 오디오 입력이 없으면 사용자에게 일어날 일(음성 입력 중지)에 대해 알려줍니다.
+            </p><br>
+            <h4> Gesture </h4>
+            <p>
+              AlarmStateViewController에서는 UIPanGestureRecognizer를 활용하여 사용자가 한방향으로 Swipe를 할 경우에 UIViewController를 Dismiss시킵니다.
+            </p><br>
+            <h4> Navigation </h4>
+            <p>
+              독립된 꿈기록, 알람 그리고 설정페이지는 UITabbarController를 통해서 Flat navigation.
+              꿈 자세히 보기나 알람 상태보기의 경우 UINavigationController를 통해서 Hierarchical navigation.
+            </p><br>
+            <h4> Settings </h4>
+            <p>
+              Audio와 Notification에 shortcuts을 SettingViewController에서 제공한다.
+            </p>
+          </div>
+        </div>
+
+        <div class="col-md-3 col-sm-3 wow fadeInRight" data-wow-duration="1000ms" data-wow-delay="300ms">
+          <img src="img/userinterface/peekandpop.gif" class="img-responsive" alt="" width="200" height="100">
+        </div>
+        <div class="col-md-3 col-sm-3 wow fadeInRight" data-wow-duration="1000ms" data-wow-delay="300ms">
+          <img src="img/userinterface/feedback.gif" class="img-responsive" alt="" width="200" height="100">
+        </div>
+        <div class="col-md-3 col-sm-3 wow fadeInRight" data-wow-duration="1000ms" data-wow-delay="300ms">
+          <img src="img/userinterface/gesture.gif" class="img-responsive" alt="" width="200" height="100">
+        </div>
+
+
+      </div>
+
+    </div>
+  </section>
+
+  <section id="main-features" class="section">
+    <div class="container">
+
+      <div class="row">
+        <div class="col-md-3 col-sm-3 wow fadeInLeft" data-wow-duration="1000ms" data-wow-delay="300ms">
+          <img src="img/extension/quickaction.gif" class="img-responsive" alt="" width="187" height="333">
+        </div>
+        <div class="col-md-3 col-sm-3 wow fadeInLeft" data-wow-duration="1000ms" data-wow-delay="300ms">
+          <img src="img/extension/sharing.gif" class="img-responsive" alt="" width="187" height="333">
+        </div>
+
+        <div class="col-md-6 col-sm-6 wow fadeInRight" data-wow-duration="1000ms" data-wow-delay="300ms">
+          <div class="feature-item">
+            <h3 class="title-small">
+              Extensions
+            </h3>
+            <h4> Home Screen Quick Actions </h4>
+            <p>
+              Home Screen Quick Action을 통해 다음 알람의 State창으로 바로 갈 수 있도록 합니다.
+            </p><br>
+            <h4> Widgets </h4>
+            <p>
+              Widgets을 통해서 최근 꿈 기록과 다음 알람까지의 남은 시간을 보여줍니다.
+            </p><br>
+            <h4> Sharing </h4>
+            <p>
+              Activity View를 통해 꿈 기록을 간편하게 공유가 가능합니다.
+            </p>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <section id="main-features" class="section main-feature-gray">
+    <div class="container">
+
+      <div class="row">
+        <div class="col-md-6 col-sm-6 wow fadeInLeft" data-wow-duration="1000ms" data-wow-delay="300ms">
+          <div class="feature-item">
+            <h3 class="title-small">
+              Localizable & Accessibility
+            </h3>
+            <h4> Localizable </h4>
+            <p>
+              화면에 표기되는 Label들을 지역화(한국어, 영어, 일본어)를 지원함으로써 UX를 향상시킨다.
+            </p><br>
+            <h4> Accessibility </h4>
+            <p>
+              커스텀 뷰의 사용과 사용자가 빠르게 이해할 수 있도록 Accessibility의 접근을 허용/비허용하고 AccessibilityLabel을 설정한다.
+            </p>
+          </div>
+        </div>
+
+        <div class="col-md-3 col-sm-3 wow fadeInRight" data-wow-duration="1000ms" data-wow-delay="300ms">
+          <img src="img/accessibility/localizable.gif" class="img-responsive" alt="">
+        </div>
+        <div class="col-md-3 col-sm-3 wow fadeInRight" data-wow-duration="1000ms" data-wow-delay="300ms">
+          <img src="img/accessibility/accessibility_text.gif" class="img-responsive" alt="">
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <section id="features" class="section">
+    <div class="container">
+      <div class="section-header">
+        <h1 class="section-title wow fadeInRight" data-wow-duration="1000ms" data-wow-delay="100ms">Design Pattern</h1>
+        <h2 class="section-subtitle wow fadeInRight" data-wow-duration="1000ms" data-wow-delay="400ms">Dream Recorder에서는 대표적으로 MVC, 싱글톤, 델레게이트, 옵저버, Mediator, 프로토콜 패턴을 사용하고 있습니다.</h2>
+      </div>
+      <div class="row">
+
+        <div class="col-md-4 col-sm-6 wow fadeInDown" data-wow-duration="1000ms" data-wow-delay="300ms">
+          <div class="features">
+            <div class="icon">
+              <i class="mdi-action-settings"></i>
+            </div>
+            <div class="features-text">
+              <h4>MVC 패턴</h4>
+              <p>
+                Cocoa Touch 프로그래밍에서 기본이 되는 MVC패턴을 사용하고 있습니다.
+                MVC를 준수하기 위해 커스텀 UIView(MultiButton)를 Delegate를 통해 사용자의 반응에는 Controller가 처리할 수 있도록 하였습니다.
+              </p>
+            </div>
+          </div>
+        </div>
+
+
+        <div class="col-md-4 col-sm-6 wow fadeInDown" data-wow-duration="1000ms" data-wow-delay="450ms">
+          <div class="features">
+            <div class="icon">
+              <i class="mdi-action-done-all"></i>
+            </div>
+            <div class="features-text">
+              <h4>싱글톤</h4>
+              <p>
+                자주 또는 앱 전반에 걸쳐 공용되는 인스턴스는 싱글톤으로 구현하였습니다.
+                앱 전반에 걸쳐 영향을 끼치고 하나만 필요한 것: DreamDataStore, AlarmDataStore, AlarmScheduler, SoundManager.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-4 col-sm-6 wow fadeInDown" data-wow-duration="1000ms" data-wow-delay="550ms">
+          <div class="features">
+            <div class="icon">
+              <i class="mdi-image-blur-linear"></i>
+            </div>
+            <div class="features-text">
+              <h4>델레게이트</h4>
+              <p>
+                UIViewController간의 데이터 공유를 위해 델레게이트 패턴을 활용하였습니다.
+                또한 커스텀 UIView에서 MVC패턴을 유지하기 위해 사용하였습니다.
+                <br><br><br>
+              </p>
+            </div>
+          </div>
+        </div>
+
+
+        <div class="col-md-4 col-sm-6 wow fadeInDown" data-wow-duration="1000ms" data-wow-delay="650ms">
+          <div class="features">
+            <div class="icon">
+              <i class="mdi-communication-business"></i>
+            </div>
+            <div class="features-text">
+              <h4>옵저버 패턴</h4>
+              <p>
+                애플의 싱글톤으로 만들어진 NotificationCenter를 통해 UIViewController와 DataStore의 결합을 느슨하게 합니다.(loosely coupled)
+                또한 앱의 생애주기를 함께하여 싱글톤으로 만든 각각의 객체들의 결합도를 느슨하게 만들기 위해 사용하였습니다.
+              </p>
+            </div>
+          </div>
+        </div>
+
+
+        <div class="col-md-4 col-sm-6 wow fadeInDown" data-wow-duration="1000ms" data-wow-delay="750ms">
+          <div class="features">
+            <div class="icon">
+              <i class="mdi-action-favorite"></i>
+            </div>
+            <div class="features-text">
+              <h4>Mediator 패턴</h4>
+              <p>
+                많은 수의 UIViewController에서는 중재자 역할을 하는 Manager들에게 적절한 메서드를 호출하도록 합니다.
+                DreamListViewController, AlarmListViewController는 DB에 읽고 쓰는 법을 모르지만 각각의 DataStore가 중재해줍니다.
+                중재역할을 하는 Manager는 앱의 생애주기를 함께하기 때문에 싱글톤으로 구현하였습니다.
+                AlarmDataStore(DB접근), AlarmScheduler(UserNotification), SoundManager(AVPlayer).
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-4 col-sm-6 wow fadeInDown" data-wow-duration="1000ms" data-wow-delay="850ms">
+          <div class="features">
+            <div class="icon">
+              <i class="mdi-hardware-phonelink"></i>
+            </div>
+            <div class="features-text">
+              <h4>Protocols 패턴 (Adapter)</h4>
+              <p>
+                UIViewController가 ThemeAppliable이란 프로토콜을 준수하면 UINavigationController와 해당 Controller의 View에 전체 테마를 적용할 수 있습니다.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+    <!-- Unit Test -->
+      <!--<img src="../Desktop/codecoverage3.png" height="596" width="1522"/>-->
+
+    <!-- Code Refactor -->
+    <section id="other-features" class="section main-feature-gray">
+      <div class="container">
+        <div class="section-header">
+          <h1 class="section-title wow fadeInRight" data-wow-duration="1000ms" data-wow-delay="300ms">Technique & Code Refactoring</h1>
+          <h2 class="section-subtitle wow fadeInRight" data-wow-duration="1000ms" data-wow-delay="400ms">알람을 구현하기 위해 AVFoundation Framework, 다양한 App-Cycle에 대응하기 위해 Notification 사용했고, 사용자의 끊김 없고 빠른 app 구동을 위해 Dispatch를 활용했습니다  UserDefaults에 활용되는 Key, NotificationCenter에 UserInfo로 활용되는 Key등을 구조체로 만들어 오류가능성을 줄이고 유지보수를 쉽게 하였습니다.</h2>
+          <br><br>
+          <div class="row">
+            <div class="col-md-3 col-sm-6 wow fadeInUp" data-wow-duration="1000ms" data-wow-delay="400ms">
+              <div class="features-content">
+                <div class=“icon>
+                  Mino & Bran
+                </div>
+                <h3>Protocol 활용</h3>
+                <p>틀을 제공하는 프로토콜과 Extension을 합하여 특정 클래스의 초기구현을 하여 코드라인을 줄였습니다.</p>
+              </div>
+            </div>
+            <div class="col-md-3 col-sm-6 wow fadeInUp" data-wow-duration="1000ms" data-wow-delay="600ms">
+              <div class="features-content">
+                <div class="icon">
+                  Mino & Bran
+                </div>
+                <h3>Extension 활용</h3>
+                <p>Date, UIColor, UIFont 등 다양한 CocoaTouch 클래스들을 필요에 따라 Extension하여 사용하였습니다.</p>
+              </div>
+            </div>
+            <div class="col-md-3 col-sm-6 wow fadeInUp" data-wow-duration="1000ms" data-wow-delay="800ms">
+              <div class="features-content">
+                <div class="icon">
+                  Mino & Bran
+                </div>
+                <h3>String값 구조화</h3>
+                <p>UserDefaults에 활용되는 Key, NotificationCenter에 UserInfo로 활용되는 Key등을 구조체로 만들어 오류가능성을 줄이고 유지보수를 쉽게 하였습니다.</p>
+              </div>
+            </div>
+            <div class="col-md-3 col-sm-6 wow fadeInUp" data-wow-duration="1000ms" data-wow-delay="1000ms">
+              <div class="features-content">
+                <div class="icon">
+                  Mino
+                </div>
+                <h3>Dispatch 활용<a href="https://github.com/minomi/DreamRecorder/issues/61">#61</a></h3>
+                <p>꿈 데이터의 검색연산은 Main Queue 가 아닌 다른 Queue 에서 실행이 되야 합니다. DreamRecorder 에서는 Dispatch Queue를 활용해서 검색 연산을 background에서 실행했고, 사용자가 입력한 검색 키워드를 추적하기 위해서도 Dispatch api를 활용했습니다. </p>
+              </div>
+            </div>
+            <div class="col-md-3 col-sm-6 wow fadeInUp" data-wow-duration="1000ms" data-wow-delay="1200ms">
+              <div class="features-content">
+                <div class="icon">
+                  Mino & Bran
+                </div>
+                <h3>SQLite</h3>
+                <p>디바이스에 데이터를 저장하기 위한 도구로 SQLite 를 사용했고 그 중 SQlite를 swift 언어로 래핑한 라이브러리, SQlite.swift를 사용했습니다. 팀 원 둘다 관계형데이터베이스를 공부해보고 싶어했고, SQlite 가 모바일 환경에서 많이 쓰이는 DBMS 이기 때문에 이번 프로젝트를 통해 연습해 보고 싶었습니다</p>
+              </div>
+            </div>
+
+            <div class="col-md-3 col-sm-6 wow fadeInUp" data-wow-duration="1000ms" data-wow-delay="1400ms">
+              <div class="features-content">
+                <div class="icon">
+                  Mino
+                </div>
+                <h3>Performance<a href="https://github.com/minomi/DreamRecorder/issues/62">#61</a></h3>
+                <p> App의 Performance 와 memory 효율을 높히기 위해 많은 고민을 해봤습니다. 한번 화면에 보여진 꿈 데이터들이 다시 화면에 보여질때 DB Query를 최소화하기 위해 따로 cache 기능을 하는 클래스를 만들어 보았습니다. 그리고 꿈 검색시 Like Query 와 FTS (Full Text Search) 중 어떤것을 사용할 것인가에 대해 고만해봤습니다.</p>
+              </div>
+            </div>
+
+            <div class="col-md-3 col-sm-6 wow fadeInUp" data-wow-duration="1000ms" data-wow-delay="1600ms">
+              <div class="features-content">
+                <div class="icon">
+                  Bran
+                </div>
+                <h3>App LifeCycle을 고려한 알람 구현 <a href="https://github.com/minomi/DreamRecorder/issues/34">#34</a> <a href="https://github.com/minomi/DreamRecorder/issues/37">#37</a> </h3>
+                <p>앱의 생명주기는 디바이스의 상태, 사용자의 반응 그리고 앱의 백그라운드 실행여부 등으로 달라집니다.</p>
+                <p>AVPlayer의 Item이 끝까지 실행되었을 때 불리는 노티피케이션을 활용하여 seek메서드를 통해 재생시간 돌리는 방법과</p>
+                <p>AVLooper를 통해서 지속적인 음악을 재생하며 KVO를 지원하는 loopCount를 관찰하는 것 중에 선택하였습니다.</p>
+              </div>
+            </div>
+
+            <div class="col-md-3 col-sm-6 wow fadeInUp" data-wow-duration="1000ms" data-wow-delay="1800ms">
+              <div class="features-content">
+                <div class="icon">
+                  Bran
+                </div>
+                <h3>UserNotification <a href="https://github.com/minomi/DreamRecorder/issues/73">#73</a> </h3>
+                <p>알람의 정확성을 유지하는 방법으로 Alarm객체를 통해서 알람이 울리는 시간을 사용하지 않고 실재 발생하는 UserNotification을 통해 알람을 추적합니다.</p>
+                <p>하지만 UserNotification의 pendingNotifications을 가져오는 메서드는 백그라운드 스레드에서 실행되어 completion을 통해 객채들을 반환합니다.</p>
+                <p>이에 따라 Notification에 변화가 있으면 추적하여 업데이트할 경우에는 동기화에 신경을 써야했습니다.</p>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Issue and Barrier -->
+    <!--<section id="screenshot" class="section main-feature-gray">-->
+      <!--<div class="container">-->
+        <!--<div class="section-header">-->
+          <!--<h1 class="section-title wow fadeInRight" data-wow-duration="1000ms" data-wow-delay="300ms">이슈 및 느낀점</h1>-->
+          <!--<h2 class="section-subtitle wow fadeInRight" data-wow-duration="1000ms" data-wow-delay="400ms">굳 좝</h2>-->
+        <!--</div>-->
+      <!--</div>-->
+    <!--</section>-->
+
+
+        <!--<section id="cta">-->
+          <!--<div class="container">-->
+            <!--<div class="row text-center">-->
+                <!--<h3 class="title-small wow bounce" data-wow-duration="1000ms" data-wow-delay="300ms">Join Us Today and Change Yourself</h3>-->
+                 <!--<a href="javascript:void(0)" class="btn btn-lg btn-border">Sign Up</a>-->
+              <!--</div>-->
+          <!--</div>-->
+        <!--</section>-->
+
+    <!--<section id="testimonial" class="section">-->
+      <!--<div class="container">-->
+        <!--<div class="section-header text-center wow fadeInDown" data-wow-duration="1000ms" data-wow-delay="400ms">-->
+          <!--<h1 class="section-title">What People Says</h1>-->
+          <!--<h2 class="section-subtitle">Material UI Bootstrap APP and Business Template</h2>-->
+        <!--</div>-->
+        <!--<div class="row">-->
+          <!--<div class="col-sm-8 col-sm-offset-2 wow fadeInUp" data-wow-duration="1000ms" data-wow-delay="400ms">-->
+            <!--<div id="testimonial-carousel" class="carousel slide" data-ride="carousel">-->
+              <!--&lt;!&ndash; Indicators &ndash;&gt;-->
+              <!--<ol class="carousel-indicators">-->
+                <!--<li data-target="#testimonial-carousel" data-slide-to="0" class="active"></li>-->
+                <!--<li data-target="#testimonial-carousel" data-slide-to="1"></li>-->
+                <!--<li data-target="#testimonial-carousel" data-slide-to="2"></li>-->
+              <!--</ol>-->
+              <!--<div class="carousel-inner">-->
+                <!--<div class="item active text-center">-->
+                  <!--<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud</p>-->
+                  <!--<div class="meta">-->
+                    <!--<p>Web excutive <span><a href="http://wingthemes.com/">WingThemes</a></span></p>-->
+                  <!--</div>-->
+                <!--</div>-->
+                <!--<div class="item text-center">-->
+                  <!--<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud</p>-->
+                  <!--<div class="meta">-->
+                    <!--<p>Web excutive <span><a href="http://graygrids.com/">GrayGrids</a></span></p>-->
+                  <!--</div>-->
+                <!--</div>-->
+                <!--<div class="item text-center">-->
+                  <!--<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud</p>-->
+                  <!--<div class="meta">-->
+                    <!--<p>Web excutive <span><a href="http://landingbow.com/">LandinBow</a></span></p>-->
+                  <!--</div>-->
+                <!--</div>-->
+              <!--</div>-->
+            <!--</div>-->
+          <!--</div>-->
+        <!--</div>-->
+      <!--</div>-->
+    <!--</section>-->
+
+
+    <!--<section id="counter" class="section">-->
+      <!--<div class="container">-->
+        <!--<div class="row">-->
+          <!--<div class="col-md-3 col-sm-6 col-xs-12 wow fadeInLeft" data-wow-duration="1000ms" data-wow-delay="300ms">-->
+            <!--<div class="counter-item">-->
+              <!--<div class="icon">-->
+                <!--<i class="mdi-action-get-app"></i>-->
+              <!--</div>-->
+              <!--<h3 class="timer">39000</h3>-->
+              <!--<hr>-->
+              <!--<h5>-->
+                <!--Free Downloads-->
+              <!--</h5>-->
+            <!--</div>-->
+          <!--</div>-->
+          <!--<div class="col-md-3 col-sm-6 col-xs-12 wow fadeInLeft" data-wow-duration="1000ms" data-wow-delay="500ms">-->
+            <!--<div class="counter-item">-->
+              <!--<div class="icon">-->
+                <!--<i class="mdi-action-face-unlock"></i>-->
+              <!--</div>-->
+              <!--<h3 class="timer">1046</h3>-->
+              <!--<hr>-->
+              <!--<h5>-->
+                <!--Premium Users-->
+              <!--</h5>-->
+            <!--</div>-->
+          <!--</div>-->
+          <!--<div class="col-md-3 col-sm-6 col-xs-12 wow fadeInRight" data-wow-duration="1000ms" data-wow-delay="700ms">-->
+            <!--<div class="counter-item">-->
+              <!--<div class="icon">-->
+                <!--<i class="mdi-action-grade"></i>-->
+              <!--</div>-->
+              <!--<h3 class="timer">6345</h3>-->
+              <!--<hr>-->
+              <!--<h5>-->
+                <!--Five Start Reviews-->
+              <!--</h5>-->
+            <!--</div>-->
+          <!--</div>-->
+          <!--<div class="col-md-3 col-sm-6 col-xs-12 wow fadeInRight" data-wow-duration="1000ms" data-wow-delay="900ms">-->
+            <!--<div class="counter-item">-->
+              <!--<div class="icon">-->
+                <!--<i class="mdi-action-trending-up"></i>-->
+              <!--</div>-->
+              <!--<h3 class="timer">18325</h3>-->
+              <!--<hr>-->
+              <!--<h5>-->
+                <!--Active Installs-->
+              <!--</h5>-->
+            <!--</div>-->
+          <!--</div>-->
+        <!--</div>-->
+      <!--</div>-->
+    <!--</section>-->
+
+  <section id="screenshot" class="section">
+    <div class="container">
+      <div class="section-header">
+        <h1 class="section-title wow fadeInRight" data-wow-duration="1000ms" data-wow-delay="300ms">Increase UnitTest Coverage</h1>
+        <h2 class="section-subtitle wow fadeInRight" data-wow-duration="1000ms" data-wow-delay="400ms"> 앞으로 해야할 일</h2>
+      </div>
+
+      <div class="col-md-4 col-sm-6 wow fadeInDown" data-wow-duration="1000ms" data-wow-delay="750ms">
+        <p><img src="img/coderefactor/codecoverage.png" width="600" height="500" align="middle">
+      </div>
+
+    </div>
+  </section>
+
+    <section id="clients" class="section main-feature-gray">
+      <div class="container">
+
+        <div class="section-header text-center">
+          <h1 class="section-title wow fadeInDown" data-wow-duration="1000ms" data-wow-delay="300ms">Spec</h1>
+          <h2 class="section-subtitle wow fadeInDown" data-wow-duration="1000ms" data-wow-delay="600ms">Swift3.0, SQLite, SQLite.swift, Clova Speech Recognizer</h2>
+        </div>
+        <div class="row">
+          <div class="col-md-3 col-sm-3 wow fadeInUp" data-wow-duration="1000ms" data-wow-delay="500ms">
+            <div class="client-item-wrapper">
+              <img src="img/clients/swift.png" width="140" height="140" alt="">
+            </div>
+          </div>
+          <div class="col-md-3 col-sm-3 wow fadeInUp" data-wow-duration="1000ms" data-wow-delay="300ms">
+            <div class="client-item-wrapper">
+              <img src="img/clients/sqlite.png" alt="">
+            </div>
+          </div>
+          <div class="col-md-3 col-sm-3 wow fadeInUp" data-wow-duration="1000ms" data-wow-delay="900ms">
+            <div class="client-item-wrapper">
+              <img src="img/clients/sqliteswift.png" width="140" height="140" alt="">
+            </div>
+          </div>
+          <div class="col-md-3 col-sm-3 wow fadeInUp" data-wow-duration="1000ms" data-wow-delay="900ms">
+            <div class="client-item-wrapper">
+              <img src="https://developers.naver.com/inc/devcenter/images/clova_thumbnail_1200x630.png"  width="140" height="140" alt="">
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+
+    </section>
+
+    <section id="contact" class="section">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-6 wow fadeInLeft" data-wow-duration="1000ms" data-wow-delay="300ms">
+            <h2 class="section-title">Bran</h2>
+            <div class="row">
+              <div class="col-md-6 col-sm-6">
+                <div class="info">
+                  <div class="icon">
+                    <i class="mdi-maps-map"></i>
+                  </div>
+                  <h4>Location</h4>
+                  <p>Ansan Korea</p>
+                </div>
+              </div>
+              <div class="col-md-6 col-sm-6">
+                <div class="info">
+                  <div class="icon">
+                    <i class="mdi-content-mail"></i>
+                  </div>
+                  <h4>Email</h4>
+                  <p>synecticle@gmail.com</p>
+                </div>
+              </div>
+              <div class="clear"></div>
+              <div class="col-md-6 col-sm-6">
+                <div class="info">
+                  <div class="icon">
+                    <i class="mdi-action-settings-phone"></i>
+                  </div>
+                  <h4>Phone Number</h4>
+                  <p>010 4442 5123</p>
+                </div>
+              </div>
+              <div class="col-md-6 col-sm-6">
+                <div class="info">
+                  <div class="icon">
+                    <i class="mdi-action-thumb-up"></i>
+                  </div>
+                  <h4>Github</h4>
+                  <p><a href="https://github.com/YoonJuHo">YoonJuHo</a></p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-6 wow fadeInLeft" data-wow-duration="1000ms" data-wow-delay="300ms">
+            <h2 class="section-title">Mino</h2>
+            <div class="row">
+              <div class="col-md-6 col-sm-6">
+                <div class="info">
+                  <div class="icon">
+                    <i class="mdi-maps-map"></i>
+                  </div>
+                  <h4>Location</h4>
+                  <p>Seoul, Korea</p>
+                </div>
+              </div>
+              <div class="col-md-6 col-sm-6">
+                <div class="info">
+                  <div class="icon">
+                    <i class="mdi-content-mail"></i>
+                  </div>
+                  <h4>Email</h4>
+                  <p>5minhominho@gmail.com</p>
+                </div>
+              </div>
+              <div class="clear"></div>
+              <div class="col-md-6 col-sm-6">
+                <div class="info">
+                  <div class="icon">
+                    <i class="mdi-action-settings-phone"></i>
+                  </div>
+                  <h4>Phone Number</h4>
+                  <p>010 4446 0032</p>
+                </div>
+              </div>
+              <div class="col-md-6 col-sm-6">
+                <div class="info">
+                  <div class="icon">
+                    <i class="mdi-action-thumb-up"></i>
+                  </div>
+                  <h4>Github</h4>
+                  <p><a href="https://github.com/minomi">minomi</a></p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!--<div class="col-md-6 wow fadeInRight" data-wow-duration="1000ms" data-wow-delay="300ms">-->
+            <!--<h2 class="section-title">Love to Hear From You</h2>-->
+            <!--<div>-->
+              <!--<h3><a rel="nofollow" href="">You are Using Free Version, Purchase Full Version to Get All Elements/Pages</a></h3>-->
+              <!--<a rel="nofollow" href="https://rebrand.ly/gg-pluto-purchase" class="btn btn-larg btn-primary">Purchase Now</a>-->
+            <!--</div>-->
+          <!--</div>-->
+        </div>
+      </div>
+    </section>
+
+    <!--<div class="map-area">-->
+      <!--<div class="map">-->
+<!--<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d6853.31334931688!2d149.5710983929677!3d-33.43399308961885!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0000000000000000%3A0x63680231a1016da2!2sWestern+Region+Academy+of+Sport!5e0!3m2!1sen!2sbd!4v1436826340086" width="100%" height="400" frameborder="0" style="border:0" allowfullscreen></iframe>-->
+       <!--</div>-->
+    <!--</div>-->
+
+    <!--<section id="footer">-->
+      <!--<div class="container">-->
+        <!--<div class="container">-->
+          <!--<div class="row">-->
+            <!--<div class="col-md-3 col-sm-6 col-xs-12">-->
+              <!--<h3>Products</h3>-->
+              <!--<ul>-->
+                <!--<li><a href="http://wingthemes.com/">WingThemes</a>-->
+                <!--</li>-->
+                <!--<li><a href="http://graygrids.com/">Graygrids</a>-->
+                <!--</li>-->
+                <!--<li><a href="http://wpbean.com/">WPBean</a>-->
+                <!--</li>-->
+                <!--<li><a href="http://landingbow.com/">Landingbow</a>-->
+                <!--</li>-->
+                <!--<li><a href="http://freebiescircle.com/">FreebiesCicle</a>-->
+                <!--</li>-->
+              <!--</ul>-->
+            <!--</div>-->
+            <!--<div class="col-md-3 col-sm-6 col-xs-12">-->
+              <!--<h3>FAQs</h3>-->
+              <!--<ul>-->
+                <!--<li><a href="#">Why choose us?</a>-->
+                <!--</li>-->
+                <!--<li><a href="#">Where we are?</a>-->
+                <!--</li>-->
+                <!--<li><a href="#">Fees</a>-->
+                <!--</li>-->
+                <!--<li><a href="#">Guarantee</a>-->
+                <!--</li>-->
+                <!--<li><a href="#">Discount</a>-->
+                <!--</li>-->
+              <!--</ul>-->
+            <!--</div>-->
+            <!--<div class="col-md-3 col-sm-6 col-xs-12">-->
+              <!--<h3>About</h3>-->
+              <!--<ul>-->
+                <!--<li><a href="#">Career</a>-->
+                <!--</li>-->
+                <!--<li><a href="#">Partners</a>-->
+                <!--</li>-->
+                <!--<li><a href="#">Team</a>-->
+                <!--</li>-->
+                <!--<li><a href="#">Clients</a>-->
+                <!--</li>-->
+                <!--<li><a href="#">Contact</a>-->
+                <!--</li>-->
+              <!--</ul>-->
+            <!--</div>-->
+            <!--<div class="col-md-3 col-sm-6 col-xs-12">-->
+              <!--<h3>Find us on</h3>-->
+              <!--<a class="social" href="#" target="_blank"><i class="fa fa-facebook"></i></a>-->
+              <!--<a class="social" href="#" target="_blank"><i class="fa fa-twitter"></i></a>-->
+              <!--<a class="social" href="#" target="_blank"><i class="fa fa-google-plus"></i></a>-->
+            <!--</div>-->
+          <!--</div>-->
+        <!--</div>-->
+      <!--</div>-->
+      <!--&lt;!&ndash; Go to Top Link &ndash;&gt;-->
+      <!--<a href="#home" class="btn btn-primary back-to-top">-->
+      <!--<i class=" mdi-hardware-keyboard-arrow-up"></i>-->
+      <!--</a>-->
+    <!--</section>-->
+
+    <section id="copyright">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-12">
+            <p class="copyright-text">
+             © Pluto 2015 All right reserved. Designed and Developed by
+              <a rel="nofollow" href="http://graygrids.com/">
+                GrayGrids
+              </a>
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+    </div>
+
+
+    <script src="js/jquery-2.1.4.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/ripples.min.js"></script>
+    <script src="js/material.min.js"></script>
+    <script src="js/wow.js"></script>
+    <script src="js/jquery.mmenu.min.all.js"></script>
+    <script src="js/count-to.js"></script>
+    <script src="js/jquery.inview.min.js"></script>
+    <script src="js/classie.js"></script>
+    <script src="js/jquery.nav.js"></script>
+    <script src="js/smooth-on-scroll.js"></script>
+    <script src="js/smooth-scroll.js"></script>
+    <script src="js/main.js"></script>
+
+
+
+    <script>
+        $(document).ready(function() {
+            // This command is used to initialize some elements and make them work properly
+            $.material.init();
+        });
+    </script>
+
+  </body>
+
+</html>
