@@ -110,21 +110,22 @@ class SoundManager: NSObject {
                 self.changeSystemVolume(to: 1)
                 
                 guard let url = self.nextAlarm?.sound.soundURL else { return }
-                self.alarmPlayer = AVPlayer(url: url)
-                self.alarmPlayer?.volume = 0.1
-                self.alarmPlayer?.play()
-                self.fadeInAlarmPlayerSound()
-                self.alarmPlayer?.actionAtItemEnd = .none
                 
-                NotificationCenter.default.post(name: .SoundManagerAlarmPlayerDidEnd, object: nil)
-                
-                NotificationCenter.default.addObserver(forName: .AVPlayerItemDidPlayToEndTime,
-                                                       object: self.alarmPlayer?.currentItem,
-                                                       queue: .main)
-                {   (notification) in
-                    /// Play alarm sound repeatly.
-                    guard let item = notification.object as? AVPlayerItem else { return }
-                    item.seek(to: kCMTimeZero)
+                if self.alarmPlayer == nil {
+                    self.alarmPlayer = AVPlayer(url: url)
+                    self.alarmPlayer?.volume = 0.1
+                    self.alarmPlayer?.play()
+                    self.fadeInAlarmPlayerSound()
+                    self.alarmPlayer?.actionAtItemEnd = .none
+                    
+                    NotificationCenter.default.addObserver(forName: .AVPlayerItemDidPlayToEndTime,
+                                                           object: self.alarmPlayer?.currentItem,
+                                                           queue: .main)
+                    {   (notification) in
+                        /// Play alarm sound repeatly.
+                        guard let item = notification.object as? AVPlayerItem else { return }
+                        item.seek(to: kCMTimeZero)
+                    }
                 }
             }
         } else {
@@ -162,7 +163,7 @@ class SoundManager: NSObject {
             return
         }
         self.alarmPlayer?.volume += 0.01
-        self.perform(#selector(self.fadeInAlarmPlayerSound), with: nil, afterDelay: 0.1)
+        self.perform(#selector(self.fadeInAlarmPlayerSound), with: nil, afterDelay: 1)
     }
     
     

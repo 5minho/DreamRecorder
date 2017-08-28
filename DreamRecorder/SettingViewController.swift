@@ -110,7 +110,7 @@ extension SettingViewController: UITableViewDelegate, UITableViewDataSource {
             case 1:
                 
                 cell.textLabel?.text = "Privacy Notification"
-                
+                cell.detailTextLabel?.text = ""
                 
             default:
                 break
