@@ -18,11 +18,17 @@ class DreamListViewController : UIViewController {
     fileprivate let dateParser = DateParser()
     
     fileprivate let serialDispatchQueue = DispatchQueue(label: "filtering")
-    fileprivate var isQueueEmpty = true
-    
     fileprivate var pendingFilterWorkItem: DispatchWorkItem?
     
-    var currentDatePeriod = (from: Date(), to: Date()) {
+    var currentDatePeriod : (from: Date, to: Date) = {
+        
+        guard let from = DateParser().firstDayOfMonth(date: Date()) else {
+            return (Date(), Date())
+        }
+        
+        return (from, Date())
+        
+    }(){
         
         didSet {
             
@@ -52,7 +58,11 @@ class DreamListViewController : UIViewController {
     }
     
     
-    
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        
+        self.tableView.setEditing(false, animated: true)
+    }
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
     }
@@ -141,8 +151,6 @@ class DreamListViewController : UIViewController {
             
         }
     }
-    
-    let opq = OperationQueue()
     
 }
 
