@@ -224,6 +224,7 @@ extension AlarmListViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
 }
+
 extension AlarmListViewController: AlarmListCellDelegate {
     // MARK: - AlarmListCell Delegate.
     func alarmListCell(cell : AlarmListCell, activeSwitchValueChanged sender: UISwitch) {
@@ -236,9 +237,7 @@ extension AlarmListViewController: AlarmListCellDelegate {
         self.shouldReloadTable = false
         
         self.store.updateAlarm(alarm: updatingAlarm)
-        
-        let updatedIndexPath = IndexPath(row: sender.tag, section: 0)
-        self.tableView.reloadRows(at: [updatedIndexPath], with: .automatic)
+    
     }
 }
 
