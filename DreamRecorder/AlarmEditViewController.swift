@@ -73,7 +73,9 @@ class AlarmEditViewController: UIViewController {
         self.datePicker.date = self.alarm?.date ?? Date()
         self.datePicker.datePickerMode = .time
         self.datePicker.setValue(UIColor.dreamTextColor1, forKey: "textColor")
-        self.datePicker.addTarget(self, action: #selector(self.datePickerValueDidChange(sender:)), for: .valueChanged)
+        self.datePicker.addTarget(self,
+                                  action: #selector(self.datePickerValueDidChange(sender:)),
+                                  for: .valueChanged)
         self.tableView.tableHeaderView = self.datePicker
         
         let leftBarButton = UIBarButtonItem(title: "Cancel".localized,
@@ -111,8 +113,8 @@ extension AlarmEditViewController: UITableViewDataSource, UITableViewDelegate {
         cell.cellStyle = cellStyle
         cell.delegate = self
         
-        cell.textLabel?.textColor = UIColor.dreamTextColor1
-        cell.detailTextLabel?.textColor = UIColor.dreamTextColor2
+        cell.textLabel?.textColor = .dreamTextColor1
+        cell.detailTextLabel?.textColor = .dreamTextColor2
         
         switch cellStyle {
         case .repeat:

@@ -43,17 +43,24 @@ class SoundManager: NSObject {
         
         self.setupQueuePlayerToPlayMuteSound()
         
-        NotificationCenter.default.addObserver(forName: Notification.Name.AlarmSchedulerNextNotificationDateDidChange,
+        NotificationCenter.default.addObserver(forName: .AlarmSchedulerNextNotificationDateDidChange,
                                                object: nil,
-                                               queue: OperationQueue.main)
+                                               queue: .main)
         { (notification) in
             /// AlarmScheduler가 다음에 울릴 알림이 바뀐 것을 알리면 실행된다.
             /// AlarmScheduler는 UserInfo에 다음에 울릴 알람 객체와 TriggerDate를 가지고 있다.
             /// SoundManager는 다음에 울릴 시간과 소리 파일명만 알면 된다.
             /// 소리 파일 접근은 String 익스텐션에서 확인할 수 있다.
+            
             let nextAlarm = notification.userInfo?[AlarmNotificationUserInfoKey.alarm] as? Alarm
             self.nextTriggerDate = notification.userInfo?[AlarmNotificationUserInfoKey.nextTriggerDate] as? Date
             self.nextAlarm = nextAlarm
+            
+            if self.nextTriggerDate == nil {
+                self.queuePlayer = nil
+            } else {
+                self.setupQueuePlayerToPlayMuteSound()
+            }
         }
     }
 
@@ -71,18 +78,16 @@ class SoundManager: NSObject {
         self.queuePlayer?.volume = 1
         
         self.queuePlayer?.play()
-        
-        NotificationCenter.default.addObserver(forName: Notification.Name.AVPlayerItemDidPlayToEndTime,
+
+        NotificationCenter.default.addObserver(forName: .AVPlayerItemDidPlayToEndTime,
                                                object: self.queuePlayer?.currentItem,
-                                               queue: OperationQueue.main)
+                                               queue: .main)
         {   (notification) in
             /// 뮤트 사운드 파일이 끝났으면 다시 재생시킨다.
             guard let item = notification.object as? AVPlayerItem else { return }
             self.playAlarmSoundIfNeeded(playerItem: item)
         }
     }
-    
-    
 
     /// 알람시간에 도달하면 알람음을 재생한다.
     /// AVPlayerItemDidPlayToEndTime 노티피케이션의 핸들러다.
@@ -90,11 +95,12 @@ class SoundManager: NSObject {
     /// 현재시간이 nextTriggerDate에 도달하면 설정된 알람(self.nextAlarm)이 가지고 있는 사운드를 재생힌다.
     ///
     /// - Parameter playerItem: Mute 사운드 플레이어 아이템.
-    func playAlarmSoundIfNeeded(playerItem: AVPlayerItem){
+    private func playAlarmSoundIfNeeded(playerItem: AVPlayerItem){
         
         playerItem.seek(to: kCMTimeZero)
         
         if let nextTriggerDate = self.nextTriggerDate {
+            
             print("=========================")
             print("\(nextTriggerDate)")
             print("\(Date().addingTimeInterval(2))")
@@ -112,11 +118,11 @@ class SoundManager: NSObject {
                     self.fadeInAlarmPlayerSound()
                     self.alarmPlayer?.actionAtItemEnd = .none
                     
-                    NotificationCenter.default.post(name: Notification.Name.SoundManagerAlarmPlayerDidEnd, object: nil)
+                    NotificationCenter.default.post(name: .SoundManagerAlarmPlayerDidEnd, object: nil)
                     
-                    NotificationCenter.default.addObserver(forName: Notification.Name.AVPlayerItemDidPlayToEndTime,
+                    NotificationCenter.default.addObserver(forName: .AVPlayerItemDidPlayToEndTime,
                                                            object: self.alarmPlayer?.currentItem,
-                                                           queue: OperationQueue.main)
+                                                           queue: .main)
                     {   (notification) in
                         /// Play alarm sound repeatly.
                         guard let item = notification.object as? AVPlayerItem else { return }
@@ -124,6 +130,9 @@ class SoundManager: NSObject {
                     }
                 }
             }
+        } else {
+            // 다음 알람이 하나도 없을 경우 리소스 낭비를 줄이기 위해 queuePlayer에 nil값을 할당한다.
+            self.queuePlayer = nil
         }
     }
     
@@ -172,6 +181,6 @@ class SoundManager: NSObject {
         
         self.alarmPlayer = nil
         self.changeSystemVolume(to: self.previousVolume)
-        NotificationCenter.default.post(name: Notification.Name.SoundManagerAlarmPlayerDidEnd, object: nil)
+        NotificationCenter.default.post(name: .SoundManagerAlarmPlayerDidEnd, object: nil)
     }
 }
