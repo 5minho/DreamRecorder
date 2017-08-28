@@ -59,6 +59,12 @@
 		5A85089F1F45656E00E2ED7F /* SoundManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A85089E1F45656E00E2ED7F /* SoundManager.swift */; };
 		5A8508A11F45658C00E2ED7F /* AlarmSoundListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A8508A01F45658C00E2ED7F /* AlarmSoundListViewController.swift */; };
 		5A8508A31F45659100E2ED7F /* AlarmSoundListViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5A8508A21F45659100E2ED7F /* AlarmSoundListViewController.storyboard */; };
+		5A8830BB1F53BD0B00461AF6 /* Alarm-tone.wav in Resources */ = {isa = PBXBuildFile; fileRef = 5A8830B51F53BD0B00461AF6 /* Alarm-tone.wav */; };
+		5A8830BC1F53BD0B00461AF6 /* Carefree_Melody.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 5A8830B61F53BD0B00461AF6 /* Carefree_Melody.mp3 */; };
+		5A8830BD1F53BD0B00461AF6 /* Default.wav in Resources */ = {isa = PBXBuildFile; fileRef = 5A8830B71F53BD0B00461AF6 /* Default.wav */; };
+		5A8830BE1F53BD0B00461AF6 /* mute.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 5A8830B81F53BD0B00461AF6 /* mute.mp3 */; };
+		5A8830BF1F53BD0B00461AF6 /* Old-alarm-clock-ringing.wav in Resources */ = {isa = PBXBuildFile; fileRef = 5A8830B91F53BD0B00461AF6 /* Old-alarm-clock-ringing.wav */; };
+		5A8830C01F53BD0B00461AF6 /* Spaceship_Alarm.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 5A8830BA1F53BD0B00461AF6 /* Spaceship_Alarm.mp3 */; };
 		5A9BEBD51F3AEA480054EA6D /* NaverSpeech.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5A9BEBD41F3AEA480054EA6D /* NaverSpeech.framework */; };
 		5A9BEBD61F3AEA480054EA6D /* NaverSpeech.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 5A9BEBD41F3AEA480054EA6D /* NaverSpeech.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		5A9CE3081F49A2A700F0E5C5 /* DreamCacheManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A9CE3071F49A2A700F0E5C5 /* DreamCacheManager.swift */; };
@@ -145,6 +151,12 @@
 		5A85089E1F45656E00E2ED7F /* SoundManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SoundManager.swift; sourceTree = "<group>"; };
 		5A8508A01F45658C00E2ED7F /* AlarmSoundListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AlarmSoundListViewController.swift; sourceTree = "<group>"; };
 		5A8508A21F45659100E2ED7F /* AlarmSoundListViewController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = AlarmSoundListViewController.storyboard; sourceTree = "<group>"; };
+		5A8830B51F53BD0B00461AF6 /* Alarm-tone.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = "Alarm-tone.wav"; sourceTree = "<group>"; };
+		5A8830B61F53BD0B00461AF6 /* Carefree_Melody.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = Carefree_Melody.mp3; sourceTree = "<group>"; };
+		5A8830B71F53BD0B00461AF6 /* Default.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = Default.wav; sourceTree = "<group>"; };
+		5A8830B81F53BD0B00461AF6 /* mute.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = mute.mp3; sourceTree = "<group>"; };
+		5A8830B91F53BD0B00461AF6 /* Old-alarm-clock-ringing.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = "Old-alarm-clock-ringing.wav"; sourceTree = "<group>"; };
+		5A8830BA1F53BD0B00461AF6 /* Spaceship_Alarm.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = Spaceship_Alarm.mp3; sourceTree = "<group>"; };
 		5A9BEBD41F3AEA480054EA6D /* NaverSpeech.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = NaverSpeech.framework; sourceTree = "<group>"; };
 		5A9CE3071F49A2A700F0E5C5 /* DreamCacheManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DreamCacheManager.swift; sourceTree = "<group>"; };
 		5AC1D8611F49578F008BE17F /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/LaunchScreen.strings; sourceTree = "<group>"; };
@@ -267,6 +279,19 @@
 			name = helper;
 			sourceTree = "<group>";
 		};
+		5A8830C11F53BD1500461AF6 /* alarmSound */ = {
+			isa = PBXGroup;
+			children = (
+				5A8830B51F53BD0B00461AF6 /* Alarm-tone.wav */,
+				5A8830B61F53BD0B00461AF6 /* Carefree_Melody.mp3 */,
+				5A8830B71F53BD0B00461AF6 /* Default.wav */,
+				5A8830B81F53BD0B00461AF6 /* mute.mp3 */,
+				5A8830B91F53BD0B00461AF6 /* Old-alarm-clock-ringing.wav */,
+				5A8830BA1F53BD0B00461AF6 /* Spaceship_Alarm.mp3 */,
+			);
+			name = alarmSound;
+			sourceTree = "<group>";
+		};
 		5AD09F011F34686A007BCA09 = {
 			isa = PBXGroup;
 			children = (
@@ -297,6 +322,7 @@
 				5A07FE311F436B0600C65037 /* helper */,
 				5A07FE301F436ACF00C65037 /* view */,
 				5A78D9141F42BDE400D1E679 /* Info.plist */,
+				5A8830C11F53BD1500461AF6 /* alarmSound */,
 				5AD09F161F34686A007BCA09 /* LaunchScreen.storyboard */,
 				5A78ACC21F52FE2A00B1091F /* Assets.xcassets */,
 				5AD09F191F34686A007BCA09 /* Info.plist */,
@@ -429,20 +455,26 @@
 			buildActionMask = 2147483647;
 			files = (
 				5A78ACB81F52E93F00B1091F /* AlarmStateViewController.storyboard in Resources */,
+				5A8830BE1F53BD0B00461AF6 /* mute.mp3 in Resources */,
 				5A78D8FB1F42BDD900D1E679 /* AddDreamNavigationController.storyboard in Resources */,
 				5A78D92B1F42C29C00D1E679 /* Main.storyboard in Resources */,
 				5A78D9221F42BDE400D1E679 /* DreamListViewController.storyboard in Resources */,
+				5A8830BD1F53BD0B00461AF6 /* Default.wav in Resources */,
 				5A78D9241F42BDE400D1E679 /* Info.plist in Resources */,
+				5A8830BF1F53BD0B00461AF6 /* Old-alarm-clock-ringing.wav in Resources */,
 				5A78D9051F42BDD900D1E679 /* AlarmListViewController.storyboard in Resources */,
 				5A78D9021F42BDD900D1E679 /* AlarmEditViewController.storyboard in Resources */,
 				5A377D691F4C28EE00C36A0E /* AlarmAlertViewController.storyboard in Resources */,
 				5A78ACC11F52FDC800B1091F /* SettingViewController.storyboard in Resources */,
+				5A8830BC1F53BD0B00461AF6 /* Carefree_Melody.mp3 in Resources */,
+				5A8830C01F53BD0B00461AF6 /* Spaceship_Alarm.mp3 in Resources */,
 				5AD09F181F34686A007BCA09 /* LaunchScreen.storyboard in Resources */,
 				5AC1D8651F4957C0008BE17F /* Localizable.strings in Resources */,
 				5A78D8FE1F42BDD900D1E679 /* AlarmAddViewController.storyboard in Resources */,
 				5A2D88521F4A983600215163 /* DatePickerViewController.storyboard in Resources */,
 				5A78D91D1F42BDE400D1E679 /* DetailDreamViewController.storyboard in Resources */,
 				5A78ACC31F52FE2A00B1091F /* Assets.xcassets in Resources */,
+				5A8830BB1F53BD0B00461AF6 /* Alarm-tone.wav in Resources */,
 				5A8508A31F45659100E2ED7F /* AlarmSoundListViewController.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
