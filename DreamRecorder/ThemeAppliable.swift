@@ -31,39 +31,20 @@ extension ThemeAppliable where Self: UIViewController {
         self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
         self.navigationController?.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName: UIColor.white]
         
-        // 각각의 테마 적용.
-        if themeStyle == .dream {
             
-            let shadowImage = UIColor.dreamNavigationBarShadowColor.shadowImage()
-            
-            self.navigationController?.navigationBar.backgroundColor = UIColor.dreamDefaultBackgroundColor
-            self.navigationController?.navigationBar.shadowImage = shadowImage
-            self.navigationController?.navigationBar.barTintColor = UIColor.dreamDefaultBackgroundColor
-            
-            self.view.backgroundColor = UIColor.dreamDefaultBackgroundColor
-            
-            self.themeTableView?.separatorColor = UIColor.dreamTableViewSeparatorColor
-            self.themeTableView?.backgroundColor = UIColor.dreamDefaultBackgroundColor
-            
-            if #available(iOS 10.0, *) {
-                self.tabBarController?.tabBar.unselectedItemTintColor = UIColor.dreamText
-            }
-        } else {
-            
-            let shadowImage = UIColor.dreamBorderColor.shadowImage()
-            
-            self.navigationController?.navigationBar.backgroundColor = UIColor.dreamBackgroundColor
-            self.navigationController?.navigationBar.shadowImage = shadowImage
-            self.navigationController?.navigationBar.barTintColor = UIColor.dreamBackgroundColor
-            
-            self.view.backgroundColor = UIColor.dreamBackgroundColor
-            
-            self.themeTableView?.separatorColor = UIColor.dreamBorderColor
-            self.themeTableView?.backgroundColor = UIColor.dreamBackgroundColor
-            
-            if #available(iOS 10.0, *) {
-                self.tabBarController?.tabBar.unselectedItemTintColor = UIColor.alarmText
-            }
+        let shadowImage = UIColor.dreamBorderColor.shadowImage()
+        
+        self.navigationController?.navigationBar.backgroundColor = UIColor.dreamBackgroundColor
+        self.navigationController?.navigationBar.shadowImage = shadowImage
+        self.navigationController?.navigationBar.barTintColor = UIColor.dreamBackgroundColor
+        
+        self.view.backgroundColor = UIColor.dreamBackgroundColor
+        
+        self.themeTableView?.separatorColor = UIColor.dreamBorderColor
+        self.themeTableView?.backgroundColor = UIColor.dreamBackgroundColor
+        
+        if #available(iOS 10.0, *) {
+            self.tabBarController?.tabBar.unselectedItemTintColor = UIColor.alarmText
         }
     }
 }

@@ -17,17 +17,6 @@ class DreamListCell : UITableViewCell {
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        
-        self.backgroundColor = UIColor.dreamDefaultBackgroundColor
-        self.dayLabel.textColor = UIColor.dreamDarkText
-        self.monthLabel.textColor = UIColor.dreamDarkText
-        self.timeLabel.textColor = UIColor.dreamLightText
-        self.dreamTitleLabel.textColor = UIColor.dreamDarkText
-        
-        self.dayLabel.font = UIFont.title1
-        self.monthLabel.font = UIFont.title3
-        self.timeLabel.font = UIFont.caption1
-        self.dreamTitleLabel.font = UIFont.title3
     }
     
     func update(dream: Dream) {
@@ -38,6 +27,23 @@ class DreamListCell : UITableViewCell {
         self.timeLabel.text = dateParser.time(from: dream.createdDate)
         self.dreamTitleLabel.text = dream.title ?? ""
         
+        applyViewTheme()
+    }
+    
+    func applyViewTheme() {
+        
+        self.backgroundColor = UIColor.dreamBackgroundColor
+        
+        self.dayLabel.textColor = UIColor.dreamTextColor1
+        self.monthLabel.textColor = UIColor.dreamTextColor1
+        self.timeLabel.textColor = UIColor.dreamTextColor1
+        self.dreamTitleLabel.textColor = UIColor.dreamTextColor1
+        
+        self.dayLabel.font = UIFont.title1
+        self.monthLabel.font = UIFont.title3
+        self.timeLabel.font = UIFont.caption1
+        self.dreamTitleLabel.font = UIFont.title3
+       
     }
     
 }

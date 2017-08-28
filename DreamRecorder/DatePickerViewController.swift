@@ -28,13 +28,13 @@ class DatePickerViewController : UIViewController {
     var selectedPeriod : (from: Date, to: Date) = (Date(), Date())
     
     override func viewDidLoad() {
+        
         super.viewDidLoad()
+        
+        self.applyThemeIfViewDidLoad()
         setDatePickers()
         setDescriptionLabel()
         setButtonsLabel()
-        
-        view.backgroundColor = UIColor.clear.withAlphaComponent(0.5)
-        view.isOpaque = false
         
     }
     
@@ -52,13 +52,13 @@ class DatePickerViewController : UIViewController {
     }
     
     private func setDescriptionLabel() {
-        self.descriptionLabel.textColor = UIColor.dreamDarkPink
+        self.descriptionLabel.textColor = UIColor.dreamTextColor1
     }
     
     private func setButtonsLabel() {
         
-        self.cancelButton.backgroundColor = UIColor.dreamDarkPink
-        self.okButton.backgroundColor = UIColor.dreamDarkPink
+        self.cancelButton.backgroundColor = UIColor.dreamBackgroundColor
+        self.okButton.backgroundColor = UIColor.dreamBackgroundColor
         
     }
     
@@ -82,9 +82,9 @@ class DatePickerViewController : UIViewController {
     
     @IBAction func touchUpOkButton(_ sender: UIButton) {
         
-//        if selectedPeriod.from > selectedPeriod.to {
-//            selectedPeriod = (selectedPeriod.to, selectedPeriod.from)
-//        }
+        if selectedPeriod.from > selectedPeriod.to {
+            selectedPeriod = (selectedPeriod.to, selectedPeriod.from)
+        }
         
         let dreamListViewController = self.presentingViewController as? DreamListViewController
         dreamListViewController?.currentDatePeriod = self.selectedPeriod
@@ -95,3 +95,17 @@ class DatePickerViewController : UIViewController {
     
 }
 
+extension DatePickerViewController : ThemeAppliable {
+    
+    var themeStyle: ThemeStyle {
+        return .dream
+    }
+    
+    var themeTableView: UITableView? {
+        return nil
+    }
+    
+    var themeNavigationController: UINavigationController? {
+        return self.navigationController
+    }
+}

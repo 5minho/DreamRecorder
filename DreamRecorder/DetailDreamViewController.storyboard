@@ -94,10 +94,12 @@
                         </connections>
                     </view>
                     <connections>
+                        <outlet property="contentLabel" destination="uBE-dW-HLF" id="tLC-Ox-CBc"/>
                         <outlet property="contentTextView" destination="5ZK-aH-EjF" id="hRY-tK-L32"/>
                         <outlet property="createdDateLabel" destination="4iM-NK-Gr4" id="DOf-ey-yLK"/>
                         <outlet property="deleteButton" destination="VHE-Ay-Vec" id="vi5-xg-lfV"/>
                         <outlet property="titleField" destination="2Q6-Xz-lst" id="5QF-dr-CO3"/>
+                        <outlet property="titleLabel" destination="SMF-A5-3dQ" id="49i-vT-YrP"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="enK-DB-jkX" userLabel="First Responder" sceneMemberID="firstResponder"/>

@@ -49,7 +49,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         UIBarButtonItem.appearance().setTitleTextAttributes([NSForegroundColorAttributeName : UIColor.defaultButtonTitleColor], for: .normal)
         UINavigationBar.appearance().tintColor = UIColor.white
         
-        UISearchBar.appearance().barTintColor = UIColor.dreamDefaultBackgroundColor
+        UISearchBar.appearance().barTintColor = UIColor.alarmDarkBlue
         UISearchBar.appearance().tintColor = UIColor.white
         UITextField.appearance(whenContainedInInstancesOf: [UISearchBar.self]).tintColor = UIColor.white
         UIApplication.shared.statusBarStyle = .lightContent
@@ -93,9 +93,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         SoundManager.shared.awake()
         AlarmDataStore.shared.awake()
         AlarmScheduler.shared.awake()
-        
-
-        
+    
         // Apply Theme.
         UIBarButtonItem.appearance().setTitleTextAttributes([NSForegroundColorAttributeName : UIColor.defaultButtonTitleColor], for: .normal)
         UINavigationBar.appearance().tintColor = UIColor.white
