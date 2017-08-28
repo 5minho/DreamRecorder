@@ -69,6 +69,11 @@
 		A59BEF1C1F53AA0700E9422E /* TodayViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A59BEF1B1F53AA0700E9422E /* TodayViewController.swift */; };
 		A59BEF1F1F53AA0700E9422E /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A59BEF1D1F53AA0700E9422E /* MainInterface.storyboard */; };
 		A59BEF231F53AA0700E9422E /* DreamRecorderToday.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = A59BEF181F53AA0700E9422E /* DreamRecorderToday.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		A59BEF2C1F53BCDD00E9422E /* Alarm-tone.wav in Resources */ = {isa = PBXBuildFile; fileRef = A59BEF271F53BCDD00E9422E /* Alarm-tone.wav */; };
+		A59BEF2D1F53BCDD00E9422E /* Carefree_Melody.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = A59BEF281F53BCDD00E9422E /* Carefree_Melody.mp3 */; };
+		A59BEF2E1F53BCDD00E9422E /* Default.wav in Resources */ = {isa = PBXBuildFile; fileRef = A59BEF291F53BCDD00E9422E /* Default.wav */; };
+		A59BEF2F1F53BCDD00E9422E /* mute.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = A59BEF2A1F53BCDD00E9422E /* mute.mp3 */; };
+		A59BEF301F53BCDD00E9422E /* Old-alarm-clock-ringing.wav in Resources */ = {isa = PBXBuildFile; fileRef = A59BEF2B1F53BCDD00E9422E /* Old-alarm-clock-ringing.wav */; };
 		F01F9B278627D96E045DE02E /* Pods_DreamRecorder.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D397857D16523815AF771D51 /* Pods_DreamRecorder.framework */; };
 /* End PBXBuildFile section */
 
@@ -187,6 +192,11 @@
 		A59BEF1B1F53AA0700E9422E /* TodayViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayViewController.swift; sourceTree = "<group>"; };
 		A59BEF1E1F53AA0700E9422E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/MainInterface.storyboard; sourceTree = "<group>"; };
 		A59BEF201F53AA0700E9422E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		A59BEF271F53BCDD00E9422E /* Alarm-tone.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = "Alarm-tone.wav"; sourceTree = "<group>"; };
+		A59BEF281F53BCDD00E9422E /* Carefree_Melody.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = Carefree_Melody.mp3; sourceTree = "<group>"; };
+		A59BEF291F53BCDD00E9422E /* Default.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = Default.wav; sourceTree = "<group>"; };
+		A59BEF2A1F53BCDD00E9422E /* mute.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = mute.mp3; sourceTree = "<group>"; };
+		A59BEF2B1F53BCDD00E9422E /* Old-alarm-clock-ringing.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = "Old-alarm-clock-ringing.wav"; sourceTree = "<group>"; };
 		C82E4CE7279A775BF2E77C04 /* Pods-DreamRecorder.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DreamRecorder.debug.xcconfig"; path = "Pods/Target Support Files/Pods-DreamRecorder/Pods-DreamRecorder.debug.xcconfig"; sourceTree = "<group>"; };
 		D397857D16523815AF771D51 /* Pods_DreamRecorder.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_DreamRecorder.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -284,6 +294,7 @@
 		5A07FE311F436B0600C65037 /* helper */ = {
 			isa = PBXGroup;
 			children = (
+				5A78D8FA1F42BDD900D1E679 /* AppDelegate.swift */,
 				5A78D8F21F42BDD900D1E679 /* AlarmDataStore.swift */,
 				5A78D8F91F42BDD900D1E679 /* AlarmScheduler.swift */,
 				5A85089E1F45656E00E2ED7F /* SoundManager.swift */,
@@ -295,7 +306,6 @@
 				5A07FE321F43893200C65037 /* DreamDeletable.swift */,
 				5A78D9101F42BDE400D1E679 /* DreamDataStore.swift */,
 				5A9CE3071F49A2A700F0E5C5 /* DreamCacheManager.swift */,
-				5A78D8FA1F42BDD900D1E679 /* AppDelegate.swift */,
 				5A78D90A1F42BDE400D1E679 /* Config.swift */,
 				5A78D9091F42BDE400D1E679 /* CocoaTouchExtension.swift */,
 			);
@@ -336,6 +346,7 @@
 				5A78D9141F42BDE400D1E679 /* Info.plist */,
 				5AD09F161F34686A007BCA09 /* LaunchScreen.storyboard */,
 				5A78ACC21F52FE2A00B1091F /* Assets.xcassets */,
+				A59BEF321F53BCED00E9422E /* SoundFiles */,
 				5AD09F191F34686A007BCA09 /* Info.plist */,
 				5AC1D8671F4957C0008BE17F /* Localizable.strings */,
 			);
@@ -362,6 +373,18 @@
 				A59BEF201F53AA0700E9422E /* Info.plist */,
 			);
 			path = DreamRecorderToday;
+			sourceTree = "<group>";
+		};
+		A59BEF321F53BCED00E9422E /* SoundFiles */ = {
+			isa = PBXGroup;
+			children = (
+				A59BEF271F53BCDD00E9422E /* Alarm-tone.wav */,
+				A59BEF281F53BCDD00E9422E /* Carefree_Melody.mp3 */,
+				A59BEF291F53BCDD00E9422E /* Default.wav */,
+				A59BEF2A1F53BCDD00E9422E /* mute.mp3 */,
+				A59BEF2B1F53BCDD00E9422E /* Old-alarm-clock-ringing.wav */,
+			);
+			name = SoundFiles;
 			sourceTree = "<group>";
 		};
 		A880799EB79B5024841366AA /* Frameworks */ = {
@@ -502,20 +525,25 @@
 			buildActionMask = 2147483647;
 			files = (
 				5A78ACB81F52E93F00B1091F /* AlarmStateViewController.storyboard in Resources */,
+				A59BEF2F1F53BCDD00E9422E /* mute.mp3 in Resources */,
 				5A78D8FB1F42BDD900D1E679 /* AddDreamNavigationController.storyboard in Resources */,
 				5A78D92B1F42C29C00D1E679 /* Main.storyboard in Resources */,
 				5A78D9221F42BDE400D1E679 /* DreamListViewController.storyboard in Resources */,
+				A59BEF2E1F53BCDD00E9422E /* Default.wav in Resources */,
 				5A78D9241F42BDE400D1E679 /* Info.plist in Resources */,
+				A59BEF301F53BCDD00E9422E /* Old-alarm-clock-ringing.wav in Resources */,
 				5A78D9051F42BDD900D1E679 /* AlarmListViewController.storyboard in Resources */,
 				5A78D9021F42BDD900D1E679 /* AlarmEditViewController.storyboard in Resources */,
 				5A377D691F4C28EE00C36A0E /* AlarmAlertViewController.storyboard in Resources */,
 				5A78ACC11F52FDC800B1091F /* SettingViewController.storyboard in Resources */,
+				A59BEF2D1F53BCDD00E9422E /* Carefree_Melody.mp3 in Resources */,
 				5AD09F181F34686A007BCA09 /* LaunchScreen.storyboard in Resources */,
 				5AC1D8651F4957C0008BE17F /* Localizable.strings in Resources */,
 				5A78D8FE1F42BDD900D1E679 /* AlarmAddViewController.storyboard in Resources */,
 				5A2D88521F4A983600215163 /* DatePickerViewController.storyboard in Resources */,
 				5A78D91D1F42BDE400D1E679 /* DetailDreamViewController.storyboard in Resources */,
 				5A78ACC31F52FE2A00B1091F /* Assets.xcassets in Resources */,
+				A59BEF2C1F53BCDD00E9422E /* Alarm-tone.wav in Resources */,
 				5A8508A31F45659100E2ED7F /* AlarmSoundListViewController.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -961,6 +989,7 @@
 				A59BEF261F53AA0700E9422E /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

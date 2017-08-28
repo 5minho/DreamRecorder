@@ -85,6 +85,14 @@ class AlarmListViewController: UIViewController {
                 self.tableView.isHidden = false
             }
         }
+        
+        NotificationCenter.default.addObserver(forName: Notification.Name.DreamRecorderFontDidChange,
+                                               object: nil,
+                                               queue: .main)
+        { (_) in
+            self.tableView.reloadData()
+        }
+        
     }
     
     override func viewDidDisappear(_ animated: Bool) {
@@ -233,8 +241,8 @@ extension AlarmListViewController: AlarmListCellDelegate {
         
         self.store.updateAlarm(alarm: updatingAlarm)
         
-//        let updatedIndexPath = IndexPath(row: sender.tag, section: 0)
-//        self.tableView.reloadRows(at: [updatedIndexPath], with: .automatic)
+        let updatedIndexPath = IndexPath(row: sender.tag, section: 0)
+        self.tableView.reloadRows(at: [updatedIndexPath], with: .automatic)
     }
 }
 

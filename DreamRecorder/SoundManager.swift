@@ -51,7 +51,6 @@ class SoundManager: NSObject {
             /// AlarmScheduler는 UserInfo에 다음에 울릴 알람 객체와 TriggerDate를 가지고 있다.
             /// SoundManager는 다음에 울릴 시간과 소리 파일명만 알면 된다.
             /// 소리 파일 접근은 String 익스텐션에서 확인할 수 있다.
-            
             let nextAlarm = notification.userInfo?[AlarmNotificationUserInfoKey.alarm] as? Alarm
             self.nextTriggerDate = notification.userInfo?[AlarmNotificationUserInfoKey.nextTriggerDate] as? Date
             self.nextAlarm = nextAlarm
@@ -111,23 +110,21 @@ class SoundManager: NSObject {
                 self.changeSystemVolume(to: 1)
                 
                 guard let url = self.nextAlarm?.sound.soundURL else { return }
-                if self.alarmPlayer == nil {
-                    self.alarmPlayer = AVPlayer(url: url)
-                    self.alarmPlayer?.volume = 0.1
-                    self.alarmPlayer?.play()
-                    self.fadeInAlarmPlayerSound()
-                    self.alarmPlayer?.actionAtItemEnd = .none
-                    
-                    NotificationCenter.default.post(name: .SoundManagerAlarmPlayerDidEnd, object: nil)
-                    
-                    NotificationCenter.default.addObserver(forName: .AVPlayerItemDidPlayToEndTime,
-                                                           object: self.alarmPlayer?.currentItem,
-                                                           queue: .main)
-                    {   (notification) in
-                        /// Play alarm sound repeatly.
-                        guard let item = notification.object as? AVPlayerItem else { return }
-                        item.seek(to: kCMTimeZero)
-                    }
+                self.alarmPlayer = AVPlayer(url: url)
+                self.alarmPlayer?.volume = 0.1
+                self.alarmPlayer?.play()
+                self.fadeInAlarmPlayerSound()
+                self.alarmPlayer?.actionAtItemEnd = .none
+                
+                NotificationCenter.default.post(name: .SoundManagerAlarmPlayerDidEnd, object: nil)
+                
+                NotificationCenter.default.addObserver(forName: .AVPlayerItemDidPlayToEndTime,
+                                                       object: self.alarmPlayer?.currentItem,
+                                                       queue: .main)
+                {   (notification) in
+                    /// Play alarm sound repeatly.
+                    guard let item = notification.object as? AVPlayerItem else { return }
+                    item.seek(to: kCMTimeZero)
                 }
             }
         } else {
@@ -168,12 +165,11 @@ class SoundManager: NSObject {
         self.perform(#selector(self.fadeInAlarmPlayerSound), with: nil, afterDelay: 0.1)
     }
     
-    /**
-        알람음을 중지시킨다.
-     
-        AVPlayer should be removed from NotificationCenter, Otherwise playAlarmSoundRepeatly will be called continuously.
-        post SoundManagerDidPlayAlarmToEnd that might update next trigger date.
-     **/
+    
+    /// 알람음을 중지시킨다.
+    ///
+    /// AVPlayer should be removed from NotificationCenter, Otherwise playAlarmSoundRepeatly will be called continuously.
+    /// post SoundManagerDidPlayAlarmToEnd that might update next trigger date.
     func pauseAlarm(){
         
         // iOS9 이상부터 deinit될 때 removeObserver를 부를 필요가 없어졌다.
