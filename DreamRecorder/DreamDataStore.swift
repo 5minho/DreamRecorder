@@ -82,11 +82,13 @@ class DreamDataStore {
             tmpPeriod = (period.to, period.from)
         }
         
-        let fromDate = Expression<Date>(value: tmpPeriod.from)
-        let toDate = Expression<Date>(value: tmpPeriod.to)
+        let nextDate = period.to.addingTimeInterval(86400)
         
-        let rowsResult = dbManager.selectAll(query: DreamTable.table
-            .filter(DreamTable.Column.createdDate >= fromDate && DreamTable.Column.createdDate <= toDate)
+        let fromDate = Expression<Date>(value: tmpPeriod.from)
+        let toDate = Expression<Date>(value: nextDate)
+        
+        let rowsResult = dbManager.selectAll(query: DreamTable.table.filter(DreamTable.Column.createdDate > fromDate
+            && DreamTable.Column.createdDate < toDate)
             .order(DreamTable.Column.createdDate.desc))
         
         dreams = []
@@ -103,7 +105,7 @@ class DreamDataStore {
                 let createdDate = $0.get(DreamTable.Column.createdDate)
                 let modifiedDate = $0.get(DreamTable.Column.modifiedDate)
                 
-                let dream = Dream(id: id, title: title, content: content, createdDate: createdDate, modifiedDate: modifiedDate)
+                let dream = Dream(id: id,title: title, content: content, createdDate: createdDate, modifiedDate: modifiedDate)
                 
                 if dreams.index(of: dream) == nil {
                     dreams.append(dream)
@@ -180,10 +182,8 @@ class DreamDataStore {
         
         let result = self.dbManager.updateRow(update: updateRow.update(
             
-            DreamTable.Column.id <- dream.id,
             DreamTable.Column.title <- dream.title,
             DreamTable.Column.content <- dream.content,
-            DreamTable.Column.createdDate <- dream.createdDate,
             DreamTable.Column.modifiedDate <- dream.modifiedDate
             
             )
@@ -192,7 +192,9 @@ class DreamDataStore {
         switch result {
             
         case .success:
-            
+            if let idx = self.dreams.index(of: dream) {
+                dreams[idx] = dream
+            }
             NotificationCenter.default.post(name: NotificationName.didUpdateDream, object: nil)
             print("Success: update row \(dream.id)")
         case let .failure(error):

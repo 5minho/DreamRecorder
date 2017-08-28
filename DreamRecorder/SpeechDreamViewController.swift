@@ -45,11 +45,11 @@ class SpeechDreamViewController : UIViewController {
         setContentFieldLayer()
         self.applyThemeIfViewDidLoad()
         
-        self.todayLabel.textColor = UIColor.dreamLightPink
-        self.leftTimeLabel.textColor = UIColor.dreamTextColor3
+        self.todayLabel.textColor = UIColor.dreamTextColor1
+        self.leftTimeLabel.textColor = UIColor.dreamTextColor1
         self.contentField.font = UIFont.body
-        self.contentField.textColor = UIColor.dreamLightPink
-        
+        self.contentField.textColor = UIColor.dreamTextColor1
+        self.recordButton.setTitleColor(UIColor.dreamTextColor1, for: .normal)
     }
     
     let audioDispatch = DispatchQueue(label: "audioSerialQueue")
@@ -160,7 +160,7 @@ class SpeechDreamViewController : UIViewController {
         
         let contentFieldLayer = self.contentField.layer
         contentFieldLayer.borderWidth = 1
-        contentFieldLayer.borderColor = UIColor.dreamBorderColor.cgColor
+        contentFieldLayer.borderColor = UIColor.dreamTextColor1.cgColor
         
     }
     

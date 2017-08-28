@@ -32,7 +32,9 @@ class DetailDreamViewController : UIViewController {
         
     }
     
+    @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var titleField: UITextField!
+    @IBOutlet weak var contentLabel: UILabel!
     @IBOutlet weak var createdDateLabel: UILabel!
     @IBOutlet weak var contentTextView: UITextView!
     @IBOutlet weak var deleteButton: UIButton!
@@ -69,8 +71,9 @@ class DetailDreamViewController : UIViewController {
             
         }
         
-//        self.applyTheme()
-        
+        self.applyThemeIfViewDidLoad()
+        self.setSubViewsColor()
+        self.setBorderLayerColor()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -83,6 +86,24 @@ class DetailDreamViewController : UIViewController {
             self.isFirstShown = false
             
         }
+        
+    }
+    
+    private func setBorderLayerColor() {
+        
+        self.titleField.layer.borderColor = UIColor.dreamTextColor1.cgColor
+        self.contentTextView.layer.borderColor = UIColor.dreamTextColor1.cgColor
+        
+    }
+    
+    private func setSubViewsColor() {
+        
+        self.titleField.textColor = UIColor.dreamTextColor1
+        self.contentTextView.textColor = UIColor.dreamTextColor1
+        self.createdDateLabel.textColor = UIColor.dreamTextColor1
+        self.titleLabel.textColor = UIColor.dreamTextColor1
+        self.contentLabel.textColor = UIColor.dreamTextColor1
+        self.deleteButton.setTitleColor(UIColor.dreamTextColor1, for: .normal)
         
     }
     
@@ -140,6 +161,7 @@ class DetailDreamViewController : UIViewController {
 extension DetailDreamViewController : DreamDeletable {
     
     @IBAction func touchupDeleteButton() {
+        
         guard let dream = self.dream else {
             return
         }
@@ -149,6 +171,7 @@ extension DetailDreamViewController : DreamDeletable {
         }
         
         self.present(alert, animated: true, completion: nil)
+        
     }
     
 }
