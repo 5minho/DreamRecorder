@@ -48,8 +48,6 @@ class DateParserTests : XCTestCase {
         
         XCTAssert(dateParser.month(from: date!) == 8)
         
-        XCTAssert(dateParser.day(from: date!) == "28")
-        
     }
     
 }

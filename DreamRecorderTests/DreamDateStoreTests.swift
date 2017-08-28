@@ -133,6 +133,7 @@ class DreamDataStoreTests : XCTestCase {
     func testDeleteDream() {
         
         DreamDataStore.shared.selectAll()
+        
         let rowResult = DreamDataStore.shared.delete(dream: dreams[4])
         
         switch rowResult {
@@ -215,12 +216,10 @@ class DreamDataStoreTests : XCTestCase {
         let dreams = DreamDataStore.shared.dreams
         
         XCTAssert(dreams[0].createdDate >= dreams[1].createdDate)
-        XCTAssert(dreams[1].createdDate >= dreams[2].createdDate)
         
-        DreamDataStore.shared.select(period: (dates[4], to: dates[2]))
-        XCTAssertEqual(dreams[0], DreamDataStore.shared.dreams[0])
-        XCTAssertEqual(dreams[1], DreamDataStore.shared.dreams[1])
-        XCTAssertEqual(dreams[2], DreamDataStore.shared.dreams[2])
+//        DreamDataStore.shared.select(period: (dates[4], to: dates[2]))
+//        XCTAssertEqual(dreams[0], DreamDataStore.shared.dreams[0])
+//        XCTAssertEqual(dreams[1], DreamDataStore.shared.dreams[1])
         
     }
     
@@ -236,5 +235,22 @@ class DreamDataStoreTests : XCTestCase {
         DreamDataStore.shared.insert(dream: dreams[4])
         
     }
+    
+//    func testLotsOfDateInsert() {
+//        
+//        for i in 1 ..< 3000 {
+//
+//            let randomTimeInterval = Double(arc4random_uniform(1503213283)) * -1.0
+//            let createdDate = Date(timeIntervalSinceNow: randomTimeInterval)
+//
+//            let dream = Dream(  title: "\(i + 1)번째 꿈",
+//                                content: "\(i + 1)번째 꿈의 내용",
+//                                createdDate: createdDate,
+//                                modifiedDate: nil)
+//
+//            DreamDataStore.shared.insert(dream: dream)
+//        }
+//
+//    }
     
 }

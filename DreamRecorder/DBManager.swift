@@ -43,6 +43,7 @@ class DBManager: NSObject, DBManagerable {
     let db: Connection = {
         let url = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
         let db = try! Connection("\(url.path)/db.sqlite3")
+        print("\(url.path)/db.sqlite3")
         return db
     }()
     
@@ -73,7 +74,6 @@ class DBManager: NSObject, DBManagerable {
             try self.db.run(statement)
             return .success
         } catch {
-            print(error)
             return .failure(.transactionError)
         }
     }

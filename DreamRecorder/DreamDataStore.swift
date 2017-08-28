@@ -87,8 +87,8 @@ class DreamDataStore {
         let fromDate = Expression<Date>(value: tmpPeriod.from)
         let toDate = Expression<Date>(value: nextDate)
         
-        let rowsResult = dbManager.selectAll(query: DreamTable.table.filter(DreamTable.Column.createdDate > fromDate
-            && DreamTable.Column.createdDate < toDate)
+        let rowsResult = dbManager.selectAll(query: DreamTable.table.filter(DreamTable.Column.createdDate >= fromDate
+            && DreamTable.Column.createdDate <= toDate)
             .order(DreamTable.Column.createdDate.desc))
         
         dreams = []
@@ -166,7 +166,7 @@ class DreamDataStore {
         case let .success(row):
             dream.id = Int64(row)
             self.dreams.insert(dream, at: 0)
-            NotificationCenter.default.post(name: NotificationName.didAddDream, object: nil)
+            //NotificationCenter.default.post(name: NotificationName.didAddDream, object: nil)
             
         case .failure(_):
             print("default")
@@ -195,7 +195,7 @@ class DreamDataStore {
             if let idx = self.dreams.index(of: dream) {
                 dreams[idx] = dream
             }
-            NotificationCenter.default.post(name: NotificationName.didUpdateDream, object: nil)
+            //NotificationCenter.default.post(name: NotificationName.didUpdateDream, object: nil)
             print("Success: update row \(dream.id)")
         case let .failure(error):
             print("error: \(error)")
@@ -227,7 +227,7 @@ class DreamDataStore {
                 self.filteredDreams.remove(at: deletedIdx)
             }
             
-            NotificationCenter.default.post(name: NotificationName.didDeleteDream, object: nil, userInfo : userInfo)
+            //NotificationCenter.default.post(name: NotificationName.didDeleteDream, object: nil, userInfo : userInfo)
             
         case let .failure(error):
             print("error: \(error)")

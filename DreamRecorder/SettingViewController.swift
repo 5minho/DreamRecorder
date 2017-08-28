@@ -87,7 +87,7 @@ extension SettingViewController: UITableViewDelegate, UITableViewDataSource {
                 
                 let iconHeight = cell.frame.height - 32
                 let iconSize = CGSize(width: iconHeight, height: iconHeight)
-                let iconImage = #imageLiteral(resourceName: "icon_earth").image(with: iconSize)?.withRenderingMode(.alwaysTemplate)
+                let iconImage = #imageLiteral(resourceName: "earth17").image(with: iconSize)?.withRenderingMode(.alwaysTemplate)
                 cell.imageView?.image = iconImage
 
             default:
@@ -104,7 +104,7 @@ extension SettingViewController: UITableViewDelegate, UITableViewDataSource {
                 
                 let iconHeight = cell.frame.height - 32
                 let iconSize = CGSize(width: iconHeight, height: iconHeight)
-                let iconImage = #imageLiteral(resourceName: "icon_font").image(with: iconSize)?.withRenderingMode(.alwaysTemplate)
+                let iconImage = #imageLiteral(resourceName: "font3").image(with: iconSize)?.withRenderingMode(.alwaysTemplate)
                 cell.imageView?.image = iconImage
             
             case 1:

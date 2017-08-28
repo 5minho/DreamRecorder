@@ -19,7 +19,7 @@ extension DreamDeletable {
     func deleteAlert(dream: Dream, completion : (() -> Void)?) -> UIAlertController {
         
         let title = "Delete \(dream.title!)?"
-        let message = "Are you sure you want to delete this dream?"
+        let message = "Are you sure you want to delete this dream?".localized
         
         let alert = UIAlertController(title: title, message: message, preferredStyle: .actionSheet)
         let cencelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)

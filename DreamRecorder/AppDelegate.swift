@@ -49,7 +49,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         UIBarButtonItem.appearance().setTitleTextAttributes([NSForegroundColorAttributeName : UIColor.defaultButtonTitleColor], for: .normal)
         UINavigationBar.appearance().tintColor = UIColor.white
         
-        UISearchBar.appearance().barTintColor = UIColor.alarmDarkBlue
+        UISearchBar.appearance().barTintColor = UIColor.dreamBackgroundColor
         UISearchBar.appearance().tintColor = UIColor.white
         UITextField.appearance(whenContainedInInstancesOf: [UISearchBar.self]).tintColor = UIColor.white
         UIApplication.shared.statusBarStyle = .lightContent
