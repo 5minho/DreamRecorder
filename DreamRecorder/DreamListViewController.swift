@@ -90,6 +90,13 @@ class DreamListViewController : UIViewController {
     
     private func addObserver() {
         
+        NotificationCenter.default.addObserver(forName: Notification.Name.DreamRecorderFontDidChange,
+                                               object: nil,
+                                               queue: .main) { _ in
+            self.tableView.reloadData()
+        }
+        
+        
         NotificationCenter.default.addObserver(forName: DreamDataStore.NotificationName.didDeleteDream, object: nil, queue: .main) {
             [unowned self] notification in
             
