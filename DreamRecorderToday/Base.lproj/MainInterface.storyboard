@@ -35,18 +35,21 @@
                                 <color key="textColor" red="0.96557557579999997" green="0.97027868029999997" blue="0.97526365520000002" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="249" verticalHuggingPriority="251" text="00:00:00" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ztd-yX-BMr">
-                                <rect key="frame" x="122" y="63.5" width="82" height="20.5"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" red="0.96557557579999997" green="0.97027868029999997" blue="0.97526365520000002" alpha="1" colorSpace="calibratedRGB"/>
-                                <nil key="highlightedColor"/>
-                            </label>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="nt_partlycloudy" translatesAutoresizingMaskIntoConstraints="NO" id="m2W-GY-BPY">
                                 <rect key="frame" x="212" y="8" width="84" height="84"/>
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="m2W-GY-BPY" secondAttribute="height" multiplier="1:1" id="Lr6-mB-swj"/>
                                 </constraints>
                             </imageView>
+                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="white" translatesAutoresizingMaskIntoConstraints="NO" id="GFo-nx-Q9T">
+                                <rect key="frame" x="153" y="63.5" width="20" height="20"/>
+                            </activityIndicatorView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="249" verticalHuggingPriority="251" text=" " textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ztd-yX-BMr">
+                                <rect key="frame" x="122" y="63" width="82" height="20.5"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" red="0.96557557579999997" green="0.97027868029999997" blue="0.97526365520000002" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" red="0.027450980392156862" green="0.14509803921568626" blue="0.34509803921568627" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
@@ -56,6 +59,8 @@
                             <constraint firstItem="m2W-GY-BPY" firstAttribute="leading" secondItem="ztd-yX-BMr" secondAttribute="trailing" constant="8" id="80L-bF-bH1"/>
                             <constraint firstItem="qEn-pW-KPc" firstAttribute="leading" secondItem="S3S-Oj-5AN" secondAttribute="leadingMargin" constant="8" id="GEx-oV-O17"/>
                             <constraint firstItem="ztd-yX-BMr" firstAttribute="leading" secondItem="clz-6H-h1j" secondAttribute="trailing" constant="8" id="Kjt-fQ-fQg"/>
+                            <constraint firstItem="GFo-nx-Q9T" firstAttribute="centerX" secondItem="ztd-yX-BMr" secondAttribute="centerX" id="Ou7-9O-dpR"/>
+                            <constraint firstItem="GFo-nx-Q9T" firstAttribute="centerY" secondItem="ztd-yX-BMr" secondAttribute="centerY" id="cDf-cQ-tnQ"/>
                             <constraint firstItem="clz-6H-h1j" firstAttribute="leading" secondItem="S3S-Oj-5AN" secondAttribute="leadingMargin" constant="8" id="fai-3h-wPa"/>
                             <constraint firstItem="FKl-LY-JtV" firstAttribute="top" secondItem="clz-6H-h1j" secondAttribute="bottom" constant="16" id="kC0-J4-3sK"/>
                             <constraint firstItem="FKl-LY-JtV" firstAttribute="top" secondItem="m2W-GY-BPY" secondAttribute="bottom" constant="8" id="mXY-hT-n4p"/>
@@ -71,6 +76,7 @@
                     <size key="freeformSize" width="320" height="100"/>
                     <connections>
                         <outlet property="leftTimeLabel" destination="ztd-yX-BMr" id="XsO-Th-VPh"/>
+                        <outlet property="nextAlarmLoadingView" destination="GFo-nx-Q9T" id="ah2-ue-3il"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="vXp-U4-Rya" userLabel="First Responder" sceneMemberID="firstResponder"/>

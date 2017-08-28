@@ -187,10 +187,11 @@ extension AlarmListViewController: UITableViewDelegate, UITableViewDataSource {
                                                         preferredStyle: .alert)
                 
                 let okAction = UIAlertAction(title: "OK".localized,
-                                             style: .default,
-                                             handler: { (action) in
+                                             style: .default)
+                {
+                    (action) in
                     alertController.dismiss(animated: true, completion: nil)
-                })
+                }
                 
                 alertController.addAction(okAction)
                 

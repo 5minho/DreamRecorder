@@ -41,3 +41,8 @@
 "Setting" = "Setting";
 "Language" = "Language";
 "Font" = "Font";
+
+// - QuickAction.
+"See next alarm state." = "See next alarm state.";
+"Next Alarm" = "Next Alarm";
+"Stop" = "Stop";

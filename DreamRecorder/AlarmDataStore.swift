@@ -75,7 +75,10 @@ class AlarmDataStore: NSObject {
         self.alarms = self.selectAll()
         
         // AlarmScheduler -> AlarmDataStore.
-        NotificationCenter.default.addObserver(self, selector: #selector(self.updateOnceNotificationActive(sender:)), name: Notification.Name.AlarmSchedulerNotificationDidDelivered, object: nil)
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(self.updateOnceNotificationActive(sender:)),
+                                               name: .AlarmSchedulerNotificationDidDelivered,
+                                               object: nil)
     }
     
     func awake() {}
@@ -115,8 +118,9 @@ class AlarmDataStore: NSObject {
     /// 필요하다면 SQLite에서 알람테이블을 마이그레이션한다.
     static private func migarationIfNeeded(){
 
+        AlarmDataStore.createTable()
+        
         if DBManager.shared.db.user_version == 0 {
-            AlarmDataStore.createTable()
             DBManager.shared.db.user_version = 1
         }
         
