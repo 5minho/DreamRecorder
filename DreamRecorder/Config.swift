@@ -9,5 +9,5 @@
 import Foundation
 
 struct Config {
-    static let clientId = ""
+    static let clientId = "4QnIdgDb7TeYXltMunEw"
 }

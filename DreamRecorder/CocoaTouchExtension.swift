@@ -59,29 +59,66 @@ extension Date {
     }
 }
 
-extension Date {
-    func removingSeconds() -> Date {
-        let dateComponents = Calendar.current.dateComponents([.year, .month, .day, .hour, .minute, .minute], from:
-            self)
-        let secondRemovedDate = Calendar.current.date(from: dateComponents)
-        return secondRemovedDate ?? self
-    }
-}
-
-extension Date {
-    
-    var addingSnoozeTimeInterval: Date {
-        return self.addingTimeInterval(60*9)
-    }
-    
-}
-
 extension Array {
     
     subscript (safe index: Int) -> Element? {
         return indices ~= index ? self[index] : nil
     }
     
+}
+
+extension Date {
+    
+    // - Internal.
+    var dateForAlarm: AlarmDate {
+        return AlarmDate(with: self)
+    }
+    
+    // MARK: - Struct.
+    struct AlarmDate {
+        
+        // MARK: - Properties.
+        // - Private.
+        private let date: Date
+        private var snoozeTime: TimeInterval = 9.0
+        
+        // MARK: - Initializer.
+        init(with date: Date) {
+            self.date = date
+        }
+        
+        // MARK: - Computed Properties.
+        /// Date에서 Seconds를 0으로 한 Date를 반환한다.
+        var removingSeconds: Date {
+            let dateComponents = Calendar.current.dateComponents([.year, .month, .day, .hour, .minute, .minute],
+                                                                 from: self.date)
+            let secondRemovedDate = Calendar.current.date(from: dateComponents)
+            return secondRemovedDate ?? self.date
+        }
+        
+        /// Date에서 스누즈 시간 (9분)을 추가한 Date를 반환한다.
+        var addingSnoozeTime: Date {
+            return self.date.addingTimeInterval(self.snoozeTime)
+        }
+        
+        /// 해당 시간(Self)와 현재시간(Date())까지의 차이를 00:00:00포맷의 문자열로 반환한다.
+        var descriptionForLeftTime: String {
+            let dateComponents = Calendar.current.dateComponents([.day, .hour, .minute, .second], from: Date(), to: self.date)
+            
+            guard let day = dateComponents.day,
+                var hour = dateComponents.hour,
+                let minute = dateComponents.minute,
+                let second = dateComponents.second
+                else {
+                    return "00:00:00"
+            }
+            
+            hour += day * 24
+            
+            return "\(hour):\(minute):\(second)"
+
+        }
+    }
 }
 
 

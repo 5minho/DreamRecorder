@@ -24,9 +24,7 @@ class MainTabBarViewController: UITabBarController {
         guard let controllers = self.viewControllers else { return }
         
         let titles = ["Dream".localized, "Alarm".localized, "Setting".localized]
-
         let iconImages = [#imageLiteral(resourceName: "icon_moon"), #imageLiteral(resourceName: "musical32"), #imageLiteral(resourceName: "cog2")]
-
         let iconSize = CGSize(width: 25, height: 25)
         
         for (index, controller) in controllers.enumerated() {
