@@ -90,18 +90,6 @@ class AlarmListViewController: UIViewController {
             self.shouldReloadTable = true
         }
         
-        /// 사용자 디바이스 선호 폰트크기가 변경되었을 때 테이블을 다시 로드하기위해 노티피케이션을 구독한다.
-        NotificationCenter.default.addObserver(forName: .UIContentSizeCategoryDidChange,
-                                               object: nil,
-                                               queue: .main)
-        { (_) in
-            /// 사용자가 디바이스 프리퍼드 폰트를 바꾸엇을 경우에 테이블뷰를 리로드하여 변경사항을 적용시킨다.
-            DispatchQueue.main.async {
-                CustomFont.current.reloadFont()
-                self.tableView.reloadData()
-            }
-        }
-        
         /// DreamRecorder 설정페이지 에서 제공하는 폰트를 변경 노티피케이션을 구독한다.
         NotificationCenter.default.addObserver(forName: .DreamRecorderFontDidChange,
                                                object: nil,
