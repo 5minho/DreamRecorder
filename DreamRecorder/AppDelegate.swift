@@ -73,8 +73,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
 
         // - Set Dream.
-        let dateParser = DateParser()
-        
         DreamDataStore.shared.createTable()
         
         if let firstDayOfCurrentMonth = DateParser().firstDayOfMonth(date: Date()) {
