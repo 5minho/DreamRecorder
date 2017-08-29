@@ -266,7 +266,7 @@ extension DreamListViewController : UITableViewDelegate, UITableViewDataSource, 
     
     func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
         
-        let deleteButton = UITableViewRowAction(style: .destructive, title: "삭제".localized) { action, indexPath in
+        let deleteButton = UITableViewRowAction(style: .destructive, title: "Delete".localized) { action, indexPath in
             
             if let dream = self.isFiltering() ?
                 DreamDataStore.shared.filteredDreams[safe: indexPath.row] :
@@ -279,7 +279,7 @@ extension DreamListViewController : UITableViewDelegate, UITableViewDataSource, 
             
         }
         
-        let shareButton = UITableViewRowAction(style: .normal, title: "공유".localized) { action, indexPath in
+        let shareButton = UITableViewRowAction(style: .normal, title: "Share".localized) { action, indexPath in
             
             if let dream = self.isFiltering() ?
                 DreamDataStore.shared.filteredDreams[safe: indexPath.row] :
@@ -310,7 +310,7 @@ extension DreamListViewController : UITableViewDelegate, UITableViewDataSource, 
         }
 
         deleteButton.backgroundColor = UIColor.red
-        shareButton.backgroundColor = UIColor.blue
+        shareButton.backgroundColor = UIColor.gray
         return [deleteButton, shareButton]
     }
 

@@ -105,7 +105,7 @@ class SoundManager: NSObject {
             print("\(Date().addingTimeInterval(2))")
             print("=========================")
             
-            if nextTriggerDate.compare(Date().addingTimeInterval(2)) != .orderedDescending {
+            if nextTriggerDate.compare(Date().addingTimeInterval(3)) != .orderedDescending {
                 
                 self.changeSystemVolume(to: 1)
                 
