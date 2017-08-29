@@ -74,7 +74,6 @@ class SoundManager: NSObject {
         
         self.queuePlayer = AVQueuePlayer(items: [silentPlayerItem])
         self.queuePlayer?.actionAtItemEnd = .none
-        self.queuePlayer?.volume = 1
         
         self.queuePlayer?.play()
 
@@ -94,7 +93,7 @@ class SoundManager: NSObject {
     /// 현재시간이 nextTriggerDate에 도달하면 설정된 알람(self.nextAlarm)이 가지고 있는 사운드를 재생힌다.
     ///
     /// - Parameter playerItem: Mute 사운드 플레이어 아이템.
-    private func playAlarmSoundIfNeeded(playerItem: AVPlayerItem){
+    private func playAlarmSoundIfNeeded(playerItem: AVPlayerItem) {
         
         playerItem.seek(to: kCMTimeZero)
         
@@ -129,7 +128,7 @@ class SoundManager: NSObject {
                 }
             }
         } else {
-            // 다음 알람이 하나도 없을 경우 리소스 낭비를 줄이기 위해 queuePlayer에 nil값을 할당한다.
+            /// 다음 알람이 하나도 없을 경우 리소스 낭비를 줄이기 위해 queuePlayer에 nil값을 할당한다.
             self.queuePlayer = nil
         }
     }
