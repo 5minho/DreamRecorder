@@ -96,17 +96,17 @@ class AlarmAlertViewController: UIViewController {
         self.leftTimeLabel.textColor = UIColor.alarmLightText
         
         self.snoozeButton.backgroundColor = UIColor.dreamBackgroundColor
-        self.snoozeButton.setTitleColor(UIColor.dreamTextColor1, for: .normal)
+        self.snoozeButton.setTitleColor(UIColor.dreamTextColor2, for: .normal)
         self.snoozeButton.setTitleColor(UIColor.dreamTextColor3, for: .disabled)
-        self.snoozeButton.titleLabel?.font = UIFont.title3
+        self.snoozeButton.titleLabel?.font = UIFont.callout
         
         self.stopButton.backgroundColor = .dreamBackgroundColor
-        self.stopButton.setTitleColor(UIColor.dreamTextColor1, for: .normal)
-        self.stopButton.titleLabel?.font = UIFont.title3
+        self.stopButton.setTitleColor(UIColor.dreamTextColor2, for: .normal)
+        self.stopButton.titleLabel?.font = UIFont.callout
         
-        self.stopButton.backgroundColor = .dreamBackgroundColor
-        self.stopButton.setTitleColor(UIColor.dreamTextColor1, for: .normal)
-        self.stopButton.titleLabel?.font = UIFont.title1
+        self.dreamRecordButton.backgroundColor = .dreamBackgroundColor
+        self.dreamRecordButton.setTitleColor(UIColor.dreamTextColor1, for: .normal)
+        self.dreamRecordButton.titleLabel?.font = UIFont.title1
         
         self.leftTimeLabel.isHidden = true
         

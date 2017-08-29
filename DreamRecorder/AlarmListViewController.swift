@@ -135,7 +135,8 @@ extension AlarmListViewController: UITableViewDelegate, UITableViewDataSource {
         
         /// AlarmListViewController에서는 Add, Edit페이지와는 다르게 weekdayButton에 접근할 필요가 없고
         /// Cell을 설명해줄 때 weekdayButton내용(반복 요일)도 포함해야한다.
-        var customAccessibilityLabel = "\(cell.timeLabel.text ?? ""),"
+        
+        var customAccessibilityLabel = "\(alarmForRow.date.dateForAlarm.descriptionForAlarmTime ?? ""),"
         customAccessibilityLabel += "\(cell.nameLabel.text ?? ""),"
         customAccessibilityLabel += "\(cell.weekdayButton.accessibilityLabel ?? "")"
         cell.accessibilityLabel = customAccessibilityLabel
