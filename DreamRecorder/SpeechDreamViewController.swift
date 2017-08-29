@@ -52,7 +52,7 @@ class SpeechDreamViewController : UIViewController {
         self.recordButton.setTitleColor(UIColor.dreamTextColor1, for: .normal)
     }
     
-    let audioDispatch = DispatchQueue(label: "audioSerialQueue")
+    let audioDispatch = DispatchQueue(label: DispatchQueueLabel.audioSerialQueue)
     
     
     required init?(coder aDecoder: NSCoder) {

@@ -23,7 +23,7 @@ class MainTabBarViewController: UITabBarController {
         // DreamController, AlarmController, SettingController.
         guard let controllers = self.viewControllers else { return }
         
-        let titles = ["Dream".localized, "Alarm".localized, "Setting".localized]
+        let titles = [TabbarTitle.dreamTab, TabbarTitle.alarmTab, TabbarTitle.settingTab.localized]
         let iconImages = [#imageLiteral(resourceName: "icon_moon"), #imageLiteral(resourceName: "musical32"), #imageLiteral(resourceName: "cog2")]
         let iconSize = CGSize(width: 25, height: 25)
         
