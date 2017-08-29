@@ -119,9 +119,9 @@ extension AlarmAddViewController: UITableViewDataSource, UITableViewDelegate {
     
     // MARK: - TableView Delegate.
     
-    // didSelectRow에서는 오직 Label과 Sound 셀만 처리한다.
-    // 나머지 다른 셀(Repeat, Snooze)는 AccessoryView의 Action에 대응해야한다.
-    // AccessoryView의 Action은 커스텀 셀인 AlarmDetailCell의 Delegate에 정의되어 있다.
+    /// didSelectRow에서는 오직 Label과 Sound 셀만 처리한다.
+    /// 나머지 다른 셀(Repeat, Snooze)는 AccessoryView의 Action에 대응해야한다.
+    /// AccessoryView의 Action은 커스텀 셀인 AlarmDetailCell의 Delegate에 정의되어 있다.
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
         tableView.deselectRow(at: indexPath, animated: true)
@@ -166,8 +166,8 @@ extension AlarmAddViewController: UITableViewDataSource, UITableViewDelegate {
             self.navigationController?.pushViewController(alarmSoundListViewController, animated: true)
             
         default:
-            // Repeat과 Snooze셀은 셀을 눌럿을 때는 아무것도 하지 않는다.
-            // 그들은 오직 AccessoryView의 Action을 통해서 alarm의 프로퍼티를 변경한다.
+            /// Repeat과 Snooze셀은 셀을 눌럿을 때는 아무것도 하지 않는다.
+            /// 그들은 오직 AccessoryView의 Action을 통해서 alarm의 프로퍼티를 변경한다.
             break
         }
     }
@@ -177,8 +177,8 @@ extension AlarmAddViewController: UITableViewDataSource, UITableViewDelegate {
 extension AlarmAddViewController: AlarmDetailCellDelegate {
     // MARK: - AlarmDetailCell Delegate.
     
-    // 요일 버튼이 클릭됐을 때 불리는 delegate 메서드.
-    // 각 버튼을 해당 순차적으로 요일을 해당하며 WeekdayOptions를 통해서 alarm객체를 수정한다.
+    /// 요일 버튼이 클릭됐을 때 불리는 delegate 메서드.
+    /// 각 버튼을 해당 순차적으로 요일을 해당하며 WeekdayOptions를 통해서 alarm객체를 수정한다.
     func alarmDetailCell(_: AlarmDetailCell, repeatButtonDidTouchUp button: UIButton, at index: Int) {
         
         let weekday = WeekdayOptions(rawValue: 1 << index)
@@ -190,7 +190,7 @@ extension AlarmAddViewController: AlarmDetailCellDelegate {
         }
     }
 
-    // 스위치 버튼의 값이 변경됐을 때 불리는 delegate 메서드.
+    /// 스위치 버튼의 값이 변경됐을 때 불리는 delegate 메서드.
     func alarmDetailCell(_: AlarmDetailCell, snoozeSwitchValueChanged sender: UISwitch) {
         self.alarm?.isSnooze = sender.isOn
     }

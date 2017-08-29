@@ -25,6 +25,8 @@ class SettingItemListViewController: UITableViewController {
         self.tableView.tableFooterView = UIView(frame: .zero)
         self.tableView.separatorColor = UIColor.dreamBorderColor
         self.tableView.backgroundColor = UIColor.dreamBackgroundColor
+        
+        self.tableView.estimatedRowHeight = 44
     }
     
     override func numberOfSections(in tableView: UITableView) -> Int {
