@@ -233,7 +233,8 @@
 			isa = PBXGroup;
 			children = (
 				5A78ACC41F53012C00B1091F /* MainTabBarViewController.swift */,
-				5A78D8EE1F42BDD900D1E679 /* AddDreamNavigationController.swift */,
+				5A78ACBB1F52FD3B00B1091F /* SettingViewController.swift */,
+				5A78ACBD1F52FD6700B1091F /* SettingItemListViewController.swift */,
 				5A78D8F11F42BDD900D1E679 /* AlarmAddViewController.swift */,
 				5A78D8F51F42BDD900D1E679 /* AlarmEditViewController.swift */,
 				5A78D9171F42BDE400D1E679 /* SpeechDreamViewController.swift */,
@@ -244,8 +245,7 @@
 				5A78D90E1F42BDE400D1E679 /* DetailDreamViewController.swift */,
 				5A78D9131F42BDE400D1E679 /* DreamListViewController.swift */,
 				5A2D884F1F4A95D900215163 /* DatePickerViewController.swift */,
-				5A78ACBB1F52FD3B00B1091F /* SettingViewController.swift */,
-				5A78ACBD1F52FD6700B1091F /* SettingItemListViewController.swift */,
+				5A78D8EE1F42BDD900D1E679 /* AddDreamNavigationController.swift */,
 			);
 			name = controller;
 			sourceTree = "<group>";
@@ -338,9 +338,9 @@
 		5AD09F0C1F34686A007BCA09 /* DreamRecorder */ = {
 			isa = PBXGroup;
 			children = (
+				5A07FE2E1F436A9200C65037 /* storyboard */,
 				5A07FE2F1F436AA800C65037 /* model */,
 				5A07FE2D1F436A7C00C65037 /* controller */,
-				5A07FE2E1F436A9200C65037 /* storyboard */,
 				5A07FE311F436B0600C65037 /* helper */,
 				5A07FE301F436ACF00C65037 /* view */,
 				5A78D9141F42BDE400D1E679 /* Info.plist */,
