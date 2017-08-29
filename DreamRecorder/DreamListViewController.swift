@@ -17,12 +17,13 @@ class DreamListViewController : UIViewController {
     
     fileprivate let dateParser = DateParser()
     
-    fileprivate let serialDispatchQueue = DispatchQueue(label: "filtering")
+    fileprivate let serialDispatchQueue = DispatchQueue(label: DispatchQueueLabel.filterSerialQueue)
     fileprivate var pendingFilterWorkItem: DispatchWorkItem?
     
     fileprivate var selectedCell: DreamListCell?
     fileprivate var selectedCellLabel: UILabel?
     
+    var previewingContext : UIViewControllerPreviewing?
     
     var currentDatePeriod : (from: Date, to: Date) = {
         
@@ -46,21 +47,22 @@ class DreamListViewController : UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.registerForPreviewing(with: self, sourceView: self.view)
-        
         self.tableView.delegate = self
         self.tableView.dataSource = self
         
         tableView.rowHeight = UITableViewAutomaticDimension
         tableView.estimatedRowHeight = 140
         
+//        self.registerForPreviewing(with: self, sourceView: self.view)
+        
         self.tableView.allowsSelectionDuringEditing = true
-        self.dateButton.title = "Date".localized
+        self.dateButton.title = BarButtonText.date
         self.navigationItem.leftBarButtonItem = editButtonItem
         
         self.addObserver()
         self.setSearchViewController()
         self.applyThemeIfViewDidLoad()
+        
         
     }
     
@@ -70,6 +72,7 @@ class DreamListViewController : UIViewController {
         
         self.tableView.setEditing(false, animated: true)
     }
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
     }
@@ -145,11 +148,16 @@ class DreamListViewController : UIViewController {
         searchController = UISearchController(searchResultsController: nil)
         searchController?.searchResultsUpdater = self
         searchController?.dimsBackgroundDuringPresentation = false
-        searchController?.searchBar.placeholder = "꿈 제목, 꿈 내용 검색".localized
-        
-        searchController.registerForPreviewing(with: self, sourceView: self.view)
-        
+        searchController?.searchBar.placeholder = DreamSearch.placeHolder
+ 
+        if traitCollection.forceTouchCapability == .available {
+            
+            previewingContext = registerForPreviewing(with: self, sourceView: tableView)
+            
+        }
+    
         definesPresentationContext = true
+        searchController.delegate = self
         self.searchController.searchBar.delegate = self
         
         self.tableView?.tableHeaderView = searchController?.searchBar
@@ -174,6 +182,28 @@ class DreamListViewController : UIViewController {
             }
             
         }
+    }
+    
+}
+
+extension DreamListViewController : UISearchControllerDelegate {
+    
+    func didPresentSearchController(_ searchController: UISearchController) {
+        
+        if let context = previewingContext {
+            unregisterForPreviewing(withContext: context)
+            previewingContext = searchController.registerForPreviewing(with: self, sourceView: tableView)
+        }
+        
+    }
+    
+    func didDismissSearchController(_ searchController: UISearchController) {
+        
+        if let context = previewingContext {
+            searchController.unregisterForPreviewing(withContext: context)
+            previewingContext = registerForPreviewing(with: self, sourceView: tableView)
+        }
+        
     }
     
 }
@@ -283,7 +313,7 @@ extension DreamListViewController : UITableViewDelegate, UITableViewDataSource, 
     
     func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
         
-        let deleteButton = UITableViewRowAction(style: .destructive, title: "Delete".localized) { action, indexPath in
+        let deleteButton = UITableViewRowAction(style: .destructive, title: TableCellText.delete) { action, indexPath in
             
             if let dream = self.isFiltering() ?
                 DreamDataStore.shared.filteredDreams[safe: indexPath.row] :
@@ -296,7 +326,7 @@ extension DreamListViewController : UITableViewDelegate, UITableViewDataSource, 
             
         }
         
-        let shareButton = UITableViewRowAction(style: .normal, title: "Share".localized) { action, indexPath in
+        let shareButton = UITableViewRowAction(style: .normal, title: TableCellText.share) { action, indexPath in
             
             if let dream = self.isFiltering() ?
                 DreamDataStore.shared.filteredDreams[safe: indexPath.row] :
@@ -355,21 +385,17 @@ extension DreamListViewController: UIViewControllerPreviewingDelegate {
         
         viewControllerToCommit.view.backgroundColor = UIColor.dreamBackgroundColor
         
-        self.navigationController?.pushViewController(viewControllerToCommit, animated: true)
+        guard let detailDreamViewController = viewControllerToCommit as? DetailDreamViewController else {
+            return
+        }
         
-//        guard let detailDreamViewController = viewControllerToCommit as? DetailDreamViewController else { return }
-//        guard let isActiveAlarm = alarmStateViewController.currentAlarm?.isActive else { return }
-//        
-//        if isActiveAlarm {
-//            alarmStateViewController.view.backgroundColr = UIColor.dreamBackgroundColor
-//            self.present(alarmStateViewController, animated: true, completion: nil)
-//        }
+        self.navigationController?.pushViewController(detailDreamViewController, animated: false)
         
     }
     
     func previewingContext(_ previewingContext: UIViewControllerPreviewing, viewControllerForLocation location: CGPoint) -> UIViewController? {
         
-        let positionInView = self.view.convert(location, to: self.tableView)
+        let positionInView = self.view.convert(location, to: self.view)
         
         if let indexPath = self.tableView.indexPathForRow(at: positionInView) {
             
@@ -381,7 +407,6 @@ extension DreamListViewController: UIViewControllerPreviewingDelegate {
             guard let detailDreamViewController = DetailDreamViewController.storyboardInstance() else { return nil }
             
             detailDreamViewController.delegate = self
-//            detailDreamViewController.presentingDelegate = self
             detailDreamViewController.dream = pickedDream
             
             detailDreamViewController.view.backgroundColor = UIColor.white.withAlphaComponent(0.3)
