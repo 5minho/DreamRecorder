@@ -33,11 +33,11 @@
 "Unknown title" = "Unknown title";
 "Swipe To Dismiss" = "Swipe";
 
-"Once." = "한번만";
-"Repeat Weekday." = "평일 반복";
-"Repeat Weekend." = "주말 반복";
-"Repeat every day." = "매일 반복";
-"Repeat." = "반복 요일";
+"Once." = "一度";
+"Repeat Weekday." = "平日 繰り返す";
+"Repeat Weekend." = "週末 繰り返す";
+"Repeat every day." = "毎日 繰り返す";
+"Repeat." = "繰り返す";
 
 // - Setting.
 "Setting" = "設定";
