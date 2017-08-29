@@ -251,7 +251,7 @@ extension AlarmListViewController: AlarmAddViewControllerDelegate, AlarmEditView
         
         self.shouldReloadTable = false
         
-        alarm.date = alarm.date.removingSeconds()
+        alarm.date = alarm.date.dateForAlarm.removingSeconds
         self.store.insertAlarm(alarm: alarm)
         
         // Replace reload table with inserting rows if alarm added.
@@ -266,7 +266,7 @@ extension AlarmListViewController: AlarmAddViewControllerDelegate, AlarmEditView
         
         self.shouldReloadTable = false
 
-        alarm.date = alarm.date.removingSeconds()
+        alarm.date = alarm.date.dateForAlarm.removingSeconds
         
         if alarm.isActive == false {
             

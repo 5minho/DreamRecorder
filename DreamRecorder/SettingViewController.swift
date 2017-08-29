@@ -26,14 +26,15 @@ class SettingViewController: UIViewController {
         
         self.title = "Setting".localized
         
-        NotificationCenter.default.addObserver(forName: Notification.Name.DreamRecorderFontDidChange,
+        /// 각 각의 설정페이지에서 설정 값이 바뀌었을 경우 Notification을 통해 UITableView를 리로드한다.
+        NotificationCenter.default.addObserver(forName: .DreamRecorderFontDidChange,
                                                object: nil,
                                                queue: .main)
         { (_) in
             self.tableView.reloadData()
         }
         
-        NotificationCenter.default.addObserver(forName: Notification.Name.DreamRecorderLanguageDidChange,
+        NotificationCenter.default.addObserver(forName: .DreamRecorderLanguageDidChange,
                                                object: nil,
                                                queue: .main) { (_) in
             self.tableView.reloadData()
@@ -71,6 +72,7 @@ extension SettingViewController: UITableViewDelegate, UITableViewDataSource {
         
         let cell = tableView.dequeueReusableCell(withIdentifier: "UITableViewCell", for: indexPath)
         
+        /// 커스터마이징 셀.
         cell.detailTextLabel?.textColor = .dreamTextColor3
         cell.detailTextLabel?.font = .callout
         cell.textLabel?.textColor = .dreamTextColor1
@@ -82,12 +84,13 @@ extension SettingViewController: UITableViewDelegate, UITableViewDataSource {
             switch indexPath.row {
             case 0:
                 
+                /// 언어 설정 셀.
                 cell.textLabel?.text = "Language".localized
                 cell.detailTextLabel?.text = UserLangauge.names[UserDefaults.standard.integer(forKey: "language")]
                 
                 let iconHeight = cell.frame.height - 32
                 let iconSize = CGSize(width: iconHeight, height: iconHeight)
-                let iconImage = #imageLiteral(resourceName: "icon_earth").image(with: iconSize)?.withRenderingMode(.alwaysTemplate)
+                let iconImage = #imageLiteral(resourceName: "earth17").image(with: iconSize)?.withRenderingMode(.alwaysTemplate)
                 cell.imageView?.image = iconImage
 
             default:
@@ -99,18 +102,20 @@ extension SettingViewController: UITableViewDelegate, UITableViewDataSource {
                 
             case 0:
                 
+                /// 폰트 설정 셀.
                 cell.textLabel?.text = "Font".localized
                 cell.detailTextLabel?.text = UserDefaults.standard.string(forKey: UserDefaults.UserKey.fontName) ?? "System"
                 
                 let iconHeight = cell.frame.height - 32
                 let iconSize = CGSize(width: iconHeight, height: iconHeight)
-                let iconImage = #imageLiteral(resourceName: "icon_font").image(with: iconSize)?.withRenderingMode(.alwaysTemplate)
+                let iconImage = #imageLiteral(resourceName: "font3").image(with: iconSize)?.withRenderingMode(.alwaysTemplate)
                 cell.imageView?.image = iconImage
             
             case 1:
                 
-                cell.textLabel?.text = "Privacy Notification"
-                
+                /// 노티피케이션 설정 셀.
+                cell.textLabel?.text = "Notification Privacy".localized
+                cell.detailTextLabel?.text = ""
                 
             default:
                 break
@@ -126,6 +131,7 @@ extension SettingViewController: UITableViewDelegate, UITableViewDataSource {
         case 0:
             switch indexPath.row {
             case 0:
+                /// 언어 설정 클릭.
                 let languageListViewController = LanguageListViewController(style: .plain)
                 self.navigationController?.pushViewController(languageListViewController, animated: true)
             default:
@@ -135,36 +141,19 @@ extension SettingViewController: UITableViewDelegate, UITableViewDataSource {
         case 1:
             switch indexPath.row {
             case 0:
+                /// 폰트 설정 클릭.
                 let fontListViewController = FontListViewController(style: .plain)
                 self.navigationController?.pushViewController(fontListViewController, animated: true)
                 
             case 1:
-                guard let profileUrl = URL(string:
-                    "App-Prefs:root=NOTIFICATIONS_ID") else {
-                        return
-                }
+                /// 노티피케이션 설정 클릭.
+                guard let profileUrl = URL(string: "App-Prefs:root=NOTIFICATIONS_ID") else { return }
                 
                 if UIApplication.shared.canOpenURL(profileUrl) {
-                    
                     if #available(iOS 10.0, *) {
-                        UIApplication.shared.open(profileUrl, completionHandler: { (success) in
-                            
-                            print(" Profile Settings opened: \(success)")
-                            
-                        })
+                        UIApplication.shared.open(profileUrl, completionHandler: nil)
                     } else {
-                        // Fallback on earlier versions
                         UIApplication.shared.openURL(profileUrl)
-                    }
-                } else {
-                    if let url = URL(string: UIApplicationOpenSettingsURLString) {
-                        if #available(iOS 10.0, *) {
-                            UIApplication.shared.open(url, options: [:], completionHandler: { (completed) in
-                                    
-                            })
-                        } else {
-                            // Fallback on earlier versions
-                        }
                     }
                 }
                 
