@@ -1,4 +1,4 @@
-//
+
 //  DreamDataStore.swift
 //  DreamRecorder
 //
@@ -49,6 +49,22 @@ class DreamDataStore {
         }
         
     }
+    
+    struct Virtual {
+        
+        static let table = VirtualTable("VDreams")
+        
+        struct Column {
+            
+            static let id = Expression<Int64>("id")
+            static let title = Expression<String?>("title")
+            static let content = Expression<String?>("content")
+            static let createdDate = Expression<Date>("createdDate")
+            static let modifiedDate = Expression<Date?>("modifiedDate")
+            
+        }
+        
+    }
 
     @discardableResult func createTable() -> TableResult {
         
@@ -59,6 +75,15 @@ class DreamDataStore {
             table.column(DreamTable.Column.createdDate)
             table.column(DreamTable.Column.modifiedDate)
         })
+        
+        let config = FTS4Config()
+            .column(Virtual.Column.id, [.unindexed])
+            .column(Virtual.Column.title)
+            .column(Virtual.Column.content)
+            .column(Virtual.Column.createdDate, [.unindexed])
+            .column(Virtual.Column.modifiedDate, [.unindexed])
+        
+        let _ = self.dbManager.createTable(statement: Virtual.table.create(.FTS4(config)))
         
         switch createTableResult {
             
@@ -153,7 +178,18 @@ class DreamDataStore {
             
         )
         
+        let insertAtVitualTable = Virtual.table.insert (
+            
+            Virtual.Column.id <- dream.id,
+            Virtual.Column.title <- dream.title,
+            Virtual.Column.content <- dream.content,
+            Virtual.Column.createdDate <- dream.createdDate,
+            Virtual.Column.modifiedDate <- dream.modifiedDate
+            
+        )
+        
         let result = dbManager.insertRow(insert: insert)
+        let _ = dbManager.insertRow(insert: insertAtVitualTable)
         
         switch result {
             
@@ -183,14 +219,25 @@ class DreamDataStore {
             )
         )
         
+//        dbManager.updateRow(update: updateRow.update(
+//            Virtual.Column.id <- dream.id
+//            Virtual.Column.title <- dream.title,
+//            Virtual.Column.content <- dream.content,
+//            Virtual.Column.
+//            DreamTable.Column.modifiedDate <- dream.modifiedDate
+//        )
+//        )
+        
         switch result {
             
         case .success:
             if let idx = self.dreams.index(of: dream) {
                 dreams[idx] = dream
             }
+            
             NotificationCenter.default.post(name: .DreamDataStoreDidUpdateDream, object: nil)
             print("Success: update row \(dream.id)")
+            
         case let .failure(error):
             print("error: \(error)")
             
@@ -207,7 +254,7 @@ class DreamDataStore {
         
         switch result {
             
-        case .success:
+        case .success :
         
             var userInfo : [String : Int] = [:]
             
@@ -223,8 +270,9 @@ class DreamDataStore {
             
             NotificationCenter.default.post(name: .DreamDataStoreDidDeleteDream, object: nil, userInfo : userInfo)
             
-        case let .failure(error):
+        case let .failure(error) :
             print("error: \(error)")
+            
         }
         
         return result
@@ -233,35 +281,64 @@ class DreamDataStore {
     
     func filter(_ searchText : String) {
         
-        let filterResult = dbManager.filterRow(query: DreamTable.table.filter(
-            DreamTable.Column.title.like("%\(searchText)%") ||
-            DreamTable.Column.content.like("%\(searchText)%")
-            )
-        )
+//        let filterResult = dbManager.filterRow(query: DreamTable.table.filter(
+//            DreamTable.Column.title.like("%\(searchText)%") ||
+//            DreamTable.Column.content.like("%\(searchText)%")
+//            )
+//        )
+//
+//        filteredDreams = []
+//        
+//        switch filterResult {
+//            
+//        case let .success(rows):
+//            
+//            rows.forEach({
+//                let id = $0.get(DreamTable.Column.id)
+//                let title = $0.get(DreamTable.Column.title)
+//                let content = $0.get(DreamTable.Column.content)
+//                let createdDate = $0.get(DreamTable.Column.createdDate)
+//                let modifiedDate = $0.get(DreamTable.Column.modifiedDate)
+//                
+//                let dream = Dream(id: id, title: title, content: content, createdDate: createdDate, modifiedDate: modifiedDate)
+//                filteredDreams.append(dream)
+//            })
+//            
+//        case .failure(_):
+//            print("fail")
+//
+//        }
         
         filteredDreams = []
+        
+        let searchQuery: QueryType = Virtual.table.match(searchText + "*")
+    
+        let filterResult = dbManager.selectAll(query: searchQuery)
         
         switch filterResult {
             
         case let .success(rows):
             
             rows.forEach({
-                let id = $0.get(DreamTable.Column.id)
-                let title = $0.get(DreamTable.Column.title)
-                let content = $0.get(DreamTable.Column.content)
-                let createdDate = $0.get(DreamTable.Column.createdDate)
-                let modifiedDate = $0.get(DreamTable.Column.modifiedDate)
+
+                let id = $0.get(Virtual.Column.id)
+                let title = $0.get(Virtual.Column.title)
+                let content = $0.get(Virtual.Column.content)
+//                let createdDate = $0.get(DreamTable.Column.createdDate)
+//                let modifiedDate = $0.get(DreamTable.Column.modifiedDate)
                 
-                let dream = Dream(id: id, title: title, content: content, createdDate: createdDate, modifiedDate: modifiedDate)
+                let dream = Dream(title: title, content: content, createdDate: Date())
                 filteredDreams.append(dream)
+                
             })
             
         case .failure(_):
             print("fail")
-
+            
         }
+
     }
-    
+
     func minimumDate() -> Date? {
         
         do {
@@ -297,4 +374,9 @@ class DreamDataStore {
     func dropTable() {
         try? dbManager.db.run(DreamTable.table.drop())
     }
+    
+    func dropVitualTable() {
+        try? dbManager.db.run(Virtual.table.drop())
+    }
+    
 }
