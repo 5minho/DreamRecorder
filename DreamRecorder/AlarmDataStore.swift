@@ -36,9 +36,10 @@ extension Notification.Name {
     /// 해당 Notification의 userInfo는 추가/수정/삭제된 알람 인스턴스를 가지고 있다.
     /// userInfo에 포함된 알람 인스턴스는 AlarmNotificationUserInfoKey를 통해 접근이 가능하다.
     static let AlarmDataStoreDidChange = Notification.Name("AlarmDataStoreDidChange")
+    
 }
 
-class AlarmDataStore: NSObject {
+class AlarmDataStore {
     
     /// SQLite DB에 접근할 때 활용되는 알람 테이블의 테이블명과 Colume의 대한 정보를 가지고 있다.
     private struct AlarmTable {
@@ -53,11 +54,12 @@ class AlarmDataStore: NSObject {
             static let isActive = Expression<Bool>("isActive")
             static let isSnooze = Expression<Bool>("isSnooze")
         }
+        
     }
     
     // MARK: - Properties.
     // Singleton.
-    static let shared: AlarmDataStore = AlarmDataStore()
+    static var shared: AlarmDataStore = AlarmDataStore()
     
     // - Internal.
     var alarms: [Alarm] // Array that is loaded from database to memory and controller will access this array for view.
@@ -66,10 +68,9 @@ class AlarmDataStore: NSObject {
     private let manager: DBManagerable = DBManager.shared
     
     // MARK: - Initializer.
-    override init() {
-        self.alarms = []
+    private init() {
         
-        super.init()
+        self.alarms = []
         
         AlarmDataStore.migarationIfNeeded()
         self.alarms = self.selectAll()
@@ -81,6 +82,8 @@ class AlarmDataStore: NSObject {
                                                object: nil)
     }
     
+    
+    /// awake()가 호출되어 shared 변수에 싱글톤 DataStore객체가 할당된다.
     func awake() {}
     
     // MARK: - Handler.

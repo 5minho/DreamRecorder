@@ -60,18 +60,18 @@ class AlarmAddViewController: UIViewController {
         self.datePicker.addTarget(self, action: #selector(self.datePickerValueDidChange(sender:)), for: .valueChanged)
         self.tableView.tableHeaderView = self.datePicker
         
-        let leftBarButton = UIBarButtonItem(title: "Cancel".localized,
+        let leftBarButton = UIBarButtonItem(title: BarButtonText.cancel,
                                             style: .plain,
                                             target: self,
                                             action: #selector(self.leftBarButtonDidTap(sender:)))
-        let rightBarButton = UIBarButtonItem(title: "Save".localized,
+        let rightBarButton = UIBarButtonItem(title: BarButtonText.save,
                                              style: .done,
                                              target: self,
                                              action: #selector(self.rightBarButtonDidTap(sender:)))
         self.navigationItem.setLeftBarButton(leftBarButton, animated: true)
         self.navigationItem.setRightBarButton(rightBarButton, animated: true)
         
-        self.title = "Add Alarm".localized
+        self.title = NavigationTitle.addAlarm
     }
 }
 
@@ -131,7 +131,7 @@ extension AlarmAddViewController: UITableViewDataSource, UITableViewDelegate {
         switch cellStyle {
         case .label:
             
-            let alertController = UIAlertController(title: "Label".localized, message: nil, preferredStyle: .alert)
+            let alertController = UIAlertController(title: AlartText.alarmName, message: nil, preferredStyle: .alert)
             
             alertController.addTextField(configurationHandler: {
                 [unowned self] (textField) in
@@ -139,8 +139,8 @@ extension AlarmAddViewController: UITableViewDataSource, UITableViewDelegate {
                 textField.clearButtonMode = .always
             })
             
-            let cancelAction = UIAlertAction(title: "Cancel".localized, style: .cancel, handler: nil)
-            let doneAction = UIAlertAction(title: "Done".localized, style: .default, handler: {
+            let cancelAction = UIAlertAction(title: AlartText.cancel, style: .cancel, handler: nil)
+            let doneAction = UIAlertAction(title: AlartText.done, style: .default, handler: {
                 [unowned self, unowned tableView] (action) in
                 
                 guard let text = alertController.textFields?.first?.text else { return }

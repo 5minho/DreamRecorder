@@ -42,10 +42,10 @@ class Alarm: NSObject, NSCopying {
     var isSnooze: Bool
     
     init(id : String = UUID().uuidString,
-         name: String = "Alarm",
+         name: String = DefaultLableText.defaultAlarmName,
          date: Date = Date(),
          weekday: WeekdayOptions = .none,
-         sound: String = "Default.wav",
+         sound: String = SoundFileName.defaultSound,
          isActive: Bool = true,
          isSnooze: Bool = true) {
         

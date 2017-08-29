@@ -89,7 +89,7 @@ class AlarmEditViewController: UIViewController {
         self.navigationItem.setLeftBarButton(leftBarButton, animated: true)
         self.navigationItem.setRightBarButton(rightBarButton, animated: true)
         
-        self.title = "Edit Alarm".localized
+        self.title = NavigationTitle.editAlarm
     }
 }
 
@@ -148,15 +148,15 @@ extension AlarmEditViewController: UITableViewDataSource, UITableViewDelegate {
         switch cellStyle {
         case .label:
             
-            let alertController = UIAlertController(title: "Alarm Label".localized, message: nil, preferredStyle: .alert)
+            let alertController = UIAlertController(title: AlartText.alarmName, message: nil, preferredStyle: .alert)
             alertController.addTextField(configurationHandler: {
                 [unowned self] (textField) in
                 textField.text = self.editingAlarm?.name
                 textField.clearButtonMode = .always
             })
             
-            let cancelAction = UIAlertAction(title: "Cancel".localized, style: .cancel, handler: nil)
-            let doneAction = UIAlertAction(title: "Done".localized, style: .default, handler: {
+            let cancelAction = UIAlertAction(title: AlartText.cancel, style: .cancel, handler: nil)
+            let doneAction = UIAlertAction(title: AlartText.done.localized, style: .default, handler: {
                 [unowned self, unowned tableView] (action) in
                 
                 guard let text = alertController.textFields?.first?.text else { return }
