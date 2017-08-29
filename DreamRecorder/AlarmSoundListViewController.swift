@@ -26,7 +26,7 @@ class AlarmSoundListViewController: UIViewController {
     // Private.
     fileprivate let soundNames: [String] = ["Default.wav", "Alarm-tone.wav", "Old-alarm-clock-ringing.wav", "Carefree_Melody.mp3"]
     
-    // MARK: - - View Cycle.
+    // MARK: - View Cycle.
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -94,7 +94,7 @@ extension AlarmSoundListViewController: UITableViewDataSource, UITableViewDelega
         tableView.deselectRow(at: indexPath, animated: true)
         
         if indexPath.section == 0 {
-            // Bundle Sound Files.
+            /// Bundle Sound Files.
             for cell in tableView.visibleCells {
                 cell.accessoryType = .none
             }
@@ -109,7 +109,7 @@ extension AlarmSoundListViewController: UITableViewDataSource, UITableViewDelega
             self.navigationController?.popViewController(animated: true)
             
         } else {
-            // Select Media Library Music Files.
+            /// Select Media Library Music Files.
             let mediaPickerController = MPMediaPickerController(mediaTypes: .any)
             mediaPickerController.allowsPickingMultipleItems = false
             mediaPickerController.showsCloudItems = false

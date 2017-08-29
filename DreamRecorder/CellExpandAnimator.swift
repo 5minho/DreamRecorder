@@ -49,7 +49,8 @@ class CellExpandAnimator: NSObject, UIViewControllerAnimatedTransitioning {
     weak var presentedDelegate: CellExpandAnimatorPresentedDelegate?
     
     // - Private.
-    private let type: CellExpandAnimatorType    // Aniamtor의 역할. 이니셜라이저 단계에서 초기화 된다.
+    /// Aniamtor의 역할. 이니셜라이저 단계에서 초기화 된다.
+    private let type: CellExpandAnimatorType
     
     // MARK: - Initializer.
     init(type: CellExpandAnimatorType) {
@@ -85,9 +86,9 @@ class CellExpandAnimator: NSObject, UIViewControllerAnimatedTransitioning {
         guard let fromViewInitialFrame = fromView.superview?.convert(fromView.frame, to: toViewController.view) else { return transitionContext.completeTransition(true) }
         guard let fromLabelInitialFrame = fromLabel.superview?.convert(fromLabel.frame, to: toViewController.view) else { return transitionContext.completeTransition(true) }
         
-        // 트랜지션 애니메이션을 위해 Interactive뷰와 Interactive레이블을 생성한다.
-        // Cell안의 textLabel을 표현할 레이블.
-        // UILabel을 복사함으로서 기존의 Label에 영향을 끼치지 않도록 한다.
+        /// 트랜지션 애니메이션을 위해 Interactive뷰와 Interactive레이블을 생성한다.
+        /// Cell안의 textLabel을 표현할 레이블.
+        /// UILabel을 복사함으로서 기존의 Label에 영향을 끼치지 않도록 한다.
         let interactiveLabel = UILabel(frame: .zero)
         interactiveLabel.text = fromLabel.text
         interactiveLabel.font = fromLabel.font
@@ -95,12 +96,12 @@ class CellExpandAnimator: NSObject, UIViewControllerAnimatedTransitioning {
         interactiveLabel.textAlignment = fromLabel.textAlignment
         interactiveLabel.translatesAutoresizingMaskIntoConstraints = false
         
-        // Cell을 표현할 InteractiveView와, Label을 표현할 InteractiveLabel 를 포함하는 backgroundView를 만든다.
-        // InteractiveView가 변함에 따라 InteractiveLabel의 위치에 영향을 끼치지 않게하기 위해서이다.
+        /// Cell을 표현할 InteractiveView와, Label을 표현할 InteractiveLabel 를 포함하는 backgroundView를 만든다.
+        /// InteractiveView가 변함에 따라 InteractiveLabel의 위치에 영향을 끼치지 않게하기 위해서이다.
         let backgroundView = UIView(frame: UIScreen.main.bounds)
         backgroundView.backgroundColor = UIColor.clear
         
-        // Cell의 전환효과를 표현할 뷰.
+        /// Cell의 전환효과를 표현할 뷰.
         let interactiveView = UIView(frame: fromViewInitialFrame)
         interactiveView.backgroundColor = fromView.backgroundColor
         interactiveView.layer.borderColor = UIColor.dreamBorderColor.cgColor
@@ -111,10 +112,10 @@ class CellExpandAnimator: NSObject, UIViewControllerAnimatedTransitioning {
         backgroundView.addSubview(interactiveLabel)
         interactiveLabel.frame = fromLabelInitialFrame
         
-        // 오토레이아웃에 대응 하기 위해 Constraints가 가지고 있는 constant의 변화를 통해 애니메이션을 구현해야한다.
-        // Top과 Left기준으로 할 경우에는 해당 레이블의 크기가 달라질 경우에는 적절한 위치로 애니메이션이 이루이지 않는다.
-        // 따라서 Label안에 Text의 위치는 Label에 센터에 위치하므로 CenterY를 기준으로 한다.
-        // 또한 AutoLayout의 경우 Text의 가로 크기는 무조건 Fit하게 설정 되므로 CenterX를 기준으로 해도 문제가 되지 않는다.
+        /// 오토레이아웃에 대응 하기 위해 Constraints가 가지고 있는 constant의 변화를 통해 애니메이션을 구현해야한다.
+        /// Top과 Left기준으로 할 경우에는 해당 레이블의 크기가 달라질 경우에는 적절한 위치로 애니메이션이 이루이지 않는다.
+        /// 따라서 Label안에 Text의 위치는 Label에 센터에 위치하므로 CenterY를 기준으로 한다.
+        /// 또한 AutoLayout의 경우 Text의 가로 크기는 무조건 Fit하게 설정 되므로 CenterX를 기준으로 해도 문제가 되지 않는다.
         let centerXConstraint = interactiveLabel.centerXAnchor.constraint(equalTo: backgroundView.leadingAnchor, constant: fromLabelInitialFrame.origin.x + fromLabelInitialFrame.width / 2)
         let centerYConstraint = interactiveLabel.centerYAnchor.constraint(equalTo: backgroundView.topAnchor, constant: fromLabelInitialFrame.origin.y + fromLabelInitialFrame.height / 2)
         
@@ -123,6 +124,7 @@ class CellExpandAnimator: NSObject, UIViewControllerAnimatedTransitioning {
         
         let transitionDuration = self.transitionDuration(using: transitionContext)
         
+        /// present화면 전환.
         if self.type == .present {
             
             transitionContext.containerView.addSubview(fromViewController.view)
@@ -145,6 +147,7 @@ class CellExpandAnimator: NSObject, UIViewControllerAnimatedTransitioning {
                 toViewController.view.isHidden = false
                 
             }
+        /// dismiss화면 전환.
         } else {
             
             if let toViewFinalFrame = toView.superview?.convert(toView.frame, to: toViewController.view),

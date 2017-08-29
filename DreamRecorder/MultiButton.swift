@@ -150,7 +150,6 @@ class MultiButton: UIStackView {
     
     func setButtonsEnabled(to: Bool) {
         self.canSelectButton = to
-//        self.isAccessibilityElement = to
         for button in self.buttons {
             button.isAccessibilityElement = to
         }
