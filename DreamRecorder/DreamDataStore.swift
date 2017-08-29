@@ -9,23 +9,21 @@
 import Foundation
 import SQLite
 
+extension Notification.Name {
+
+    /// DraemDataStore -> DreamListViewController(UI).
+    static let DreamDataStoreDidAddDream = Notification.Name("DreamDataStoreDidAddDream")
+    static let DreamDataStoreDidDeleteDream = Notification.Name("DreamDataStoreDidDeleteDream")
+    static let DreamDataStoreDidUpdateDream = Notification.Name("DreamDataStoreDidUpdateDream")
+}
+
 class DreamDataStore {
     
     static let shared : DreamDataStore = DreamDataStore()
     
-    static let startYearToSave = 1970
-    
     private init() {}
     
-    struct NotificationName {
-        
-        static let didDeleteDream = Notification.Name("didDeleteDream")
-        static let didAddDream = Notification.Name("didAddDream")
-        static let didUpdateDream = Notification.Name("didUpdateDream")
-        
-    }
-    
-    private var cacheManager = DreamCacheManager()
+//    private var cacheManager = DreamCacheManager()
     
     var dreams : [Dream] = []
     var filteredDreams : [Dream] = []
@@ -162,7 +160,7 @@ class DreamDataStore {
         case let .success(row):
             dream.id = Int64(row)
             self.dreams.insert(dream, at: 0)
-            //NotificationCenter.default.post(name: NotificationName.didAddDream, object: nil)
+            NotificationCenter.default.post(name: .DreamDataStoreDidAddDream, object: nil)
             
         case .failure(_):
             print("default")
@@ -191,7 +189,7 @@ class DreamDataStore {
             if let idx = self.dreams.index(of: dream) {
                 dreams[idx] = dream
             }
-            //NotificationCenter.default.post(name: NotificationName.didUpdateDream, object: nil)
+            NotificationCenter.default.post(name: .DreamDataStoreDidUpdateDream, object: nil)
             print("Success: update row \(dream.id)")
         case let .failure(error):
             print("error: \(error)")
@@ -223,7 +221,7 @@ class DreamDataStore {
                 self.filteredDreams.remove(at: deletedIdx)
             }
             
-            //NotificationCenter.default.post(name: NotificationName.didDeleteDream, object: nil, userInfo : userInfo)
+            NotificationCenter.default.post(name: .DreamDataStoreDidDeleteDream, object: nil, userInfo : userInfo)
             
         case let .failure(error):
             print("error: \(error)")
