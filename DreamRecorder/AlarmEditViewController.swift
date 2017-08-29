@@ -77,14 +77,15 @@ class AlarmEditViewController: UIViewController {
                                   for: .valueChanged)
         self.tableView.tableHeaderView = self.datePicker
         
-        let leftBarButton = UIBarButtonItem(title: "Cancel".localized,
+        let leftBarButton = UIBarButtonItem(title: BarButtonText.cancel,
                                             style: .plain,
                                             target: self,
                                             action: #selector(self.leftBarButtonDidTap(sender:)))
-        let rightBarButton = UIBarButtonItem(title: "Save".localized,
+        let rightBarButton = UIBarButtonItem(title: BarButtonText.save,
                                              style: .done,
                                              target: self,
                                              action: #selector(self.rightBarButtonDidTap(sender:)))
+        
         self.navigationItem.setLeftBarButton(leftBarButton, animated: true)
         self.navigationItem.setRightBarButton(rightBarButton, animated: true)
         

@@ -24,7 +24,10 @@ class AlarmSoundListViewController: UIViewController {
     weak var delegate: AlarmSoundListViewControllerDelegate?
     
     // Private.
-    fileprivate let soundNames: [String] = ["Default.wav", "Alarm-tone.wav", "Old-alarm-clock-ringing.wav", "Carefree_Melody.mp3"]
+    fileprivate let soundNames: [String] = [SoundFileName.defaultSound,
+                                            SoundFileName.alarmTone,
+                                            SoundFileName.oldAlarm,
+                                            SoundFileName.carefreeMelody]
     
     // MARK: - View Cycle.
     override func viewDidLoad() {
@@ -36,7 +39,7 @@ class AlarmSoundListViewController: UIViewController {
         self.tableView.dataSource = self
         self.tableView.estimatedRowHeight = 44
         
-        self.title = "Sound".localized
+        self.title = NavigationTitle.sound
     }
 }
 
@@ -71,7 +74,7 @@ extension AlarmSoundListViewController: UITableViewDataSource, UITableViewDelega
             
         } else {
             
-            cell.textLabel?.text = "Pick a song".localized
+            cell.textLabel?.text = GuideText.pickSong
             cell.textLabel?.textColor = UIColor.dreamTextColor3
             cell.detailTextLabel?.textColor = UIColor.dreamTextColor1
             

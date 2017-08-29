@@ -80,7 +80,7 @@ extension Date {
         // MARK: - Properties.
         // - Private.
         private let date: Date
-        private var snoozeTime: TimeInterval = 9.0
+        private var snoozeTime: TimeInterval = 9.0 * 60
         
         // MARK: - Initializer.
         init(with date: Date) {
@@ -124,10 +124,10 @@ extension Date {
 
 extension UIAlertController {
     
-    static func simpleAlert(title: String, message : String? = nil) -> UIAlertController {
+    static func simpleAlert(title: String, message : String? = nil, actionCompletion : ((UIAlertAction) -> Void)? = nil) -> UIAlertController {
         
         let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
-        let action = UIAlertAction(title: "확인".localized, style: .default, handler: nil)
+        let action = UIAlertAction(title: "확인".localized, style: .default, handler: actionCompletion)
         alertController.addAction(action)
         
         return alertController

@@ -56,17 +56,19 @@ class AlarmListViewController: UIViewController {
         self.tableView.estimatedRowHeight = 90
         self.tableView.allowsSelectionDuringEditing = true
         
-        let leftBarButton = UIBarButtonItem(title: "Edit".localized,
+        let leftBarButton = UIBarButtonItem(title: BarButtonText.edit,
                                             style: .plain,
                                             target: self,
                                             action: #selector(self.leftBarButtonDidTap(sender:)))
+        
         let rightBarButton = UIBarButtonItem(barButtonSystemItem: .add,
                                              target: self,
                                              action: #selector(self.rightBarButtonDidTap(sender:)))
+        
         self.navigationItem.setLeftBarButton(leftBarButton, animated: true)
         self.navigationItem.setRightBarButton(rightBarButton, animated: true)
         
-        self.title = "Alarm".localized
+        self.title = NavigationTitle.alarm
         
         self.registerForPreviewing(with: self, sourceView: self.view)
         
@@ -184,20 +186,9 @@ extension AlarmListViewController: UITableViewDelegate, UITableViewDataSource {
             let selectedAlarm = self.store.alarms[indexPath.row]
             
             if selectedAlarm.isActive == false {
-                
-                let alertController = UIAlertController(title: "Alarm".localized,
-                                                        message: "This alarm is not active.".localized,
-                                                        preferredStyle: .alert)
-                
-                let okAction = UIAlertAction(title: "OK".localized,
-                                             style: .default)
-                {
-                    (action) in
-                    alertController.dismiss(animated: true, completion: nil)
-                }
-                
-                alertController.addAction(okAction)
-                
+
+                let alertController = UIAlertController.simpleAlert(title: AlartText.alarm, message: AlartText.alarmNotActive)
+
                 self.present(alertController, animated: true, completion: nil)
                 
             } else {
@@ -270,11 +261,11 @@ extension AlarmListViewController: AlarmAddViewControllerDelegate, AlarmEditView
         
         if alarm.isActive == false {
             
-            let alertController = UIAlertController(title: "Alarm".localized,
-                                                    message: "Do you want to activate this alarm?".localized,
+            let alertController = UIAlertController(title: AlartText.alarmNotActive,
+                                                    message: AlartText.questionToActiveAlarm,
                                                     preferredStyle: .alert)
             
-            let okAction = UIAlertAction(title: "OK".localized,
+            let okAction = UIAlertAction(title: AlartText.ok,
                                          style: .default)
             { (action) in
                 
@@ -289,7 +280,7 @@ extension AlarmListViewController: AlarmAddViewControllerDelegate, AlarmEditView
                 self.tableView.reloadRows(at: [editedIndexPath], with: .automatic)
             }
             
-            let cancelAction = UIAlertAction(title: "Cancel".localized,
+            let cancelAction = UIAlertAction(title: AlartText.cancel,
                                              style: .cancel)
             { (action) in
                 

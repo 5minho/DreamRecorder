@@ -81,14 +81,14 @@ class SpeechDreamViewController : UIViewController {
         finishTimer()
         inActivateRecognizer()
         
-        let alert = UIAlertController(title: "제목".localized, message: "제목을 입력해주세요".localized, preferredStyle: .alert)
+        let alert = UIAlertController(title: AlartText.dreamTitle, message: AlartText.enterInputTitle, preferredStyle: .alert)
         
         alert.addTextField { textField in
-            textField.placeholder = "제목 입력".localized
+            textField.placeholder = AlartText.enterInputTitle
             textField.clearButtonMode = .whileEditing
         }
         
-        let saveAction = UIAlertAction(title: "Save".localized, style: .default) { action in
+        let saveAction = UIAlertAction(title: AlartText.save, style: .default) { action in
             
             var title = ""
             if let inputTitle = alert.textFields?.first?.text {
@@ -96,7 +96,7 @@ class SpeechDreamViewController : UIViewController {
             }
             
             if title.isEmpty {
-                title = "제목 없음".localized
+                title = AlartText.noTitle
             }
             
             let newDream = Dream(title: title,
@@ -105,11 +105,12 @@ class SpeechDreamViewController : UIViewController {
                                  modifiedDate: nil)
             
             DreamDataStore.shared.insert(dream: newDream)
+            
             self.presentingViewController?.dismiss(animated: true, completion: nil)
             
         }
         
-        let cancelAction = UIAlertAction(title: "Cancel".localized, style: .cancel)
+        let cancelAction = UIAlertAction(title: AlartText.cancel, style: .cancel)
         
         alert.addAction(saveAction)
         alert.addAction(cancelAction)
@@ -182,11 +183,12 @@ class SpeechDreamViewController : UIViewController {
             
         }
         
-        self.leftTime -= 1
         
-        self.leftTimeLabel.text = "\(self.leftTime)초 후에 마이크가 꺼집니다."
+        self.leftTime -= 1
+        self.leftTimeLabel.text = GuideText.endRecording(leftTime: self.leftTime)
     
     }
+    
     
     private func activateRecognizer() {
         
@@ -307,7 +309,7 @@ extension SpeechDreamViewController : NSKRecognizerDelegate {
         
         guard let error = aError as? NMSpeechRecognizerError else {
             
-            present(UIAlertController.simpleAlert(title: "오류 발생".localized), animated: false, completion: nil)
+            present(UIAlertController.simpleAlert(title: AlartText.occurError), animated: false, completion: nil)
             return
             
         }

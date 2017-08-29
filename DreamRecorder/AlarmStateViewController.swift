@@ -50,7 +50,7 @@ class AlarmStateViewController: UIViewController {
         self.hintLabel.textColor = UIColor.dreamTextColor2
         
         if UIAccessibilityIsVoiceOverRunning() {
-            let customAction = UIAccessibilityCustomAction(name: "Swipe up or down to select custom action.",
+            let customAction = UIAccessibilityCustomAction(name: GuideText.swipeUpOrDown,
                                                            target: self,
                                                            selector: #selector(self.dissmissByTap))
             self.hintLabel.accessibilityCustomActions = [customAction]
@@ -174,15 +174,15 @@ extension AlarmStateViewController {
         guard let currentAlarm = self.currentAlarm else { return [] }
         /// Pick된 알람이 활성화 되어있으면 삭제 액션만 등록하고, 만약 비활성화된 알람일 경우 활성화모드까지 축하해준다.
         if currentAlarm.isActive {
-            let deletePreviewAction = UIPreviewAction(title: "Delete".localized, style: .destructive) { (previewAction, viewController) in
+            let deletePreviewAction = UIPreviewAction(title: PreviewText.delete, style: .destructive) { (previewAction, viewController) in
                 self.delegate?.alarmStateViewController(self, didDeletePrewviewAction: currentAlarm)
             }
             return [deletePreviewAction]
         } else {
-            let activatePreviewAction = UIPreviewAction(title: "Activate".localized, style: .default) { (previewAction, viewController) in
+            let activatePreviewAction = UIPreviewAction(title: PreviewText.activate, style: .default) { (previewAction, viewController) in
                 self.delegate?.alarmStateViewController(self, didActivePrewviewAction: currentAlarm)
             }
-            let deletePreviewAction = UIPreviewAction(title: "Delete".localized, style: .destructive) { (previewAction, viewController) in
+            let deletePreviewAction = UIPreviewAction(title: PreviewText.delete, style: .destructive) { (previewAction, viewController) in
                 self.delegate?.alarmStateViewController(self, didDeletePrewviewAction: currentAlarm)
             }
             return [activatePreviewAction, deletePreviewAction]
