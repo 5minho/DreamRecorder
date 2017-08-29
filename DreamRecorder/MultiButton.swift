@@ -90,6 +90,7 @@ class MultiButton: UIStackView {
             newButton.tag = index
             newButton.addTarget(self, action: #selector(self.buttonDidTouchUpInside(sender:)), for: .touchUpInside)
             newButton.titleLabel?.adjustsFontSizeToFitWidth = true
+            newButton.titleLabel?.textAlignment = .center
             
             self.buttons.append(newButton)
             self.addArrangedSubview(newButton)
@@ -122,16 +123,16 @@ class MultiButton: UIStackView {
         }
     }
     
-    override func draw(_ rect: CGRect) {
-        super.draw(rect)
+    override func layoutSubviews() {
+        super.layoutSubviews()
         
         var shouldVeryShort = false
         
-        for (index, button) in self.buttons.enumerated() {
-            guard let titleString = button.titleLabel?.text as? NSString,
+        for button in self.buttons {
+            guard let titleString = button.titleLabel?.text as NSString?,
                 let titleLabel = button.titleLabel
-            else {
-                continue
+                else {
+                    continue
             }
             
             let size = titleString.size(attributes: [NSFontAttributeName: titleLabel.font])
@@ -145,12 +146,10 @@ class MultiButton: UIStackView {
                 button.titleLabel?.text = Calendar.current.veryShortWeekdaySymbols[index]
             }
         }
-        
     }
     
     func setButtonsEnabled(to: Bool) {
         self.canSelectButton = to
-//        self.isAccessibilityElement = to
         for button in self.buttons {
             button.isAccessibilityElement = to
         }
