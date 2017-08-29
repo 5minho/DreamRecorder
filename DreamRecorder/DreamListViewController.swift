@@ -20,6 +20,10 @@ class DreamListViewController : UIViewController {
     fileprivate let serialDispatchQueue = DispatchQueue(label: "filtering")
     fileprivate var pendingFilterWorkItem: DispatchWorkItem?
     
+    fileprivate var selectedCell: DreamListCell?
+    fileprivate var selectedCellLabel: UILabel?
+    
+    
     var currentDatePeriod : (from: Date, to: Date) = {
         
         guard let from = DateParser().firstDayOfMonth(date: Date()) else {
@@ -42,6 +46,8 @@ class DreamListViewController : UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        self.registerForPreviewing(with: self, sourceView: self.view)
+        
         self.tableView.delegate = self
         self.tableView.dataSource = self
         
@@ -55,6 +61,7 @@ class DreamListViewController : UIViewController {
         self.addObserver()
         self.setSearchViewController()
         self.applyThemeIfViewDidLoad()
+        
     }
     
     
@@ -75,9 +82,7 @@ class DreamListViewController : UIViewController {
     }
     
     deinit {
-        
         NotificationCenter.default.removeObserver(self)
-        
     }
 
     @IBAction func addDream(_ sender: UIBarButtonItem) {
@@ -90,14 +95,14 @@ class DreamListViewController : UIViewController {
     
     private func addObserver() {
         
-        NotificationCenter.default.addObserver(forName: Notification.Name.DreamRecorderFontDidChange,
+        NotificationCenter.default.addObserver(forName: .DreamRecorderFontDidChange,
                                                object: nil,
                                                queue: .main) { _ in
             self.tableView.reloadData()
         }
         
         
-        NotificationCenter.default.addObserver(forName: DreamDataStore.NotificationName.didDeleteDream, object: nil, queue: .main) {
+        NotificationCenter.default.addObserver(forName: .DreamDataStoreDidDeleteDream, object: nil, queue: .main) {
             [unowned self] notification in
             
             if self.isFiltering() {
@@ -116,16 +121,18 @@ class DreamListViewController : UIViewController {
             
         }
         
-        NotificationCenter.default.addObserver(forName: DreamDataStore.NotificationName.didAddDream, object: nil, queue: .main) {
+        NotificationCenter.default.addObserver(forName: .DreamDataStoreDidAddDream, object: nil, queue: .main) {
             [unowned self] notification in
             
             self.tableView.insertRows(at: [IndexPath(row: 0, section: 0)], with: .automatic)
+            
             if let firstDayOfMonth = self.dateParser.firstDayOfMonth(date: Date()) {
                 self.currentDatePeriod = (firstDayOfMonth, Date())
             }
         }
         
-        NotificationCenter.default.addObserver(forName: DreamDataStore.NotificationName.didUpdateDream, object: nil, queue: .main) { [unowned self] notificataion in
+        NotificationCenter.default.addObserver(forName: .DreamDataStoreDidUpdateDream, object: nil, queue: .main) {
+            [unowned self] notificataion in
         
             self.tableView.reloadData()
         
@@ -139,6 +146,9 @@ class DreamListViewController : UIViewController {
         searchController?.searchResultsUpdater = self
         searchController?.dimsBackgroundDuringPresentation = false
         searchController?.searchBar.placeholder = "꿈 제목, 꿈 내용 검색".localized
+        
+        searchController.registerForPreviewing(with: self, sourceView: self.view)
+        
         definesPresentationContext = true
         self.searchController.searchBar.delegate = self
         
@@ -154,7 +164,14 @@ class DreamListViewController : UIViewController {
             
             datePickerConroller.selectedPeriod = self.currentDatePeriod
             datePickerConroller.modalPresentationStyle = .overCurrentContext
-            present(datePickerConroller, animated: true, completion: nil)
+            
+            present(datePickerConroller, animated: true) {
+                
+                self.navigationItem.leftBarButtonItem?.isEnabled = false
+                sender.isEnabled = false
+                self.navigationItem.rightBarButtonItem?.isEnabled = false
+                
+            }
             
         }
     }
@@ -317,6 +334,70 @@ extension DreamListViewController : UITableViewDelegate, UITableViewDataSource, 
     
 }
 
+extension DreamListViewController: DetailDreamViewControllerDelegate {
+    
+    func detailDreamViewController(_ controller: DetailDreamViewController, didActivePrewviewAction dream: Dream) {
+        
+    }
+    
+    func detailDreamViewController(_ controller: DetailDreamViewController, didDeletePrewviewAction dream: Dream) {
+        
+    }
+
+    
+}
+
+extension DreamListViewController: UIViewControllerPreviewingDelegate {
+    
+    
+    // MARK: - UIViewControllerPreviewingDelegate.
+    func previewingContext(_ previewingContext: UIViewControllerPreviewing, commit viewControllerToCommit: UIViewController) {
+        
+        viewControllerToCommit.view.backgroundColor = UIColor.dreamBackgroundColor
+        
+        self.navigationController?.pushViewController(viewControllerToCommit, animated: true)
+        
+//        guard let detailDreamViewController = viewControllerToCommit as? DetailDreamViewController else { return }
+//        guard let isActiveAlarm = alarmStateViewController.currentAlarm?.isActive else { return }
+//        
+//        if isActiveAlarm {
+//            alarmStateViewController.view.backgroundColr = UIColor.dreamBackgroundColor
+//            self.present(alarmStateViewController, animated: true, completion: nil)
+//        }
+        
+    }
+    
+    func previewingContext(_ previewingContext: UIViewControllerPreviewing, viewControllerForLocation location: CGPoint) -> UIViewController? {
+        
+        let positionInView = self.view.convert(location, to: self.tableView)
+        
+        if let indexPath = self.tableView.indexPathForRow(at: positionInView) {
+            
+            let pickedDream = self.isFiltering() ? DreamDataStore.shared.filteredDreams[indexPath.row]: DreamDataStore.shared.dreams[indexPath.row]
+            
+            let cellRect = self.tableView.rectForRow(at: indexPath)
+            previewingContext.sourceRect = cellRect
+            
+            guard let detailDreamViewController = DetailDreamViewController.storyboardInstance() else { return nil }
+            
+            detailDreamViewController.delegate = self
+//            detailDreamViewController.presentingDelegate = self
+            detailDreamViewController.dream = pickedDream
+            
+            detailDreamViewController.view.backgroundColor = UIColor.white.withAlphaComponent(0.3)
+            
+            self.selectedCell = self.tableView.cellForRow(at: indexPath) as? DreamListCell
+            self.selectedCellLabel = self.selectedCell?.dreamTitleLabel
+            
+            return detailDreamViewController
+            
+        } else {
+            return nil
+        }
+    }
+    
+}
+
 extension DreamListViewController : ThemeAppliable {
     
     var themeStyle: ThemeStyle {
@@ -331,3 +412,5 @@ extension DreamListViewController : ThemeAppliable {
     }
     
 }
+
+

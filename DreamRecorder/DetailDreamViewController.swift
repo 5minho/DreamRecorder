@@ -8,6 +8,13 @@
 
 import UIKit
 
+protocol DetailDreamViewControllerDelegate: NSObjectProtocol {
+    
+    func detailDreamViewController(_ controller: DetailDreamViewController, didActivePrewviewAction dream: Dream)
+    func detailDreamViewController(_ controller: DetailDreamViewController, didDeletePrewviewAction dream: Dream)
+    
+}
+
 class DetailDreamViewController : UIViewController {
     
     static func storyboardInstance() -> DetailDreamViewController? {
@@ -42,6 +49,7 @@ class DetailDreamViewController : UIViewController {
     private var isFirstShown: Bool = true
     
     var dream : Dream?
+    weak var delegate: DetailDreamViewControllerDelegate?
     
     lazy var editButton : UIBarButtonItem  = {
         return UIBarButtonItem(barButtonSystemItem: .edit,
@@ -54,6 +62,7 @@ class DetailDreamViewController : UIViewController {
                                target: self,
                                action: #selector(touchUpDoneBarButtonItem(_:)))
     }()
+    
     
     
     override func viewDidLoad() {
