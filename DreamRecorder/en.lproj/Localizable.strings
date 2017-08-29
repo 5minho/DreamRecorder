@@ -19,6 +19,7 @@
 
 
 "Alarm" = "Alarm";
+"Edit" = "Edit";
 "Edit Alarm" = "Edit Alarm";
 "Add Alarm" = "Add Alarm";
 "Sound" = "Sound";
@@ -30,6 +31,7 @@
 "This alarm is not active." = "This alarm is not active";
 "Do you want to activate this alarm?" = "Do you want to activate this alarm?";
 "Unknown title" = "Unknown title";
+"Swipe To Dismiss" = "Swipe To Dismiss";
 
 "Once." = "Once.";
 "Repeat Weekday." = "Repeat Weekday.";
@@ -41,6 +43,7 @@
 "Setting" = "Setting";
 "Language" = "Language";
 "Font" = "Font";
+"Notification Privacy" = "Notification Privacy";
 
 // - QuickAction.
 "See next alarm state." = "See next alarm state.";
