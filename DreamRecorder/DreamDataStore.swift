@@ -36,7 +36,8 @@ class DreamDataStore {
     
     let dbManager = DBManager.shared
     
-    private struct DreamTable {
+    struct DreamTable {
+        
         static let table = Table("Dreams")
         
         struct Column {
@@ -106,18 +107,13 @@ class DreamDataStore {
                 let modifiedDate = $0.get(DreamTable.Column.modifiedDate)
                 
                 let dream = Dream(id: id,title: title, content: content, createdDate: createdDate, modifiedDate: modifiedDate)
-                
-                if dreams.index(of: dream) == nil {
-                    dreams.append(dream)
-                }
-                
+                dreams.append(dream)
             })
             
         case let .failure(error) :
             print(error)
         }
-       
-    }
+        }
     
     @discardableResult func selectAll() -> RowsResult {
         

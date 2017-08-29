@@ -38,6 +38,14 @@ class DatePickerViewController : UIViewController {
         
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        self.fromDatePicker.setDate(self.selectedPeriod.from, animated: false)
+        self.toDatePicker.setDate(self.selectedPeriod.to, animated: false)
+        
+    }
+    
     private func setDatePickers() {
         
         self.fromDatePicker.setValue(UIColor.dreamDarkPink, forKey: "textColor")
