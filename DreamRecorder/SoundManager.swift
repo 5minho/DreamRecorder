@@ -62,6 +62,7 @@ class SoundManager: NSObject {
                 /// 만약 Interruption이 끝나고 AVSession을 얻을 수 있는 상태가 되면 queuePlayer(Mute Sound)를 다시 재생한다.
                 if options.contains(.shouldResume) {
                     self.queuePlayer?.play()
+                    self.alarmPlayer?.play()
                 }
             }
         }
@@ -124,21 +125,33 @@ class SoundManager: NSObject {
             
             print("=========================")
             print("\(nextTriggerDate)")
-            print("\(Date().addingTimeInterval(2))")
+            print("\(Date().addingTimeInterval(3))")
             print("=========================")
             
             if nextTriggerDate.compare(Date().addingTimeInterval(3)) != .orderedDescending {
                 
                 self.changeSystemVolume(to: 1)
                 
+                do {
+                    let session = AVAudioSession.sharedInstance()
+                    try? session.setCategory(AVAudioSessionCategoryPlayAndRecord, with:AVAudioSessionCategoryOptions.defaultToSpeaker)
+                    try? session.setCategory(AVAudioSessionCategoryPlayAndRecord, with:AVAudioSessionCategoryOptions.mixWithOthers)
+                }
+                
                 guard let url = self.nextAlarm?.sound.soundURL else { return }
                 
                 if self.alarmPlayer == nil {
                     self.alarmPlayer = AVPlayer(url: url)
-                    self.alarmPlayer?.volume = 0.1
+                    
+                    // FIXME: 알람음을 점차적으로 크게 재생하려는데 소리가 반영이 적절하게 반영이 안되는 듯.
+                    // self.alarmPlayer?.volume = 0.1
+                    // self.fadeInAlarmPlayerSound()
+                    self.alarmPlayer?.volume = 1
+                    
                     self.alarmPlayer?.play()
-                    self.fadeInAlarmPlayerSound()
                     self.alarmPlayer?.actionAtItemEnd = .none
+                    /// 해당알림은 재생이 되었으므로 nil을 할당 해주어야 한다.
+                    self.nextTriggerDate = nil
                     
                     NotificationCenter.default.addObserver(forName: .AVPlayerItemDidPlayToEndTime,
                                                            object: self.alarmPlayer?.currentItem,
@@ -184,7 +197,8 @@ class SoundManager: NSObject {
         else {
             return
         }
-        self.alarmPlayer?.volume += 0.01
+
+        playingAlarmPlayer.volume += 0.01
         self.perform(#selector(self.fadeInAlarmPlayerSound), with: nil, afterDelay: 1)
     }
     
