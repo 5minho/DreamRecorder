@@ -43,6 +43,29 @@ class SoundManager: NSObject {
         
         self.setupQueuePlayerToPlayMuteSound()
         
+        NotificationCenter.default.addObserver(forName: Notification.Name.AVAudioSessionInterruption,
+                                               object: nil,
+                                               queue: .main)
+        { (notification) in
+            /// AlarmSound가 AVSession을 사용하는데 방해(전화, 화상통화 등등)를 받으면 불린다.
+            guard let userInfo = notification.userInfo,
+                let typeValue = userInfo[AVAudioSessionInterruptionTypeKey] as? UInt,
+                let interruptionType = AVAudioSessionInterruptionType(rawValue: typeValue) else {
+                    return
+            }
+            
+            if interruptionType == .began {
+                /// Nothing to do.
+            } else if interruptionType == .ended {
+                guard let optionsValue = userInfo[AVAudioSessionInterruptionOptionKey] as? UInt else { return }
+                let options = AVAudioSessionInterruptionOptions(rawValue: optionsValue)
+                /// 만약 Interruption이 끝나고 AVSession을 얻을 수 있는 상태가 되면 queuePlayer(Mute Sound)를 다시 재생한다.
+                if options.contains(.shouldResume) {
+                    self.queuePlayer?.play()
+                }
+            }
+        }
+        
         NotificationCenter.default.addObserver(forName: .AlarmSchedulerNextNotificationDateDidChange,
                                                object: nil,
                                                queue: .main)
