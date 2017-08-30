@@ -17,7 +17,7 @@ class SpeechDreamViewController : UIViewController {
     @IBOutlet weak var recordButton: RecordButton!
     @IBOutlet weak var leftTimeLabel: UILabel!
     
-    fileprivate let userLangauge = NSKRecognizerLanguageCode(rawValue : UserDefaults.standard.integer(forKey: "languege"))
+    fileprivate let userLangauge = NSKRecognizerLanguageCode(rawValue : UserDefaults.standard.integer(forKey: "language"))
     
     fileprivate var previousText : String = ""
     fileprivate var defaultText : String = ""
@@ -50,6 +50,7 @@ class SpeechDreamViewController : UIViewController {
         self.contentField.font = UIFont.body
         self.contentField.textColor = UIColor.dreamTextColor1
         self.recordButton.setTitleColor(UIColor.dreamTextColor1, for: .normal)
+    
     }
     
     let audioDispatch = DispatchQueue(label: DispatchQueueLabel.audioSerialQueue)
@@ -73,6 +74,7 @@ class SpeechDreamViewController : UIViewController {
         self.view.endEditing(true)
         self.inActivateRecognizer()
         
+//        try? AVAudioSession.sharedInstance().setActive(false, with: .notifyOthersOnDeactivation)
     }
 
     
@@ -183,7 +185,6 @@ class SpeechDreamViewController : UIViewController {
             
         }
         
-        
         self.leftTime -= 1
         self.leftTimeLabel.text = GuideText.endRecording(leftTime: self.leftTime)
     
@@ -225,9 +226,11 @@ class SpeechDreamViewController : UIViewController {
             
             let audioSession = AVAudioSession.sharedInstance()
             do {
-                try audioSession.setCategory(AVAudioSessionCategoryRecord)
+                
+                try audioSession.setCategory(AVAudioSessionCategoryPlayAndRecord, with: .mixWithOthers)
                 try audioSession.setMode(AVAudioSessionModeMeasurement)
-                try audioSession.setActive(true, with: .notifyOthersOnDeactivation)
+//                try audioSession.setActive(true, with: .notifyOthersOnDeactivation)
+                
             } catch {
                 print("audioSession properties weren't set because of an error.")
             }
@@ -307,9 +310,10 @@ extension SpeechDreamViewController : NSKRecognizerDelegate {
         finishTimer()
         recordButton.recordState = .idle
         
-        guard let error = aError as? NMSpeechRecognizerError else {
+        let nsError = aError as NSError
+        guard let error = NMSpeechRecognizerError(rawValue: nsError.code) else {
             
-            present(UIAlertController.simpleAlert(title: AlartText.occurError), animated: false, completion: nil)
+            present(UIAlertController.simpleAlert(title: "Error"), animated: false, completion: nil)
             return
             
         }
