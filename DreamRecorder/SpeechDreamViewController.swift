@@ -17,7 +17,7 @@ class SpeechDreamViewController : UIViewController {
     @IBOutlet weak var recordButton: RecordButton!
     @IBOutlet weak var leftTimeLabel: UILabel!
     
-    fileprivate let userLangauge = NSKRecognizerLanguageCode(rawValue : UserDefaults.standard.integer(forKey: "language"))
+    fileprivate let userLangauge = NSKRecognizerLanguageCode(rawValue : UserDefaults.standard.integer(forKey: Key.speechLangaugeKey))
     
     fileprivate var previousText : String = ""
     fileprivate var defaultText : String = ""
@@ -73,8 +73,7 @@ class SpeechDreamViewController : UIViewController {
         
         self.view.endEditing(true)
         self.inActivateRecognizer()
-        
-//        try? AVAudioSession.sharedInstance().setActive(false, with: .notifyOthersOnDeactivation)
+    
     }
 
     
@@ -141,7 +140,7 @@ class SpeechDreamViewController : UIViewController {
     
     private func openURLforMicroPhoneAccess(action : UIAlertAction) {
         
-        if let url = URL(string: "App-prefs:root=Privacy&path=MICROPHONE") {
+        if let url = URL(string: URLString.appPrivacyMicrophone) {
             UIApplication.shared.openURL(url)
         }
         
@@ -229,7 +228,6 @@ class SpeechDreamViewController : UIViewController {
                 
                 try audioSession.setCategory(AVAudioSessionCategoryPlayAndRecord, with: .mixWithOthers)
                 try audioSession.setMode(AVAudioSessionModeMeasurement)
-//                try audioSession.setActive(true, with: .notifyOthersOnDeactivation)
                 
             } catch {
                 print("audioSession properties weren't set because of an error.")

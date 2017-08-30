@@ -24,7 +24,7 @@ class SettingViewController: UIViewController {
         self.tableView.backgroundColor = UIColor.dreamBackgroundColor
         self.tableView.tableFooterView = UIView(frame: .zero)
         
-        self.title = "Setting".localized
+        self.title = NavigationTitle.setting
         
         /// 각 각의 설정페이지에서 설정 값이 바뀌었을 경우 Notification을 통해 UITableView를 리로드한다.
         NotificationCenter.default.addObserver(forName: .DreamRecorderFontDidChange,
@@ -59,6 +59,7 @@ extension SettingViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        
         if section == 0 {
             return 1
         } else if section == 1 {
@@ -66,11 +67,12 @@ extension SettingViewController: UITableViewDelegate, UITableViewDataSource {
         } else {
             return 0
         }
+        
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        let cell = tableView.dequeueReusableCell(withIdentifier: "UITableViewCell", for: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: Identifier.uitableViewCell, for: indexPath)
         
         /// 커스터마이징 셀.
         cell.detailTextLabel?.textColor = .dreamTextColor3
@@ -86,7 +88,7 @@ extension SettingViewController: UITableViewDelegate, UITableViewDataSource {
                 
                 /// 언어 설정 셀.
                 cell.textLabel?.text = "Language".localized
-                cell.detailTextLabel?.text = UserLangauge.names[UserDefaults.standard.integer(forKey: "language")]
+                cell.detailTextLabel?.text = UserLangauge.names[UserDefaults.standard.integer(forKey: Key.speechLangaugeKey)]
                 
                 let iconHeight = cell.frame.height - 32
                 let iconSize = CGSize(width: iconHeight, height: iconHeight)

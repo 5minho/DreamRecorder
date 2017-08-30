@@ -324,10 +324,10 @@ class DreamDataStore {
                 let id = $0.get(Virtual.Column.id)
                 let title = $0.get(Virtual.Column.title)
                 let content = $0.get(Virtual.Column.content)
-//                let createdDate = $0.get(DreamTable.Column.createdDate)
+                let createdDate = $0.get(DreamTable.Column.createdDate)
 //                let modifiedDate = $0.get(DreamTable.Column.modifiedDate)
                 
-                let dream = Dream(title: title, content: content, createdDate: Date())
+                let dream = Dream(id: id, title: title, content: content, createdDate: createdDate)
                 filteredDreams.append(dream)
                 
             })
