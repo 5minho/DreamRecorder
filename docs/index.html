@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" xmlns="http://www.w3.org/1999/html">
 
 <head>
   <meta charset="utf-8">
@@ -374,10 +374,10 @@
                 <div class=“icon>
                   Mino & Bran
                 </div>
-                <h3>Protocol 활용</h3>
+                <h3>Protocol</h3>
                 <p>
                   프로토콜 기본 구현(Protocol + Extension)을 통해 코드 라인수를 줄이고 기능을 수행하기 위한 역할을 명시하기 위해 사용하였습니다.
-                  ThemeAppliable이란 프로토콜을 준수하면 UINavigationController와 해당 Controller의 View에 테마를 적용할 수 있습니다.
+                  <a href="https://github.com/minomi/DreamRecorder/blob/master/DreamRecorder/ThemeAppliable.swift">ThemeAppliable</a>이란 프로토콜을 준수하면 UINavigationController와 해당 Controller의 View에 테마를 적용할 수 있습니다.
                 </p>
               </div>
             </div>
@@ -386,8 +386,8 @@
                 <div class="icon">
                   Mino & Bran
                 </div>
-                <h3>Extension 활용</h3>
-                <p>Date, UIColor, UIFont 등 다양한 CocoaTouch 클래스들을 필요에 따라 Extension하여 사용하였습니다.</p>
+                <h3>Extension</h3>
+                <p><a href="https://github.com/minomi/DreamRecorder/blob/master/DreamRecorder/CocoaTouchExtension.swift"> Date, UIColor, UIFont 등 다양한 CocoaTouch 클래스들을 필요에 따라 Extension하여 사용하였습니다.</a></p>
               </div>
             </div>
             <div class="col-md-3 col-sm-6 wow fadeInUp" data-wow-duration="1000ms" data-wow-delay="800ms">
@@ -404,7 +404,7 @@
                 <div class="icon">
                   Mino
                 </div>
-                <h3>Dispatch 활용<a href="https://github.com/minomi/DreamRecorder/issues/61">#61</a></h3>
+                <h3>Dispatch <a href="https://github.com/minomi/DreamRecorder/issues/61">#61</a> <a href=https://github.com/minomi/DreamRecorder/issues/79>#79</a></h3>
                 <p>꿈 데이터의 검색연산은 Main Queue 가 아닌 다른 Queue 에서 실행이 되야 합니다. DreamRecorder 에서는 Dispatch Queue를 활용해서 검색 연산을 background에서 실행했고, 사용자가 입력한 검색 키워드를 추적하기 위해서도 Dispatch api를 활용했습니다. </p>
               </div>
             </div>
@@ -423,8 +423,8 @@
                 <div class="icon">
                   Mino
                 </div>
-                <h3>Performance<a href="https://github.com/minomi/DreamRecorder/issues/62">#61</a></h3>
-                <p> App의 Performance 와 memory 효율을 높히기 위해 많은 고민을 해봤습니다. 한번 화면에 보여진 꿈 데이터들이 다시 화면에 보여질때 DB Query를 최소화하기 위해 따로 cache 기능을 하는 클래스를 만들어 보았습니다. 그리고 꿈 검색시 Like Query 와 FTS (Full Text Search) 중 어떤것을 사용할 것인가에 대해 고만해봤습니다.</p>
+                <h3>Performance <a href=https://github.com/minomi/DreamRecorder/issues/76>#76</a> <a href="https://github.com/minomi/DreamRecorder/issues/62">#62</a></h3>
+                <p> App의 Performance 와 memory 효율을 높히기 위해 많은 고민을 해봤습니다. 프로젝트에 적용은 못했지만, 한번 화면에 보여진 꿈 데이터들이 다시 화면에 보여질때 DB Query를 최소화하기 위해 따로 cache 기능을 하는 클래스를 만들어 보았습니다. 그리고 꿈 검색시 Like Query 와 FTS (Full Text Search) 중 어떤것을 사용할 것인가에 대해 고만해봤습니다.</p>
               </div>
             </div>
 
