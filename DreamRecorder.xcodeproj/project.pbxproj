@@ -66,13 +66,13 @@
 		5A8830BF1F53BD0B00461AF6 /* Old-alarm-clock-ringing.wav in Resources */ = {isa = PBXBuildFile; fileRef = 5A8830B91F53BD0B00461AF6 /* Old-alarm-clock-ringing.wav */; };
 		5A8830C31F541A4E00461AF6 /* AlarmSchedulerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A8830C21F541A4E00461AF6 /* AlarmSchedulerTests.swift */; };
 		5A8830C51F541A6000461AF6 /* AlarmDataStoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A8830C41F541A6000461AF6 /* AlarmDataStoreTests.swift */; };
-		5A8830C71F541ADB00461AF6 /* AlarmUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A8830C61F541ADB00461AF6 /* AlarmUITests.swift */; };
 		5A9BEBD51F3AEA480054EA6D /* NaverSpeech.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5A9BEBD41F3AEA480054EA6D /* NaverSpeech.framework */; };
 		5A9BEBD61F3AEA480054EA6D /* NaverSpeech.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 5A9BEBD41F3AEA480054EA6D /* NaverSpeech.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		5A9CE3081F49A2A700F0E5C5 /* DreamCacheManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A9CE3071F49A2A700F0E5C5 /* DreamCacheManager.swift */; };
 		5AC1D8651F4957C0008BE17F /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 5AC1D8671F4957C0008BE17F /* Localizable.strings */; };
 		5ACA0DAC1F42DC3C00176147 /* RecordButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5ACA0DAB1F42DC3C00176147 /* RecordButton.swift */; };
 		5AD09F181F34686A007BCA09 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5AD09F161F34686A007BCA09 /* LaunchScreen.storyboard */; };
+		5ADA9BA91F554E12008577A3 /* FileName.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5ADA9BA81F554E12008577A3 /* FileName.swift */; };
 		F01F9B278627D96E045DE02E /* Pods_DreamRecorder.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D397857D16523815AF771D51 /* Pods_DreamRecorder.framework */; };
 /* End PBXBuildFile section */
 
@@ -160,7 +160,6 @@
 		5A8830B91F53BD0B00461AF6 /* Old-alarm-clock-ringing.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = "Old-alarm-clock-ringing.wav"; sourceTree = "<group>"; };
 		5A8830C21F541A4E00461AF6 /* AlarmSchedulerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AlarmSchedulerTests.swift; sourceTree = "<group>"; };
 		5A8830C41F541A6000461AF6 /* AlarmDataStoreTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AlarmDataStoreTests.swift; sourceTree = "<group>"; };
-		5A8830C61F541ADB00461AF6 /* AlarmUITests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AlarmUITests.swift; sourceTree = "<group>"; };
 		5A9BEBD41F3AEA480054EA6D /* NaverSpeech.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = NaverSpeech.framework; sourceTree = "<group>"; };
 		5A9CE3071F49A2A700F0E5C5 /* DreamCacheManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DreamCacheManager.swift; sourceTree = "<group>"; };
 		5AC1D8611F49578F008BE17F /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/LaunchScreen.strings; sourceTree = "<group>"; };
@@ -175,6 +174,7 @@
 		5AD09F191F34686A007BCA09 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		5AD8F7041F386198005311F8 /* DreamRecorderTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DreamRecorderTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		5AD8F7081F386198005311F8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		5ADA9BA81F554E12008577A3 /* FileName.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FileName.swift; sourceTree = "<group>"; };
 		71592AFC9695CAD77FC7E788 /* Pods-DreamRecorder.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DreamRecorder.release.xcconfig"; path = "Pods/Target Support Files/Pods-DreamRecorder/Pods-DreamRecorder.release.xcconfig"; sourceTree = "<group>"; };
 		C82E4CE7279A775BF2E77C04 /* Pods-DreamRecorder.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DreamRecorder.debug.xcconfig"; path = "Pods/Target Support Files/Pods-DreamRecorder/Pods-DreamRecorder.debug.xcconfig"; sourceTree = "<group>"; };
 		D397857D16523815AF771D51 /* Pods_DreamRecorder.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_DreamRecorder.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -267,6 +267,7 @@
 			children = (
 				5A78D8F21F42BDD900D1E679 /* AlarmDataStore.swift */,
 				5A78D90B1F42BDE400D1E679 /* DateParser.swift */,
+				5ADA9BA81F554E12008577A3 /* FileName.swift */,
 				5A78D90C1F42BDE400D1E679 /* DBManager.swift */,
 				5A8508981F45651900E2ED7F /* DreamColor.swift */,
 				5A8508991F45651900E2ED7F /* DreamFont.swift */,
@@ -340,7 +341,6 @@
 				5A8830C21F541A4E00461AF6 /* AlarmSchedulerTests.swift */,
 				5A8830C41F541A6000461AF6 /* AlarmDataStoreTests.swift */,
 				5A78ACC61F53118000B1091F /* AlarmSoundTests.swift */,
-				5A8830C61F541ADB00461AF6 /* AlarmUITests.swift */,
 				5A78ACC71F53118000B1091F /* DateParserTests.swift */,
 				5A78ACC91F53118000B1091F /* DreamDateStoreTests.swift */,
 				5A78ACCA1F53118000B1091F /* SafetyExtensionArrayTests.swift */,
@@ -567,6 +567,7 @@
 				5A78ACBC1F52FD3B00B1091F /* SettingViewController.swift in Sources */,
 				5A07FE331F43893200C65037 /* DreamDeletable.swift in Sources */,
 				5A78D8FC1F42BDD900D1E679 /* AddDreamNavigationController.swift in Sources */,
+				5ADA9BA91F554E12008577A3 /* FileName.swift in Sources */,
 				5A78D9011F42BDD900D1E679 /* AlarmDetailCell.swift in Sources */,
 				5A8508971F4521E300E2ED7F /* CellExpandAnimator.swift in Sources */,
 				5A78D9041F42BDD900D1E679 /* AlarmListCell.swift in Sources */,
@@ -607,7 +608,6 @@
 				5A8830C31F541A4E00461AF6 /* AlarmSchedulerTests.swift in Sources */,
 				5A78ACCE1F53118000B1091F /* DreamDateStoreTests.swift in Sources */,
 				5A78ACCF1F53118000B1091F /* SafetyExtensionArrayTests.swift in Sources */,
-				5A8830C71F541ADB00461AF6 /* AlarmUITests.swift in Sources */,
 				5A8830C51F541A6000461AF6 /* AlarmDataStoreTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
