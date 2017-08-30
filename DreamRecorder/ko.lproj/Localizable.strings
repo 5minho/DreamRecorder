@@ -1,0 +1,51 @@
+/* 
+  Localizable.strings
+  DreamRecorder
+
+  Created by 오민호 on 2017. 8. 20..
+  Copyright © 2017년 BoostCamp. All rights reserved.
+*/
+
+"Dream" = "Dream";
+"Dreams" = "꿈 리스트";
+"title" = "제목";
+"Date" = "날짜";
+"please enter a title" = "제목을 입력해주세요.";
+"Enter a title" = "제목 입력";
+"Save" = "저장";
+"No title" = "제목 없음";
+"Cancel" = "취소";
+"Recognize..." = "음성인식 중...";
+"end recognize" = "음성인식 완료";
+
+"Alarm" = "알람";
+"Edit" = "편집";
+"Edit Alarm" = "알람 변경";
+"Add Alarm" = "알람 추가";
+"Sound" = "소리";
+"Pick a song" = "노래 선택";
+"Repeat" = "반복";
+"Label" = "알람명";
+"Sound" = "알람음";
+"Snooze" = "다시 알림";
+"This alarm is not active." = "알람을 먼저 활성화 하십시오.";
+"Do you want to activate this alarm?" = "수정된 알람을 활성화 시키겠습니까?";
+"Unknown title" = "알수없는 제목";
+"Swipe To Dismiss" = "끌어서 닫기";
+
+"Once." = "한번만";
+"Repeat Weekday." = "평일 반복";
+"Repeat Weekend." = "주말 반복";
+"Repeat every day." = "매일 반복";
+"Repeat." = "반복 요일";
+
+// - Setting.
+"Setting" = "설정";
+"Language" = "언어";
+"Font" = "폰트";
+"Notification Privacy" = "알림 설정";
+
+// - QuickAction.
+"See next alarm state." = "다음 알람창 보기.";
+"Next Alarm" = "다음 알람";
+"Stop" = "멈춤";

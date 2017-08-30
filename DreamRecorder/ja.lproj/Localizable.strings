@@ -1,0 +1,51 @@
+/* 
+  Localizable.strings
+  DreamRecorder
+
+  Created by 오민호 on 2017. 8. 20..
+  Copyright © 2017년 BoostCamp. All rights reserved.
+*/
+
+"Dream" = "Dream";
+"Dreams" = "夢リスト";
+"title" = "タイトル";
+"please enter a title" = "タイトルを入力するよ";
+"Enter a title" = "タイトル入力";
+"Save" = "保存";
+"No title" = "タイトルなし";
+"Cancel" = "キャンセル";
+"Recognize ..." = "音声認識中...";
+"end recognize" = "音声認識完了";
+
+
+"Alarm" = "アラーム";
+"Edit" = "編集";
+"Edit Alarm" = "編集 アラーム";
+"Add Alarm" = "追加する アラーム";
+"Sound" = "音";
+"Pick a song" = "曲を選ぶ";
+"Repeat" = "繰り返す";
+"Label" = "ラベル";
+"Sound" = "音";
+"Snooze" = "スヌーズ";
+"This alarm is not active." = "This alarm is not active";
+"Do you want to activate this alarm?" = "수정된 알람을 활성화 시키겠습니까?";
+"Unknown title" = "Unknown title";
+"Swipe To Dismiss" = "Swipe";
+
+"Once." = "一度";
+"Repeat Weekday." = "平日 繰り返す";
+"Repeat Weekend." = "週末 繰り返す";
+"Repeat every day." = "毎日 繰り返す";
+"Repeat." = "繰り返す";
+
+// - Setting.
+"Setting" = "設定";
+"Language" = "言語";
+"Font" = "フォント";
+"Notification Privacy" = "アラーム 設定";
+
+// - QuickAction.
+"See next alarm state." = "See next alarm state.";
+"Next Alarm" = "Next Alarm";
+"Stop" = "Stop";

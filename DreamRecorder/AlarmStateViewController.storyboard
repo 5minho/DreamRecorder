@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12121" systemVersion="16G29" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="Bxk-SZ-fyZ">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12089"/>
+        <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--Alarm State View Controller-->
+        <scene sceneID="JbO-NW-OhV">
+            <objects>
+                <viewController id="Bxk-SZ-fyZ" customClass="AlarmStateViewController" customModule="DreamRecorder" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="Mkv-FB-4mU"/>
+                        <viewControllerLayoutGuide type="bottom" id="DND-6v-P1l"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="dkt-Ce-v7L">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Swipe To Dismiss" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pzk-HM-M9p">
+                                <rect key="frame" x="121.5" y="572" width="133.5" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="00:00 AM" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZXN-m1-UID">
+                                <rect key="frame" x="127.5" y="317" width="120.5" height="33"/>
+                                <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="28"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="00:00:00" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GfH-2w-WuB">
+                                <rect key="frame" x="151.5" y="358" width="71.5" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="ZXN-m1-UID" firstAttribute="centerY" secondItem="dkt-Ce-v7L" secondAttribute="centerY" id="F8D-TX-mlO"/>
+                            <constraint firstItem="GfH-2w-WuB" firstAttribute="top" secondItem="ZXN-m1-UID" secondAttribute="bottom" constant="8" id="Jgk-Rb-c6l"/>
+                            <constraint firstItem="ZXN-m1-UID" firstAttribute="centerX" secondItem="dkt-Ce-v7L" secondAttribute="centerX" id="LFJ-MP-H3H"/>
+                            <constraint firstItem="DND-6v-P1l" firstAttribute="top" secondItem="pzk-HM-M9p" secondAttribute="bottom" multiplier="10:9" priority="1" constant="8" symbolic="YES" id="UCh-FW-AWY"/>
+                            <constraint firstItem="GfH-2w-WuB" firstAttribute="centerX" secondItem="ZXN-m1-UID" secondAttribute="centerX" id="hLN-Ru-IcW"/>
+                            <constraint firstItem="pzk-HM-M9p" firstAttribute="centerX" secondItem="dkt-Ce-v7L" secondAttribute="centerX" id="saQ-5t-xoZ"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="alarmTimeLabel" destination="ZXN-m1-UID" id="fOa-9i-EG2"/>
+                        <outlet property="hintLabel" destination="pzk-HM-M9p" id="Wwy-sF-h31"/>
+                        <outlet property="leftTimeLabel" destination="GfH-2w-WuB" id="BRC-lV-vHq"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="r6v-iX-ZrV" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-114.40000000000001" y="160.56971514242881"/>
+        </scene>
+    </scenes>
+</document>
