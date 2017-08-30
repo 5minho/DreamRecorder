@@ -72,7 +72,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         UIApplication.shared.shortcutItems = [nextAlarmItem, addDreamItem]
 
         // Apply Theme.
-        UIBarButtonItem.appearance().setTitleTextAttributes([NSForegroundColorAttributeName : UIColor.defaultButtonTitleColor], for: .normal)
+        UIBarButtonItem.appearance().setTitleTextAttributes([NSForegroundColorAttributeName : UIColor.dreamTextColor1], for: .normal)
         UINavigationBar.appearance().tintColor = UIColor.white
         
         UISearchBar.appearance().barTintColor = UIColor.dreamBackgroundColor
@@ -121,10 +121,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         AlarmDataStore.shared.awake()
         AlarmScheduler.shared.awake()
 
-        // Apply Theme.
-        UIBarButtonItem.appearance().setTitleTextAttributes([NSForegroundColorAttributeName : UIColor.defaultButtonTitleColor], for: .normal)
-        UINavigationBar.appearance().tintColor = UIColor.white
-        
         return true
     }
 

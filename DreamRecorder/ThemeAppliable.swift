@@ -44,7 +44,7 @@ extension ThemeAppliable where Self: UIViewController {
         self.themeTableView?.backgroundColor = UIColor.dreamBackgroundColor
         
         if #available(iOS 10.0, *) {
-            self.tabBarController?.tabBar.unselectedItemTintColor = UIColor.alarmText
+            self.tabBarController?.tabBar.unselectedItemTintColor = UIColor.dreamTextColor2
         }
     }
 }
