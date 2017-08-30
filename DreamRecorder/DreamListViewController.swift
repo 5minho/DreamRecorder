@@ -17,7 +17,8 @@ class DreamListViewController : UIViewController {
     
     fileprivate let dateParser = DateParser()
     
-    fileprivate let serialDispatchQueue = DispatchQueue(label: DispatchQueueLabel.filterSerialQueue)
+    fileprivate let serialFilterQueue = DispatchQueue(label: DispatchQueueLabel.filterSerialQueue)
+    fileprivate let serialSelectQueue = DispatchQueue(label: DispatchQueueLabel.selectSerialQueue)
     fileprivate var pendingFilterWorkItem: DispatchWorkItem?
     
     fileprivate var selectedCell: DreamListCell?
@@ -25,13 +26,6 @@ class DreamListViewController : UIViewController {
     
     var previewingContext : UIViewControllerPreviewing?
     
-//    override var isEditing: Bool {
-//        
-//        didSet {
-//            self.navigationItem.leftBarButtonItem?.title = isEditing ?  "Done".localized : "Edit".localized
-//        }
-//        
-//    }
     var currentDatePeriod : (from: Date, to: Date) = {
         
         guard let from = DateParser().firstDayOfMonth(date: Date()) else {
@@ -44,8 +38,15 @@ class DreamListViewController : UIViewController {
         
         didSet {
             
-            DreamDataStore.shared.select(period: currentDatePeriod)
-            self.tableView.reloadSections(IndexSet(integersIn: 0...0), with: .automatic)
+            serialSelectQueue.async { [unowned self] in
+                
+                DreamDataStore.shared.select(period: self.currentDatePeriod)
+                
+                DispatchQueue.main.async {
+                    self.tableView.reloadData()
+                }
+                
+            }
             
         }
         
@@ -269,7 +270,7 @@ extension DreamListViewController : UISearchResultsUpdating {
         
         pendingFilterWorkItem = filterWorkItem
         
-        serialDispatchQueue.asyncAfter(deadline: .now() + .milliseconds(250), execute: filterWorkItem)
+        serialFilterQueue.asyncAfter(deadline: .now() + .milliseconds(250), execute: filterWorkItem)
 
     }
     

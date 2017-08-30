@@ -38,6 +38,7 @@ struct DispatchQueueLabel{
     
     static let audioSerialQueue = "audioSerialQueue"
     static let filterSerialQueue = "filterSerialQueue"
+    static let selectSerialQueue = "selectSerialQueue"
     
 }
 
@@ -92,7 +93,7 @@ struct AlartText {
 struct GuideText {
     
     static func endRecording(leftTime argument : Int) -> String {
-        return String(format: NSLocalizedString("The microphone will turn off after %d sconds", comment: ""), argument)
+        return String(format: NSLocalizedString("The microphone will turn off after %d seconds", comment: ""), argument)
     }
     
     static let pickSong = "Pick a song".localized
