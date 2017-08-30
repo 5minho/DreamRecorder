@@ -53,7 +53,7 @@
         <div class="navbar navbar-inverse sticky-navigation navbar-fixed-top" role="navigation" data-spy="affix" data-offset-top="200">
           <div class="container">
             <div class="navbar-header">
-              <a class="logo-left " href="index.html"><img src="img/icon/app_small.png" width="50"></i>Dream Recorder</a>
+              <a class="logo-left " href="index.html"><img src="https://raw.githubusercontent.com/minomi/DreamRecorder/master/docs/img/icon/app_small.png" width="50"></i>Dream Recorder</a>
             </div>
             <div class="navbar-right">
               <button class="menu-icon"  id="open-button">
@@ -79,7 +79,7 @@
 
         <div class="col-md-4 col-sm-4 wow fadeInRight" data-wow-duration="1000ms" data-wow-delay="300ms">
 
-          <video poster="img/features/img1.png" width="300" height="555" controls="controls">
+          <video width="300" height="555" controls="controls">
             <source src="movie/appMovie.mp4" type="video/mp4" />
           </video>
 
@@ -121,40 +121,56 @@
             </h3>
             <h4> Peek and Pop </h4>
             <p>
-              - 3D Touch를 통해 AlarmListViewController의 UITableView에 있는 UITableViewCell은 해당 내용을 일시적으로 보여줍니다.
+              - 3D Touch를 통해 Dream(Alarm)ListViewController의 UITableView에 있는 UITableViewCell은 해당 내용을 일시적으로 보여줍니다.
             </p><br>
             <h4> Audio </h4>
-            <p>
-              - 번들로 제공되는 알람음 또는 사용자 미디어 파일을 알람 소리로 설정/재생 할 수 있습니다.
-            </p><br>
-            <h4> Data Entry </h4>
-            <p>
-              - UITextField뿐만아니라 가능하면 UIDatePicker나 UITableView(아이템 리스트를 위한)를 제공합니다.
-            </p><br>
+            <p>- 마이크 접근을 통해 음성인식으로 하루의 꿈을 기록할 수 있습니다.</p>
+            <p>- 번들로 제공되는 알람음 또는 사용자 미디어 파일을 알람 소리로 재생 할 수 있습니다.</p>
+            <br>
             <h4> Feedback </h4>
-            <p>
-              - 꿈 기록간에 일정시간동안 오디오 입력이 없으면 사용자에게 일어날 일(음성 입력 중지)에 대해 알려줍니다.
-            </p><br>
+            <p>- 꿈 기록간에 일정시간동안 오디오 입력이 없으면 사용자에게 일어날 일(음성 입력 중지)에 대해 알려줍니다.</p>
+            <p>- 활성화 된 알람을 클릭하면 남은 시간을 실시간으로 볼 수 있도록 UILabel를 통해 보여줍니다.</p>
+            <br>
             <h4> Gesture </h4>
-            <p>
-              - AlarmStateViewController에서는 UIPanGestureRecognizer를 활용하여 사용자가 한방향으로 Swipe를 할 경우에 UIViewController를 Dismiss시킵니다.
-            </p><br>
-            <h4> Navigation </h4>
-            <p>
-              - 독립된 꿈기록, 알람 그리고 설정페이지는 UITabbarController를 통해서 Flat navigation.
-              꿈 자세히 보기나 알람 상태보기의 경우 UINavigationController를 통해서 Hierarchical navigation.
+            <p>- AlarmStateViewController에서는 UIPanGestureRecognizer를 활용하여 사용자가 한방향으로 Swipe를 할 경우에 UIViewController를 Dismiss시킵니다.</p>
+            <br>
+            <h4> Data Entry </h4>
+            <p>- 가능하다면 선택지들, 합리적인 디폴트 값을 제공하고 필요할 때만 텍스트 필드를 요구합니다.</p>
+            <p>- UITextField뿐만아니라 UIDatePicker나 UITableView(아이템 리스트를 위한)를 제공합니다.</p>
             </p>
           </div>
         </div>
 
         <div class="col-md-3 col-sm-3 wow fadeInRight" data-wow-duration="1000ms" data-wow-delay="300ms">
-          <img src="https://raw.githubusercontent.com/minomi/DreamRecorder/master/docs/img/features/peekandpop.GIF" class="img-responsive" alt="" width="200" height="100">
+          <center>
+            <img src="https://raw.githubusercontent.com/minomi/DreamRecorder/master/docs/img/features/peekandpop.GIF" class="img-responsive" alt="" width="200" height="100">
+            <h5>Peek and Pop</h5>
+            <br>
+          </center>
         </div>
+
         <div class="col-md-3 col-sm-3 wow fadeInRight" data-wow-duration="1000ms" data-wow-delay="300ms">
-          <img src="https://raw.githubusercontent.com/minomi/DreamRecorder/master/docs/img/features/feedback.GIF" class="img-responsive" alt="" width="200" height="100">
+          <center>
+            <img src="https://raw.githubusercontent.com/minomi/DreamRecorder/master/docs/img/features/feedback.GIF" class="img-responsive" alt="" width="200" height="100">
+            <h5>Audio & Feedback</h5>
+            <br>
+          </center>
         </div>
+
         <div class="col-md-3 col-sm-3 wow fadeInRight" data-wow-duration="1000ms" data-wow-delay="300ms">
-          <img src="https://raw.githubusercontent.com/minomi/DreamRecorder/master/docs/img/features/gesture.gif" class="img-responsive" alt="" width="200" height="100">
+          <center>
+            <img src="https://raw.githubusercontent.com/minomi/DreamRecorder/master/docs/img/features/gesture.GIF" class="img-responsive" alt="" width="200" height="100">
+            <h5>Gesture</h5>
+            <br>
+          </center>
+        </div>
+
+        <div class="col-md-3 col-sm-3 wow fadeInRight" data-wow-duration="1000ms" data-wow-delay="300ms">
+          <center>
+            <img src="https://raw.githubusercontent.com/minomi/DreamRecorder/master/docs/img/features/dataentry.GIF" class="img-responsive" alt="" width="200" height="100">
+            <h5>Data Entry</h5>
+            <br>
+          </center>
         </div>
 
 
@@ -168,10 +184,19 @@
 
       <div class="row">
         <div class="col-md-3 col-sm-3 wow fadeInLeft" data-wow-duration="1000ms" data-wow-delay="300ms">
-          <img src="https://raw.githubusercontent.com/minomi/DreamRecorder/master/docs/img/features/widget.GIF" class="img-responsive" alt="" width="187" height="333">
+          <center>
+            <img src="https://raw.githubusercontent.com/minomi/DreamRecorder/master/docs/img/features/widget.GIF" class="img-responsive" alt="" width="187" height="333">
+            <h5>Widget & Quick Action</h5>
+            <br>
+          </center>
+
         </div>
         <div class="col-md-3 col-sm-3 wow fadeInLeft" data-wow-duration="1000ms" data-wow-delay="300ms">
-          <img src="https://raw.githubusercontent.com/minomi/DreamRecorder/master/docs/img/features/share.GIF" class="img-responsive" alt="" width="187" height="333">
+          <center>
+            <img src="https://raw.githubusercontent.com/minomi/DreamRecorder/master/docs/img/features/share.GIF" class="img-responsive" alt="" width="187" height="333">
+            <h5>Share</h5>
+            <br>
+          </center>
         </div>
 
         <div class="col-md-6 col-sm-6 wow fadeInRight" data-wow-duration="1000ms" data-wow-delay="300ms">
@@ -221,10 +246,18 @@
         </div>
 
         <div class="col-md-3 col-sm-3 wow fadeInRight" data-wow-duration="1000ms" data-wow-delay="300ms">
-          <img src="https://raw.githubusercontent.com/minomi/DreamRecorder/master/docs/img/features/localizable.GIF" class="img-responsive" alt="">
+          <center>
+            <img src="https://raw.githubusercontent.com/minomi/DreamRecorder/master/docs/img/features/localizable.GIF" class="img-responsive" alt="">
+            <h5>Localizable</h5>
+            <br>
+          </center>
         </div>
         <div class="col-md-3 col-sm-3 wow fadeInRight" data-wow-duration="1000ms" data-wow-delay="300ms">
-          <img src="https://raw.githubusercontent.com/minomi/DreamRecorder/master/docs/img/features/accessibility_text.GIF" class="img-responsive" alt="">
+          <center>
+            <img src="https://raw.githubusercontent.com/minomi/DreamRecorder/master/docs/img/features/accessibility_text.GIF" class="img-responsive" alt="">
+            <h5>Accessibility</h5>
+            <br>
+          </center>
         </div>
 
       </div>
