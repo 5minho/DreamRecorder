@@ -25,6 +25,13 @@ class DreamListViewController : UIViewController {
     
     var previewingContext : UIViewControllerPreviewing?
     
+//    override var isEditing: Bool {
+//        
+//        didSet {
+//            self.navigationItem.leftBarButtonItem?.title = isEditing ?  "Done".localized : "Edit".localized
+//        }
+//        
+//    }
     var currentDatePeriod : (from: Date, to: Date) = {
         
         guard let from = DateParser().firstDayOfMonth(date: Date()) else {
@@ -47,22 +54,24 @@ class DreamListViewController : UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        if traitCollection.forceTouchCapability == .available {
+            previewingContext = registerForPreviewing(with: self, sourceView: tableView)
+        }
+        
         self.tableView.delegate = self
         self.tableView.dataSource = self
         
         tableView.rowHeight = UITableViewAutomaticDimension
         tableView.estimatedRowHeight = 140
         
-//        self.registerForPreviewing(with: self, sourceView: self.view)
-        
         self.tableView.allowsSelectionDuringEditing = true
         self.dateButton.title = BarButtonText.date
+        
         self.navigationItem.leftBarButtonItem = editButtonItem
         
         self.addObserver()
         self.setSearchViewController()
         self.applyThemeIfViewDidLoad()
-        
         
     }
     
@@ -80,7 +89,7 @@ class DreamListViewController : UIViewController {
     override func setEditing(_ editing: Bool, animated: Bool) {
         
         super.setEditing(editing, animated: animated)
-        self.tableView.setEditing(!self.tableView.isEditing, animated: true)
+        self.tableView.setEditing(editing, animated: true)
         
     }
     
@@ -110,13 +119,13 @@ class DreamListViewController : UIViewController {
             
             if self.isFiltering() {
                 
-                if let row = notification.userInfo?["rowInFiltering"] as? Int {
+                if let row = notification.userInfo?[UserInfoKey.rowInFiltering] as? Int {
                     self.tableView.deleteRows(at: [IndexPath(row: row, section: 0)], with: .automatic)
                 }
                 
             } else {
                 
-                if let row = notification.userInfo?["row"] as? Int {
+                if let row = notification.userInfo?[UserInfoKey.row] as? Int {
                     self.tableView.deleteRows(at: [IndexPath(row: row, section: 0)], with: .automatic)
                 }
                 
@@ -143,6 +152,26 @@ class DreamListViewController : UIViewController {
         
     }
     
+    func setEnabledNavigationButtons(enabled : Bool) {
+    
+        if let items = self.navigationItem.leftBarButtonItems {
+            
+            for button in items {
+                button.isEnabled = enabled
+            }
+            
+        }
+        
+        if let items = self.navigationItem.rightBarButtonItems {
+            
+            for button in items {
+                button.isEnabled = enabled
+            }
+            
+        }
+        
+    }
+    
     private func setSearchViewController() {
         
         searchController = UISearchController(searchResultsController: nil)
@@ -150,12 +179,6 @@ class DreamListViewController : UIViewController {
         searchController?.dimsBackgroundDuringPresentation = false
         searchController?.searchBar.placeholder = DreamSearch.placeHolder
  
-        if traitCollection.forceTouchCapability == .available {
-            
-            previewingContext = registerForPreviewing(with: self, sourceView: tableView)
-            
-        }
-    
         definesPresentationContext = true
         searchController.delegate = self
         self.searchController.searchBar.delegate = self
@@ -173,12 +196,8 @@ class DreamListViewController : UIViewController {
             datePickerConroller.selectedPeriod = self.currentDatePeriod
             datePickerConroller.modalPresentationStyle = .overCurrentContext
             
-            present(datePickerConroller, animated: true) {
-                
-                self.navigationItem.leftBarButtonItem?.isEnabled = false
-                sender.isEnabled = false
-                self.navigationItem.rightBarButtonItem?.isEnabled = false
-                
+            present(datePickerConroller, animated: true) { [unowned self] in
+                self.setEnabledNavigationButtons(enabled: false)
             }
             
         }
@@ -269,7 +288,7 @@ extension DreamListViewController : UITableViewDelegate, UITableViewDataSource, 
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: "DreamListCell", for: indexPath) as? DreamListCell else {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: Identifier.dreamListCell, for: indexPath) as? DreamListCell else {
             return UITableViewCell()
         }
         
