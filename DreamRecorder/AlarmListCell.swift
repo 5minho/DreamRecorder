@@ -62,12 +62,15 @@ class AlarmListCell: UITableViewCell {
         
         self.timeLabel.font = UIFont.title1
         self.nameLabel.font = UIFont.body
+        
     }
     
     /// MultiButton을 활용하여 Weekday버튼으로 만든다.
-    private func setupWeekdayButton(){
+    private func setupWeekdayButton() {
+        
         self.weekdayButton.setTitles(titles: Calendar.current.shortWeekdaySymbols)
         self.weekdayButton.distribution = .fillEqually
+        
     }
     
     /// 알람을 활성화 / 비활성화 할 수 있는 UISwitch를 AccessoryView에 추가한다.

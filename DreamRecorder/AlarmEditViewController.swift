@@ -106,7 +106,7 @@ extension AlarmEditViewController: UITableViewDataSource, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: "AlarmDetailCell", for: indexPath) as? AlarmDetailCell else { return UITableViewCell() }
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: Identifier.alarmDetailCell, for: indexPath) as? AlarmDetailCell else { return UITableViewCell() }
         guard let cellStyle = AlarmDetailCellStyle(rawValue: indexPath.row) else { return UITableViewCell() }
         guard let editingAlarm = self.editingAlarm else { return UITableViewCell() }
         

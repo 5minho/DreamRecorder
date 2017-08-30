@@ -39,7 +39,7 @@ class SettingItemListViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        let cell = UITableViewCell(style: .value1, reuseIdentifier: "UITableViewCell")
+        let cell = UITableViewCell(style: .value1, reuseIdentifier: Identifier.uitableViewCell)
         
         cell.backgroundColor = UIColor.dreamBackgroundColor
         cell.tintColor = .dreamTextColor1
@@ -76,7 +76,7 @@ extension Notification.Name {
 class LanguageListViewController: SettingItemListViewController, SettingItemListViewControllerDelegate {
     
     var items: [String] = UserLangauge.names
-    var currentItem: String? = UserLangauge.names[safe: UserDefaults.standard.integer(forKey: "language")] ?? "Korean"
+    var currentItem: String? = UserLangauge.names[safe: UserDefaults.standard.integer(forKey: Key.speechLangaugeKey)] ?? "Korean"
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -85,7 +85,9 @@ class LanguageListViewController: SettingItemListViewController, SettingItemList
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-        UserDefaults.standard.set(indexPath.row, forKey: "language")
+        UserDefaults.standard.set(indexPath.row, forKey: Key.speechLangaugeKey)
+        print(indexPath.row)
+        
         NotificationCenter.default.post(name: Notification.Name.DreamRecorderLanguageDidChange, object: nil)
         self.navigationController?.popViewController(animated: true)
     }

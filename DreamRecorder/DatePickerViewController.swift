@@ -48,8 +48,8 @@ class DatePickerViewController : UIViewController {
     
     private func setDatePickers() {
         
-        self.fromDatePicker.setValue(UIColor.dreamDarkPink, forKey: "textColor")
-        self.toDatePicker.setValue(UIColor.dreamDarkPink, forKey: "textColor")
+        self.fromDatePicker.setValue(UIColor.dreamTextColor1, forKey: Key.datePickerTextColor)
+        self.toDatePicker.setValue(UIColor.dreamTextColor1, forKey: Key.datePickerTextColor)
         
         self.fromDatePicker.minimumDate = DreamDataStore.shared.minimumDate()
         self.fromDatePicker.maximumDate = DreamDataStore.shared.maximumDate()
@@ -85,7 +85,12 @@ class DatePickerViewController : UIViewController {
     }
     
     @IBAction func touchUpCancelButton(_ sender: UIButton) {
-        self.presentingViewController?.dismiss(animated: true, completion: nil)
+        
+        weak var dreamListViewController = self.presentingViewController as? DreamListViewController
+        dreamListViewController?.setEditing(false, animated: false)
+        dreamListViewController?.setEnabledNavigationButtons(enabled: true)
+        self.presentingViewController?.dismiss(animated: true)
+        
     }
     
     @IBAction func touchUpOkButton(_ sender: UIButton) {
@@ -94,10 +99,12 @@ class DatePickerViewController : UIViewController {
             selectedPeriod = (selectedPeriod.to, selectedPeriod.from)
         }
         
-        let dreamListViewController = self.presentingViewController as? DreamListViewController
+        weak var dreamListViewController = self.presentingViewController as? DreamListViewController
         dreamListViewController?.currentDatePeriod = self.selectedPeriod
         
-        self.presentingViewController?.dismiss(animated: true, completion: nil)
+        dreamListViewController?.setEditing(false, animated: false)
+        dreamListViewController?.setEnabledNavigationButtons(enabled: true)
+        self.presentingViewController?.dismiss(animated: true)
         
     }
     

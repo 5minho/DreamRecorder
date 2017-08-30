@@ -128,7 +128,7 @@ extension AlarmListViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: "AlarmListCell",
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: Identifier.alarmListCell,
                                                        for: indexPath) as? AlarmListCell
         else {
             return UITableViewCell()

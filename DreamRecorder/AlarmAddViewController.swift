@@ -56,7 +56,7 @@ class AlarmAddViewController: UIViewController {
         
         self.datePicker = UIDatePicker()
         self.datePicker.datePickerMode = .time
-        self.datePicker.setValue(UIColor.dreamTextColor1, forKey: "textColor")
+        self.datePicker.setValue(UIColor.dreamTextColor1, forKey: Key.datePickerTextColor)
         self.datePicker.addTarget(self, action: #selector(self.datePickerValueDidChange(sender:)), for: .valueChanged)
         self.tableView.tableHeaderView = self.datePicker
         
@@ -88,7 +88,7 @@ extension AlarmAddViewController: UITableViewDataSource, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: "AlarmDetailCell", for: indexPath) as? AlarmDetailCell else { return UITableViewCell() }
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: Identifier.alarmDetailCell, for: indexPath) as? AlarmDetailCell else { return UITableViewCell() }
         guard let cellStyle = AlarmDetailCellStyle(rawValue: indexPath.row) else { return UITableViewCell() }
         guard let newAlarm = self.alarm else { return UITableViewCell() }
         

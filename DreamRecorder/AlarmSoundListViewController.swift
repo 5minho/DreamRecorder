@@ -60,7 +60,7 @@ extension AlarmSoundListViewController: UITableViewDataSource, UITableViewDelega
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        let cell = tableView.dequeueReusableCell(withIdentifier: "UITableViewCell", for: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: Identifier.uitableViewCell, for: indexPath)
         
         guard let editingAlarm = self.alarm else { return cell }
         

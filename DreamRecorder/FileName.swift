@@ -8,6 +8,32 @@
 
 import Foundation
 
+struct UserInfoKey {
+    
+    static let rowInFiltering = "rowInFiltering"
+    static let row = "row"
+    
+}
+
+struct URLString {
+    static let appPrivacyMicrophone = "App-prefs:root=Privacy&path=MICROPHONE"
+}
+
+struct Key {
+    
+    static let datePickerTextColor = "textColor"
+    static let speechLangaugeKey = "language"
+}
+
+struct Identifier {
+    
+    static let alarmDetailCell = "AlarmDetailCell"
+    static let uitableViewCell = "UITableViewCell"
+    static let alarmListCell = "AlarmListCell"
+    static let dreamListCell = "DreamListCell"
+    
+}
+
 struct DispatchQueueLabel{
     
     static let audioSerialQueue = "audioSerialQueue"
@@ -81,7 +107,7 @@ struct NavigationTitle {
     static let editAlarm = "Edit Alarm".localized
     static let sound = "Sound".localized
     static let alarm = "Alarm".localized
-    
+    static let setting = "Setting".localized
 }
 
 struct PreviewText {
