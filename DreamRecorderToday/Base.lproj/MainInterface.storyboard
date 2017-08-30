@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12121" systemVersion="16G29" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="M4Y-Lb-cyx">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12089"/>
+        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--Today View Controller-->
+        <scene sceneID="cwh-vc-ff4">
+            <objects>
+                <viewController id="M4Y-Lb-cyx" customClass="TodayViewController" customModule="DreamRecorderToday" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="Ft6-oW-KC0"/>
+                        <viewControllerLayoutGuide type="bottom" id="FKl-LY-JtV"/>
+                    </layoutGuides>
+                    <view key="view" tag="1" contentMode="scaleToFill" simulatedAppContext="notificationCenter" id="S3S-Oj-5AN">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="100"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="white" translatesAutoresizingMaskIntoConstraints="NO" id="GFo-nx-Q9T">
+                                <rect key="frame" x="155" y="40.5" width="20" height="20"/>
+                            </activityIndicatorView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="249" verticalHuggingPriority="251" text=" " textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ztd-yX-BMr">
+                                <rect key="frame" x="121.5" y="40" width="86.5" height="20.5"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" red="0.96557557579999997" green="0.97027868029999997" blue="0.97526365520000002" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Next Alarm:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="clz-6H-h1j">
+                                <rect key="frame" x="24" y="40" width="89.5" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" red="0.96557557579999997" green="0.97027868029999997" blue="0.97526365520000002" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="image_partlycloudy" translatesAutoresizingMaskIntoConstraints="NO" id="BZp-25-LEz">
+                                <rect key="frame" x="216" y="10" width="80" height="80"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" secondItem="BZp-25-LEz" secondAttribute="height" multiplier="1:1" id="2ji-Ci-eIb"/>
+                                    <constraint firstAttribute="height" constant="80" id="zGU-sw-kBx"/>
+                                </constraints>
+                            </imageView>
+                        </subviews>
+                        <color key="backgroundColor" red="0.027450980392156862" green="0.14509803921568626" blue="0.34509803921568627" alpha="1" colorSpace="calibratedRGB"/>
+                        <constraints>
+                            <constraint firstAttribute="trailingMargin" secondItem="BZp-25-LEz" secondAttribute="trailing" constant="8" id="32c-1s-LNP"/>
+                            <constraint firstItem="clz-6H-h1j" firstAttribute="centerY" secondItem="S3S-Oj-5AN" secondAttribute="centerY" id="3PN-2H-7tQ"/>
+                            <constraint firstItem="ztd-yX-BMr" firstAttribute="leading" secondItem="clz-6H-h1j" secondAttribute="trailing" constant="8" id="Kjt-fQ-fQg"/>
+                            <constraint firstItem="GFo-nx-Q9T" firstAttribute="centerY" secondItem="clz-6H-h1j" secondAttribute="centerY" id="Kmd-YI-XKS"/>
+                            <constraint firstItem="GFo-nx-Q9T" firstAttribute="centerX" secondItem="ztd-yX-BMr" secondAttribute="centerX" id="Ou7-9O-dpR"/>
+                            <constraint firstItem="GFo-nx-Q9T" firstAttribute="centerY" secondItem="ztd-yX-BMr" secondAttribute="centerY" id="cDf-cQ-tnQ"/>
+                            <constraint firstItem="BZp-25-LEz" firstAttribute="centerY" secondItem="clz-6H-h1j" secondAttribute="centerY" id="f7t-y8-ba8"/>
+                            <constraint firstItem="clz-6H-h1j" firstAttribute="leading" secondItem="S3S-Oj-5AN" secondAttribute="leadingMargin" constant="8" id="fai-3h-wPa"/>
+                            <constraint firstItem="ztd-yX-BMr" firstAttribute="centerY" secondItem="clz-6H-h1j" secondAttribute="centerY" id="uEF-qb-vTM"/>
+                            <constraint firstItem="BZp-25-LEz" firstAttribute="leading" secondItem="ztd-yX-BMr" secondAttribute="trailing" constant="8" id="uum-Si-RrA"/>
+                        </constraints>
+                    </view>
+                    <extendedEdge key="edgesForExtendedLayout"/>
+                    <nil key="simulatedStatusBarMetrics"/>
+                    <nil key="simulatedTopBarMetrics"/>
+                    <nil key="simulatedBottomBarMetrics"/>
+                    <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+                    <size key="freeformSize" width="320" height="100"/>
+                    <connections>
+                        <outlet property="leftTimeLabel" destination="ztd-yX-BMr" id="XsO-Th-VPh"/>
+                        <outlet property="nextAlarmLoadingView" destination="GFo-nx-Q9T" id="ah2-ue-3il"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="vXp-U4-Rya" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="137.59999999999999" y="114.24287856071965"/>
+        </scene>
+    </scenes>
+    <resources>
+        <image name="image_partlycloudy" width="149" height="150"/>
+    </resources>
+</document>

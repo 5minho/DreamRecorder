@@ -1,0 +1,51 @@
+/* 
+  Localizable.strings
+  DreamRecorder
+
+  Created by 오민호 on 2017. 8. 20..
+  Copyright © 2017년 BoostCamp. All rights reserved.
+*/
+
+"Dream" = "Dream";
+"Dreams" = "Dreams";
+"title" = "제목";
+"please enter a title" = "please enter a title";
+"Enter a title" = "Enter a title";
+"Save" = "Save";
+"No title" = "No title";
+"Cancel" = "Cancel";
+"Recognize..." = "Recognize...";
+"end recognize" = "end recognize";
+
+
+"Alarm" = "Alarm";
+"Edit" = "Edit";
+"Edit Alarm" = "Edit Alarm";
+"Add Alarm" = "Add Alarm";
+"Sound" = "Sound";
+"Pick a song" = "Pick a song";
+"Repeat" = "Repeat";
+"Label" = "Label";
+"Sound" = "Sound";
+"Snooze" = "Snooze";
+"This alarm is not active." = "This alarm is not active";
+"Do you want to activate this alarm?" = "Do you want to activate this alarm?";
+"Unknown title" = "Unknown title";
+"Swipe To Dismiss" = "Swipe To Dismiss";
+
+"Once." = "Once.";
+"Repeat Weekday." = "Repeat Weekday.";
+"Repeat Weekend." = "Repeat Weekend.";
+"Repeat every day." = "Repeat every day.";
+"Repeat." = "Repeat.";
+
+// - Setting.
+"Setting" = "Setting";
+"Language" = "Language";
+"Font" = "Font";
+"Notification Privacy" = "Notification Privacy";
+
+// - QuickAction.
+"See next alarm state." = "See next alarm state.";
+"Next Alarm" = "Next Alarm";
+"Stop" = "Stop";
