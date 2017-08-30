@@ -116,7 +116,26 @@ extension Date {
             hour += day * 24
             
             return "\(hour):\(minute):\(second)"
-
+        }
+        
+        /// 해당 시간(Self)을 시간, 분, AM/PM을 현지언어 텍스트로 변환한다.
+        var descriptionForAlarmTime: String {
+            
+            let dateFormatter = DateFormatter()
+            
+            /// Date를 기수로 읽지 않기 위해서 tiemStyle을 long으로 설정한다.
+            dateFormatter.timeStyle = .long
+            dateFormatter.dateStyle = .none
+            
+            /// DateFormatter를 활용하여 Date로 부터 String값을 가져온다.
+            let localizedString = dateFormatter.string(from: self.date)
+            /// DateFormatter가 현지화한 String값은 GMT+X를 포함하고 있으므로 필요없는 문자열 값은 제거한다.
+            if let gmtIndex = localizedString.characters.index(of: "G") {
+                let lastIndex = localizedString.characters.index(gmtIndex, offsetBy: -4)
+                return localizedString.substring(to: lastIndex)
+            } else {
+                return dateFormatter.string(from: self.date)
+            }
         }
     }
 }
