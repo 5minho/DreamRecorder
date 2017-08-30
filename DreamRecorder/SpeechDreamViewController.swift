@@ -200,7 +200,7 @@ class SpeechDreamViewController : UIViewController {
             
             self.recordButton.recordState = .recording
             
-            asyncSetAudioCategory(AVAudioSessionCategoryRecord) {
+            asyncSetAudioCategory(AVAudioSessionCategoryPlayAndRecord) {
                 self.speechRecognizer.start(with: langauge)
             }
     
@@ -226,7 +226,7 @@ class SpeechDreamViewController : UIViewController {
             let audioSession = AVAudioSession.sharedInstance()
             do {
                 
-                try audioSession.setCategory(AVAudioSessionCategoryPlayAndRecord, with: .mixWithOthers)
+                try audioSession.setCategory(category, with: .mixWithOthers)
                 try audioSession.setMode(AVAudioSessionModeMeasurement)
                 
             } catch {

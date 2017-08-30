@@ -97,36 +97,26 @@ class DreamDataStoreTests : XCTestCase {
 
     
     func testFilterText() {
+        
 
-        var searchText = "1"
+        let searchTexts = ["내용", "423", "꿈", "42", "번", "번째", "13", "31"]
         
-        DreamDataStore.shared.filter(searchText)
-        
-        DreamDataStore.shared.filteredDreams.forEach { dream in
+        for searchText in searchTexts {
             
-            if let content = dream.content?.lowercased(),
-                let title = dream.title?.lowercased() {
-                let lowerSearchText = searchText.lowercased()
+            DreamDataStore.shared.filter(searchText)
+            DreamDataStore.shared.filteredDreams.forEach { dream in
                 
-                XCTAssertTrue(content.contains(lowerSearchText) || title.contains(lowerSearchText))
-    
+                if let content = dream.content?.lowercased(),
+                    let title = dream.title?.lowercased() {
+                    let lowerSearchText = searchText.lowercased()
+                    if content.contains(lowerSearchText) == false  && title.contains(lowerSearchText) == false {
+                        XCTFail()
+                    }
+                }
             }
         }
         
-        searchText = "개"
-        
-        DreamDataStore.shared.filter(searchText)
-        
-        DreamDataStore.shared.filteredDreams.forEach { dream in
-            
-            if let content = dream.content?.lowercased(),
-                let title = dream.title?.lowercased() {
-                let lowerSearchText = searchText.lowercased()
-                
-                XCTAssertTrue(content.contains(lowerSearchText) || title.contains(lowerSearchText))
-                
-            }
-        }
+        XCTAssert(true)
         
     }
     
@@ -217,9 +207,9 @@ class DreamDataStoreTests : XCTestCase {
         
         XCTAssert(dreams[0].createdDate >= dreams[1].createdDate)
         
-//        DreamDataStore.shared.select(period: (dates[4], to: dates[2]))
-//        XCTAssertEqual(dreams[0], DreamDataStore.shared.dreams[0])
-//        XCTAssertEqual(dreams[1], DreamDataStore.shared.dreams[1])
+        DreamDataStore.shared.select(period: (dates[4], to: dates[2]))
+        XCTAssertEqual(dreams[0], DreamDataStore.shared.dreams[0])
+        XCTAssertEqual(dreams[1], DreamDataStore.shared.dreams[1])
         
     }
     
@@ -235,22 +225,9 @@ class DreamDataStoreTests : XCTestCase {
         DreamDataStore.shared.insert(dream: dreams[4])
         
     }
-    
-//    func testLotsOfDateInsert() {
-//        
-//        for i in 1 ..< 3000 {
-//
-//            let randomTimeInterval = Double(arc4random_uniform(1503213283)) * -1.0
-//            let createdDate = Date(timeIntervalSinceNow: randomTimeInterval)
-//
-//            let dream = Dream(  title: "\(i + 1)번째 꿈",
-//                                content: "\(i + 1)번째 꿈의 내용",
-//                                createdDate: createdDate,
-//                                modifiedDate: nil)
-//
-//            DreamDataStore.shared.insert(dream: dream)
-//        }
-//
-//    }
+
+    func testDropVirtualTable() {
+        DreamDataStore.shared.dropVitualTable()
+    }
     
 }

@@ -281,64 +281,66 @@ class DreamDataStore {
     
     func filter(_ searchText : String) {
         
-//        let filterResult = dbManager.filterRow(query: DreamTable.table.filter(
-//            DreamTable.Column.title.like("%\(searchText)%") ||
-//            DreamTable.Column.content.like("%\(searchText)%")
-//            )
-//        )
-//
-//        filteredDreams = []
-//        
-//        switch filterResult {
-//            
-//        case let .success(rows):
-//            
-//            rows.forEach({
-//                let id = $0.get(DreamTable.Column.id)
-//                let title = $0.get(DreamTable.Column.title)
-//                let content = $0.get(DreamTable.Column.content)
-//                let createdDate = $0.get(DreamTable.Column.createdDate)
-//                let modifiedDate = $0.get(DreamTable.Column.modifiedDate)
-//                
-//                let dream = Dream(id: id, title: title, content: content, createdDate: createdDate, modifiedDate: modifiedDate)
-//                filteredDreams.append(dream)
-//            })
-//            
-//        case .failure(_):
-//            print("fail")
-//
-//        }
-        
+        let filterResult = dbManager.filterRow(query: DreamTable.table.filter(
+            DreamTable.Column.title.like("%\(searchText)%") ||
+            DreamTable.Column.content.like("%\(searchText)%")
+            )
+        )
+
         filteredDreams = []
-        
-        let searchQuery: QueryType = Virtual.table.match(searchText + "*")
-    
-        let filterResult = dbManager.selectAll(query: searchQuery)
         
         switch filterResult {
             
         case let .success(rows):
             
             rows.forEach({
-
-                let id = $0.get(Virtual.Column.id)
-                let title = $0.get(Virtual.Column.title)
-                let content = $0.get(Virtual.Column.content)
+                let id = $0.get(DreamTable.Column.id)
+                let title = $0.get(DreamTable.Column.title)
+                let content = $0.get(DreamTable.Column.content)
                 let createdDate = $0.get(DreamTable.Column.createdDate)
-//                let modifiedDate = $0.get(DreamTable.Column.modifiedDate)
+                let modifiedDate = $0.get(DreamTable.Column.modifiedDate)
                 
-                let dream = Dream(id: id, title: title, content: content, createdDate: createdDate)
+                let dream = Dream(id: id, title: title, content: content, createdDate: createdDate, modifiedDate: modifiedDate)
                 filteredDreams.append(dream)
-                
             })
             
         case .failure(_):
             print("fail")
-            
+
         }
 
     }
 
+    func ftsFilter(_ searchText : String) {
+        
+            filteredDreams = []
+    
+            let searchQuery: QueryType = Virtual.table.match(searchText + "*")
+    
+            let filterResult = dbManager.selectAll(query: searchQuery)
+    
+            switch filterResult {
+    
+            case let .success(rows):
+    
+                rows.forEach({
+    
+                    let id = $0.get(Virtual.Column.id)
+                    let title = $0.get(Virtual.Column.title)
+                    let content = $0.get(Virtual.Column.content)
+                    let createdDate = $0.get(DreamTable.Column.createdDate)
+                    let modifiedDate = $0.get(DreamTable.Column.modifiedDate)
+    
+                    let dream = Dream(id: id, title: title, content: content, createdDate: createdDate, modifiedDate: modifiedDate)
+                    filteredDreams.append(dream)
+                    
+                })
+                
+            case .failure(_):
+                print("fail")
+                
+            }
+    }
     func minimumDate() -> Date? {
         
         do {

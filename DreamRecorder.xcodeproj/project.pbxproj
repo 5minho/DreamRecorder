@@ -68,7 +68,6 @@
 		5A8830C51F541A6000461AF6 /* AlarmDataStoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A8830C41F541A6000461AF6 /* AlarmDataStoreTests.swift */; };
 		5A9BEBD51F3AEA480054EA6D /* NaverSpeech.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5A9BEBD41F3AEA480054EA6D /* NaverSpeech.framework */; };
 		5A9BEBD61F3AEA480054EA6D /* NaverSpeech.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 5A9BEBD41F3AEA480054EA6D /* NaverSpeech.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		5A9CE3081F49A2A700F0E5C5 /* DreamCacheManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A9CE3071F49A2A700F0E5C5 /* DreamCacheManager.swift */; };
 		5AC1D8651F4957C0008BE17F /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 5AC1D8671F4957C0008BE17F /* Localizable.strings */; };
 		5ACA0DAC1F42DC3C00176147 /* RecordButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5ACA0DAB1F42DC3C00176147 /* RecordButton.swift */; };
 		5AD09F181F34686A007BCA09 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5AD09F161F34686A007BCA09 /* LaunchScreen.storyboard */; };
@@ -161,7 +160,6 @@
 		5A8830C21F541A4E00461AF6 /* AlarmSchedulerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AlarmSchedulerTests.swift; sourceTree = "<group>"; };
 		5A8830C41F541A6000461AF6 /* AlarmDataStoreTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AlarmDataStoreTests.swift; sourceTree = "<group>"; };
 		5A9BEBD41F3AEA480054EA6D /* NaverSpeech.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = NaverSpeech.framework; sourceTree = "<group>"; };
-		5A9CE3071F49A2A700F0E5C5 /* DreamCacheManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DreamCacheManager.swift; sourceTree = "<group>"; };
 		5AC1D8611F49578F008BE17F /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/LaunchScreen.strings; sourceTree = "<group>"; };
 		5AC1D8631F4957A1008BE17F /* ko */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ko; path = ko.lproj/LaunchScreen.strings; sourceTree = "<group>"; };
 		5AC1D8661F4957C0008BE17F /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Base; path = Base.lproj/Localizable.strings; sourceTree = "<group>"; };
@@ -274,7 +272,6 @@
 				5A85089A1F45651900E2ED7F /* ThemeAppliable.swift */,
 				5A07FE321F43893200C65037 /* DreamDeletable.swift */,
 				5A78D9101F42BDE400D1E679 /* DreamDataStore.swift */,
-				5A9CE3071F49A2A700F0E5C5 /* DreamCacheManager.swift */,
 				5A85089E1F45656E00E2ED7F /* SoundManager.swift */,
 				5A78D8F91F42BDD900D1E679 /* AlarmScheduler.swift */,
 				5A78D8FA1F42BDD900D1E679 /* AppDelegate.swift */,
@@ -572,7 +569,6 @@
 				5A8508971F4521E300E2ED7F /* CellExpandAnimator.swift in Sources */,
 				5A78D9041F42BDD900D1E679 /* AlarmListCell.swift in Sources */,
 				5A78D8FF1F42BDD900D1E679 /* AlarmAddViewController.swift in Sources */,
-				5A9CE3081F49A2A700F0E5C5 /* DreamCacheManager.swift in Sources */,
 				5A78D9271F42BDE400D1E679 /* SpeechDreamViewController.swift in Sources */,
 				5A2D88501F4A95D900215163 /* DatePickerViewController.swift in Sources */,
 				5A78D9261F42BDE400D1E679 /* MultiButton.swift in Sources */,
