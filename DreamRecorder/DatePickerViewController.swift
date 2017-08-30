@@ -65,7 +65,10 @@ class DatePickerViewController : UIViewController {
     
     private func setButtonsLabel() {
         
+        self.cancelButton.setTitle("Cancel".localized, for: .normal)
         self.cancelButton.backgroundColor = UIColor.dreamBackgroundColor
+        
+        self.okButton.setTitle("Ok".localized, for: .normal)
         self.okButton.backgroundColor = UIColor.dreamBackgroundColor
         
     }

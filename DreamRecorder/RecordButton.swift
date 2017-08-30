@@ -39,9 +39,11 @@ class RecordButton : UIButton {
             
         case .recording:
             self.startAnimation(to: self.frame.width / 2, from: 0)
-
+            self.setTitle("Stop".localized, for: .normal)
+            
         case .idle:
             self.startAnimation(to: 0, from: self.frame.width / 2)
+            self.setTitle("Record".localized, for: .normal)
         }
         
     }

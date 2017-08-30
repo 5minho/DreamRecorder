@@ -65,18 +65,21 @@ class SettingItemListViewController: UITableViewController {
 }
 
 struct UserLangauge {
-    static let names = ["Korean", "Japanese", "English"]
+    static let names = ["Korean".localized, "Japanese".localized, "English".localized]
 }
 
 extension Notification.Name {
+    
     static let DreamRecorderFontDidChange = Notification.Name("DreamRecorderFontDidChange")
     static let DreamRecorderLanguageDidChange = Notification.Name("DreamRecorderLanguageDidChange")
+    
 }
 
 class LanguageListViewController: SettingItemListViewController, SettingItemListViewControllerDelegate {
     
     var items: [String] = UserLangauge.names
-    var currentItem: String? = UserLangauge.names[safe: UserDefaults.standard.integer(forKey: Key.speechLangaugeKey)] ?? "Korean"
+    
+    var currentItem: String? = UserLangauge.names[safe: UserDefaults.standard.integer(forKey: Key.speechLangaugeKey)] ?? "Korean".localized
     
     override func viewDidLoad() {
         super.viewDidLoad()

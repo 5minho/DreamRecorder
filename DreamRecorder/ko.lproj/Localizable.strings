@@ -15,6 +15,7 @@
 "Save" = "저장";
 "No title" = "제목 없음";
 "Cancel" = "취소";
+"Ok" = "확인";
 "Recognize..." = "음성인식 중...";
 "end recognize" = "음성인식 완료";
 
@@ -39,6 +40,18 @@
 "Repeat every day." = "매일 반복";
 "Repeat." = "반복 요일";
 
+
+"Record" = "녹음";
+"Stop" = "멈춤";
+  
+"Dream Title" = "꿈 제목";
+"Enter a dream title" = "꿈 제목을 입력해 주세요";
+
+"The microphone will turn off after %d sconds" = "%d초 후에 알람이 종료됩니다.";
+
+"New Dream" = "새 꿈";
+
+
 // - Setting.
 "Setting" = "설정";
 "Language" = "언어";
@@ -49,3 +62,8 @@
 "See next alarm state." = "다음 알람창 보기.";
 "Next Alarm" = "다음 알람";
 "Stop" = "멈춤";
+
+//language
+"Korean" = "한국어";
+"Japanese" = "일본어";
+"English" = "영어";

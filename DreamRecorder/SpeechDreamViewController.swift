@@ -21,6 +21,7 @@ class SpeechDreamViewController : UIViewController {
     
     fileprivate var previousText : String = ""
     fileprivate var defaultText : String = ""
+    
     fileprivate var equalCount = 0
     
     fileprivate let speechRecognizer : NSKRecognizer
@@ -41,6 +42,7 @@ class SpeechDreamViewController : UIViewController {
         })
     
         todayLabel.text = DateParser().detail(from: Date())
+        recordButton.setTitle("Record".localized, for: .normal)
         
         setContentFieldLayer()
         self.applyThemeIfViewDidLoad()

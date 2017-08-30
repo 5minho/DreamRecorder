@@ -10,7 +10,6 @@ import UIKit
 import AVFoundation
 import NaverSpeech
 
-
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
@@ -98,8 +97,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
         
 
+       
+        
         // - Set Dream.
+        
         DreamDataStore.shared.createTable()
+        findUserLanguage()
         
         if let firstDayOfCurrentMonth = DateParser().firstDayOfMonth(date: Date()) {
             DreamDataStore.shared.select(period: (firstDayOfCurrentMonth, Date()))
@@ -132,7 +135,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 self.presentAlarmAlertViewController(withAlertAlarm: nextAlarm)
             } else {
                 /// Snooze알람이 울릴 때 앱을 실행.
-                
             }
         }
     }
@@ -145,6 +147,25 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
         AlarmScheduler.shared.createAlertNotificationForAppWillTerminate()
         AlarmScheduler.shared.duplicateNotificationForNextAlarm()
+    }
+    
+    func findUserLanguage () {
+        
+        if let language = Bundle.main.preferredLocalizations.first {
+            
+            switch language {
+                
+            case "ko":
+                UserDefaults.standard.set(0, forKey: Key.speechLangaugeKey)
+            case "ja":
+                UserDefaults.standard.set(1, forKey: Key.speechLangaugeKey)
+            case "en":
+                UserDefaults.standard.set(2, forKey: Key.speechLangaugeKey)
+            default :
+                UserDefaults.standard.set(0, forKey: Key.speechLangaugeKey)
+                
+            }
+        }
     }
 }
 

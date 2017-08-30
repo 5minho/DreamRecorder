@@ -4,6 +4,7 @@
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
+        <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12089"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -46,14 +47,12 @@
                             </datePicker>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="uRv-WR-zL6">
                                 <rect key="frame" x="160" y="450" width="160" height="30"/>
-                                <state key="normal" title="Ok"/>
                                 <connections>
                                     <action selector="touchUpOkButton:" destination="ZdA-nH-424" eventType="touchUpInside" id="oGe-S7-LIp"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="WUb-Iw-5Hx">
                                 <rect key="frame" x="0.0" y="450" width="160" height="30"/>
-                                <state key="normal" title="Cancel"/>
                                 <connections>
                                     <action selector="touchUpCancelButton:" destination="ZdA-nH-424" eventType="touchUpInside" id="85D-ze-fPj"/>
                                 </connections>

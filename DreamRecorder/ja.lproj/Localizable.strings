@@ -6,7 +6,7 @@
   Copyright © 2017년 BoostCamp. All rights reserved.
 */
 
-"Dream" = "Dream";
+"Dream" = "夢";
 "Dreams" = "夢リスト";
 "title" = "タイトル";
 "please enter a title" = "タイトルを入力するよ";
@@ -28,10 +28,10 @@
 "Label" = "ラベル";
 "Sound" = "音";
 "Snooze" = "スヌーズ";
-"This alarm is not active." = "This alarm is not active";
-"Do you want to activate this alarm?" = "수정된 알람을 활성화 시키겠습니까?";
-"Unknown title" = "Unknown title";
-"Swipe To Dismiss" = "Swipe";
+"This alarm is not active." = "このアラームはアクティブではありません";
+"Do you want to activate this alarm?" = "このアラームを有効にしますか";
+"Unknown title" = "不明なタイトル";
+"Swipe To Dismiss" = "スワイプして消える";
 
 "Once." = "一度";
 "Repeat Weekday." = "平日 繰り返す";
@@ -46,6 +46,13 @@
 "Notification Privacy" = "アラーム 設定";
 
 // - QuickAction.
-"See next alarm state." = "See next alarm state.";
-"Next Alarm" = "Next Alarm";
-"Stop" = "Stop";
+"See next alarm state." = "次のアラーム状態を参照してください";
+"Next Alarm" = "次のアラーム";
+"Stop" = "やめる";
+
+//language
+"Korean" = "韓国語";
+"Japanese" = "日本語";
+"English" = "英語";
+
+
