@@ -18,6 +18,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     private struct ShortcutItemType {
         static let nextAlarm = "com.boostCamp.ios.DreamRecorder.nextAlarm"
+        static let addDream = "com.boostCamp.ios.DreamRecorder.addDream"
     }
     
     func application(_ application: UIApplication, performActionFor shortcutItem: UIApplicationShortcutItem, completionHandler: @escaping (Bool) -> Void) {
@@ -33,6 +34,23 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                     completionHandler(true)
                 }
             })
+        } else {
+            if let addDreamNavicationController = AddDreamNavigationController.storyboardInstance() {
+                
+                DispatchQueue.main.async {
+                    
+                    var lastViewController: UIViewController? = self.window?.rootViewController
+                    
+                    while lastViewController?.presentedViewController != nil {
+                        lastViewController = lastViewController?.presentedViewController
+                    }
+                    
+                    if let topViewController = lastViewController,
+                        type(of: topViewController) != AlarmStateViewController.self {
+                        topViewController.present(addDreamNavicationController, animated: true, completion: nil)
+                    }
+                }
+            }
         }
     }
 
@@ -41,9 +59,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let alarmIcon = UIApplicationShortcutIcon(type: .alarm)
         let nextAlarmItem = UIApplicationShortcutItem(type: ShortcutItemType.nextAlarm,
                                              localizedTitle: "Next Alarm".localized,
-                                             localizedSubtitle: "See next alarm state.".localized,
+                                             localizedSubtitle: nil,
                                              icon: alarmIcon, userInfo: nil)
-        UIApplication.shared.shortcutItems = [nextAlarmItem]
+        
+        let dreamIcon = UIApplicationShortcutIcon(type: .compose)
+        let addDreamItem = UIApplicationShortcutItem(type: ShortcutItemType.addDream,
+                                                     localizedTitle: "Add Dream".localized,
+                                                     localizedSubtitle: nil,
+                                                     icon: dreamIcon,
+                                                     userInfo: nil)
+        
+        UIApplication.shared.shortcutItems = [nextAlarmItem, addDreamItem]
 
         // Apply Theme.
         UIBarButtonItem.appearance().setTitleTextAttributes([NSForegroundColorAttributeName : UIColor.defaultButtonTitleColor], for: .normal)
