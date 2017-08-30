@@ -42,7 +42,7 @@ class DreamListViewController : UIViewController {
                 
                 DreamDataStore.shared.select(period: self.currentDatePeriod)
                 
-                DispatchQueue.main.async {
+                DispatchQueue.main.async { [unowned self] in
                     self.tableView.reloadData()
                 }
                 
