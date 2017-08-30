@@ -90,10 +90,10 @@ class AlarmAlertViewController: UIViewController {
         
         self.alarmNameLabel.text = self.alertAlarm?.name
         self.alarmNameLabel.font = UIFont.title1
-        self.alarmNameLabel.textColor = UIColor.alarmDarkText
+        self.alarmNameLabel.textColor = UIColor.dreamTextColor1
         
         self.leftTimeLabel.font = UIFont.title3
-        self.leftTimeLabel.textColor = UIColor.alarmLightText
+        self.leftTimeLabel.textColor = UIColor.dreamTextColor2
         
         self.snoozeButton.backgroundColor = UIColor.dreamBackgroundColor
         self.snoozeButton.setTitleColor(UIColor.dreamTextColor2, for: .normal)
