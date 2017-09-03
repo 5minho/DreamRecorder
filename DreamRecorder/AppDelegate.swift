@@ -100,13 +100,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
        
         
         // - Set Dream.
+        let dreamDataStore = DreamDataStore.shared
         
-        DreamDataStore.shared.createTable()
+        if dreamDataStore.createTable() {
+            dreamDataStore.select(limit: 30)
+        }
+        
         findUserLanguage()
         
-        if let firstDayOfCurrentMonth = DateParser().firstDayOfMonth(date: Date()) {
-            DreamDataStore.shared.select(period: (firstDayOfCurrentMonth, Date()))
-        }
+        
+        
+        
         
         /// SoundManagerAlarmPlayerDidStart 노티피케이션을 등록한다. (SoundManager -> AppDelegate(for UI))
         /// 만약 알람이 울리면 AppDelegate는 최상위 뷰(현재 보여지고 있는 창)에 AlertingViewController를 띄운다.
@@ -149,7 +153,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         AlarmScheduler.shared.duplicateNotificationForNextAlarm()
     }
     
-    func findUserLanguage () {
+    private func findUserLanguage () {
         
         if let language = Bundle.main.preferredLocalizations.first {
             
