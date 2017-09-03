@@ -284,7 +284,7 @@ extension DreamListViewController : UITableViewDelegate, UITableViewDataSource, 
     
     // MARK: - Table view dataSource
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return  self.isFiltering() ? DreamDataStore.shared.filteredDreams.count : DreamDataStore.shared.count
+        return  self.isFiltering() ? DreamDataStore.shared.filteredDreams.count : DreamDataStore.shared.dreams.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
