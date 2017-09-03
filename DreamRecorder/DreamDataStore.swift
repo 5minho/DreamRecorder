@@ -29,26 +29,11 @@ class DreamDataStore {
     
     let dbManager = DBManager.shared
     
-    struct DreamTable {
-        
-        static let table = Table("Dreams")
-        
-        struct Column {
-            
-            static let id = Expression<Int64>("id")
-            static let title = Expression<String?>("title")
-            static let content = Expression<String?>("content")
-            static let createdDate = Expression<Date>("createdDate")
-            
-        }
-        
-    }
-    
-    private let dreamTable = DreamTable.table
-    private let id = DreamTable.Column.id
-    private let title = DreamTable.Column.title
-    private let content = DreamTable.Column.content
-    private let createdDate = DreamTable.Column.createdDate
+    private let dreamTable = Table("Dreams")
+    private let id = Expression<Int64>("id")
+    private let title = Expression<String?>("title")
+    private let content = Expression<String?>("content")
+    private let createdDate = Expression<Date>("createdDate")
     
     func createTable() -> Bool {
         
@@ -56,10 +41,10 @@ class DreamDataStore {
             
             try dbManager.db.run(dreamTable.create(ifNotExists: true) { table in
                 
-                table.column(DreamTable.Column.id, primaryKey: .autoincrement)
-                table.column(DreamTable.Column.title)
-                table.column(DreamTable.Column.content)
-                table.column(DreamTable.Column.createdDate)
+                table.column(id, primaryKey: .autoincrement)
+                table.column(title)
+                table.column(content)
+                table.column(createdDate)
                 
             })
             
@@ -87,9 +72,9 @@ class DreamDataStore {
         let fromDate = Expression<Date>(value: tmpPeriod.from)
         let toDate = Expression<Date>(value: nextDate)
         
-        let rowsResult = dbManager.selectAll(query: DreamTable.table.filter(DreamTable.Column.createdDate >= fromDate
-            && DreamTable.Column.createdDate <= toDate)
-            .order(DreamTable.Column.createdDate.desc))
+        let rowsResult = dbManager.selectAll(query: dreamTable.filter(createdDate >= fromDate
+            && createdDate <= toDate)
+            .order(createdDate.desc))
         
         dreams = []
         
@@ -99,10 +84,10 @@ class DreamDataStore {
             
             rows.forEach({
                 
-                let id = $0.get(DreamTable.Column.id)
-                let title = $0.get(DreamTable.Column.title)
-                let content = $0.get(DreamTable.Column.content)
-                let createdDate = $0.get(DreamTable.Column.createdDate)
+                let id = $0.get(self.id)
+                let title = $0.get(self.title)
+                let content = $0.get(self.content)
+                let createdDate = $0.get(self.createdDate)
                 
                 let dream = Dream(id: id,title: title, content: content, createdDate: createdDate)
                 dreams.append(dream)
@@ -142,11 +127,11 @@ class DreamDataStore {
     
     @discardableResult func insert(dream: Dream) -> RowResult {
         
-        let insert = DreamTable.table.insert (
+        let insert = dreamTable.insert (
 
-            DreamTable.Column.title <- dream.title,
-            DreamTable.Column.content <- dream.content,
-            DreamTable.Column.createdDate <- dream.createdDate
+            title <- dream.title,
+            content <- dream.content,
+            createdDate <- dream.createdDate
             
         )
 
@@ -169,12 +154,12 @@ class DreamDataStore {
     
     @discardableResult func update(dream: Dream) -> RowResult {
         
-        let updateRow = DreamTable.table.filter(DreamTable.Column.id == dream.id)
+        let updateRow = dreamTable.filter(id == dream.id)
         
         let result = self.dbManager.updateRow(update: updateRow.update(
             
-            DreamTable.Column.title <- dream.title,
-            DreamTable.Column.content <- dream.content
+            title <- dream.title,
+            content <- dream.content
             
             )
         )
@@ -201,7 +186,7 @@ class DreamDataStore {
     
     @discardableResult func delete(dream: Dream) -> RowResult {
         
-        let deletingRow = DreamTable.table.filter(DreamTable.Column.id == dream.id)
+        let deletingRow = dreamTable.filter(id == dream.id)
         let result = self.dbManager.deleteRow(delete: deletingRow.delete())
         
         switch result {
@@ -233,9 +218,9 @@ class DreamDataStore {
     
     func filter(_ searchText : String) {
         
-        let filterResult = dbManager.filterRow(query: DreamTable.table.filter(
-            DreamTable.Column.title.like("%\(searchText)%") ||
-            DreamTable.Column.content.like("%\(searchText)%")
+        let filterResult = dbManager.filterRow(query: dreamTable.filter(
+            title.like("%\(searchText)%") ||
+            content.like("%\(searchText)%")
             )
         )
 
@@ -246,10 +231,10 @@ class DreamDataStore {
         case let .success(rows):
             
             rows.forEach({
-                let id = $0.get(DreamTable.Column.id)
-                let title = $0.get(DreamTable.Column.title)
-                let content = $0.get(DreamTable.Column.content)
-                let createdDate = $0.get(DreamTable.Column.createdDate)
+                let id = $0.get(self.id)
+                let title = $0.get(self.title)
+                let content = $0.get(self.content)
+                let createdDate = $0.get(self.createdDate)
                 
                 let dream = Dream(id: id, title: title, content: content, createdDate: createdDate)
                 filteredDreams.append(dream)
@@ -266,7 +251,7 @@ class DreamDataStore {
         
         do {
             
-            let minDate = try dbManager.db.scalar(DreamTable.table.select(DreamTable.Column.createdDate.min))
+            let minDate = try dbManager.db.scalar(dreamTable.select(createdDate.min))
             return minDate
             
         } catch {
@@ -282,7 +267,7 @@ class DreamDataStore {
         
         do {
             
-            let maxDate = try dbManager.db.scalar(DreamTable.table.select(DreamTable.Column.createdDate.max))
+            let maxDate = try dbManager.db.scalar(dreamTable.select(createdDate.max))
             return maxDate
             
         } catch {
@@ -295,7 +280,7 @@ class DreamDataStore {
     }
     
     func dropTable() {
-        try? dbManager.db.run(DreamTable.table.drop())
+        try? dbManager.db.run(dreamTable.drop())
     }
 
 }
