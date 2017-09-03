@@ -15,6 +15,7 @@ extension Notification.Name {
     static let DreamDataStoreDidAddDream = Notification.Name("DreamDataStoreDidAddDream")
     static let DreamDataStoreDidDeleteDream = Notification.Name("DreamDataStoreDidDeleteDream")
     static let DreamDataStoreDidUpdateDream = Notification.Name("DreamDataStoreDidUpdateDream")
+    
 }
 
 class DreamDataStore {
@@ -23,14 +24,8 @@ class DreamDataStore {
     
     private init() {}
     
-//    private var cacheManager = DreamCacheManager()
-    
     var dreams : [Dream] = []
     var filteredDreams : [Dream] = []
-    
-    var count : Int {
-        return dreams.count
-    }
     
     let dbManager = DBManager.shared
     
@@ -44,59 +39,40 @@ class DreamDataStore {
             static let title = Expression<String?>("title")
             static let content = Expression<String?>("content")
             static let createdDate = Expression<Date>("createdDate")
-            static let modifiedDate = Expression<Date?>("modifiedDate")
             
         }
         
     }
     
-    struct Virtual {
+    private let dreamTable = DreamTable.table
+    private let id = DreamTable.Column.id
+    private let title = DreamTable.Column.title
+    private let content = DreamTable.Column.content
+    private let createdDate = DreamTable.Column.createdDate
+    
+    func createTable() -> Bool {
         
-        static let table = VirtualTable("VDreams")
-        
-        struct Column {
+        do {
             
-            static let id = Expression<Int64>("id")
-            static let title = Expression<String?>("title")
-            static let content = Expression<String?>("content")
-            static let createdDate = Expression<Date>("createdDate")
-            static let modifiedDate = Expression<Date?>("modifiedDate")
+            try dbManager.db.run(dreamTable.create(ifNotExists: true) { table in
+                
+                table.column(DreamTable.Column.id, primaryKey: .autoincrement)
+                table.column(DreamTable.Column.title)
+                table.column(DreamTable.Column.content)
+                table.column(DreamTable.Column.createdDate)
+                
+            })
             
+            return true
+            
+        } catch {
+            NSLog("Create Table Fail")
+            return false
         }
         
     }
-
-    @discardableResult func createTable() -> TableResult {
-        
-        let createTableResult = self.dbManager.createTable(statement: DreamTable.table.create(ifNotExists: true) { table in
-            table.column(DreamTable.Column.id, primaryKey: .autoincrement)
-            table.column(DreamTable.Column.title)
-            table.column(DreamTable.Column.content)
-            table.column(DreamTable.Column.createdDate)
-            table.column(DreamTable.Column.modifiedDate)
-        })
-        
-        let config = FTS4Config()
-            .column(Virtual.Column.id, [.unindexed])
-            .column(Virtual.Column.title)
-            .column(Virtual.Column.content)
-            .column(Virtual.Column.createdDate, [.unindexed])
-            .column(Virtual.Column.modifiedDate, [.unindexed])
-        
-        let _ = self.dbManager.createTable(statement: Virtual.table.create(.FTS4(config)))
-        
-        switch createTableResult {
-            
-        case .success:
-            print("Table Created")
-        case .failure(_):
-            print("error")
-            
-        }
-        
-        return createTableResult
-        
-    }
+    
+    
     
     func select(period : (from: Date, to: Date)) {
 
@@ -127,43 +103,40 @@ class DreamDataStore {
                 let title = $0.get(DreamTable.Column.title)
                 let content = $0.get(DreamTable.Column.content)
                 let createdDate = $0.get(DreamTable.Column.createdDate)
-                let modifiedDate = $0.get(DreamTable.Column.modifiedDate)
                 
-                let dream = Dream(id: id,title: title, content: content, createdDate: createdDate, modifiedDate: modifiedDate)
+                let dream = Dream(id: id,title: title, content: content, createdDate: createdDate)
                 dreams.append(dream)
             })
             
         case let .failure(error) :
             print(error)
         }
-        }
+    }
     
-    @discardableResult func selectAll() -> RowsResult {
+    func select(limit: Int) {
         
-        let rowsResult = dbManager.selectAll(query: DreamTable.table.order(DreamTable.Column.createdDate.desc))
+        self.dreams = [Dream]()
         
-        switch rowsResult {
-            
-        case let .success(rows):
-            
-            rows.forEach({
-                let id = $0.get(DreamTable.Column.id)
-                let title = $0.get(DreamTable.Column.title)
-                let content = $0.get(DreamTable.Column.content)
-                let createdDate = $0.get(DreamTable.Column.createdDate)
-                let modifiedDate = $0.get(DreamTable.Column.modifiedDate)
+        let query = dreamTable
+            .select(id, title, content, createdDate)
+            .order(createdDate.desc)
+            .limit(limit)
+        
+        do {
+            for row in try dbManager.db.prepare(query) {
                 
-                let dream = Dream(id: id, title: title, content: content, createdDate: createdDate, modifiedDate: modifiedDate)
-                if self.dreams.index(of: dream) == nil {
-                    dreams.append(dream)
-                }
-            })
-            
-        case let .failure(error):
-            print(error)
+                let dream = Dream(id: row[id],
+                                  title: row[title],
+                                  content: row[content],
+                                  createdDate: row[createdDate])
+                
+                dreams.append(dream)
+                
+            }
+        } catch {
+            NSLog("Dream select query fail")
         }
-        
-        return rowsResult
+
     }
 
     
@@ -173,23 +146,11 @@ class DreamDataStore {
 
             DreamTable.Column.title <- dream.title,
             DreamTable.Column.content <- dream.content,
-            DreamTable.Column.createdDate <- dream.createdDate,
-            DreamTable.Column.modifiedDate <- dream.modifiedDate
+            DreamTable.Column.createdDate <- dream.createdDate
             
         )
-        
-        let insertAtVitualTable = Virtual.table.insert (
-            
-            Virtual.Column.id <- dream.id,
-            Virtual.Column.title <- dream.title,
-            Virtual.Column.content <- dream.content,
-            Virtual.Column.createdDate <- dream.createdDate,
-            Virtual.Column.modifiedDate <- dream.modifiedDate
-            
-        )
-        
+
         let result = dbManager.insertRow(insert: insert)
-        let _ = dbManager.insertRow(insert: insertAtVitualTable)
         
         switch result {
             
@@ -213,20 +174,11 @@ class DreamDataStore {
         let result = self.dbManager.updateRow(update: updateRow.update(
             
             DreamTable.Column.title <- dream.title,
-            DreamTable.Column.content <- dream.content,
-            DreamTable.Column.modifiedDate <- dream.modifiedDate
+            DreamTable.Column.content <- dream.content
             
             )
         )
         
-//        dbManager.updateRow(update: updateRow.update(
-//            Virtual.Column.id <- dream.id
-//            Virtual.Column.title <- dream.title,
-//            Virtual.Column.content <- dream.content,
-//            Virtual.Column.
-//            DreamTable.Column.modifiedDate <- dream.modifiedDate
-//        )
-//        )
         
         switch result {
             
@@ -298,9 +250,8 @@ class DreamDataStore {
                 let title = $0.get(DreamTable.Column.title)
                 let content = $0.get(DreamTable.Column.content)
                 let createdDate = $0.get(DreamTable.Column.createdDate)
-                let modifiedDate = $0.get(DreamTable.Column.modifiedDate)
                 
-                let dream = Dream(id: id, title: title, content: content, createdDate: createdDate, modifiedDate: modifiedDate)
+                let dream = Dream(id: id, title: title, content: content, createdDate: createdDate)
                 filteredDreams.append(dream)
             })
             
@@ -311,36 +262,6 @@ class DreamDataStore {
 
     }
 
-    func ftsFilter(_ searchText : String) {
-        
-            filteredDreams = []
-    
-            let searchQuery: QueryType = Virtual.table.match(searchText + "*")
-    
-            let filterResult = dbManager.selectAll(query: searchQuery)
-    
-            switch filterResult {
-    
-            case let .success(rows):
-    
-                rows.forEach({
-    
-                    let id = $0.get(Virtual.Column.id)
-                    let title = $0.get(Virtual.Column.title)
-                    let content = $0.get(Virtual.Column.content)
-                    let createdDate = $0.get(DreamTable.Column.createdDate)
-                    let modifiedDate = $0.get(DreamTable.Column.modifiedDate)
-    
-                    let dream = Dream(id: id, title: title, content: content, createdDate: createdDate, modifiedDate: modifiedDate)
-                    filteredDreams.append(dream)
-                    
-                })
-                
-            case .failure(_):
-                print("fail")
-                
-            }
-    }
     func minimumDate() -> Date? {
         
         do {
@@ -376,9 +297,5 @@ class DreamDataStore {
     func dropTable() {
         try? dbManager.db.run(DreamTable.table.drop())
     }
-    
-    func dropVitualTable() {
-        try? dbManager.db.run(Virtual.table.drop())
-    }
-    
+
 }
