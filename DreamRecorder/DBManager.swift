@@ -29,22 +29,25 @@ enum DBError {
 }
 
 protocol DBManagerable: NSObjectProtocol {
+    
     func selectAll(query: QueryType) -> RowsResult
     func createTable(statement: String) -> TableResult
     func insertRow(insert: Insert) -> RowResult
     func updateRow(update: Update) -> RowResult
     func deleteRow(delete: Delete) -> RowResult
+    
 }
 
 class DBManager: NSObject, DBManagerable {
     
     static var shared: DBManager = DBManager()
     
-    let db: Connection = {
+    let db : Connection = {
+        
         let url = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
         let db = try! Connection("\(url.path)/db.sqlite3")
-        print("\(url.path)/db.sqlite3")
         return db
+        
     }()
     
     // Select
@@ -102,6 +105,7 @@ class DBManager: NSObject, DBManagerable {
     func deleteRow(delete: Delete) -> RowResult {
         do {
             let rowID = try self.db.run(delete)
+            
             return .success(rowID)
         } catch {
             print(error)
