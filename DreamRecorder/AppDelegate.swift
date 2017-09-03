@@ -83,7 +83,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let audioSession = AVAudioSession.sharedInstance()
         
         do {
-            try audioSession.setCategory(AVAudioSessionCategoryPlayAndRecord, with: .mixWithOthers)
+            try audioSession.setCategory(AVAudioSessionCategoryMultiRoute, with: .mixWithOthers)
             try audioSession.setActive(true)
         } catch {
         }

@@ -41,6 +41,7 @@
 "This alarm is not active." = "This alarm is not active.";
 "Do you want to activate this alarm?" = "Do you want to activate this alarm?";
 "OK" = "OK";
+
 "The microphone will turn off after %d seconds" = "The microphone will turn off after %d seconds";
 "Pick a song" =  "Pick a song";
 "Swipe up or down to select custom action." = "Swipe up or down to select custom action.";

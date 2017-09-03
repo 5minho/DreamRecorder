@@ -19,22 +19,26 @@ class AlarmListViewController: UIViewController {
         return AlarmDataStore.shared
     }
     fileprivate let dateParser: DateParser = DateParser()
-    /// default is true. it will set false to block reload table from AlarmDataStoreDidChange notification.
-    /// UI(addController, editController, deleteAction)등을 통해 사용자 컨트롤로 일어나는 변화는 직접 해당 row만 변경을 위해
-    /// AlarmDataStoreDidChange가 불려도 UITableView를 reload하지 않게 한다.
+    /// 기본값은 True이다. AlarmDataStoreDidChange의 노티피케이션을 받았을 때 UITableView를 리로드하고 싶지 않을 때 false로 설정될 수 있다.
+    ///
+    /// 콘트롤러를 통해 add, edit을 하거나 action을 통해 delete하게 되는 경우에는 스스로 index를 찾아서 데이터를 추가, 수정, 삭제하기 때문에
+    /// 굳이 AlarmDataStore에서 변경을 마치고 알려주는 DidChange를 통해 다시 리로드 할 필요없다는 것을 명시적으로 알려준다.
     fileprivate var shouldReloadTable: Bool = true
     
-    /// Capture temporary selected cell and label for custom transitioning.
+    /// 선택된 셀과 셀의 레이블을 커스텀 애니메이션을 위해 프로퍼티로 잡고 있는다.
     fileprivate var selectedCell: AlarmListCell?
     fileprivate var selectedCellLabel: UILabel?
     
     // MARK: - Actions.
     // - NavigationItem.
+    /// 알람 편집 버튼 클릭.
     func leftBarButtonDidTap(sender: UIBarButtonItem) {
         self.tableView.setEditing(!self.tableView.isEditing, animated: true)
     }
     
+    /// 알람 추가 버튼 클릭.
     func rightBarButtonDidTap(sender: UIBarButtonItem) {
+        
         guard let alarmAddViewController = AlarmAddViewController.storyboardInstance() else { return }
         let navigationController = UINavigationController(rootViewController: alarmAddViewController)
         
@@ -56,42 +60,42 @@ class AlarmListViewController: UIViewController {
         self.tableView.estimatedRowHeight = 90
         self.tableView.allowsSelectionDuringEditing = true
         
-        let leftBarButton = UIBarButtonItem(title: BarButtonText.edit,
+        let leftBarButton = UIBarButtonItem(title: "Edit".localized,
                                             style: .plain,
                                             target: self,
                                             action: #selector(self.leftBarButtonDidTap(sender:)))
-        
         let rightBarButton = UIBarButtonItem(barButtonSystemItem: .add,
                                              target: self,
                                              action: #selector(self.rightBarButtonDidTap(sender:)))
-        
         self.navigationItem.setLeftBarButton(leftBarButton, animated: true)
         self.navigationItem.setRightBarButton(rightBarButton, animated: true)
         
-        self.title = NavigationTitle.alarm
+        self.title = "Alarm".localized
         
+        /// UITableViewCell에 Pick & Pop을 구현하기위헤 Previewing을 등록한다.
         self.registerForPreviewing(with: self, sourceView: self.view)
         
-        NotificationCenter.default.addObserver(self,
-                                               selector: #selector(self.handleAlarmDataStoreDidChange),
-                                               name: .AlarmDataStoreDidChange,
-                                               object: nil)
-        NotificationCenter.default.addObserver(forName: .UIContentSizeCategoryDidChange,
-                                               object: nil,
-                                               queue: OperationQueue.main)
-        { _ in
-            DispatchQueue.main.async {
-                self.tableView.isHidden = true
-                CustomFont.current.reloadFont()
-                self.tableView.reloadData()
-                self.tableView.isHidden = false
-            }
-        }
-        
-        NotificationCenter.default.addObserver(forName: Notification.Name.DreamRecorderFontDidChange,
+        /// 알람에 변경이 되었을 때 테이블뷰를 업데이트하기위해 노티피케이션을 구독한다.
+        NotificationCenter.default.addObserver(forName: .AlarmDataStoreDidChange,
                                                object: nil,
                                                queue: .main)
         { (_) in
+            /// AlarmListViewController가 알고 있지 않은 변화가 생겼을 때는 UITableView를 리로드한다.
+            if self.shouldReloadTable {
+                OperationQueue.main.addOperation {
+                    self.tableView.reloadSections(IndexSet(integer: .allZeros), with: .automatic)
+                }
+            }
+            /// AlarmListViewController가 알고 있는 변화의 경우 호출되더라도 이후에는 다시 호출될 수 있으므로 shouldReloadTable을 true로 변경한다.
+            self.shouldReloadTable = true
+        }
+        
+        /// DreamRecorder 설정페이지 에서 제공하는 폰트를 변경 노티피케이션을 구독한다.
+        NotificationCenter.default.addObserver(forName: .DreamRecorderFontDidChange,
+                                               object: nil,
+                                               queue: .main)
+        { (_) in
+            /// 폰트가 바뀌었을 때 테이블뷰를 리로드한다.
             self.tableView.reloadData()
         }
         
@@ -99,20 +103,8 @@ class AlarmListViewController: UIViewController {
     
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
-        
+        /// 편집모드중에 탭이동, 추가버튼을 눌렀을 때는 편집모드를 종료한다.
         self.tableView.setEditing(false, animated: true)
-    }
-    
-    // MARK: - Notification Handler.
-    func handleAlarmDataStoreDidChange(sender: Notification){
-        
-        if self.shouldReloadTable {
-            
-            OperationQueue.main.addOperation {
-                self.tableView.reloadSections(IndexSet(integer: .allZeros), with: .automatic)
-            }
-        }
-        self.shouldReloadTable = true
     }
 }
 
@@ -128,7 +120,7 @@ extension AlarmListViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: Identifier.alarmListCell,
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: "AlarmListCell",
                                                        for: indexPath) as? AlarmListCell
         else {
             return UITableViewCell()
@@ -141,9 +133,10 @@ extension AlarmListViewController: UITableViewDelegate, UITableViewDataSource {
         cell.activeSwitch.isOn = alarmForRow.isActive
         cell.weekdayButton.setSelection(options: alarmForRow.weekday)
         
-        // AlarmListViewController에서는 Add, Edit페이지와는 다르게 weekdayButton에 접근할 필요가 없고
-        // Cell을 설명해줄 때 weekdayButton내용도 포함해야한다.
-        var customAccessibilityLabel = "\(cell.timeLabel.text ?? ""),"
+        /// AlarmListViewController에서는 Add, Edit페이지와는 다르게 weekdayButton에 접근할 필요가 없고
+        /// Cell을 설명해줄 때 weekdayButton내용(반복 요일)도 포함해야한다.
+        
+        var customAccessibilityLabel = "\(alarmForRow.date.dateForAlarm.descriptionForAlarmTime ?? ""),"
         customAccessibilityLabel += "\(cell.nameLabel.text ?? ""),"
         customAccessibilityLabel += "\(cell.weekdayButton.accessibilityLabel ?? "")"
         cell.accessibilityLabel = customAccessibilityLabel
@@ -152,7 +145,7 @@ extension AlarmListViewController: UITableViewDelegate, UITableViewDataSource {
         cell.activeSwitch.tag = indexPath.row
         cell.weekdayButton.setButtonsEnabled(to: false)
         
-        // Update Font If ContentSizeCategoryDidChange
+        /// Larger Font가 바뀌었을 경우를 대비해야 테이블뷰가 리로드 할때마다 폰트를 적용할 수 있게 한다.
         cell.timeLabel.font = UIFont.title1
         cell.nameLabel.font = UIFont.body
         cell.weekdayButton.setFonts(to: UIFont.caption1)
@@ -166,7 +159,8 @@ extension AlarmListViewController: UITableViewDelegate, UITableViewDataSource {
         tableView.deselectRow(at: indexPath, animated: true)
         
         if self.tableView.isEditing {
-            // UITableView isEditing.
+            /// 알람 편집 모드.
+            /// 알람을 수정할 수 있는 AlarmEditViewController를 띄운다.
             guard let alarmEditViewController = AlarmEditViewController.storyboardInstance() else { return }
             
             alarmEditViewController.alarm = self.store.alarms[indexPath.row]
@@ -177,7 +171,10 @@ extension AlarmListViewController: UITableViewDelegate, UITableViewDataSource {
             self.present(navigationController, animated: true, completion: nil)
             
         } else {
-            // UITableView not isEditing.
+            /// 알람 일반 모드.
+            /// 알람의 상태정보를 보여주는 창을 띄운다.
+            ///
+            /// 만약 해당 알람이 isActive가 false인 경우에는 알람을 활성화가 필요하다는 것을 알린다.
             guard let cell = tableView.cellForRow(at: indexPath) as? AlarmListCell else { return }
             
             self.selectedCell = cell
@@ -185,41 +182,55 @@ extension AlarmListViewController: UITableViewDelegate, UITableViewDataSource {
             
             let selectedAlarm = self.store.alarms[indexPath.row]
             
+            /// 알람이 비활성화 된 경우는 경고창을 띄운다.
             if selectedAlarm.isActive == false {
-
-                let alertController = UIAlertController.simpleAlert(title: AlartText.alarm, message: AlartText.alarmNotActive)
-
+                
+                let alertController = UIAlertController(title: "Alarm".localized,
+                                                        message: "This alarm is not active.".localized,
+                                                        preferredStyle: .alert)
+                
+                let okAction = UIAlertAction(title: "OK".localized,
+                                             style: .default)
+                {
+                    (action) in
+                    alertController.dismiss(animated: true, completion: nil)
+                }
+                
+                alertController.addAction(okAction)
+                
                 self.present(alertController, animated: true, completion: nil)
                 
+            /// 알람이 활성회 된 경우 AlarmStateViewController를 띄운다.
             } else {
                 
-                guard let alarmPlayViewController = AlarmStateViewController.storyboardInstance() else { return }
+                guard let alarmStateViewController = AlarmStateViewController.storyboardInstance() else { return }
                 
-                alarmPlayViewController.presentingDelegate = self
-                alarmPlayViewController.currentAlarm = selectedAlarm
+                alarmStateViewController.presentingDelegate = self
+                alarmStateViewController.currentAlarm = selectedAlarm
                 
-                self.present(alarmPlayViewController, animated: true, completion: nil)
+                self.present(alarmStateViewController, animated: true, completion: nil)
             }
         }
     }
     
+    /// 알람을 셀을 Swipe함으로써 제거 가능하도록 한다.
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         
         if editingStyle == .delete {
             
+            /// AlarmDataStore가 작업 후에 불리는 노티피케이션에 의해 테이블뷰가 리로드 되는 것을 방지한다.
             self.shouldReloadTable = false
             
             let deletingAlarm = self.store.alarms[indexPath.row]
             
             self.store.deleteAlarm(alarm: deletingAlarm)
             
-            // Replace reload table with deleting rows if alarm deleted.
+            /// shouldReloadTable을 false하였기때문에 명시적으로 자신이 deleteRows를 해주어야한다.
             self.tableView.deleteRows(at: [indexPath], with: .automatic)
         }
     }
     
 }
-
 extension AlarmListViewController: AlarmListCellDelegate {
     // MARK: - AlarmListCell Delegate.
     func alarmListCell(cell : AlarmListCell, activeSwitchValueChanged sender: UISwitch) {
@@ -229,24 +240,28 @@ extension AlarmListViewController: AlarmListCellDelegate {
         let updatingAlarm = self.store.alarms[sender.tag]
         updatingAlarm.isActive = sender.isOn
         
+        /// AlarmDataStore가 작업 후에 불리는 노티피케이션에 의해 테이블뷰가 리로드 되는 것을 방지한다.
         self.shouldReloadTable = false
         
         self.store.updateAlarm(alarm: updatingAlarm)
-    
+        
+        /// shouldReloadTable을 false하였기때문에 명시적으로 자신이 updateRows를 해주어야한다.
+        let updatedIndexPath = IndexPath(row: sender.tag, section: 0)
+        self.tableView.reloadRows(at: [updatedIndexPath], with: .automatic)
     }
 }
 
 extension AlarmListViewController: AlarmAddViewControllerDelegate, AlarmEditViewControllerDelegate {
     // MARK: - AlarmAddViewController Delegate.
     func alarmAddViewController(_: AlarmAddViewController, didSaveNewAlarm alarm: Alarm) {
-        
+        /// AlarmDataStore가 작업 후에 불리는 노티피케이션에 의해 테이블뷰가 리로드 되는 것을 방지한다.
         self.shouldReloadTable = false
         
+        /// 알람 시간이 변경될 수 있는 경우에는 알람 시간에서 초는 항상 제거한다.
         alarm.date = alarm.date.dateForAlarm.removingSeconds
         self.store.insertAlarm(alarm: alarm)
         
-        // Replace reload table with inserting rows if alarm added.
-        
+        /// shouldReloadTable을 false하였기때문에 명시적으로 자신이 insertRows를 해주어야한다.
         guard let index = self.store.alarms.index(of: alarm) else { return }
         let newIndexPath = IndexPath(row: index, section: 0)
         self.tableView.insertRows(at: [newIndexPath], with: .automatic)
@@ -254,18 +269,19 @@ extension AlarmListViewController: AlarmAddViewControllerDelegate, AlarmEditView
     
     // MARK: - AlarmEditViewController Delegate.
     func alarmEditViewController(_ controller: AlarmEditViewController, didSaveEditedAlarm alarm: Alarm) {
-        
+        /// AlarmDataStore가 작업 후에 불리는 노티피케이션에 의해 테이블뷰가 리로드 되는 것을 방지한다.
         self.shouldReloadTable = false
-
+        
+        /// 알람 시간이 변경될 수 있는 경우에는 알람 시간에서 초는 항상 제거한다.
         alarm.date = alarm.date.dateForAlarm.removingSeconds
         
         if alarm.isActive == false {
             
-            let alertController = UIAlertController(title: AlartText.alarmNotActive,
-                                                    message: AlartText.questionToActiveAlarm,
+            let alertController = UIAlertController(title: "Alarm".localized,
+                                                    message: "Do you want to activate this alarm?".localized,
                                                     preferredStyle: .alert)
             
-            let okAction = UIAlertAction(title: AlartText.ok,
+            let okAction = UIAlertAction(title: "OK".localized,
                                          style: .default)
             { (action) in
                 
@@ -273,20 +289,20 @@ extension AlarmListViewController: AlarmAddViewControllerDelegate, AlarmEditView
                 
                 self.store.updateAlarm(alarm: alarm)
 
-                // Replace reload table with reloading rows if alarm updated.
+                /// shouldReloadTable을 false하였기때문에 명시적으로 자신이 updateRows를 해주어야한다.
                 guard let index = self.store.alarms.index(of: alarm) else { return }
                 let editedIndexPath = IndexPath(row: index, section: 0)
                 
                 self.tableView.reloadRows(at: [editedIndexPath], with: .automatic)
             }
             
-            let cancelAction = UIAlertAction(title: AlartText.cancel,
+            let cancelAction = UIAlertAction(title: "Cancel".localized,
                                              style: .cancel)
             { (action) in
                 
                 self.store.updateAlarm(alarm: alarm)
                 
-                // Replace reload table with reloading rows if alarm updated.
+                /// shouldReloadTable을 false하였기때문에 명시적으로 자신이 updateRows를 해주어야한다.
                 guard let index = self.store.alarms.index(of: alarm) else { return }
                 let editedIndexPath = IndexPath(row: index, section: 0)
                 
@@ -302,7 +318,7 @@ extension AlarmListViewController: AlarmAddViewControllerDelegate, AlarmEditView
             
             self.store.updateAlarm(alarm: alarm)
             
-            // Replace reload table with reloading rows if alarm updated.
+            /// shouldReloadTable을 false하였기때문에 명시적으로 자신이 updateRows를 해주어야한다.
             guard let index = self.store.alarms.index(of: alarm) else { return }
             let editedIndexPath = IndexPath(row: index, section: 0)
             
@@ -317,12 +333,16 @@ extension AlarmListViewController: AlarmStateViewControllerDelegate {
         
         guard let activatedRow = self.store.alarms.index(of: alarm) else { return }
         
+        /// 알람을 활성화 시키기 위해 객체 프로퍼티를 변경한다.
         alarm.isActive = true
         
+        /// AlarmDataStore가 작업 후에 불리는 노티피케이션에 의해 테이블뷰가 리로드 되는 것을 방지한다.
         self.shouldReloadTable = false
         
+        /// AlarmDataStore에 접근하여 변경된 알람을 수정한다.
         self.store.updateAlarm(alarm: alarm)
         
+        /// shouldReloadTable을 false하였기때문에 명시적으로 자신이 updateRows를 해주어야한다.
         let activatedIndexPath = IndexPath(row: activatedRow, section: 0)
         self.tableView.reloadRows(at: [activatedIndexPath], with: .automatic)
     }
@@ -344,6 +364,7 @@ extension AlarmListViewController: AlarmStateViewControllerDelegate {
 
 extension AlarmListViewController: UIViewControllerPreviewingDelegate {
     // MARK: - UIViewControllerPreviewingDelegate.
+    /// Pick된 알람이 활성화가 되어 있을 경우에는 AlarmStateViewController를 띄운다.
     func previewingContext(_ previewingContext: UIViewControllerPreviewing, commit viewControllerToCommit: UIViewController) {
         guard let alarmStateViewController = viewControllerToCommit as? AlarmStateViewController else { return }
         guard let isActiveAlarm = alarmStateViewController.currentAlarm?.isActive else { return }
@@ -353,6 +374,7 @@ extension AlarmListViewController: UIViewControllerPreviewingDelegate {
         }
     }
     
+    /// Pick되었을 때 보여줄 AlarmStateViewController를 생성한다.
     func previewingContext(_ previewingContext: UIViewControllerPreviewing, viewControllerForLocation location: CGPoint) -> UIViewController? {
         let positionInView = self.view.convert(location, to: self.tableView)
         

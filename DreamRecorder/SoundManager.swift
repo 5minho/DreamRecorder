@@ -43,11 +43,11 @@ class SoundManager: NSObject {
         
         self.setupQueuePlayerToPlayMuteSound()
         
-        NotificationCenter.default.addObserver(forName: Notification.Name.AVAudioSessionInterruption,
+        /// AlarmSound가 AVSeesion을 사용하는데 방해(전화, 화상통화 등)를 받으면 처리한다.
+        NotificationCenter.default.addObserver(forName: .AVAudioSessionInterruption,
                                                object: nil,
                                                queue: .main)
         { (notification) in
-            /// AlarmSound가 AVSession을 사용하는데 방해(전화, 화상통화 등등)를 받으면 불린다.
             guard let userInfo = notification.userInfo,
                 let typeValue = userInfo[AVAudioSessionInterruptionTypeKey] as? UInt,
                 let interruptionType = AVAudioSessionInterruptionType(rawValue: typeValue) else {
@@ -67,6 +67,35 @@ class SoundManager: NSObject {
             }
         }
         
+        /// AVSession에서 출력루트에 변화가 생기면 처리한다.
+        NotificationCenter.default.addObserver(forName: .AVAudioSessionRouteChange,
+                                               object: nil,
+                                               queue: .main)
+        { (notification) in
+            guard let userInfo = notification.userInfo,
+                let reasonValue = userInfo[AVAudioSessionRouteChangeReasonKey] as? UInt,
+                let reason = AVAudioSessionRouteChangeReason(rawValue:reasonValue) else {
+                    return
+            }
+            switch reason {
+            case .newDeviceAvailable:
+                /// Nothing to do.
+                break
+                
+            case .oldDeviceUnavailable:
+                if let previousRoute =
+                    userInfo[AVAudioSessionRouteChangePreviousRouteKey] as? AVAudioSessionRouteDescription {
+                    for output in previousRoute.outputs where output.portType == AVAudioSessionPortHeadphones {
+                        self.queuePlayer?.play()
+                        self.alarmPlayer?.play()
+                    }
+                }
+            default:
+                break
+            }
+        }
+        
+        /// 알람 스케줄러가 다음에 울릴 알람에 변화가 생기면 처리한다.
         NotificationCenter.default.addObserver(forName: .AlarmSchedulerNextNotificationDateDidChange,
                                                object: nil,
                                                queue: .main)
@@ -100,6 +129,7 @@ class SoundManager: NSObject {
         self.queuePlayer?.actionAtItemEnd = .none
         
         self.queuePlayer?.play()
+        self.queuePlayer?.volume = 0.0
 
         NotificationCenter.default.addObserver(forName: .AVPlayerItemDidPlayToEndTime,
                                                object: self.queuePlayer?.currentItem,
@@ -131,12 +161,6 @@ class SoundManager: NSObject {
             if nextTriggerDate.compare(Date().addingTimeInterval(3)) != .orderedDescending {
                 
                 self.changeSystemVolume(to: 1)
-                
-                do {
-                    let session = AVAudioSession.sharedInstance()
-                    try? session.setCategory(AVAudioSessionCategoryPlayAndRecord, with:AVAudioSessionCategoryOptions.defaultToSpeaker)
-                    try? session.setCategory(AVAudioSessionCategoryPlayAndRecord, with:AVAudioSessionCategoryOptions.mixWithOthers)
-                }
                 
                 guard let url = self.nextAlarm?.sound.soundURL else { return }
                 

@@ -111,10 +111,13 @@ class AlarmAlertViewController: UIViewController {
         self.leftTimeLabel.isHidden = true
         
         /// ViewCycle(화면전환)이외의 AppCycle에 따른 애니메이션처리는 Notification Center를 통해 관리해주어야 한다.
-        NotificationCenter.default.addObserver(self,
-                                               selector: #selector(self.startAlarmNameLabelAnimation(withDuration:)),
-                                               name: Notification.Name.UIApplicationWillEnterForeground,
-                                               object: nil)
+        NotificationCenter.default.addObserver(forName: .UIApplicationWillEnterForeground,
+                                               object: nil,
+                                               queue: .main)
+        { _ in
+            self.startAlarmNameLabelAnimation(withDuration: 0.2)
+        }
+        
         NotificationCenter.default.addObserver(self,
                                                selector: #selector(self.cancelAlarmNameLabelAnimation),
                                                name: Notification.Name.UIApplicationWillResignActive,
