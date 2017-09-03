@@ -39,6 +39,8 @@
 "Repeat every day." = "毎日 繰り返す";
 "Repeat." = "繰り返す";
 
+"The microphone will turn off after %d seconds" = "%d秒後にマイクがオフになります。";
+
 // - Setting.
 "Setting" = "設定";
 "Language" = "言語";

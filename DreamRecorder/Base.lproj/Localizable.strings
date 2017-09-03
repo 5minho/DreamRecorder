@@ -22,40 +22,40 @@
 "Japanese" = "Japanese";
 "English" = "English";
 
-"Alarm" = "Alarm"
+"Alarm" = "Alarm";
 
-"Setting" = "Setting"
+"Setting" = "Setting";
 
-"Save" = "Save"
-"Edit" = "Edit"
-"Date" = "Date"
+"Save" = "Save";
+"Edit" = "Edit";
+"Date" = "Date";
 
-"Done" = "Done"
-"Label" = "Label"
-"Dream Title" = "Dream Title"
-"Enter a dream title" = "Enter a dream title"
+"Done" = "Done";
+"Label" = "Label";
+"Dream Title" = "Dream Title";
+"Enter a dream title" = "Enter a dream title";
 
-"New Dream" = "New Dream"
-"Error!!!" = "Error!!!"
-"Alarm" = "Alarm"
-"This alarm is not active." = "This alarm is not active."
-"Do you want to activate this alarm?" = "Do you want to activate this alarm?"
-"OK" = "OK"
-"The microphone will turn off after %d sconds" = "The microphone will turn off after %d sconds"
-"Pick a song" =  "Pick a song"
-"Swipe up or down to select custom action." = "Swipe up or down to select custom action."
+"New Dream" = "New Dream";
+"Error!!!" = "Error!!!";
+"Alarm" = "Alarm";
+"This alarm is not active." = "This alarm is not active.";
+"Do you want to activate this alarm?" = "Do you want to activate this alarm?";
+"OK" = "OK";
+"The microphone will turn off after %d seconds" = "The microphone will turn off after %d seconds";
+"Pick a song" =  "Pick a song";
+"Swipe up or down to select custom action." = "Swipe up or down to select custom action.";
 
 
-"Add Alarm" = "Add Alarm"
-"Edit Alarm" = "Edit Alarm"
-"Sound" = "Sound"
+"Add Alarm" = "Add Alarm";
+"Edit Alarm" = "Edit Alarm";
+"Sound" = "Sound";
 
-"Setting" = "Setting"
-"Delete" =  "Delete"
-"Activate" = "Activate"
+"Setting" = "Setting";
+"Delete" =  "Delete";
+"Activate" = "Activate";
 
-"Delete" = "Delete"
-"Share" = "Share"
+"Delete" = "Delete";
+"Share" = "Share";
 
-"Dream title, dream contents search" = "Dream title, dream contents search"
+"Dream title, dream contents search" = "Dream title, dream contents search";
 
