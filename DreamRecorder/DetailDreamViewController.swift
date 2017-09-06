@@ -81,8 +81,22 @@ class DetailDreamViewController : UIViewController {
         }
         
         self.applyThemeIfViewDidLoad()
+        self.setSubViewFont()
         self.setSubViewsColor()
         self.setBorderLayerColor()
+    }
+    
+    private func setSubViewFont() {
+        
+        self.titleLabel.font = UIFont.title2
+        self.titleField.font = UIFont.title3
+        
+        self.contentLabel.font = UIFont.title2
+        self.createdDateLabel.font = UIFont.title3
+        
+        self.contentTextView.font = UIFont.title3
+        self.deleteButton.titleLabel?.font = UIFont.body
+        
     }
     
     override func viewWillAppear(_ animated: Bool) {
