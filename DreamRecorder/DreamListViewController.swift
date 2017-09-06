@@ -110,7 +110,7 @@ class DreamListViewController : UIViewController {
         
         NotificationCenter.default.addObserver(forName: .DreamRecorderFontDidChange,
                                                object: nil,
-                                               queue: .main) { _ in
+                                               queue: .main) { [unowned self] _ in
             self.tableView.reloadData()
         }
         
@@ -138,10 +138,7 @@ class DreamListViewController : UIViewController {
             [unowned self] notification in
             
             self.tableView.insertRows(at: [IndexPath(row: 0, section: 0)], with: .automatic)
-            
-            if let firstDayOfMonth = self.dateParser.firstDayOfMonth(date: Date()) {
-                self.currentDatePeriod = (firstDayOfMonth, Date())
-            }
+        
         }
         
         NotificationCenter.default.addObserver(forName: .DreamDataStoreDidUpdateDream, object: nil, queue: .main) {
