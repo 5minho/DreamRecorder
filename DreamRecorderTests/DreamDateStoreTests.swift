@@ -16,49 +16,7 @@ class DreamDataStoreTests : XCTestCase {
     var minimumDate : Date?
     var maximumDate : Date?
     
-    override func setUp() {
-        
-        DreamDataStore.shared.dropTable()
-        DreamDataStore.shared.createTable()
-        
-        let calander = Calendar(identifier: .gregorian)
-        for month in 1...5 {
-            
-            let dateComponent : DateComponents = {
-                var dateComponent = DateComponents()
-                (dateComponent.year, dateComponent.month, dateComponent.day) = (2017, month, 1)
-                return dateComponent
-            }()
-            
-            if let date = calander.date(from: dateComponent) {
-                dates.append(date)
-            }
-        
-        }
-        
-        minimumDate = dates.first
-        maximumDate = dates.last
-        
-        let dream1 = Dream(title: nil, content: "하늘을 막 날았다", createdDate: dates[0], modifiedDate: nil)
-        let dream2 = Dream(title: "하와이", content: "하와이에 옴", createdDate: dates[1], modifiedDate: Date())
-        let dream3 = Dream(title: "대나무 숲", content: "팬더 봤따", createdDate: dates[2], modifiedDate: nil)
-        let dream4 = Dream(title: "개꿈", content: "완전 개꿈", createdDate: dates[3], modifiedDate: Date())
-        let dream5 = Dream(title: "똥꿈", content: nil, createdDate: dates[4], modifiedDate: nil)
-        
-        dreams = [dream1, dream2, dream3, dream4, dream5]
-        
-        DreamDataStore.shared.insert(dream: dreams[0])
-        DreamDataStore.shared.insert(dream: dreams[1])
-        DreamDataStore.shared.insert(dream: dreams[2])
-        DreamDataStore.shared.insert(dream: dreams[3])
-        DreamDataStore.shared.insert(dream: dreams[4])
-        
-    }
-    
-    override func tearDown() {
-        DreamDataStore.shared.dropTable()
-    }
-    
+
     func testInsertDream() {
         
         let newDream = Dream(title: "newDream", content: "", createdDate: Date(), modifiedDate: nil)
@@ -78,20 +36,18 @@ class DreamDataStoreTests : XCTestCase {
     
     func testSelectAllDream() {
         
-        let rowResult = DreamDataStore.shared.selectAll()
+        let periods : [(Date, Date)] = [(Date(timeIntervalSince1970: 0), Date()),
+                                        (Date(timeIntervalSince1970: 86400 * 2), Date()),
+                                        (Date(timeIntervalSince1970: 86400 * 5), Date(timeIntervalSince1970: 86400 * 30))]
         
-        switch rowResult {
-        case .success(_):
-            XCTAssertTrue(DreamDataStore.shared.dreams[0] == self.dreams[4] &&
-                          DreamDataStore.shared.dreams[1] == self.dreams[3] &&
-                          DreamDataStore.shared.dreams[2] == self.dreams[2] &&
-                          DreamDataStore.shared.dreams[3] == self.dreams[1] &&
-                          DreamDataStore.shared.dreams[4] == self.dreams[0])
+        periods.forEach {
             
-        case .failure(_):
-            XCTFail()
+            let _ = DreamDataStore.shared.select(period: (from: $0, to: $1))
+            
+            XCTAssert((DreamDataStore.shared.dreams.last?.createdDate)! <= $1)
+            XCTAssert((DreamDataStore.shared.dreams.first?.createdDate)! >= $0)
+            
         }
-        
         
     }
 
@@ -212,6 +168,7 @@ class DreamDataStoreTests : XCTestCase {
         XCTAssertEqual(dreams[1], DreamDataStore.shared.dreams[1])
         
     }
+
     
     func readyTest() {
         
@@ -224,10 +181,6 @@ class DreamDataStoreTests : XCTestCase {
         DreamDataStore.shared.insert(dream: dreams[3])
         DreamDataStore.shared.insert(dream: dreams[4])
         
-    }
-
-    func testDropVirtualTable() {
-        DreamDataStore.shared.dropVitualTable()
     }
     
 }
